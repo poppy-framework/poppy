@@ -142,7 +142,7 @@ class FormBuilder extends CollectiveFormBuilder
 
         $uploadUrl = route_url('py-system:api_v1.upload.image');
 
-        $contentId = 'editor_' . Str::random('5');
+        $contentId = 'Editor' . ucfirst(Str::random('5'));
         $timestamp = Carbon::now()->timestamp;
         /** @var ApiSignContract $Sign */
         $Sign  = app(ApiSignContract::class);
@@ -157,17 +157,18 @@ class FormBuilder extends CollectiveFormBuilder
             <<<Editor
     <script src="/assets/libs/boot/wangeditor@5.1.js"></script>
     <div id="$contentId" style="border: 1px solid #ccc;z-index:100;">
-        <div id="toolbar-$contentId" style="border-bottom:1px solid #ccc;"><!-- 工具栏 --></div>
-        <div id="editor-$contentId" style="height:500px;"><!-- 编辑器 --></div>
+        <div id="{$contentId}Toolbar" style="border-bottom:1px solid #ccc;"><!-- 工具栏 --></div>
+        <div id="{$contentId}Editor" style="height:500px;"><!-- 编辑器 --></div>
     </div>
-    <input type="hidden" id="input_{$contentId}" name="{$name}">
+    <input type="hidden" id="{$contentId}Input" name="{$name}">
         <script>
-        const { createEditor : CreateEditor$contentId, createToolbar : CreateToolbar$contentId } = window.wangEditor
-        $(function () {
-            const editorConfig$contentId = {
-                onChange(editor) {
-                  const html = editor.getHtml()
-                  \$('#input_{$contentId}').val(html)
+        $(function(){
+        console.log(window.wangEditor);
+           const {$contentId}EditorConfig = {
+                onChange: function (editor) {
+                  const html = editor.getHtml();
+                  console.log(html)
+                  $('#{$contentId}Input').val(html)
                 },
                 MENU_CONF: {
                     uploadImage : {
@@ -179,8 +180,7 @@ class FormBuilder extends CollectiveFormBuilder
                          meta: {
                               token: '$token',
                               sign: '$sign',
-                              timestamp: '$timestamp',
-                              from: 'wangedit@5'
+                              timestamp: '$timestamp'
                          },
                         customInsert(res, insertFn) {  
                             if (res.status !== 0 ){
@@ -193,13 +193,13 @@ class FormBuilder extends CollectiveFormBuilder
                     }
                 }
             }
-            const editor$contentId = CreateEditor$contentId({
-                selector: '#editor-$contentId',
+            const editor$contentId = window.wangEditor.createEditor({
+                selector: '#{$contentId}Editor',
                 html: '$value',
-                config: editorConfig$contentId,
-                mode: 'default', // or 'simple'
+                config: {$contentId}EditorConfig,
+                mode: 'simple', // or 'simple'
             })
-            const toolbarConfig$contentId = {
+            const {$contentId}ToolbarConfig = {
                 excludeKeys: [
                     'headerSelect',
                     'emotion',
@@ -207,35 +207,12 @@ class FormBuilder extends CollectiveFormBuilder
                     'group-more-style'
                 ]
             }
-            const toolbar$contentId = CreateToolbar$contentId({
+            const toolbar$contentId = window.wangEditor.createToolbar({
                 editor: editor$contentId,
-                selector: '#toolbar-$contentId',
-                config: toolbarConfig$contentId,
-                mode: 'default', // or 'simple'
+                selector: '#{$contentId}Toolbar',
+                config: {$contentId}ToolbarConfig,
+                mode: 'simple', // or 'simple'
             })
-            
-        
-//            const instance_$contentId = new wangEditor('#$contentId');
-//            instance_$contentId.config.onchange = function (newHtml) {
-//                $('#input_{$contentId}').val(newHtml)
-//            }
-//            instance_$contentId.config.uploadImgServer = '$uploadUrl';
-//            instance_$contentId.config.uploadImgParams = {
-//                token: '$token',
-//                sign: '$sign',
-//                timestamp: '$timestamp',
-//                from: 'wang-editor'
-//            }
-//            instance_$contentId.config.uploadFileName = 'image';
-//            instance_$contentId.config.uploadImgHooks = {
-//                fail: function(xhr, editor, resData) {
-//                    console.log(resData);
-//                    layer.msg(resData.message);
-//                    return;
-//                }
-//            }
-//            instance_$contentId.create();
-//            $('#input_{$contentId}').val(instance_$contentId.txt.html())
         })
         </script>
 Editor;
