@@ -120,6 +120,25 @@
             "git subtree push --prefix=poppy/canal-es  coding-canal-es 4.0",
             "git subtree push --prefix=poppy/code-generator coding-code-generator 4.0"
         ],
+        "codeup": [
+            "git subtree push --prefix=poppy/framework  codeup-framework 4.0",
+            "git subtree push --prefix=poppy/mgr-page  codeup-mgr-page 4.0",
+            "git subtree push --prefix=poppy/mgr-app  codeup-mgr-app 4.0",
+            "git subtree push --prefix=poppy/core  codeup-core 4.0",
+            "git subtree push --prefix=poppy/system  codeup-system 4.0",
+            "git subtree push --prefix=poppy/faker  codeup-faker 4.0",
+            "git subtree push --prefix=poppy/version  codeup-version 4.0",
+            "git subtree push --prefix=poppy/aliyun-oss  codeup-aliyun-oss 4.0",
+            "git subtree push --prefix=poppy/aliyun-push  codeup-aliyun-push 4.0",
+            "git subtree push --prefix=poppy/area  codeup-area 4.0",
+            "git subtree push --prefix=poppy/sensitive-word  codeup-sensitive-word 4.0",
+            "git subtree push --prefix=poppy/sms  codeup-sms 4.0",
+            "git subtree push --prefix=poppy/ext-alipay  codeup-ext-alipay 4.0",
+            "git subtree push --prefix=poppy/ext-ip_store  codeup-ext-ip_store 4.0",
+            "git subtree push --prefix=poppy/ad  codeup-ad 4.0",
+            "git subtree push --prefix=poppy/canal-es  codeup-canal-es 4.0",
+            "git subtree push --prefix=poppy/code-generator codeup-code-generator 4.0"
+        ],
         "github": [
             "git subtree push --prefix=poppy/system  gh-system 4.0",
             "git subtree push --prefix=poppy/mgr-page  gh-mgr-page 4.0",

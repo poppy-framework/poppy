@@ -308,6 +308,7 @@ class AuthController extends JwtApiController
 
     /**
      * @api                   {post} api_v1/system/auth/exists 检查通行证是否存在
+     * @apiDescription
      * @apiVersion            1.0.0
      * @apiName               SysAuthExists
      * @apiGroup              Poppy
