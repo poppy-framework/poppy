@@ -59,9 +59,12 @@ class AuthController extends JwtApiController
      */
     public function access(): JsonResponse
     {
+        $pam    = (new PamResource($this->pam()))->toArray(app('request'));
+        $append = (array) sys_hook('poppy.system.auth_access');
+        $all    = array_merge($pam, $append);
         return Resp::success(
             '有效登录',
-            (new PamResource($this->pam()))->toArray(app('request'))
+            $all
         );
     }
 
@@ -80,7 +83,7 @@ class AuthController extends JwtApiController
      * @apiSuccess {object[]} data            返回
      * @apiSuccess {string}   token           认证成功的Token
      * @apiSuccess {string}   type            账号类型
-     * @apiSuccessExample     {json} data:
+     * @apiSuccessExample {json} data:
      * {
      *     "status": 0,
      *     "message": "",
@@ -308,7 +311,7 @@ class AuthController extends JwtApiController
 
     /**
      * @api                   {post} api_v1/system/auth/exists 检查通行证是否存在
-     * @apiDescription
+     * @apiDescription        存在返回成功, 不成功返回失败
      * @apiVersion            1.0.0
      * @apiName               SysAuthExists
      * @apiGroup              Poppy

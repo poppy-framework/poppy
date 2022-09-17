@@ -5,3 +5,7 @@ poppy.system.api_info :
 poppy.system.upload_type :
   title : 上传类型
   type : array
+poppy.system.auth_access :
+  title : 用户信息
+  type : array
+  description : 用户信息服务, 返回基础 pam 资料和自定义资料
