@@ -21,6 +21,12 @@
         -
           slug: log
           description: 登录日志
+        -
+          slug: disable
+          description: 账号封禁
+        -
+          slug: enable
+          description: 账号解禁
     -
       slug: role
       title: 角色
