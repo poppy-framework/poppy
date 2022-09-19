@@ -15,3 +15,7 @@
   hooks:
     - '\Demo\Hooks\MgrPage\SettingsKeyA'
     - '\Demo\Hooks\MgrPage\SettingsKeyB'
+-
+  name: 'poppy.system.auth_access'
+  hooks:
+    - '\Demo\Hooks\System\AuthAccessUser'
