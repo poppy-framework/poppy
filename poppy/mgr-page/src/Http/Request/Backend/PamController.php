@@ -34,8 +34,10 @@ class PamController extends BackendController
         parent::__construct();
 
         self::$permission = [
-            'global' => 'backend:py-system.pam.manage',
-            'log'    => 'backend:py-system.pam.log',
+            'global'  => 'backend:py-system.pam.manage',
+            'log'     => 'backend:py-system.pam.log',
+            'disable' => 'backend:py-system.pam.disable',
+            'enable'  => 'backend:py-system.pam.enable',
         ];
     }
 
