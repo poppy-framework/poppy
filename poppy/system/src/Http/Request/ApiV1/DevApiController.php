@@ -13,7 +13,7 @@ abstract class DevApiController extends ApiController
 {
 
     /**
-     * @var ?PamAccount
+     * @var null|PamAccount
      */
     protected ?PamAccount $pam = null;
 

@@ -13,7 +13,7 @@ abstract class WebApiController extends ApiController
 {
 
     /**
-     * @var ?PamAccount
+     * @var null|PamAccount
      */
     protected ?PamAccount $pam = null;
 

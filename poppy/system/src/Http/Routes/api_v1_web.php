@@ -36,7 +36,6 @@ Route::group([
     // captcha
     $route->post('captcha/verify_code', 'CaptchaController@verifyCode');
     $route->post('captcha/send', 'CaptchaController@send');
-    $route->post('captcha/fetch', 'CaptchaController@fetch');
 
     // auth
     $route->post('auth/reset_password', 'AuthController@resetPassword');

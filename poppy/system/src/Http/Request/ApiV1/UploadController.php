@@ -17,7 +17,7 @@ class UploadController extends JwtApiController
 {
 
     /**
-     * @api                   {post} api_v1/system/upload/image [Sys]图片上传
+     * @api                   {post} /api_v1/system/upload/image [Sys]图片上传
      * @apiDescription        图片上传
      * @apiVersion            1.0.0
      * @apiName               SysUploadImage
@@ -174,7 +174,7 @@ class UploadController extends JwtApiController
     }
 
     /**
-     * @api                   {post} api_v1/system/upload/file [Sys]文件上传
+     * @api                   {post} /api_v1/system/upload/file [Sys]文件上传
      * @apiDescription        上传文件, 这里的文件上传支持音视频, 不支持图片
      * @apiVersion            1.0.0
      * @apiName               SysUploadFile

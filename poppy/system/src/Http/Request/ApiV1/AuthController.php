@@ -26,7 +26,7 @@ class AuthController extends JwtApiController
     use PoppyTrait, ThrottlesLogins;
 
     /**
-     * @api                   {post} api_v1/system/auth/access [Sys]检测 Token
+     * @api                   {post} /api_v1/system/auth/access [Sys]检测 Token
      * @apiVersion            1.0.0
      * @apiName               SysAuthAccess
      * @apiGroup              Poppy
@@ -69,28 +69,24 @@ class AuthController extends JwtApiController
     }
 
     /**
-     * @api                   {post} api_v1/system/auth/login [Sys]登录/注册
+     * @api                   {post} /api_v1/system/auth/login [Sys]登录/注册
      * @apiVersion            1.0.0
      * @apiName               SysAuthLogin
      * @apiGroup              Poppy
-     * @apiQuery {string}     guard           登录类型;web|Web;backend|后台;develop|开发者
      * @apiQuery {string}     passport        通行证
      * @apiQuery {string}     [password]      密码
      * @apiQuery {string}     [captcha]       验证码
-     * @apiQuery {string}     [device_id]     设备ID[开启单一登录之后可用]
-     * @apiQuery {string}     [device_type]   设备类型[开启单一登录之后可用]
-     * @apiQuery {string}     [guard]         登录前台/后台, 默认是前台
-     * @apiSuccess {object[]} data            返回
+     * @apiQuery {string}     [device_id]     设备ID(开启单一登录之后可用)
+     * @apiQuery {string}     [device_type]   设备类型(开启单一登录之后可用)
+     * @apiQuery {string}     [guard]         登录类型 [web|用户(默认);backend|后台;develop|开发者]
      * @apiSuccess {string}   token           认证成功的Token
      * @apiSuccess {string}   type            账号类型
+     * @apiSuccess {string}   is_register     是否是注册 [Y|N]
      * @apiSuccessExample {json} data:
      * {
-     *     "status": 0,
-     *     "message": "",
-     *     "data": {
-     *         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.*******",
-     *         "type": "backend"
-     *     }
+     *      "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.*******",
+     *      "type": "backend",
+     *      "is_register": "backend",
      * }
      */
     public function login(): JsonResponse
@@ -173,7 +169,7 @@ class AuthController extends JwtApiController
 
 
     /**
-     * @api                   {post} api_v1/system/auth/reset_password [Sys]重设密码
+     * @api                   {post} /api_v1/system/auth/reset_password [Sys]重设密码
      * @apiVersion            1.0.0
      * @apiName               SysAuthResetPassword
      * @apiGroup              Poppy
@@ -229,7 +225,7 @@ class AuthController extends JwtApiController
     }
 
     /**
-     * @api                   {post} api_v1/system/auth/bind_mobile [Sys]换绑手机
+     * @api                   {post} /api_v1/system/auth/bind_mobile [Sys]换绑手机
      * @apiVersion            1.0.0
      * @apiName               SysAuthBindMobile
      * @apiGroup              Poppy
@@ -266,7 +262,7 @@ class AuthController extends JwtApiController
     }
 
     /**
-     * @api                   {post} api_v1/system/auth/renew [Sys]续期
+     * @api                   {post} /api_v1/system/auth/renew [Sys]续期
      * @apiVersion            1.0.0
      * @apiName               SysAuthRenew
      * @apiGroup              Poppy
@@ -294,7 +290,7 @@ class AuthController extends JwtApiController
 
 
     /**
-     * @api                   {post} api_v1/system/auth/logout [Sys]退出登录
+     * @api                   {post} /api_v1/system/auth/logout [Sys]退出登录
      * @apiVersion            1.0.0
      * @apiName               SysAuthLogout
      * @apiGroup              Poppy
@@ -310,21 +306,33 @@ class AuthController extends JwtApiController
     }
 
     /**
-     * @api                   {post} api_v1/system/auth/exists 检查通行证是否存在
+     * @api                   {post} /api_v1/system/auth/exists [Sys]检查通行证是否存在
      * @apiDescription        存在返回成功, 不成功返回失败
      * @apiVersion            1.0.0
      * @apiName               SysAuthExists
      * @apiGroup              Poppy
-     * @apiQuery {string}     passport 通行证
+     * @apiQuery {string}     passport  通行证
+     * @apiQuery {string}     [is_data] 是否以Data形式返回 [Y|N]
      */
     public function exists()
     {
         $passport = input('passport');
+        $is_data  = input('is_data', 'N');
         $exists   = PamAccount::passportExists($passport);
+
         if ($exists) {
+            if ($is_data === 'Y') {
+                return Resp::success('通行证存在', [
+                    'is_exist' => 'Y',
+                ]);
+            }
             return Resp::success('通行证存在');
         }
-
+        if ($is_data === 'Y') {
+            return Resp::success('通行证不存在', [
+                'is_exist' => 'N',
+            ]);
+        }
         return Resp::error('通行证不存在');
     }
 
