@@ -13,7 +13,7 @@ class StsController extends JwtApiController
 {
 
     /**
-     * @api                   {post} api_v1/aliyun-oss/sts/temp_oss AliOss Sts授权
+     * @api                   {post} api_v1/aliyun-oss/sts/temp_oss [AliOss]Sts授权
      * @apiDescription        命名规则采用 His{rand(8)} 格式
      * @apiVersion            1.0.0
      * @apiName               AliyunOssStsTempOss

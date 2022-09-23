@@ -31,7 +31,7 @@ class CoreController extends JwtApiController
 
 
     /**
-     * @api                   {post} /api_v1/system/core/info 系统信息
+     * @api                   {post} /api_v1/system/core/info [Sys]系统信息
      * @apiVersion            1.0.0
      * @apiName               SysCoreInfo
      * @apiGroup              Poppy
@@ -44,7 +44,7 @@ class CoreController extends JwtApiController
     }
 
     /**
-     * @api                   {post} /api_v1/system/core/doc 获取文档
+     * @api                   {post} /api_v1/system/core/doc [Sys]获取文档
      * @apiVersion            1.0.0
      * @apiName               SysCoreDoc
      * @apiGroup              Poppy
@@ -64,7 +64,7 @@ class CoreController extends JwtApiController
     }
 
     /**
-     * @api                   {post} /api_v1/system/core/mock Mock
+     * @api                   {post} /api_v1/system/core/mock [Sys]Mock
      * @apiVersion            1.0.0
      * @apiName               SysCoreMock
      * @apiGroup              Poppy
@@ -77,7 +77,7 @@ class CoreController extends JwtApiController
     }
 
     /**
-     * @api                    {post} /api_v1/system/core/helper 帮助
+     * @api                    {post} /api_v1/system/core/helper [Sys]帮助
      * @apiVersion             1.0.0
      * @apiName                SysCoreHelper
      * @apiGroup               Poppy
