@@ -26,7 +26,7 @@ class StsController extends JwtApiController
      * @apiSuccess {string}   access_key_id     id
      * @apiSuccess {string}   expiration        过期时间
      * @apiSuccess {string}   security_token    安全token
-     * @apiSuccessExample     data
+     * @apiSuccessExample  {json}  data
      * {
      *     "status": 0,
      *     "message": "",
