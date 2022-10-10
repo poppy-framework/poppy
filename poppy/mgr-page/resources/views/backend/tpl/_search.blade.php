@@ -8,3 +8,8 @@
     <button type="submit" class="layui-btn"><i class="fa fa-search"></i> 搜索</button>
     <a href="{!! route_url() !!}" class="layui-btn layui-btn-primary">重置搜索</a>
 </div>
+@if(isset($_pjax_error))
+    <script>
+    layer.msg('{{$_pjax_error}}')
+    </script>
+@endif
