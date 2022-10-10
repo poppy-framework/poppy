@@ -74,6 +74,9 @@
             $(document).on('pjax:complete', function() {
                 layer.closeAll();
                 layui.form.render();
+                if($('#search').attr('pjax-error')){
+                    layer.msg($('#search').attr('pjax-error'))
+                }
             });
         }
     })
