@@ -42,11 +42,11 @@ class Area
 
     /**
      * 创建需求
-     * @param array $data    创建数据
+     * @param array $data 创建数据
      *                       string  title       标题
      *                       int     parent_id   父id
      *                       int     top_id      顶级id
-     * @param null|int $id   地区id
+     * @param null|int $id 地区id
      * @return bool
      */
     public function establish(array $data, $id = null): bool
@@ -65,7 +65,6 @@ class Area
                 Rule::string(),
             ],
             'parent_id' => [
-                Rule::required(),
                 Rule::integer(),
             ],
         ], [], [
@@ -104,7 +103,14 @@ class Area
             [$this->area->id]
         );
 
+
         $this->batchFix(array_unique($needUpdate));
+        $this->level($this->area->id);
+
+        $this->initArea($this->area->id);
+        if ($this->area->level < 4) {
+            sys_cache('py-area')->forget(PyAreaDef::ckArea('tree-level-2'));
+        }
 
         return true;
     }
@@ -132,7 +138,7 @@ class Area
 
     /**
      * 获取父元素IDs
-     * @param int $id      地区id
+     * @param int $id 地区id
      * @param string $type 类型
      * @return string|array
      */

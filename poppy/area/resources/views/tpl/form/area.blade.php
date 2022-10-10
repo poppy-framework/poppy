@@ -9,7 +9,9 @@
 
     <div class="{{$viewClass['field']}}">
         <div class="layui-form-auto-field">
-            {!! app('poppy.mgr-page.form')->select($name, $area, $value) !!}
+            {!! app('poppy.mgr-page.form')->select($name, $area, $value, [
+                'placeholder' => '请选择地区'
+            ]) !!}
         </div>
         @include('py-mgr-page::tpl.form.help-block')
         @include('py-mgr-page::tpl.form.error')
