@@ -21,7 +21,12 @@ abstract class WebApiController extends ApiController
     {
         parent::__construct();
         $this->middleware(function ($request, $next) {
-            $this->pam = $request->user();
+            $pam = $request->user();
+            if (!$pam) {
+                $pam = auth('jwt_web')->user();
+            }
+
+            $this->pam = $pam;
             return $next($request);
         });
     }
