@@ -28,7 +28,7 @@ final class MultiImage extends Field
     /**
      * @var bool 自动上传
      */
-    private $auto = false;
+    private bool $auto = false;
 
     public function token($token): self
     {
@@ -39,15 +39,22 @@ final class MultiImage extends Field
     /**
      * 最大上传数量
      * @param $number
+     * @return MultiImage
      */
-    public function number($number)
+    public function number($number): self
     {
         $this->number = $number;
+        return $this;
     }
 
-    public function auto($auto = false)
+    /**
+     * @param bool $auto
+     * @return $this
+     */
+    public function auto(bool $auto = false): self
     {
         $this->auto = $auto;
+        return $this;
     }
 
 

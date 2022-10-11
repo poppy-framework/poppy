@@ -8900,6 +8900,9 @@ label.validation:before {
   border: 2px solid red;
 }
 .layui-upload.upload--multi .multi-img.multi-uploaded {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
 }
 .layui-upload.upload--multi .multi-img.multi-uploaded .fa {
@@ -8947,6 +8950,9 @@ label.validation:before {
   height: 100px;
   border-radius: 2px;
   max-width: 100px;
+  max-height: 100px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .layadmin-side-shrink .layui-side .layui-nav-item .fa {
   display: block !important;

@@ -608,8 +608,10 @@ $(function(){
             var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
             {$id}_files = files;
             $('#{$id}_upload').prop('disabled',false);
-            //预读本地文件示例，不支持ie8
+            // 预读本地文件示例，不支持ie8
             obj.preview(function (index, file, result) {
+                console.log(index, file, result);
+                console.log(obj, (new FileReader()).readAsDataURL(file));
                 var data = {
                     index: index,
                     name: file.name,
@@ -626,10 +628,13 @@ $(function(){
                 if ($('#{$id}_container').html()=== '请选择图片') {
                     $('#{$id}_container').html('');
                 }
-                //将预览html 追加
-                layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
-                    $('#{$id}_container').append(html);
-                });
+                //将预览 html 追加
+                Util.readAndPreview(file, function(url){
+                    data.result = url;
+                    layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
+                        $('#{$id}_container').append(html);
+                    });
+                })
             });
          }, 
         before: function (obj) { //上传前回函数

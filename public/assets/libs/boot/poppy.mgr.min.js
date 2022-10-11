@@ -10,50 +10,50 @@ if (typeof Util !== 'object') {
 }
 
 
-( function($) {
+(function ($) {
     if (typeof $.validator !== 'undefined') {
 
-        $.validator.addMethod("mobile", function(phone_number, element) {
+        $.validator.addMethod("mobile", function (phone_number, element) {
             return this.optional(element) || Util.isMobile(phone_number);
         }, "Please specify a valid mobile number");
 
-        $.validator.addMethod("email", function(mail, element) {
+        $.validator.addMethod("email", function (mail, element) {
             mail = mail.replace(/\(|\)|\s+|-/g, "");
             return this.optional(element) || Util.isEmail(mail);
         }, "Please specify a valid email address");
 
-        $.validator.addMethod("qq", function(qq_number, element) {
+        $.validator.addMethod("qq", function (qq_number, element) {
             qq_number = qq_number.replace(/\(|\)|\s+|-/g, "");
             return this.optional(element) || qq_number.length > 4 &&
                 qq_number.match(/^[1-9]\d{3,10}$/);
         }, "Please specify a valid qq number");
 
         // 中国电话号码的验证
-        $.validator.addMethod("phone", function(value, element) {
+        $.validator.addMethod("phone", function (value, element) {
             return this.optional(element) || /^(([0\+]\d{2,3}-?)?(0\d{2,3})-?)?(\d{7,8})(-(\d{3,}))?$/.test(value);
         }, "Please specify a valid phone number.");
 
-        $.validator.addMethod("ipv4", function(value, element) {
+        $.validator.addMethod("ipv4", function (value, element) {
             return this.optional(element)
                 ||
                 /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value);
         }, "Please input a valid ipv4 address.");
 
         // 中国电话号码和手机的验证
-        $.validator.addMethod("phone_mobile", function(value, element) {
+        $.validator.addMethod("phone_mobile", function (value, element) {
             let phone_number = value.replace(/\(|\)|\s+|-/g, "");
-            return ( this.optional(element) || /^(([0\+]\d{2,3}-?)?(0\d{2,3})-?)?(\d{7,8})(-(\d{3,}))?$/.test(value) )
+            return (this.optional(element) || /^(([0\+]\d{2,3}-?)?(0\d{2,3})-?)?(\d{7,8})(-(\d{3,}))?$/.test(value))
                 ||
-                ( this.optional(element) || Util.isMobile(phone_number) );
+                (this.optional(element) || Util.isMobile(phone_number));
         }, "Please specify a valid phone number.");
 
         // 中文身份证验证
-        $.validator.addMethod("chId", function(chId, element) {
-            let iW   = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1];
+        $.validator.addMethod("chId", function (chId, element) {
+            let iW = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1];
             let iSum = 0;
             let iC, iVal;
             for (let i = 0; i < 17; i++) {
-                iC   = chId.charAt(i);
+                iC = chId.charAt(i);
                 iVal = parseInt(iC, 10);
                 iSum += iVal * iW[i];
             }
@@ -75,13 +75,13 @@ if (typeof Util !== 'object') {
         }, "Please specify a valid chinese id");
 
         // 不允许含有空格
-        $.validator.addMethod("noSpace", function(value, element) {
+        $.validator.addMethod("noSpace", function (value, element) {
             return !/\s+/.test(value);
         }, "Please do not insert space");
 
         /* 小数验证，小数点位数按照max参数的小数点位数进行判断
          * 不能为空、只能输入数字 */
-        $.validator.addMethod("decimal", function(value, element, params) {
+        $.validator.addMethod("decimal", function (value, element, params) {
             if (!value) {
                 return true;
             }
@@ -97,88 +97,88 @@ if (typeof Util !== 'object') {
             if (isNaN(value)) {
                 return false;
             }
-            if (typeof ( value ) == undefined || value == "") {
+            if (typeof (value) == undefined || value == "") {
                 return false;
             }
-            let min     = Number(params[0]);
-            let max     = Number(params[1]);
+            let min = Number(params[0]);
+            let max = Number(params[1]);
             let testVal = Number(value);
-            if (typeof ( params[2] ) == undefined || params[2] == 0) {
+            if (typeof (params[2]) == undefined || params[2] == 0) {
                 let regX = /^\d+$/;
             } else {
                 let regxStr = "^\\d+(\\.\\d{1," + params[2] + "})?$";
-                let regX    = new RegExp(regxStr);
+                let regX = new RegExp(regxStr);
             }
-            return this.optional(element) || ( regX.test(value) && testVal >= min && testVal <= max );
+            return this.optional(element) || (regX.test(value) && testVal >= min && testVal <= max);
         }, $.validator.format("请正确输入在{0}到{1}之间，最多只保留小数点后{2}的数值"));
 
         $.validator.addMethod(
             "regex",
-            function(value, element, regexp) {
+            function (value, element, regexp) {
                 let re = new RegExp(regexp);
                 return this.optional(element) || re.test(value);
             },
             "Please check your input."
         );
 
-        $.validator.addMethod("alphanumeric", function(value, element) {
+        $.validator.addMethod("alphanumeric", function (value, element) {
             return this.optional(element) || /^[\w.]+$/i.test(value);
         }, "Letters, numbers, and underscores only please");
 
-        $.validator.addMethod("alpha", function(value, element) {
+        $.validator.addMethod("alpha", function (value, element) {
             return this.optional(element) || /^[a-zA-Z]+$/i.test(value);
         }, "Letters, numbers, and underscores only please");
 
-        $.validator.addMethod("alpha_dash", function(value, element) {
+        $.validator.addMethod("alpha_dash", function (value, element) {
             return this.optional(element) || /^[a-zA-Z_]+$/i.test(value);
         }, "Letters, numbers, and underscores only please");
 
         $.extend($.validator.messages, {
-            required : "必须填写",
-            remote : "请修正此栏位",
-            email : "请输入有效的电子邮件",
-            qq : '请输入正确的QQ号',
-            mobile : '请输入正确的手机号',
-            phoneZh : '请输入正确的固定电话号码',
-            phoneAmobile : '请输入正确的固话或者手机号',
-            url : "请输入有效的网址",
-            date : "请输入有效的日期",
-            dateISO : "请输入有效的日期 (YYYY-MM-DD)",
-            number : "请输入正确的数字",
-            digits : "只可输入数字",
-            creditcard : "请输入有效的信用卡号码",
-            equalTo : "你的输入不相同",
-            extension : "请输入有效的后缀",
-            maxlength : $.validator.format("最多 {0} 个字"),
-            minlength : $.validator.format("最少 {0} 个字"),
-            eqlength : $.validator.format("请输入 {0} 长度的字符!"),
-            rangelength : $.validator.format("请输入长度为 {0} 至 {1} 之间的字串"),
-            range : $.validator.format("请输入 {0} 至 {1} 之间的数值"),
-            max : $.validator.format("请输入不大于 {0} 的数值"),
-            min : $.validator.format("请输入不小于 {0} 的数值"),
-            ipv4 : '请输入正确的IP地址',
-            chId : '请输入正确的身份证信息',
-            noSpace : '请不要在此输入空格',
-            alpha : '请输入字母',
-            alpha_dash : '请输入字母或下划线',
-            alphanumeric : '请输入字母, 数字, 下划线的组合!',
-            decimal : '请正确输入在{0}到{1}之间，最多只保留小数点后{2}的数值',
-            step : $.validator.format("请输入 {0} 的整数倍值"),
-            regex : '请检查输入是否符合规则'
+            required: "必须填写",
+            remote: "请修正此栏位",
+            email: "请输入有效的电子邮件",
+            qq: '请输入正确的QQ号',
+            mobile: '请输入正确的手机号',
+            phoneZh: '请输入正确的固定电话号码',
+            phoneAmobile: '请输入正确的固话或者手机号',
+            url: "请输入有效的网址",
+            date: "请输入有效的日期",
+            dateISO: "请输入有效的日期 (YYYY-MM-DD)",
+            number: "请输入正确的数字",
+            digits: "只可输入数字",
+            creditcard: "请输入有效的信用卡号码",
+            equalTo: "你的输入不相同",
+            extension: "请输入有效的后缀",
+            maxlength: $.validator.format("最多 {0} 个字"),
+            minlength: $.validator.format("最少 {0} 个字"),
+            eqlength: $.validator.format("请输入 {0} 长度的字符!"),
+            rangelength: $.validator.format("请输入长度为 {0} 至 {1} 之间的字串"),
+            range: $.validator.format("请输入 {0} 至 {1} 之间的数值"),
+            max: $.validator.format("请输入不大于 {0} 的数值"),
+            min: $.validator.format("请输入不小于 {0} 的数值"),
+            ipv4: '请输入正确的IP地址',
+            chId: '请输入正确的身份证信息',
+            noSpace: '请不要在此输入空格',
+            alpha: '请输入字母',
+            alpha_dash: '请输入字母或下划线',
+            alphanumeric: '请输入字母, 数字, 下划线的组合!',
+            decimal: '请正确输入在{0}到{1}之间，最多只保留小数点后{2}的数值',
+            step: $.validator.format("请输入 {0} 的整数倍值"),
+            regex: '请检查输入是否符合规则'
         });
     }
-} )(jQuery);
+})(jQuery);
 
 
-( function() {
+(function () {
     'use strict';
 
     /**
      * 点击加入收藏
      * @param id
      */
-    Util.addFav = function(id) {
-        $(id).on('click', function() {
+    Util.addFav = function (id) {
+        $(id).on('click', function () {
             if (document.all) {
                 try {
                     window.external.addFavorite(window.location.href, document.title);
@@ -198,19 +198,19 @@ if (typeof Util !== 'object') {
      * 返回浏览器的版本和ie的判定
      * @returns {{version: *, safari: boolean, opera: boolean, msie: boolean, mozilla: boolean, is_ie8: boolean, is_ie9: boolean, is_ie10: boolean, is_rtl: boolean}}
      */
-    Util.browser = function() {
+    Util.browser = function () {
         let userAgent = navigator.userAgent.toLowerCase();
         return {
-            version : ( userAgent.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [0, '0'] )[1],
-            safari : /webkit/.test(userAgent),
-            opera : /opera/.test(userAgent),
-            msie : /msie/.test(userAgent) && !/opera/.test(userAgent),
-            mozilla : /mozilla/.test(userAgent) && !/(compatible|webkit)/.test(userAgent),
-            is_ie8 : !!userAgent.match(/msie 8.0/),
-            is_ie9 : !!userAgent.match(/msie 9.0/),
-            is_ie10 : !!userAgent.match(/msie 10.0/),
-            is_wechat : !!userAgent.match(/micromessenger/),
-            is_rtl : $('body').css('direction') === 'rtl'
+            version: (userAgent.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [0, '0'])[1],
+            safari: /webkit/.test(userAgent),
+            opera: /opera/.test(userAgent),
+            msie: /msie/.test(userAgent) && !/opera/.test(userAgent),
+            mozilla: /mozilla/.test(userAgent) && !/(compatible|webkit)/.test(userAgent),
+            is_ie8: !!userAgent.match(/msie 8.0/),
+            is_ie9: !!userAgent.match(/msie 9.0/),
+            is_ie10: !!userAgent.match(/msie 10.0/),
+            is_wechat: !!userAgent.match(/micromessenger/),
+            is_rtl: $('body').css('direction') === 'rtl'
         }
     };
 
@@ -218,16 +218,16 @@ if (typeof Util !== 'object') {
      * 提示信息
      * @params word  String 提示信息
      * */
-    Util.splash = function(resp, append_callback) {
+    Util.splash = function (resp, append_callback) {
         let obj_resp = Util.toJson(resp);
         let obj_data = {
-            _callback : '',
-            _show : 'tip',
-            _time : 0
+            _callback: '',
+            _show: 'tip',
+            _time: 0
         };
         let obj_init = {
-            message : 'No Message Send By Server!',
-            status : 1
+            message: 'No Message Send By Server!',
+            status: 1
         };
 
         obj_resp = $.extend(obj_init, obj_resp);
@@ -248,10 +248,10 @@ if (typeof Util !== 'object') {
             }
             if (typeof window.mobile !== 'undefined') {
                 layer.msg(obj_resp.message, {
-                    time : 3000
+                    time: 3000
                 })
             } else {
-                setTimeout(function() {
+                setTimeout(function () {
                     if (obj_resp.status === 0) {
                         // success icon
                         // layer.msg(obj_resp.message, {icon : 1});
@@ -267,7 +267,7 @@ if (typeof Util !== 'object') {
 
         if (obj_data._show === 'dialog') {
             delete obj_resp._show;
-            let conf  = {};
+            let conf = {};
             let title = !conf.hasOwnProperty('title') ? resp.message : conf.title;
             let content;
             if (obj_data._append) {
@@ -276,16 +276,16 @@ if (typeof Util !== 'object') {
                 content = title
             }
             layer.open({
-                title : title,
-                content : content,
-                shadeClose : true
+                title: title,
+                content: content,
+                shadeClose: true
             });
             return false;
         }
 
         if (obj_data.show === 'callback' || obj_data.callback) {
             let func = obj_data.callback;
-            setTimeout(function() {
+            setTimeout(function () {
                 eval(func + ";");
             }, obj_data.time);
         }
@@ -295,12 +295,12 @@ if (typeof Util !== 'object') {
             if ($winPjax.length) {
                 $winPjax.submit();
             } else {
-                setTimeout(function() {
+                setTimeout(function () {
                     if (Util.browser().is_wechat) {
                         window.location.search = '?v=' + Date.now();
                     } else {
                         let $reload = $('#filter-box-reload');
-                        if ($reload.length){
+                        if ($reload.length) {
                             $reload.trigger('click');
                         } else {
                             window.location.reload()
@@ -323,12 +323,12 @@ if (typeof Util !== 'object') {
                     if ($topPjax.length) {
                         $topPjax.submit();
                     } else {
-                        setTimeout(function() {
+                        setTimeout(function () {
                             top.window.location.reload()
                         }, obj_data.time);
                     }
                 } else {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         top.window.location.reload()
                     }, obj_data.time);
                 }
@@ -336,19 +336,19 @@ if (typeof Util !== 'object') {
         }
 
         if (obj_data._location) {
-            setTimeout(function() {
+            setTimeout(function () {
                 window.location.href = obj_data._location;
             }, obj_data.time);
         }
 
         if (obj_data._top_location) {
-            setTimeout(function() {
+            setTimeout(function () {
                 top.window.location.href = obj_data._top_location;
             }, obj_data.time);
         }
 
         if (obj_data._reload_opener) {
-            setTimeout(function() {
+            setTimeout(function () {
                 if (typeof top.layui !== 'undefined' && typeof top.layui.admin !== 'undefined') {
                     top.layui.admin.refresh();
                 } else {
@@ -358,7 +358,7 @@ if (typeof Util !== 'object') {
         }
 
         if (obj_data._iframe_close) {
-            setTimeout(function() {
+            setTimeout(function () {
                 let opener = Util.opener(obj_data._iframe_close);
                 opener.iframe.close();
             }, obj_data._time);
@@ -386,7 +386,7 @@ if (typeof Util !== 'object') {
      * @param resp
      * @returns {*}
      */
-    Util.toJson = function(resp) {
+    Util.toJson = function (resp) {
         let objResp;
         if (typeof resp === 'object') {
             objResp = resp;
@@ -405,7 +405,7 @@ if (typeof Util !== 'object') {
      * @param workspace
      * @returns {*}
      */
-    Util.opener = function(workspace) {
+    Util.opener = function (workspace) {
         let opener = top.frames[workspace];
         if (typeof opener === 'undefined') {
             opener = top;
@@ -419,13 +419,13 @@ if (typeof Util !== 'object') {
      * @param data
      * @param error_submit
      */
-    Util.buttonInteraction = function(btn_selector, data, error_submit) {
+    Util.buttonInteraction = function (btn_selector, data, error_submit) {
         let objData;
         if (typeof data == 'undefined' || !isNaN(parseInt(data))) {
             $(btn_selector).attr('disabled', true);
             if (!isNaN(parseInt(data))) {
                 let time = parseInt(data);
-                setTimeout(function() {
+                setTimeout(function () {
                     $(btn_selector).attr('disabled', false);
                 }, time * 1000);
             }
@@ -446,7 +446,7 @@ if (typeof Util !== 'object') {
      * @param splash_func
      * @returns {boolean}
      */
-    Util.requestEvent = function($this, splash_func) {
+    Util.requestEvent = function ($this, splash_func) {
         // confirm
         let str_confirm = $this.attr('data-confirm');
         if (str_confirm === 'true') {
@@ -459,15 +459,15 @@ if (typeof Util !== 'object') {
             }
         }
         let append = $this.attr('data-append');
-        let data   = Util.appendToObj(append);
+        let data = Util.appendToObj(append);
 
         let condition_str = $this.attr('data-condition');
-        let condition     = Util.conditionToObj(condition_str);
+        let condition = Util.conditionToObj(condition_str);
         for (let i in data) {
             if (condition.hasOwnProperty(i) && !data.hasOwnProperty(i)) {
                 splash_func({
-                    'status' : 1,
-                    'message' : condition[i]
+                    'status': 1,
+                    'message': condition[i]
                 });
                 return false;
             }
@@ -491,7 +491,7 @@ if (typeof Util !== 'object') {
      * 获取页面中的 csrf token
      * @returns {*|jQuery}
      */
-    Util.csrfToken = function() {
+    Util.csrfToken = function () {
         return $('meta[name="csrf-token"]').attr('content');
     };
 
@@ -501,7 +501,7 @@ if (typeof Util !== 'object') {
      * @param append
      * @returns {{}}
      */
-    Util.appendToObj = function(append) {
+    Util.appendToObj = function (append) {
         let data = {};
         if (append) {
             let appends = [append];
@@ -510,10 +510,10 @@ if (typeof Util !== 'object') {
             }
             for (let i in appends) {
                 let item = appends[i];
-                let re   = /(.*)\((.*)\)/;
+                let re = /(.*)\((.*)\)/;
                 let m;
 
-                if (( m = re.exec(item) ) !== null) {
+                if ((m = re.exec(item)) !== null) {
                     if (m.index === re.lastIndex) {
                         re.lastIndex++;
                     }
@@ -521,7 +521,7 @@ if (typeof Util !== 'object') {
 
                 if (m[1].indexOf('checked') >= 0 && m[1].indexOf('radio') < 0) {
                     let id_array = [];
-                    $(m[1]).each(function() {
+                    $(m[1]).each(function () {
                         id_array.push($(this).val());//向数组中添加元素
                     });
                     data[m[2]] = id_array;//将数组元素连接起来以构建一个字符串
@@ -540,15 +540,15 @@ if (typeof Util !== 'object') {
      * @param append
      * @returns {{}}
      */
-    Util.conditionToObj = function(append) {
+    Util.conditionToObj = function (append) {
         let data = {};
         if (append) {
             let appends = append.split(',');
             for (let i in appends) {
                 let item = appends[i];
-                let re   = /(.*):(.*)/;
+                let re = /(.*):(.*)/;
                 let m;
-                if (( m = re.exec(item) ) !== null) {
+                if ((m = re.exec(item)) !== null) {
                     if (m.index === re.lastIndex) {
                         re.lastIndex++;
                     }
@@ -565,7 +565,7 @@ if (typeof Util !== 'object') {
      * @param url
      * @returns {*}
      */
-    Util.objToUrl = function(obj, url) {
+    Util.objToUrl = function (obj, url) {
         let str = "";
         for (let key in obj) {
             if (str != "") {
@@ -586,11 +586,11 @@ if (typeof Util !== 'object') {
      * @param w
      * @returns {boolean}
      */
-    Util.imagePopupShow = function(imgSrc, w) {
+    Util.imagePopupShow = function (imgSrc, w) {
         if (!imgSrc) {
             Util.splash({
-                status : 1,
-                message : '没有图像文件'
+                status: 1,
+                message: '没有图像文件'
             });
             return false;
         }
@@ -610,9 +610,9 @@ if (typeof Util !== 'object') {
             }
             let imgStr = '<img src="' + imgObj.url + '" width="' + _w + '" height="' + _h + '" />';
             layer.open({
-                title : '图片预览',
-                content : imgStr,
-                area : [( _w + 40 ) + 'px', ( _h + 80 ) + 'px']
+                title: '图片预览',
+                content: imgStr,
+                area: [(_w + 40) + 'px', (_h + 80) + 'px']
             });
         }
     };
@@ -623,21 +623,21 @@ if (typeof Util !== 'object') {
      * @param sUrl
      * @param fCallback
      */
-    Util.imageSize = function(sUrl, fCallback) {
+    Util.imageSize = function (sUrl, fCallback) {
         let img = new Image();
         img.src = sUrl + '?t=' + Math.random();    //IE下，ajax会缓存，导致onreadystatechange函数没有被触发，所以需要加一个随机数
         if (Util.browser().msie) {
-            img.onreadystatechange = function() {
+            img.onreadystatechange = function () {
                 if (this.readyState == "loaded" || this.readyState == "complete") {
-                    fCallback({width : img.width, height : img.height, url : sUrl});
+                    fCallback({width: img.width, height: img.height, url: sUrl});
                 }
             };
         } else if (Util.browser().mozilla || Util.browser().safari || Util.browser().opera) {
-            img.onload = function() {
-                fCallback({width : img.width, height : img.height, url : sUrl});
+            img.onload = function () {
+                fCallback({width: img.width, height: img.height, url: sUrl});
             };
         } else {
-            fCallback({width : img.width, height : img.height, url : sUrl});
+            fCallback({width: img.width, height: img.height, url: sUrl});
         }
     };
 
@@ -648,7 +648,7 @@ if (typeof Util !== 'object') {
      * @param success
      * @param method
      */
-    Util.makeRequest = function(targetPhp, queryString, success, method) {
+    Util.makeRequest = function (targetPhp, queryString, success, method) {
         if (typeof queryString === 'string') {
             queryString += queryString.indexOf('&') < 0
                 ? '_token=' + Util.csrfToken()
@@ -659,7 +659,7 @@ if (typeof Util !== 'object') {
         }
         if (typeof queryString === 'undefined') {
             queryString = {
-                '_token' : Util.csrfToken()
+                '_token': Util.csrfToken()
             }
         }
         if (typeof success === 'undefined') {
@@ -669,12 +669,12 @@ if (typeof Util !== 'object') {
             method = 'post';
         }
         $.ajax({
-            async : false,
-            cache : false,
-            type : method,
-            url : targetPhp,
-            data : queryString,
-            success : function(data) {
+            async: false,
+            cache: false,
+            type: method,
+            url: targetPhp,
+            data: queryString,
+            success: function (data) {
                 let obj_data = Util.toJson(data);
                 success(obj_data);
             }
@@ -688,16 +688,16 @@ if (typeof Util !== 'object') {
      * @url https://jqueryvalidation.org/valid/
      * @url https://vadikom.com/demos/poshytip/
      */
-    Util.validateConfig = function(rules) {
+    Util.validateConfig = function (rules) {
         let config = {
-            ignore : '.ignore,[contenteditable=\'true\']',
+            ignore: '.ignore,[contenteditable=\'true\']',
             // debug : true,
-            submitHandler : function(form) {
+            submitHandler: function (form) {
                 layer.load(3, {
-                    shade : [0.03, '#000000']
+                    shade: [0.03, '#000000']
                 });
                 $(form).ajaxSubmit({
-                    success : function(resp) {
+                    success: function (resp) {
                         layer.closeAll();
                         Util.splash(resp);
                     }
@@ -705,28 +705,28 @@ if (typeof Util !== 'object') {
             },
             // errorClass : 'error',
             // validClass : 'valid',
-            onkeyup : function(element) {
+            onkeyup: function (element) {
                 // console.log('on-keyup');
                 let elem = $(element);
                 elem.valid();
             },
-            onfocusout : function(element) {
+            onfocusout: function (element) {
                 // console.log('on-foucus-out');
                 let elem = $(element);
                 elem.valid();
             },
-            highlight : function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).closest('.layui-form-auto-field').addClass('layui-form-error');
             },
-            unhighlight : function(element) {
+            unhighlight: function (element) {
                 $(element).closest('.layui-form-auto-field').removeClass('layui-form-error');
             },
-            success : function(label, element) {
+            success: function (label, element) {
                 let elem = $(element);
                 elem.poshytip('disable');
                 elem.poshytip('destroy');
             },
-            errorPlacement : function(error, element) {
+            errorPlacement: function (error, element) {
                 let elem = $(element);
                 if (elem.prop('type') === 'file' || elem.prop('type') === 'textarea') {
                     elem = $(element).parents('.layui-form-auto-field');
@@ -740,15 +740,15 @@ if (typeof Util !== 'object') {
                         elem.poshytip('update', error.text());
                     } else {
                         elem.poshytip({
-                            className : 'tip-yellowsimple',
-                            showTimeout : 0,
-                            showOn : 'hover',
-                            content : error,
-                            alignTo : 'target',
-                            alignX : "inner-left",
+                            className: 'tip-yellowsimple',
+                            showTimeout: 0,
+                            showOn: 'hover',
+                            content: error,
+                            alignTo: 'target',
+                            alignX: "inner-left",
                             // alignY : aY,
-                            offsetX : 5,
-                            offsetY : 5
+                            offsetX: 5,
+                            offsetY: 5
                         });
                         elem.poshytip('show');
                     }
@@ -771,17 +771,17 @@ if (typeof Util !== 'object') {
      * based on  http://andylangton.co.uk/articles/javascript/get-viewport-size-javascript/
      * @returns {{width: *, height: *}}
      */
-    Util.getViewport = function() {
+    Util.getViewport = function () {
         let e = window,
             a = 'inner';
-        if (!( 'innerWidth' in window )) {
+        if (!('innerWidth' in window)) {
             a = 'client';
             e = document.documentElement || document.body;
         }
 
         return {
-            width : e[a + 'Width'],
-            height : e[a + 'Height']
+            width: e[a + 'Width'],
+            height: e[a + 'Height']
         };
     };
 
@@ -791,7 +791,7 @@ if (typeof Util !== 'object') {
      * @param str
      * @returns {boolean}
      */
-    Util.isUrl = function(str) {
+    Util.isUrl = function (str) {
         let pattern = new RegExp("^(https?:\\/\\/)?" + // protocol
             "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
             "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
@@ -806,7 +806,7 @@ if (typeof Util !== 'object') {
      * @param str
      * @returns {boolean}
      */
-    Util.isEmail = function(str) {
+    Util.isEmail = function (str) {
         let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,8}){1,2})$/;
         return reg.test(str);
     };
@@ -816,7 +816,7 @@ if (typeof Util !== 'object') {
      * @param str
      * @returns {boolean|Array|{index: number, input: string}}
      */
-    Util.isMobile = function(str) {
+    Util.isMobile = function (str) {
         let phone_number = str.replace(/\(|\)|\s+|/g, "");
         return phone_number.length > 10 && phone_number.match(/^(\d{1,5}\-)?1[3|4|5|6|8|7|9][0-9]\d{4,8}$/);
     };
@@ -828,10 +828,10 @@ if (typeof Util !== 'object') {
      * @param time
      * @param end_str
      */
-    Util.countdown = function(btn_selector, str, time, end_str) {
-        let count      = time;
+    Util.countdown = function (btn_selector, str, time, end_str) {
+        let count = time;
         let handlerCountdown;
-        let $btn       = $(btn_selector);
+        let $btn = $(btn_selector);
         let displayStr = typeof end_str != 'undefined' ? end_str : $btn.text();
 
         handlerCountdown = setInterval(_countdown, 1000);
@@ -853,12 +853,12 @@ if (typeof Util !== 'object') {
      * @param length
      * @returns {string}
      */
-    Util.random = function(length) {
+    Util.random = function (length) {
         if (typeof length == 'undefined' || parseInt(length) == 0) {
             length = 18;
         }
         let chars = "abcdefhjmnpqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWYXZ";
-        let str   = '';
+        let str = '';
         for (let i = 0; i < length; i++) {
             str += chars.charAt(Math.floor(Math.random() * chars.length));
         }
@@ -869,7 +869,7 @@ if (typeof Util !== 'object') {
      * 方便添加维护类
      * @returns {{hasClass: *, addClass: *, removeClass: *, toggleClass: toggleClass, has: *, add: *, remove: *, toggle: toggleClass}}
      */
-    Util.classie = function() {
+    Util.classie = function () {
         function classReg(className) {
             return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
         }
@@ -879,25 +879,25 @@ if (typeof Util !== 'object') {
         let hasClass, addClass, removeClass;
 
         if ('classList' in document.documentElement) {
-            hasClass    = function(elem, c) {
+            hasClass = function (elem, c) {
                 return elem.classList.contains(c);
             };
-            addClass    = function(elem, c) {
+            addClass = function (elem, c) {
                 elem.classList.add(c);
             };
-            removeClass = function(elem, c) {
+            removeClass = function (elem, c) {
                 elem.classList.remove(c);
             };
         } else {
-            hasClass    = function(elem, c) {
+            hasClass = function (elem, c) {
                 return classReg(c).test(elem.className);
             };
-            addClass    = function(elem, c) {
+            addClass = function (elem, c) {
                 if (!hasClass(elem, c)) {
                     elem.className = elem.className + ' ' + c;
                 }
             };
-            removeClass = function(elem, c) {
+            removeClass = function (elem, c) {
                 elem.className = elem.className.replace(classReg(c), ' ');
             };
         }
@@ -909,15 +909,15 @@ if (typeof Util !== 'object') {
 
         return {
             // full names
-            hasClass : hasClass,
-            addClass : addClass,
-            removeClass : removeClass,
-            toggleClass : toggleClass,
+            hasClass: hasClass,
+            addClass: addClass,
+            removeClass: removeClass,
+            toggleClass: toggleClass,
             // short names
-            has : hasClass,
-            add : addClass,
-            remove : removeClass,
-            toggle : toggleClass
+            has: hasClass,
+            add: addClass,
+            remove: removeClass,
+            toggle: toggleClass
         };
     };
 
@@ -927,7 +927,7 @@ if (typeof Util !== 'object') {
      * @param obj
      * @returns {number}
      */
-    Util.objSize = function(obj) {
+    Util.objSize = function (obj) {
         let count = 0;
 
         if (typeof obj == "object") {
@@ -937,7 +937,7 @@ if (typeof Util !== 'object') {
             } else if (window._) {
                 count = _.keys(obj).length;
             } else if (window.$) {
-                count = $.map(obj, function() {
+                count = $.map(obj, function () {
                     return 1;
                 }).length;
             } else {
@@ -952,11 +952,11 @@ if (typeof Util !== 'object') {
     /**
      * 重新载入当前页面
      */
-    Util.refresh = function() {
+    Util.refresh = function () {
         top.window.location.reload();
     };
 
-    Util.opener = function(workspace) {
+    Util.opener = function (workspace) {
         let opener = top.frames[workspace];
         if (typeof opener == 'undefined') {
             opener = top;
@@ -969,9 +969,9 @@ if (typeof Util !== 'object') {
      * @param selector
      * @param animation_name
      */
-    Util.animate = function(selector, animation_name) {
+    Util.animate = function (selector, animation_name) {
         let animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-        $(selector).addClass('animated ' + animation_name).one(animationEnd, function() {
+        $(selector).addClass('animated ' + animation_name).one(animationEnd, function () {
             $(this).removeClass('animated ' + animation_name);
         });
     };
@@ -980,7 +980,7 @@ if (typeof Util !== 'object') {
      * 全屏
      * @param ele
      */
-    Util.fullScreen = function(ele) {
+    Util.fullScreen = function (ele) {
         let element;
         if (typeof ele == 'undefined') {
             element = document.documentElement;
@@ -1001,7 +1001,7 @@ if (typeof Util !== 'object') {
     /**
      * 退出全屏
      */
-    Util.exitFullScreen = function() {
+    Util.exitFullScreen = function () {
         if (document.exitFullscreen) {
             document.exitFullscreen();
         } else if (document.mozCancelFullScreen) {
@@ -1016,8 +1016,8 @@ if (typeof Util !== 'object') {
      * 检查浏览器是否支持 local 存储
      * @returns {boolean}
      */
-    Util.localStorageSupport = function() {
-        return ( ( 'localStorage' in window ) && window['localStorage'] !== null )
+    Util.localStorageSupport = function () {
+        return (('localStorage' in window) && window['localStorage'] !== null)
     };
 
     /**
@@ -1025,8 +1025,8 @@ if (typeof Util !== 'object') {
      * @param paramName
      * @returns {string}
      */
-    Util.getUrlParameter = function(paramName) {
-        let searchString   = window.location.search.substring(1),
+    Util.getUrlParameter = function (paramName) {
+        let searchString = window.location.search.substring(1),
             i, val, params = searchString.split("&");
 
         for (i = 0; i < params.length; i++) {
@@ -1044,17 +1044,17 @@ if (typeof Util !== 'object') {
      * based on  http://andylangton.co.uk/articles/javascript/get-viewport-size-javascript/
      * @returns {{width: *, height: *}}
      */
-    Util.getViewport = function() {
+    Util.getViewport = function () {
         let e = window,
             a = 'inner';
-        if (!( 'innerWidth' in window )) {
+        if (!('innerWidth' in window)) {
             a = 'client';
             e = document.documentElement || document.body;
         }
 
         return {
-            width : e[a + 'Width'],
-            height : e[a + 'Height']
+            width: e[a + 'Width'],
+            height: e[a + 'Height']
         };
     };
 
@@ -1063,7 +1063,7 @@ if (typeof Util !== 'object') {
      * check for device touch support
      * @returns {boolean}
      */
-    Util.isTouchDevice = function() {
+    Util.isTouchDevice = function () {
         try {
             document.createEvent("TouchEvent");
             return true;
@@ -1078,16 +1078,16 @@ if (typeof Util !== 'object') {
      * @param prefix
      * @returns {string}
      */
-    Util.getUniqueId = function(prefix) {
-        let _pre = ( typeof prefix == 'undefined' ) ? 'prefix_' : prefix;
-        return _pre + Math.floor(Math.random() * ( new Date() ).getTime());
+    Util.getUniqueId = function (prefix) {
+        let _pre = (typeof prefix == 'undefined') ? 'prefix_' : prefix;
+        return _pre + Math.floor(Math.random() * (new Date()).getTime());
     };
 
     /**
      * 即时搜索
      * @param options
      */
-    Util.holmes = function(options) {
+    Util.holmes = function (options) {
 
         if (typeof options != 'object') {
             throw new Error('The options need to be given inside an object like this:\nholmes({\n\tfind:".result",\n\tdynamic:false\n});\n see also https://haroen.me/holmes/doc/module-holmes.html');
@@ -1127,8 +1127,8 @@ if (typeof Util !== 'object') {
             }
 
             // find the search and the elements
-            var search         = document.querySelector(options.input);
-            var elements       = document.querySelectorAll(options.find);
+            var search = document.querySelector(options.input);
+            var elements = document.querySelectorAll(options.find);
             var elementsLength = elements.length;
 
             // create a container for a placeholder
@@ -1148,7 +1148,7 @@ if (typeof Util !== 'object') {
             }
 
             // listen for input
-            $(options.input).bind('input propertychange', function() {
+            $(options.input).bind('input propertychange', function () {
 
                 // by default the value isn't found
                 var found = false;
@@ -1164,7 +1164,7 @@ if (typeof Util !== 'object') {
                 // if the dynamic option is enabled, then we should query
                 // for the contents of `elements` on every input
                 if (options.dynamic) {
-                    elements       = document.querySelectorAll(options.find);
+                    elements = document.querySelectorAll(options.find);
                     elementsLength = elements.length;
                 }
 
@@ -1204,7 +1204,39 @@ if (typeof Util !== 'object') {
         }
     }
 
-} )();
+    Util.base64ToBlob = function (b64Data, contentType, sliceSize) {
+        contentType = contentType || "";
+        sliceSize = sliceSize || 512;
+
+        var byteCharacters = window.atob(b64Data);
+        var byteArrays = [];
+
+        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
+        }
+        return new File(byteArrays, "pot", {type: contentType});
+    }
+
+    Util.readAndPreview = function (file, callback) {
+        // 确保 `file.name` 符合我们要求的扩展名
+        if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                callback(this.result)
+            }, false);
+            reader.readAsDataURL(file);
+        }
+    }
+})();
 
 /**
  * 根据参数名获取对应的url参数
@@ -1213,7 +1245,7 @@ if (typeof Util !== 'object') {
  */
 function getQueryString(name) {
     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-    let r   = window.location.search.substr(1).match(reg);
+    let r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]);
     return null;
 }

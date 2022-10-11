@@ -38,6 +38,10 @@ class FormMultiImage extends FormBaseWidget
     Rule::required(),
 ])->token($token);
 CODE;
+
+        $this->multiImage('multi', '图片, 默认, 可上传')->rules([
+            Rule::required(),
+        ])->number(50)->token($token)->auto(true);
         $this->code('image-code', 'Code@图片, 默认, 可上传')->default($code);
         $this->divider();
 
