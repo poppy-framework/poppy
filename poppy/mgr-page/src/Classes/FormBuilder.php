@@ -610,13 +610,11 @@ $(function(){
             $('#{$id}_upload').prop('disabled',false);
             // 预读本地文件示例，不支持ie8
             obj.preview(function (index, file, result) {
-                console.log(index, file, result);
-                console.log(obj, (new FileReader()).readAsDataURL(file));
                 var data = {
                     index: index,
                     name: file.name,
                     type: (file.name.indexOf('.mp4') !== -1) ? 'video' : 'image',
-                    result: result,
+                    result: URL.createObjectURL(file),
                     classname : ''
                 };
                 var length = $('#{$id}_container div').length;
@@ -628,13 +626,11 @@ $(function(){
                 if ($('#{$id}_container').html()=== '请选择图片') {
                     $('#{$id}_container').html('');
                 }
+                
                 //将预览 html 追加
-                Util.readAndPreview(file, function(url){
-                    data.result = url;
-                    layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
-                        $('#{$id}_container').append(html);
-                    });
-                })
+                layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
+                    $('#{$id}_container').append(html);
+                });
             });
          }, 
         before: function (obj) { //上传前回函数
