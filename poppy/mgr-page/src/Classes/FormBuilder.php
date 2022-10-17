@@ -152,6 +152,7 @@ class FormBuilder extends CollectiveFormBuilder
             'timestamp' => $timestamp,
         ]);
         $value = (string) $this->getValueAttribute($name, $value);
+        $value = str_replace([PHP_EOL, "\r", "\n", "\r\n"], '', $value);
 
         return /** @lang text */
             <<<Editor
