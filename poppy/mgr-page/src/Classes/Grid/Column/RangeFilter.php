@@ -3,7 +3,6 @@
 namespace Poppy\MgrPage\Classes\Grid\Column;
 
 use Poppy\MgrPage\Classes\Grid\Model;
-use function Poppy\System\Classes\Grid\Column\config;
 
 class RangeFilter extends Filter
 {
@@ -31,6 +30,7 @@ class RangeFilter extends Filter
      *
      * @param mixed $value
      * @param Model $model
+     * @return void
      */
     public function addBinding($value, Model $model)
     {
@@ -58,10 +58,6 @@ class RangeFilter extends Filter
      */
     public function render()
     {
-
-
-        $this->addScript();
-
         $value  = $this->getFilterValue(['start' => '', 'end' => '']);
         $active = empty(array_filter($value)) ? '' : 'text-yellow';
 
@@ -90,26 +86,5 @@ class RangeFilter extends Filter
 EOT;
     }
 
-    protected function addScript()
-    {
-        $options = [
-            'locale'           => config('app.locale'),
-            'allowInputToggle' => true,
-        ];
 
-        if ($this->type == 'date') {
-            $options['format'] = 'YYYY-MM-DD';
-        }
-        elseif ($this->type == 'time') {
-            $options['format'] = 'HH:mm:ss';
-        }
-        elseif ($this->type == 'datetime') {
-            $options['format'] = 'YYYY-MM-DD HH:mm:ss';
-        }
-        else {
-            return;
-        }
-
-
-    }
 }

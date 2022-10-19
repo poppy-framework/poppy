@@ -7,19 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Poppy\Core\Rbac\Contracts\RbacRoleContract;
 use Poppy\Core\Rbac\Traits\RbacRoleTrait;
-use Poppy\Framework\Helper\ArrayHelper;
 
 /**
  * 用户角色
- * @property int                             $id
- * @property string                          $name
- * @property string                          $title
- * @property string                          $description
- * @property string                          $type
- * @property bool                            $is_system
- * @property int                             $is_enable 是否可用
+ * @property int $id
+ * @property string $name
+ * @property string $title
+ * @property string $description
+ * @property string $type
+ * @property bool $is_system
+ * @property int $is_enable 是否可用
  * @property-read Collection|PamPermission[] $perms
- * @property-read Collection|PamAccount[]    $users
+ * @property-read Collection|PamAccount[] $users
  * @mixin Eloquent
  */
 class PamRole extends Model implements RbacRoleContract
@@ -30,9 +29,9 @@ class PamRole extends Model implements RbacRoleContract
     const FE_USER  = 'user';      // web user
     const DEV_USER = 'develop';   // developer
 
-    protected $table = 'pam_role';
-
     public $timestamps = false;
+
+    protected $table = 'pam_role';
 
     protected $fillable = [
         'name',
@@ -60,7 +59,7 @@ class PamRole extends Model implements RbacRoleContract
     /**
      * 返回一维的角色对应
      * @param null|string $type 类型
-     * @param string      $key  key
+     * @param string $key key
      * @return Collection
      */
     public static function getLinear($type = null, $key = 'id'): Collection
@@ -71,7 +70,7 @@ class PamRole extends Model implements RbacRoleContract
     /**
      * 根据账户类型获取角色
      * @param string|null $accountType 账户类型
-     * @param bool        $cache       是否缓存
+     * @param bool $cache 是否缓存
      * @return array
      */
     public static function getAll($accountType = null, $cache = true)
@@ -79,12 +78,12 @@ class PamRole extends Model implements RbacRoleContract
         static $roles = null;
         if (empty($roles) || !$cache) {
             if ($accountType) {
-                $items = self::where('account_type', $accountType)->get()->toArray();
+                $items = self::where('account_type', $accountType)->get();
             }
             else {
-                $items = self::all()->toArray();
+                $items = self::all();
             }
-            $roles = ArrayHelper::pluck($items, 'id');
+            $roles = $items->pluck('id')->toArray();
         }
 
         return $roles;
@@ -92,8 +91,8 @@ class PamRole extends Model implements RbacRoleContract
 
     /**
      * 获取角色信息
-     * @param int  $id    角色id
-     * @param null $key   key
+     * @param int $id 角色id
+     * @param null $key key
      * @param bool $cache 是否缓存
      * @return null
      */

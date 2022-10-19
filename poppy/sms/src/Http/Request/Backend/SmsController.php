@@ -6,7 +6,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
@@ -49,9 +48,9 @@ class SmsController extends BackendController
     /**
      * 短信模板c2e
      * @param null|int $id
-     * @return Factory|JsonResponse|RedirectResponse|Response|Redirector|View
+     * @return Factory|JsonResponse|RedirectResponse|Response|View
      */
-    public function establish($id = null)
+    public function establish(int $id = null)
     {
         $Sms = $this->action();
         if (is_post()) {
@@ -76,9 +75,9 @@ class SmsController extends BackendController
     /**
      * 删除短信模板
      * @param null|int $id id
-     * @return JsonResponse|RedirectResponse|Response|Redirector
+     * @return JsonResponse|RedirectResponse|Response
      */
-    public function destroy($id = null)
+    public function destroy(int $id = null)
     {
         $Sms = $this->action();
         if (!$Sms->destroy($id)) {

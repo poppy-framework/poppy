@@ -3,6 +3,7 @@
 namespace Poppy\Version\Http\MgrPage;
 
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Helper\EnvHelper;
 use Poppy\Framework\Validation\Rule;
@@ -17,7 +18,7 @@ use function sys_setting;
 
 class FormVersionEstablish extends FormWidget
 {
-    use PamTrait;
+    use PamTrait, AppTrait;
 
     public $ajax = true;
 
@@ -113,7 +114,6 @@ class FormVersionEstablish extends FormWidget
                 Rule::url(),
             ]);
         }
-
 
         $this->textarea('description', '描述')->rules([
             Rule::required(),

@@ -48,8 +48,8 @@ class Role
 
     /**
      * 创建需求
-     * @param array    $data 创建数据
-     * @param null|int $id   角色id
+     * @param array $data 创建数据
+     * @param null|int $id 角色id
      * @return bool
      */
     public function establish(array $data, $id = null)
@@ -83,7 +83,7 @@ class Role
             ],
         ];
         if ($id) {
-            unset($rule['name'], $rule['type']);
+            unset($rule['type']);
         }
         $validator = Validator::make($initDb, $rule, [], [
             'name'  => '角色用户名',
@@ -104,7 +104,7 @@ class Role
                 return $this->setError(trans('py-system::action.role.no_policy_to_update'));
             }
             // 编辑时候类型和名称不允许编辑
-            unset($initDb['type'], $initDb['name']);
+            unset($initDb['type']);
             $this->role->update($initDb);
         }
         else {
@@ -120,7 +120,7 @@ class Role
     /**
      * 保存权限
      * @param array $permission_ids 所有的权限列表
-     * @param int   $role_id        角色ID
+     * @param int $role_id 角色ID
      * @return bool
      */
     public function savePermission($role_id, $permission_ids)
@@ -187,7 +187,7 @@ class Role
 
     /**
      * 获取所有权限以及默认值
-     * @param int  $id      角色id
+     * @param int $id 角色id
      * @param bool $has_key 是否有值
      * @return array|mixed|Permission
      */

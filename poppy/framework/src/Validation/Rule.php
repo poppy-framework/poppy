@@ -424,16 +424,16 @@ class Rule extends IlluminateRule
     /**
      * 回调或者字段
      * 此功能用于前端进行校验时候不会对字段值进行清理
-     * @param bool|callable $callable_or_field
+     * @param bool|callable $callback
      * @param array         $values
      * @return string
      */
-    public static function requiredIf($callable_or_field, array $values = []): string
+    public static function requiredIf($callback, array $values = []): string
     {
-        if (is_callable($callable_or_field) || is_bool($callable_or_field)) {
-            return parent::requiredIf($callable_or_field);
+        if (is_callable($callback) || is_bool($callback)) {
+            return parent::requiredIf($callback);
         }
-        return 'required_if:' . $callable_or_field . ',' . implode(',', $values);
+        return 'required_if:' . $callback . ',' . implode(',', $values);
     }
 
     /**

@@ -12,32 +12,36 @@ use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Http\Pagination\PageInfo;
 use Poppy\MgrPage\Classes\Grid\Column;
+use Poppy\MgrPage\Classes\Grid\Concerns\CanHidesColumns;
+use Poppy\MgrPage\Classes\Grid\Concerns\HasActions;
+use Poppy\MgrPage\Classes\Grid\Concerns\HasElementNames;
+use Poppy\MgrPage\Classes\Grid\Concerns\HasExport;
+use Poppy\MgrPage\Classes\Grid\Concerns\HasFilter;
+use Poppy\MgrPage\Classes\Grid\Concerns\HasQuickButton;
+use Poppy\MgrPage\Classes\Grid\Concerns\HasSelector;
+use Poppy\MgrPage\Classes\Grid\Concerns\HasTools;
+use Poppy\MgrPage\Classes\Grid\Concerns\HasTotalRow;
+use Poppy\MgrPage\Classes\Grid\Concerns\LayDefines;
 use Poppy\MgrPage\Classes\Grid\Filter\Scope;
 use Poppy\MgrPage\Classes\Grid\ListBase;
 use Poppy\MgrPage\Classes\Grid\Model;
 use Poppy\MgrPage\Classes\Grid\Row;
 use Poppy\MgrPage\Classes\Layout\Content;
-use Poppy\System\Classes\Grid\Concerns;
 use Response;
 use Throwable;
-use function collect;
-use function input;
-use function request;
-use function url;
-use function view;
 
 class Grid
 {
-    use \Poppy\MgrPage\Classes\Grid\Concerns\HasElementNames,
-        \Poppy\MgrPage\Classes\Grid\Concerns\HasExport,
-        \Poppy\MgrPage\Classes\Grid\Concerns\HasFilter,
-        \Poppy\MgrPage\Classes\Grid\Concerns\HasTools,
-        \Poppy\MgrPage\Classes\Grid\Concerns\HasTotalRow,
-        \Poppy\MgrPage\Classes\Grid\Concerns\HasActions,
-        \Poppy\MgrPage\Classes\Grid\Concerns\HasSelector,
-        \Poppy\MgrPage\Classes\Grid\Concerns\CanHidesColumns,
-        \Poppy\MgrPage\Classes\Grid\Concerns\LayDefines,
-        \Poppy\MgrPage\Classes\Grid\Concerns\HasQuickButton;
+    use HasElementNames,
+        HasExport,
+        HasFilter,
+        HasTools,
+        HasTotalRow,
+        HasActions,
+        HasSelector,
+        CanHidesColumns,
+        LayDefines,
+        HasQuickButton;
 
     /**
      * Initialization closure array.
@@ -123,21 +127,21 @@ class Grid
      *
      * @var array
      */
-    protected $variables = [];
+    protected array $variables = [];
 
     /**
      * Default primary key name.
      *
      * @var string
      */
-    protected $keyName = 'id';
+    protected string $keyName = 'id';
 
     /**
      * View for grid to render.
      *
      * @var string
      */
-    protected $view = 'py-mgr-page::tpl.grid.table';
+    protected string $view = 'py-mgr-page::tpl.grid.table';
 
     /**
      * @var []callable

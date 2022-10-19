@@ -6,7 +6,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Redirector;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
@@ -65,9 +64,9 @@ class RoleController extends BackendController
     /**
      * Remove the specified resource from storage.
      * @param int $id 角色id
-     * @return array|JsonResponse|RedirectResponse|Response|Redirector|Resp|\Response
+     * @return JsonResponse|RedirectResponse|Response
      */
-    public function delete($id)
+    public function delete(int $id)
     {
         $role = $this->action();
         if (!$role->delete($id)) {
@@ -80,7 +79,7 @@ class RoleController extends BackendController
     /**
      * 带单列表
      * @param int $id 角色id
-     * @return Factory|JsonResponse|Redirector|RedirectResponse|Response
+     * @return Factory|JsonResponse|RedirectResponse|Response
      */
     public function menu(int $id)
     {

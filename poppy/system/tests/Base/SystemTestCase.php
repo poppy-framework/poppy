@@ -9,6 +9,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Log;
 use Poppy\Framework\Application\TestCase;
 use Poppy\Framework\Classes\ConsoleTable;
+use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Helper\StrHelper;
 use Poppy\System\Classes\Traits\DbTrait;
 use Poppy\System\Models\PamAccount;
@@ -17,9 +18,9 @@ use Throwable;
 class SystemTestCase extends TestCase
 {
 
-    use DbTrait;
+    use DbTrait, AppTrait;
 
-    protected $enableDb = false;
+    protected bool $enableDb = false;
 
     /**
      * @var PamAccount
@@ -144,8 +145,9 @@ class SystemTestCase extends TestCase
     }
 
     /**
-     * 对 Url 地址进行请求并且获取请求内容
+     * 对 Url 地址进行请求并且获取请求内容, 单元测试不进行Url 请求, 请求使用Seldom
      * @param $url
+     * @deprecated
      */
     protected function visit($url)
     {
@@ -165,7 +167,7 @@ class SystemTestCase extends TestCase
      * @param string $append 追加的信息
      * @return string
      */
-    protected static function desc($append = ''): string
+    protected static function desc(string $append = ''): string
     {
         $bt       = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
         $function = $bt[1]['function'];

@@ -9,6 +9,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
 use Poppy\Core\Classes\Contracts\SettingContract;
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Classes\Traits\KeyParserTrait;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Classes\Traits\PamTrait;
@@ -19,7 +20,7 @@ use function app;
 
 abstract class FormSettingBase extends FormWidget
 {
-    use KeyParserTrait, PamTrait;
+    use KeyParserTrait, PamTrait, AppTrait;
 
     /**
      * 是否设置用户

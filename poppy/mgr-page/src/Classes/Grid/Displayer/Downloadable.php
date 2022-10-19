@@ -18,10 +18,6 @@ class Downloadable extends AbstractDisplayer
         }
 
         return collect((array) $this->value)->filter()->map(function ($value) use ($server) {
-            if (empty($value)) {
-                return '';
-            }
-
             if (url()->isValidUrl($value)) {
                 $src = $value;
             }

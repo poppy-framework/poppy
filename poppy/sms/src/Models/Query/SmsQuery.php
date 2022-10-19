@@ -19,8 +19,9 @@ class SmsQuery extends QueryCustom
     public function get(): Collection
     {
         $templates = $this->sms->getTemplates();
-        if ($this->scope) {
-            return $templates->where('scope', $this->scope->value)->values();
+        $scope     = $this->params['_scope'] ?? '';
+        if ($scope) {
+            return $templates->where('scope', $scope)->values();
         }
         return $templates->values();
     }

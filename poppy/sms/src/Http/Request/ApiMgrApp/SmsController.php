@@ -6,14 +6,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Poppy\Framework\Classes\Resp;
-use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrApp\Classes\Widgets\GridWidget;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Http\MgrApp\FormSmsEstablish;
 use Poppy\Sms\Http\MgrApp\GridSms;
 use Poppy\Sms\Models\Query\SmsQuery;
-use Throwable;
 
 /**
  * 短信控制器
@@ -31,9 +29,7 @@ class SmsController extends BackendController
     }
 
     /**
-     * @return JsonResponse|RedirectResponse|Resp|Response
-     * @throws ApplicationException
-     * @throws Throwable
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function index()
     {
@@ -55,7 +51,7 @@ class SmsController extends BackendController
     /**
      * 删除短信模板
      * @param string $id id
-     * @return JsonResponse|RedirectResponse|Resp|Response
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function delete(string $id)
     {

@@ -3,6 +3,7 @@
 namespace Poppy\Sms\Http\MgrApp;
 
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrApp\Classes\Widgets\FormWidget;
 use Poppy\Sms\Action\Sms;
@@ -11,19 +12,19 @@ use function input;
 
 class FormSmsEstablish extends FormWidget
 {
-    use PamTrait;
+    use PamTrait, AppTrait;
 
     protected string $title = '新建模板';
 
     public function handle()
     {
-        $Area           = (new Sms());
+        $Sms            = (new Sms());
         $input          = input();
         $input['scope'] = input('_scope');
-        if ($Area->establish($input)) {
+        if ($Sms->establish($input)) {
             return Resp::success('添加版本成功', 'motion|grid:reload');
         }
-        return Resp::error($Area->getError());
+        return Resp::error($Sms->getError());
     }
 
     public function data(): array
@@ -37,7 +38,7 @@ class FormSmsEstablish extends FormWidget
             Rule::required(),
         ])->options(Sms::kvType());
         $this->textarea('code', '模板内容')->rules([
-            Rule::required()
+            Rule::required(),
         ])->help('本地填写支持 Laravel 变量模版, 其他平台可填写短信模板或者内容, 如果类型相同, 则会覆盖之前配置');
     }
 }

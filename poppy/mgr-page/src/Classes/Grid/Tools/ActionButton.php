@@ -3,7 +3,6 @@
 namespace Poppy\MgrPage\Classes\Grid\Tools;
 
 use Illuminate\Support\Str;
-use function app;
 
 /**
  * 创建按钮

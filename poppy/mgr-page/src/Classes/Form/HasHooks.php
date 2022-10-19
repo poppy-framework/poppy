@@ -8,178 +8,176 @@ use Symfony\Component\HttpFoundation\Response;
 
 trait HasHooks
 {
-	/**
-	 * Supported hooks: submitted, editing, saving, saved, deleting, deleted.
-	 *
-	 * @var array
-	 */
-	protected $hooks = [];
+    /**
+     * Supported hooks: submitted, editing, saving, saved, deleting, deleted.
+     *
+     * @var array
+     */
+    protected $hooks = [];
 
-	/**
-	 * Register a hook.
-	 *
-	 * @param string  $name
-	 * @param Closure $callback
-	 *
-	 * @return $this
-	 */
-	protected function registerHook($name, Closure $callback)
-	{
-		$this->hooks[$name][] = $callback;
+    /**
+     * Set after getting editing model callback.
+     *
+     * @param Closure $callback
+     *
+     * @return $this
+     */
+    public function editing(Closure $callback)
+    {
+        return $this->registerHook('editing', $callback);
+    }
 
-		return $this;
-	}
+    /**
+     * Set submitted callback.
+     *
+     * @param Closure $callback
+     *
+     * @return $this
+     */
+    public function submitted(Closure $callback)
+    {
+        return $this->registerHook('submitted', $callback);
+    }
 
-	/**
-	 * Call hooks by giving name.
-	 *
-	 * @param string $name
-	 * @param array  $parameters
-	 *
-	 * @return Response
-	 */
-	protected function callHooks($name, $parameters = [])
-	{
-		$hooks = Arr::get($this->hooks, $name, []);
+    /**
+     * Set saving callback.
+     *
+     * @param Closure $callback
+     *
+     * @return $this
+     */
+    public function saving(Closure $callback)
+    {
+        return $this->registerHook('saving', $callback);
+    }
 
-		foreach ($hooks as $func) {
-			if (!$func instanceof Closure) {
-				continue;
-			}
+    /**
+     * Set saved callback.
+     *
+     * @param Closure $callback
+     *
+     * @return $this
+     */
+    public function saved(Closure $callback)
+    {
+        return $this->registerHook('saved', $callback);
+    }
 
-			$response = call_user_func($func, $this, $parameters);
+    /**
+     * @param Closure $callback
+     *
+     * @return $this
+     */
+    public function deleting(Closure $callback)
+    {
+        return $this->registerHook('deleting', $callback);
+    }
 
-			if ($response instanceof Response) {
-				return $response;
-			}
-		}
-	}
+    /**
+     * @param Closure $callback
+     *
+     * @return $this
+     */
+    public function deleted(Closure $callback)
+    {
+        return $this->registerHook('deleted', $callback);
+    }
 
-	/**
-	 * Set after getting editing model callback.
-	 *
-	 * @param Closure $callback
-	 *
-	 * @return $this
-	 */
-	public function editing(Closure $callback)
-	{
-		return $this->registerHook('editing', $callback);
-	}
+    /**
+     * Register a hook.
+     *
+     * @param string $name
+     * @param Closure $callback
+     *
+     * @return $this
+     */
+    protected function registerHook($name, Closure $callback)
+    {
+        $this->hooks[$name][] = $callback;
 
-	/**
-	 * Set submitted callback.
-	 *
-	 * @param Closure $callback
-	 *
-	 * @return $this
-	 */
-	public function submitted(Closure $callback)
-	{
-		return $this->registerHook('submitted', $callback);
-	}
+        return $this;
+    }
 
-	/**
-	 * Set saving callback.
-	 *
-	 * @param Closure $callback
-	 *
-	 * @return $this
-	 */
-	public function saving(Closure $callback)
-	{
-		return $this->registerHook('saving', $callback);
-	}
+    /**
+     * Call hooks by giving name.
+     *
+     * @param string $name
+     * @param array $parameters
+     */
+    protected function callHooks($name, $parameters = [])
+    {
+        $hooks = Arr::get($this->hooks, $name, []);
 
-	/**
-	 * Set saved callback.
-	 *
-	 * @param Closure $callback
-	 *
-	 * @return $this
-	 */
-	public function saved(Closure $callback)
-	{
-		return $this->registerHook('saved', $callback);
-	}
+        foreach ($hooks as $func) {
+            if (!$func instanceof Closure) {
+                continue;
+            }
 
-	/**
-	 * @param Closure $callback
-	 *
-	 * @return $this
-	 */
-	public function deleting(Closure $callback)
-	{
-		return $this->registerHook('deleting', $callback);
-	}
+            $response = call_user_func($func, $this, $parameters);
 
-	/**
-	 * @param Closure $callback
-	 *
-	 * @return $this
-	 */
-	public function deleted(Closure $callback)
-	{
-		return $this->registerHook('deleted', $callback);
-	}
+            if ($response instanceof Response) {
+                return $response;
+            }
+        }
+    }
 
-	/**
-	 * Call editing callbacks.
-	 *
-	 * @return mixed
-	 */
-	protected function callEditing()
-	{
-		return $this->callHooks('editing');
-	}
+    /**
+     * Call editing callbacks.
+     *
+     * @return mixed
+     */
+    protected function callEditing()
+    {
+        return $this->callHooks('editing');
+    }
 
-	/**
-	 * Call submitted callback.
-	 *
-	 * @return mixed
-	 */
-	protected function callSubmitted()
-	{
-		return $this->callHooks('submitted');
-	}
+    /**
+     * Call submitted callback.
+     *
+     * @return mixed
+     */
+    protected function callSubmitted()
+    {
+        return $this->callHooks('submitted');
+    }
 
-	/**
-	 * Call saving callback.
-	 *
-	 * @return mixed
-	 */
-	protected function callSaving()
-	{
-		return $this->callHooks('saving');
-	}
+    /**
+     * Call saving callback.
+     *
+     * @return mixed
+     */
+    protected function callSaving()
+    {
+        return $this->callHooks('saving');
+    }
 
-	/**
-	 * Callback after saving a Model.
-	 *
-	 * @return mixed|null
-	 */
-	protected function callSaved()
-	{
-		return $this->callHooks('saved');
-	}
+    /**
+     * Callback after saving a Model.
+     *
+     * @return mixed|null
+     */
+    protected function callSaved()
+    {
+        return $this->callHooks('saved');
+    }
 
-	/**
-	 * Call hooks when deleting.
-	 *
-	 * @param mixed $id
-	 *
-	 * @return mixed
-	 */
-	protected function callDeleting($id)
-	{
-		return $this->callHooks('deleting', $id);
-	}
+    /**
+     * Call hooks when deleting.
+     *
+     * @param mixed $id
+     *
+     * @return mixed
+     */
+    protected function callDeleting($id)
+    {
+        return $this->callHooks('deleting', $id);
+    }
 
-	/**
-	 * @return mixed
-	 */
-	protected function callDeleted()
-	{
-		return $this->callHooks('deleted');
-	}
+    /**
+     * @return mixed
+     */
+    protected function callDeleted()
+    {
+        return $this->callHooks('deleted');
+    }
 }

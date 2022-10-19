@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Poppy\Core\Redis\RdsDb;
-use Poppy\System\Classes\Uploader\Uploader;
+use Poppy\System\Classes\File\FileManager;
 use Poppy\Version\Classes\PyVersionDef;
 
 /**
@@ -134,7 +134,7 @@ class SysAppVersion extends Model
     public static function platformUrl(string $type = self::PLATFORM_ANDROID)
     {
         if ($type === self::PLATFORM_ANDROID) {
-            return Uploader::prefix() . self::path($type);
+            return FileManager::prefix() . self::path($type);
         }
         return sys_setting('py-version::setting.ios_store_url');
     }

@@ -20,69 +20,66 @@ use Illuminate\Validation\Validator;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrPage\Classes\Form\Builder;
 use Poppy\MgrPage\Classes\Form\Field;
+use Poppy\MgrPage\Classes\Form\Field\Checkbox;
+use Poppy\MgrPage\Classes\Form\Field\Color;
+use Poppy\MgrPage\Classes\Form\Field\Currency;
+use Poppy\MgrPage\Classes\Form\Field\Display;
+use Poppy\MgrPage\Classes\Form\Field\Editor;
+use Poppy\MgrPage\Classes\Form\Field\Email;
+use Poppy\MgrPage\Classes\Form\Field\Hidden;
+use Poppy\MgrPage\Classes\Form\Field\Ip;
+use Poppy\MgrPage\Classes\Form\Field\Link;
+use Poppy\MgrPage\Classes\Form\Field\Month;
+use Poppy\MgrPage\Classes\Form\Field\MultiImage;
+use Poppy\MgrPage\Classes\Form\Field\Password;
+use Poppy\MgrPage\Classes\Form\Field\Text;
+use Poppy\MgrPage\Classes\Form\Field\Timezone;
 use Poppy\MgrPage\Classes\Form\HasHooks;
 use Poppy\MgrPage\Classes\Form\Layout\Layout;
 use Poppy\MgrPage\Classes\Form\Row;
 use Poppy\MgrPage\Classes\Form\Tab;
-use Poppy\System\Classes\Sortable;
+use Poppy\MgrPage\Classes\Form\Tools;
 use Symfony\Component\HttpFoundation\Response;
-use function back;
-use function collect;
-use function Poppy\System\Classes\admin_toastr;
-use function redirect;
-use function request;
-use function response;
-use function trans;
 
 /**
  * Class Form.
  *
  * @method Field\Code           code($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Text           text($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Checkbox       checkbox($column, $label = '')
+ * @method Text           text($column, $label = '')
+ * @method Checkbox       checkbox($column, $label = '')
  * @method Field\Radio          radio($column, $label = '')
  * @method Field\Select         select($column, $label = '')
  * @method Field\MultipleSelect multipleSelect($column, $label = '')
  * @method Field\Textarea       textarea($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Hidden         hidden($column, $label = '')
+ * @method Hidden         hidden($column, $label = '')
  * @method Field\Id             id($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Ip             ip($column, $label = '')
+ * @method Ip             ip($column, $label = '')
  * @method Field\Url            url($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Color          color($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Email          email($column, $label = '')
+ * @method Color          color($column, $label = '')
+ * @method Email          email($column, $label = '')
  * @method Field\Mobile         mobile($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Slider         slider($column, $label = '')
  * @method Field\File           file($column, $label = '')
  * @method Field\Image          image($column, $label = '')
  * @method Field\Date           date($column, $label = '')
  * @method Field\Datetime       datetime($column, $label = '')
  * @method Field\Time           time($column, $label = '')
  * @method Field\Year           year($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Month          month($column, $label = '')
+ * @method Month          month($column, $label = '')
  * @method Field\DateRange      dateRange($start, $end, $label = '')
  * @method Field\DateTimeRange  datetimeRange($start, $end, $label = '')
  * @method Field\TimeRange      timeRange($start, $end, $label = '')
  * @method Field\Number         number($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Currency       currency($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\HasMany        hasMany($relationName, $label = '', $callback)
+ * @method Currency       currency($column, $label = '')
  * @method Field\SwitchField    switch ($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Display        display($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Rate           rate($column, $label = '')
+ * @method Display        display($column, $label = '')
  * @method Field\Divider        divider($title = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Password       password($column, $label = '')
+ * @method Password       password($column, $label = '')
  * @method Field\Decimal        decimal($column, $label = '')
  * @method Field\Html           html($html, $label = '')
  * @method Field\Tags           tags($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Icon           icon($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Embeds         embeds($column, $label = '', $callback)
- * @method \Poppy\MgrPage\Classes\Form\Field\MultiImage     multipleImage($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\MultipleFile   multipleFile($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Listbox        listbox($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Table          table($column, $label, $builder)
- * @method \Poppy\MgrPage\Classes\Form\Field\Timezone       timezone($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\KeyValue       keyValue($column, $label = '')
+ * @method MultiImage     multipleImage($column, $label = '')
+ * @method Timezone       timezone($column, $label = '')
  * @method Field\Keyword        keyWord($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\ListField      list($column, $label = '')
  */
 class Form implements Renderable
 {
@@ -92,53 +89,43 @@ class Form implements Renderable
      * Remove flag in `has many` form.
      */
     const REMOVE_FLAG_NAME = '_remove_';
-    /**
-     * Field rows in form.
-     *
-     * @var array
-     */
-    public $rows = [];
+
     /**
      * Available fields.
      *
      * @var array
      */
     public static $availableFields = [
-        'link'           => \Poppy\MgrPage\Classes\Form\Field\Link::class,
+        'link'           => Link::class,
         'code'           => Field\Code::class,
-        'button'         => \Poppy\MgrPage\Classes\Form\_Back\Button::class,
-        'checkbox'       => \Poppy\MgrPage\Classes\Form\Field\Checkbox::class,
-        'color'          => \Poppy\MgrPage\Classes\Form\Field\Color::class,
-        'currency'       => \Poppy\MgrPage\Classes\Form\Field\Currency::class,
+        'checkbox'       => Checkbox::class,
+        'color'          => Color::class,
+        'currency'       => Currency::class,
         'date'           => Field\Date::class,
         'dateRange'      => Field\DateRange::class,
         'datetime'       => Field\Datetime::class,
         'dateTimeRange'  => Field\DatetimeRange::class,
         'datetimeRange'  => Field\DatetimeRange::class,
         'decimal'        => Field\Decimal::class,
-        'display'        => \Poppy\MgrPage\Classes\Form\Field\Display::class,
+        'display'        => Display::class,
         'divider'        => Field\Divider::class,
-        'embeds'         => \Poppy\MgrPage\Classes\Form\_Back\Embeds::class,
-        'email'          => \Poppy\MgrPage\Classes\Form\Field\Email::class,
-        'editor'         => \Poppy\MgrPage\Classes\Form\Field\Editor::class,
+        'email'          => Email::class,
+        'editor'         => Editor::class,
         'file'           => Field\File::class,
-        'hasMany'        => \Poppy\MgrPage\Classes\Form\_Back\HasMany::class,
-        'hidden'         => \Poppy\MgrPage\Classes\Form\Field\Hidden::class,
+        'hidden'         => Hidden::class,
         'id'             => Field\Id::class,
         'image'          => Field\Image::class,
-        'multiImage'     => \Poppy\MgrPage\Classes\Form\Field\MultiImage::class,
-        'ip'             => \Poppy\MgrPage\Classes\Form\Field\Ip::class,
+        'multiImage'     => MultiImage::class,
+        'ip'             => Ip::class,
         'mobile'         => Field\Mobile::class,
-        'month'          => \Poppy\MgrPage\Classes\Form\Field\Month::class,
+        'month'          => Month::class,
         'multipleSelect' => Field\MultipleSelect::class,
         'number'         => Field\Number::class,
-        'password'       => \Poppy\MgrPage\Classes\Form\Field\Password::class,
+        'password'       => Password::class,
         'radio'          => Field\Radio::class,
-        'rate'           => \Poppy\MgrPage\Classes\Form\_Back\Rate::class,
         'select'         => Field\Select::class,
-        'slider'         => \Poppy\MgrPage\Classes\Form\_Back\Slider::class,
         'switch'         => Field\SwitchField::class,
-        'text'           => \Poppy\MgrPage\Classes\Form\Field\Text::class,
+        'text'           => Text::class,
         'textarea'       => Field\Textarea::class,
         'time'           => Field\Time::class,
         'timeRange'      => Field\TimeRange::class,
@@ -146,77 +133,24 @@ class Form implements Renderable
         'year'           => Field\Year::class,
         'html'           => Field\Html::class,
         'tags'           => Field\Tags::class,
-        'icon'           => \Poppy\MgrPage\Classes\Form\_Back\Icon::class,
-        'multipleFile'   => \Poppy\MgrPage\Classes\Form\_Back\MultipleFile::class,
-        'listbox'        => \Poppy\MgrPage\Classes\Form\_Back\Listbox::class,
-        'table'          => \Poppy\MgrPage\Classes\Form\_Back\Table::class,
-        'timezone'       => \Poppy\MgrPage\Classes\Form\Field\Timezone::class,
-        'keyValue'       => \Poppy\MgrPage\Classes\Form\_Back\KeyValue::class,
-        'list'           => \Poppy\MgrPage\Classes\Form\_Back\ListField::class,
+        'timezone'       => Timezone::class,
         'keyword'        => Field\Keyword::class,
     ];
+
     /**
      * Form field alias.
      *
      * @var array
      */
     public static $fieldAlias = [];
-    /**
-     * Eloquent model of the form.
-     *
-     * @var Model
-     */
-    protected $model;
-    /**
-     * @var Validator
-     */
-    protected $validator;
-    /**
-     * @var Builder
-     */
-    protected $builder;
-    /**
-     * Data for save to current model from input.
-     *
-     * @var array
-     */
-    protected $updates = [];
-    /**
-     * Data for save to model's relations from input.
-     *
-     * @var array
-     */
-    protected $relations = [];
-    /**
-     * Input data.
-     *
-     * @var array
-     */
-    protected $inputs = [];
-    /**
-     * @var Layout
-     */
-    protected $layout;
-    /**
-     * Ignored saving fields.
-     *
-     * @var array
-     */
-    protected $ignored = [];
-    /**
-     * @var \Poppy\MgrPage\Classes\Form\Tab
-     */
-    protected $tab = null;
-    /**
-     * @var bool
-     */
-    protected $isSoftDeletes = false;
+
     /**
      * Collected field assets.
      *
      * @var array
      */
     protected static $collectedAssets = [];
+
     /**
      * Initialization closure array.
      *
@@ -225,10 +159,77 @@ class Form implements Renderable
     protected static $initCallbacks;
 
     /**
+     * Field rows in form.
+     *
+     * @var array
+     */
+    public $rows = [];
+
+    /**
+     * Eloquent model of the form.
+     *
+     * @var Model
+     */
+    protected $model;
+
+    /**
+     * @var Validator
+     */
+    protected $validator;
+
+    /**
+     * @var Builder
+     */
+    protected $builder;
+
+    /**
+     * Data for save to current model from input.
+     *
+     * @var array
+     */
+    protected $updates = [];
+
+    /**
+     * Data for save to model's relations from input.
+     *
+     * @var array
+     */
+    protected $relations = [];
+
+    /**
+     * Input data.
+     *
+     * @var array
+     */
+    protected $inputs = [];
+
+    /**
+     * @var Layout
+     */
+    protected $layout;
+
+    /**
+     * Ignored saving fields.
+     *
+     * @var array
+     */
+    protected $ignored = [];
+
+    /**
+     * @var Tab
+     */
+    protected $tab = null;
+
+    /**
+     * @var bool
+     */
+    protected $isSoftDeletes = false;
+
+    /**
      * Create a new form instance.
      *
      * @param          $model
-     * @param Closure  $callback
+     * @param Closure $callback
      */
     public function __construct($model, Closure $callback = null)
     {
@@ -301,7 +302,7 @@ class Form implements Renderable
     /**
      * Use tab to split form.
      *
-     * @param string  $title
+     * @param string $title
      * @param Closure $content
      *
      * @return $this
@@ -423,7 +424,7 @@ class Form implements Renderable
     /**
      * Handle update.
      *
-     * @param int  $id
+     * @param int $id
      * @param null $data
      *
      * @return bool|ResponseFactory|JsonResponse|RedirectResponse|\Illuminate\Http\Response|mixed|null|Response
@@ -503,14 +504,14 @@ class Form implements Renderable
     /**
      * Add a fieldset to form.
      *
-     * @param string  $title
+     * @param string $title
      * @param Closure $setCallback
      *
-     * @return \Poppy\MgrPage\Classes\Form\_Back\Fieldset
+     * @return Fieldset
      */
     public function fieldset(string $title, Closure $setCallback)
     {
-        $fieldset = new \Poppy\MgrPage\Classes\Form\_Back\Fieldset();
+        $fieldset = new Fieldset();
 
         $this->html($fieldset->start($title))->plain();
 
@@ -671,7 +672,7 @@ class Form implements Renderable
     /**
      * @param Closure|null $callback
      *
-     * @return \Poppy\MgrPage\Classes\Form\Tools
+     * @return Tools
      */
     public function header(Closure $callback = null)
     {
@@ -794,7 +795,7 @@ class Form implements Renderable
      * Get or set input data.
      *
      * @param string $key
-     * @param null   $value
+     * @param null $value
      *
      * @return array|mixed
      */
@@ -810,7 +811,7 @@ class Form implements Renderable
     /**
      * Add a new layout column.
      *
-     * @param int     $width
+     * @param int $width
      * @param Closure $closure
      *
      * @return $this
@@ -840,7 +841,7 @@ class Form implements Renderable
      * Setter.
      *
      * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return array
      */
@@ -853,7 +854,7 @@ class Form implements Renderable
      * Generate a Field object and add to form builder if Field exists.
      *
      * @param string $method
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return Field
      */
@@ -998,7 +999,7 @@ class Form implements Renderable
      * Remove files in record.
      *
      * @param Model $model
-     * @param bool  $forceDelete
+     * @param bool $forceDelete
      */
     protected function deleteFiles(Model $model, $forceDelete = false)
     {
@@ -1175,9 +1176,6 @@ class Form implements Renderable
         else {
             $url = request(Builder::PREVIOUS_URL_KEY) ?: $resourcesPath;
         }
-
-        admin_toastr(trans('admin.save_succeeded'));
-
         return redirect($url);
     }
 
@@ -1196,7 +1194,7 @@ class Form implements Renderable
     /**
      * Handle updates for single column.
      *
-     * @param int   $id
+     * @param int $id
      * @param array $data
      *
      * @return array|ResponseFactory|\Illuminate\Http\Response|Response
@@ -1285,7 +1283,7 @@ class Form implements Renderable
     /**
      * Handle orderable update.
      *
-     * @param int   $id
+     * @param int $id
      * @param array $input
      *
      * @return bool
@@ -1424,7 +1422,7 @@ class Form implements Renderable
      * Prepare input data for update.
      *
      * @param array $updates
-     * @param bool  $oneToOneRelation If column is one-to-one relation.
+     * @param bool $oneToOneRelation If column is one-to-one relation.
      *
      * @return array
      */
@@ -1464,7 +1462,7 @@ class Form implements Renderable
 
     /**
      * @param string|array $columns
-     * @param bool         $containsDot
+     * @param bool $containsDot
      *
      * @return bool
      */
@@ -1534,7 +1532,7 @@ class Form implements Renderable
     }
 
     /**
-     * @param array        $data
+     * @param array $data
      * @param string|array $columns
      *
      * @return array|mixed

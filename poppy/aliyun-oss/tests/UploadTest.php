@@ -2,7 +2,7 @@
 
 namespace Poppy\AliyunOss\Tests;
 
-use Poppy\AliyunOss\Classes\Provider\OssDefaultUploadProvider;
+use Poppy\AliyunOss\Classes\Provider\OssFileProvider;
 use Poppy\Framework\Application\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Throwable;
@@ -35,11 +35,11 @@ class UploadTest extends TestCase
         try {
             $file   = poppy_path('poppy.aliyun-oss', 'tests/files/demo.jpg');
             $image  = new UploadedFile($file, 'test.jpg', null, null, true);
-            $Upload = new OssDefaultUploadProvider();
+            $Upload = new OssFileProvider();
 
             $Upload->setExtension(['jpg']);
             if (!$Upload->saveFile($image)) {
-                $this->assertFalse(true, $Upload->getError());
+                $this->fail($Upload->getError());
             }
 
             // 检测文件存在

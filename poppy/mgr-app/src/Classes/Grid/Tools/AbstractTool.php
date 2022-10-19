@@ -39,6 +39,14 @@ abstract class AbstractTool
     }
 
     /**
+     * @return GridWidget
+     */
+    public function getGrid()
+    {
+        return $this->grid;
+    }
+
+    /**
      * Set parent grid.
      *
      * @param GridWidget $grid
@@ -50,14 +58,6 @@ abstract class AbstractTool
         $this->grid = $grid;
 
         return $this;
-    }
-
-    /**
-     * @return GridWidget
-     */
-    public function getGrid()
-    {
-        return $this->grid;
     }
 
     /**

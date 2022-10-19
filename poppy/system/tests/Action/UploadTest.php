@@ -3,7 +3,7 @@
 namespace Poppy\System\Tests\Action;
 
 use Poppy\Framework\Application\TestCase;
-use Poppy\System\Classes\Uploader\DefaultUploadProvider;
+use Poppy\System\Classes\File\DefaultFileProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Throwable;
 
@@ -21,9 +21,10 @@ class UploadTest extends TestCase
         try {
             $file   = poppy_path('poppy.system', 'tests/files/demo.jpg');
             $image  = new UploadedFile($file, 'test.jpg', null, null, true);
-            $Upload = new DefaultUploadProvider();
+            $Upload = new DefaultFileProvider();
 
             $Upload->setExtension(['jpg']);
+
             if (!$Upload->saveFile($image)) {
                 $this->fail($Upload->getError());
             }
@@ -36,7 +37,8 @@ class UploadTest extends TestCase
                 $this->outputVariables($path);
                 $result = app('files')->delete(base_path('public/' . $Upload->getDestination()));
                 $this->assertTrue($result);
-            } else {
+            }
+            else {
                 $this->fail("Url {$url} 不可访问!");
             }
         } catch (Throwable $e) {
@@ -52,7 +54,7 @@ class UploadTest extends TestCase
         try {
             $file   = poppy_path('poppy.system', 'tests/files/demo.jpg');
             $image  = new UploadedFile($file, 'test.jpg', null, null, true);
-            $Upload = new DefaultUploadProvider();
+            $Upload = new DefaultFileProvider();
 
             $Upload->setExtension(['jpg']);
             $Upload->setDestination('dev/testing/upload-dest.jpg');
@@ -68,7 +70,8 @@ class UploadTest extends TestCase
                 $this->outputVariables($path);
                 $result = app('files')->delete(base_path('public/' . $Upload->getDestination()));
                 $this->assertTrue($result);
-            } else {
+            }
+            else {
                 $this->fail("Url {$url} 不可访问!");
             }
         } catch (Throwable $e) {

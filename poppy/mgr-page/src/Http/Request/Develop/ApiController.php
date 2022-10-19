@@ -95,8 +95,8 @@ class ApiController extends DevelopController
         $definition['sign_certificate'] = $certificate;
 
         $this->seo('Restful-' . $type, '优雅的在线接口调试方案');
+        $index     = input('url');
         try {
-            $index     = input('url');
             $version   = input('version', '1.0.0');
             $method    = input('method', 'get');
             $variables = [];

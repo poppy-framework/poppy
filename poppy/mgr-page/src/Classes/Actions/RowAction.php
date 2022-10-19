@@ -88,13 +88,6 @@ abstract class RowAction extends GridAction
     }
 
     /**
-     * @return string
-     */
-    public function href()
-    {
-    }
-
-    /**
      * @param Request $request
      *
      * @return mixed
@@ -121,12 +114,6 @@ abstract class RowAction extends GridAction
      */
     public function render()
     {
-        if ($href = $this->href()) {
-            return "<a href='{$href}'>{$this->name()}</a>";
-        }
-
-        $this->addScript();
-
         $attributes = $this->formatAttributes();
 
         return sprintf(
@@ -135,10 +122,6 @@ abstract class RowAction extends GridAction
             $this->getElementClass(),
             $this->asColumn ? $this->display($this->row($this->column->name)) : $this->name()
         );
-    }
-
-    public function display($value)
-    {
     }
 
     /**

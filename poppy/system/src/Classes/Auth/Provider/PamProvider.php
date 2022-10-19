@@ -108,7 +108,7 @@ class PamProvider implements UserProviderBase
 
     /**
      * Create a new instance of the model.
-     * @return Model
+     * @return Model|PamAccount
      */
     public function createModel()
     {

@@ -4,7 +4,7 @@ use Exception;
 use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
-use Poppy\System\Classes\Contracts\UploadContract;
+use Poppy\System\Classes\Contracts\FileContract;
 use Poppy\System\Jobs\DeleteUploadFileJob;
 use Poppy\Version\Classes\PyVersionDef;
 use Poppy\Version\Models\SysAppVersion;
@@ -162,8 +162,8 @@ class Version
         if (!$this->allowCopy) {
             return true;
         }
-        /** @var UploadContract|AppTrait $Upload */
-        $Upload   = app(UploadContract::class);
+        /** @var FileContract|AppTrait $Upload */
+        $Upload   = app(FileContract::class);
         $distPath = parse_url($this->item->download_url)['path'] ?? '';
         $Upload->setDestination($distPath);
         $latestFilename = SysAppVersion::path($this->item->platform);

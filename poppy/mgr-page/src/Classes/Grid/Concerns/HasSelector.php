@@ -25,9 +25,6 @@ trait HasSelector
 
         call_user_func($closure, $this->selector);
 
-        $this->header(function () {
-            return $this->renderSelector();
-        });
 
         return $this;
     }
@@ -35,7 +32,7 @@ trait HasSelector
     /**
      * Render grid selector.
      *
-     * @return Factory|View|string
+     * @return Factory|View
      */
     public function renderSelector()
     {

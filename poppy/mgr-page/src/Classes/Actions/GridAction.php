@@ -2,9 +2,9 @@
 
 namespace Poppy\MgrPage\Classes\Actions;
 
-use Encore\Admin\Grid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Poppy\MgrPage\Classes\Grid;
 
 /**
  * Class GridAction.
@@ -14,14 +14,14 @@ use Illuminate\Http\Request;
 abstract class GridAction extends Action
 {
     /**
-     * @var Grid
-     */
-    protected $parent;
-
-    /**
      * @var string
      */
     public $selectorPrefix = '.grid-action-';
+
+    /**
+     * @var Grid
+     */
+    protected $parent;
 
     /**
      * @param Grid $grid
@@ -46,6 +46,14 @@ abstract class GridAction extends Action
     }
 
     /**
+     * @return array
+     */
+    public function parameters()
+    {
+        return ['_model' => $this->getModelClass()];
+    }
+
+    /**
      * @return mixed
      */
     protected function getModelClass()
@@ -53,14 +61,6 @@ abstract class GridAction extends Action
         $model = $this->parent->model()->getOriginalModel();
 
         return str_replace('\\', '_', get_class($model));
-    }
-
-    /**
-     * @return array
-     */
-    public function parameters()
-    {
-        return ['_model' => $this->getModelClass()];
     }
 
     /**

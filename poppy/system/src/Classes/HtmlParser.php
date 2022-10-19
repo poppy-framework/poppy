@@ -9,12 +9,12 @@ use Exception;
 use Poppy\Framework\Exceptions\ApplicationException;
 
 /**
- * Copyright (c) 2013, 俊杰Jerry
- * All rights reserved.
- *
+ * Copyright (c) 2013, 俊杰Jerry All rights reserved
+ * 无太大用途, 需要移除
  * @description: html解析器
  * @author     : 俊杰Jerry<bupt1987@gmail.com>
  * @date       : 2013-6-10
+ * @deprecated 4.0-dev
  */
 class HtmlParser
 {

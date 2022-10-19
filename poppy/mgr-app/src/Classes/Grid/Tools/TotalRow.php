@@ -6,7 +6,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Poppy\MgrApp\Classes\Table\Column\Column;
-use function view;
+
 
 class TotalRow extends AbstractTool
 {

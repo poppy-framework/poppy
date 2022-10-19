@@ -3,7 +3,6 @@
 namespace Poppy\MgrPage\Classes\Grid\Column;
 
 use Poppy\MgrPage\Classes\Grid\Model;
-use function collect;
 
 class CheckFilter extends Filter
 {

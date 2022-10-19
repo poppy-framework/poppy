@@ -38,7 +38,7 @@ class Textarea extends FormItem
     }
 
     /**
-     * @param bool|array $args
+     * @param bool|array|numeric $args
      * @return $this
      */
     public function autosize(...$args): self

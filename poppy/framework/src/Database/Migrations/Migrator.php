@@ -50,7 +50,6 @@ class Migrator extends BaseMigrator
      */
     public function rollback($paths = [], array $options = [])
     {
-        $this->notes = [];
         $rolledBack  = [];
 
         $migrations = $this->getRanMigrations();

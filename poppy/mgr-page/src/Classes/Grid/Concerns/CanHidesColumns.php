@@ -71,9 +71,9 @@ trait CanHidesColumns
             return $this->columns;
         }
 
-        array_push($visible, \Poppy\MgrPage\Classes\Grid\Column::NAME_SELECTOR, \Poppy\MgrPage\Classes\Grid\Column::NAME_ACTION);
+        array_push($visible, Column::NAME_SELECTOR, Column::NAME_ACTION);
 
-        return $this->columns->filter(function (\Poppy\MgrPage\Classes\Grid\Column $column) use ($visible) {
+        return $this->columns->filter(function (Column $column) use ($visible) {
             return in_array($column->name, $visible);
         });
     }
@@ -91,7 +91,7 @@ trait CanHidesColumns
             return $this->columnNames;
         }
 
-        array_push($visible, \Poppy\MgrPage\Classes\Grid\Column::NAME_SELECTOR, \Poppy\MgrPage\Classes\Grid\Column::NAME_ACTION);
+        array_push($visible, Column::NAME_SELECTOR, Column::NAME_ACTION);
 
         return collect($this->columnNames)->filter(function ($column) use ($visible) {
             return in_array($column, $visible);
@@ -109,7 +109,7 @@ trait CanHidesColumns
             array_diff(
                 $this->columnNames,
                 $this->hiddenColumns,
-                [\Poppy\MgrPage\Classes\Grid\Column::NAME_SELECTOR, \Poppy\MgrPage\Classes\Grid\Column::NAME_ACTION]
+                [Column::NAME_SELECTOR, Column::NAME_ACTION]
             )
         );
     }

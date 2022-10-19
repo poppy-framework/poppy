@@ -3,7 +3,6 @@
 namespace Poppy\MgrPage\Classes\Grid\Column;
 
 use Poppy\MgrPage\Classes\Grid\Model;
-use function Poppy\System\Classes\Grid\Column\config;
 
 class InputFilter extends Filter
 {
@@ -26,7 +25,7 @@ class InputFilter extends Filter
     /**
      * Add a binding to the query.
      *
-     * @param string     $value
+     * @param string $value
      * @param Model|null $model
      */
     public function addBinding($value, Model $model)
@@ -49,33 +48,6 @@ class InputFilter extends Filter
         }
 
         $model->where($this->getColumnName(), $value);
-    }
-
-    /**
-     * Add script to page.
-     *
-     * @return void
-     */
-    protected function addScript()
-    {
-        $options = [
-            'locale'           => config('app.locale'),
-            'allowInputToggle' => true,
-        ];
-
-        if ($this->type == 'date') {
-            $options['format'] = 'YYYY-MM-DD';
-        }
-        elseif ($this->type == 'time') {
-            $options['format'] = 'HH:mm:ss';
-        }
-        elseif ($this->type == 'datetime') {
-            $options['format'] = 'YYYY-MM-DD HH:mm:ss';
-        }
-        else {
-            return;
-        }
-
     }
 
     /**

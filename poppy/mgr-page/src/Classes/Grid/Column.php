@@ -14,7 +14,17 @@ use InvalidArgumentException;
 use Poppy\Framework\Helper\UtilHelper;
 use Poppy\MgrPage\Classes\Actions\RowAction;
 use Poppy\MgrPage\Classes\Grid;
+use Poppy\MgrPage\Classes\Grid\Column\HasHeader;
 use Poppy\MgrPage\Classes\Grid\Displayer\AbstractDisplayer;
+use Poppy\MgrPage\Classes\Grid\Displayer\Copyable;
+use Poppy\MgrPage\Classes\Grid\Displayer\Downloadable;
+use Poppy\MgrPage\Classes\Grid\Displayer\Image;
+use Poppy\MgrPage\Classes\Grid\Displayer\Link;
+use Poppy\MgrPage\Classes\Grid\Displayer\Prefix;
+use Poppy\MgrPage\Classes\Grid\Displayer\ProgressBar;
+use Poppy\MgrPage\Classes\Grid\Displayer\QRCode;
+use Poppy\MgrPage\Classes\Grid\Displayer\Suffix;
+use Poppy\MgrPage\Classes\Grid\Displayer\SwitchDisplay;
 use function request;
 use function sys_debug;
 use function view;
@@ -42,7 +52,7 @@ use function view;
  */
 class Column
 {
-    use \Poppy\MgrPage\Classes\Grid\Column\HasHeader;
+    use HasHeader;
 
     const NAME_SELECTOR = '_selector_';
     const NAME_ACTION   = '_actions_';
@@ -53,70 +63,103 @@ class Column
      * @var array
      */
     public static $displayers = [
-        'switch'       => \Poppy\MgrPage\Classes\Grid\Displayer\SwitchDisplay::class,
-        'image'        => \Poppy\MgrPage\Classes\Grid\Displayer\Image::class,
-        'link'         => \Poppy\MgrPage\Classes\Grid\Displayer\Link::class,
-        'progress'     => \Poppy\MgrPage\Classes\Grid\Displayer\ProgressBar::class,
-        'downloadable' => \Poppy\MgrPage\Classes\Grid\Displayer\Downloadable::class,
-        'copyable'     => \Poppy\MgrPage\Classes\Grid\Displayer\Copyable::class,
-        'qrcode'       => \Poppy\MgrPage\Classes\Grid\Displayer\QRCode::class,
-        'prefix'       => \Poppy\MgrPage\Classes\Grid\Displayer\Prefix::class,
-        'suffix'       => \Poppy\MgrPage\Classes\Grid\Displayer\Suffix::class,
+        'switch'       => SwitchDisplay::class,
+        'image'        => Image::class,
+        'link'         => Link::class,
+        'progress'     => ProgressBar::class,
+        'downloadable' => Downloadable::class,
+        'copyable'     => Copyable::class,
+        'qrcode'       => QRCode::class,
+        'prefix'       => Prefix::class,
+        'suffix'       => Suffix::class,
     ];
+
     /**
      * Defined columns.
      *
      * @var array
      */
     public static $defined = [];
+
+    /**
+     * Original grid data.
+     *
+     * @var Collection
+     */
+    protected static $originalGridModels;
+
+    /**
+     * @var array
+     */
+    protected static $htmlAttributes = [];
+
+    /**
+     * @var array
+     */
+    protected static $rowAttributes = [];
+
+    /**
+     * @var Model
+     */
+    protected static $model;
+
     /**
      * @var Grid
      */
     protected $grid;
+
     /**
      * Name of column.
      *
      * @var string
      */
     protected $name;
+
     /**
      * Label of column.
      *
      * @var string
      */
     protected $label;
+
     /**
      * Original value of column.
      *
      * @var mixed
      */
     protected $original;
+
     /**
      * Attributes of column.
      *
      * @var array
      */
     protected $attributes = [];
+
     /**
      * Relation name.
      *
      * @var bool
      */
     protected $relation = false;
+
     /**
      * Relation column.
      *
      * @var string
      */
     protected $relationColumn;
+
     /**
      * @var []Closure
      */
     protected $displayCallbacks = [];
+
     /**
      * @var bool 是否启用排序
      */
     protected $sortable = false;
+
     /**
      * @var bool
      */
@@ -132,28 +175,12 @@ class Column
      * @var string
      */
     protected $width = 0;
-    /**
-     * Original grid data.
-     *
-     * @var Collection
-     */
-    protected static $originalGridModels;
-    /**
-     * @var array
-     */
-    protected static $htmlAttributes = [];
-    /**
-     * @var array
-     */
-    protected static $rowAttributes = [];
-    /**
-     * @var Model
-     */
-    protected static $model;
+
     /**
      * @var bool 是否可编辑
      */
     private $editable = false;
+
     /**
      * 列定位
      * @var string
@@ -315,7 +342,7 @@ class Column
      * Display using display abstract.
      *
      * @param string $abstract
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return $this
      */
@@ -335,7 +362,7 @@ class Column
 
     /**
      * 替换输出, 并指定默认值, 可以用于状态值替换, 使用KV
-     * @param array  $values
+     * @param array $values
      * @param string $default
      * @return $this
      */
@@ -474,7 +501,7 @@ class Column
      * Display column as boolean , `✓` for true, and `✗` for false.
      *
      * @param array $map
-     * @param bool  $default
+     * @param bool $default
      *
      * @return $this
      */
@@ -517,7 +544,7 @@ class Column
     /**
      * Add a `dot` before column text.
      *
-     * @param array  $options
+     * @param array $options
      * @param string $default
      *
      * @return $this
@@ -571,7 +598,7 @@ class Column
      * Allow fluent calls on the Column object.
      *
      * @param string $method
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return $this
      */
@@ -613,7 +640,7 @@ class Column
      * Define a column globally.
      *
      * @param string $name
-     * @param mixed  $definition
+     * @param mixed $definition
      */
     public static function define($name, $definition)
     {
@@ -690,7 +717,7 @@ class Column
      * Call all of the "display" callbacks column.
      *
      * @param mixed $value
-     * @param int   $key
+     * @param int $key
      *
      * @return mixed
      */
@@ -717,7 +744,7 @@ class Column
      * Set original grid data to column.
      *
      * @param Closure $callback
-     * @param int     $key
+     * @param int $key
      *
      * @return Closure
      */
@@ -796,7 +823,7 @@ class Column
      * Find a displayer to display column.
      *
      * @param string $method
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return $this
      */
@@ -812,7 +839,7 @@ class Column
      * Call Illuminate/Support displayer.
      *
      * @param string $method
-     * @param array  $arguments
+     * @param array $arguments
      * @return $this
      */
     protected function callSupportDisplayer(string $method, array $arguments): self
@@ -834,7 +861,7 @@ class Column
      * Call Builtin displayer.
      *
      * @param string $abstract
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return $this
      */

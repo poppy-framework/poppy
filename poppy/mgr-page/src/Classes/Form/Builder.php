@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Poppy\MgrPage\Classes\Form;
 use Poppy\MgrPage\Classes\Form\Field\Hidden;
-use function trans;
-use function url;
-use function view;
 
 /**
  * Class Builder.
@@ -26,26 +23,32 @@ class Builder
      */
     const MODE_EDIT   = 'edit';
     const MODE_CREATE = 'create';
+
     /**
      * @var mixed
      */
     protected $id;
+
     /**
      * @var Form
      */
     protected $form;
+
     /**
      * @var
      */
     protected $action;
+
     /**
      * @var Collection
      */
     protected $fields;
+
     /**
      * @var array
      */
     protected $options = [];
+
     /**
      * Form action mode, could be create|view|edit.
      *
@@ -392,7 +395,7 @@ class Builder
      * Get or set option.
      *
      * @param string $option
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return $this
      */

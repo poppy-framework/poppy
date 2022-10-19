@@ -5,8 +5,8 @@ namespace Poppy\System\Http\Request\ApiV1;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Translation\Translator;
 use Poppy\Framework\Classes\Resp;
-use Poppy\Framework\Classes\Traits\PoppyTrait;
 use Poppy\Framework\Helper\UtilHelper;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Action\Pam;
@@ -23,7 +23,7 @@ use Validator;
  */
 class AuthController extends JwtApiController
 {
-    use PoppyTrait, ThrottlesLogins;
+    use ThrottlesLogins;
 
     /**
      * @api                   {post} /api_v1/system/auth/access [Sys]检测 Token
@@ -91,7 +91,7 @@ class AuthController extends JwtApiController
      */
     public function login(): JsonResponse
     {
-        $validator = Validator::make($this->pyRequest()->all(), [
+        $validator = Validator::make(input(), [
             'passport' => Rule::required(),
         ], [
             'passport.required' => '通行证必须填写',
@@ -110,9 +110,11 @@ class AuthController extends JwtApiController
 
         /** @var ResponseFactory $response */
         $response = app(ResponseFactory::class);
-        if ($this->hasTooManyLoginAttempts($this->pyRequest())) {
-            $seconds = $this->limiter()->availableIn($this->throttleKey($this->pyRequest()));
-            $message = $this->pyTranslator()->get('auth.throttle', ['seconds' => $seconds]);
+        if ($this->hasTooManyLoginAttempts(app('request'))) {
+            $seconds = $this->limiter()->availableIn($this->throttleKey(app('request')));
+            /** @var Translator $Translator */
+            $Translator = app('translator');
+            $message    = $Translator->get('auth.throttle', ['seconds' => $seconds]);
 
             return $response->json([
                 'message' => $message,
@@ -143,7 +145,7 @@ class AuthController extends JwtApiController
             return Resp::error($e);
         }
 
-        $this->clearLoginAttempts($this->pyRequest());
+        $this->clearLoginAttempts(app('request'));
         $pam = $Pam->getPam();
 
         if (!$token = app('tymon.jwt.auth')->fromUser($pam)) {

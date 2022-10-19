@@ -1,6 +1,6 @@
 <?php
 
-namespace Poppy\System\Tests\Ability;
+namespace Poppy\Core\Tests\Ability;
 
 use Mail;
 use Poppy\Framework\Application\TestCase;

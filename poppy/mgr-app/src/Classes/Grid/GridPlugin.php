@@ -10,7 +10,6 @@ use Poppy\MgrApp\Classes\Grid\Tools\Interactions;
 use Poppy\MgrApp\Classes\Table\Column\Column;
 use Poppy\MgrApp\Classes\Table\TablePlugin;
 use Poppy\MgrApp\Classes\Traits\UseQuery;
-use function collect;
 
 /**
  * todo 可能需要和 widget 再进行合并

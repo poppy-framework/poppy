@@ -29,14 +29,14 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * All of the register exception handlers.
+     * All the register exception handlers.
      * @var array
      */
-    protected $handlers = [];
+    protected array $handlers = [];
 
     /**
      * Render an exception into an HTTP response.
-     * @param Request   $request   request
+     * @param Request $request request
      * @param Exception $exception exception
      * @return \Illuminate\Http\Response
      * @throws \ReflectionException
@@ -86,11 +86,14 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof HttpExceptionInterface) {
             $code = $exception->getStatusCode();
-        } elseif ($exception instanceof AjaxException) {
+        }
+        elseif ($exception instanceof AjaxException) {
             $code = 406;
-        } elseif ($exception instanceof ValidationException) {
+        }
+        elseif ($exception instanceof ValidationException) {
             $code = 403;
-        } else {
+        }
+        else {
             $code = 500;
         }
 
@@ -112,8 +115,8 @@ class Handler extends ExceptionHandler
 
     /**
      * Handle the given exception.
-     * @param Exception $exception   exception
-     * @param bool      $fromConsole from console
+     * @param Exception $exception exception
+     * @param bool $fromConsole from console
      * @return void
      * @throws \ReflectionException
      */
@@ -132,11 +135,9 @@ class Handler extends ExceptionHandler
             // We will wrap this handler in a try / catch and avoid white screens of death
             // if any exceptions are thrown from a handler itself. This way we will get
             // at least some errors, and avoid errors with no data or not log writes.
-            try {
-                $response = $handler($exception, $code, $fromConsole);
-            } catch (Exception $e) {
-                $response = $this->formatException($e);
-            }
+
+            $response = $handler($exception, $code, $fromConsole);
+
             // If this handler returns a "non-null" response, we will return it so it will
             // get sent back to the browsers. Once the handler returns a valid response
             // we will cease iterating through them and calling these other handlers.
@@ -148,7 +149,7 @@ class Handler extends ExceptionHandler
 
     /**
      * Determine if the given handler handles this exception.
-     * @param Closure   $handler   handler
+     * @param Closure $handler handler
      * @param Exception $exception exception
      * @return bool
      * @throws \ReflectionException
@@ -163,7 +164,7 @@ class Handler extends ExceptionHandler
     /**
      * Determine if the given handler type hints the exception.
      * @param ReflectionFunction $reflection reflection
-     * @param Exception          $exception  exception
+     * @param Exception $exception exception
      * @return bool
      */
     protected function hints(ReflectionFunction $reflection, $exception)

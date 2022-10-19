@@ -148,7 +148,7 @@ class ModulesPath extends Repository
         $menu  = collect();
         $menus->each(function ($module) use ($menu, $perms) {
             $groups = collect();
-            collect($module)->each(function ($group) use ($groups, $perms) {
+            collect($module)->each(function ($group) use ($perms) {
                 $children = collect();
                 collect($group['children'])->each(function ($url) use ($children, $perms) {
                     if (isset($url['permission']) && $url['permission']) {
@@ -211,7 +211,7 @@ class ModulesPath extends Repository
                 }
                 $route     = $mt[1];
                 $routeHide = (array) config('poppy.core.route_hide');
-                if (in_array($route, $routeHide, false)) {
+                if (in_array($route, $routeHide)) {
                     return null;
                 }
                 $submenu = array_merge($submenu, self::parse($submenu['path']));

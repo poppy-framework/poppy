@@ -5,7 +5,6 @@ namespace Poppy\MgrPage\Classes\Grid\Column;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 use Poppy\MgrPage\Classes\Grid\Column;
-use Poppy\MgrPage\Classes\Grid\Model;
 use function __;
 use function request;
 
@@ -70,6 +69,11 @@ class Filter implements Renderable
             : $request->fullUrl();
     }
 
+    public function render()
+    {
+        return '';
+    }
+
     /**
      * @param string $key
      *
@@ -78,24 +82,5 @@ class Filter implements Renderable
     protected function trans($key)
     {
         return __("admin.{$key}");
-    }
-
-    /**
-     * Add a query binding.
-     *
-     * @param mixed $value
-     * @param Model $model
-     */
-    public function addBinding($value, Model $model)
-    {
-        //
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function render()
-    {
-        //
     }
 }

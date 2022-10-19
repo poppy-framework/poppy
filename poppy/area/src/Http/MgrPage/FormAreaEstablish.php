@@ -5,16 +5,15 @@ namespace Poppy\Area\Http\MgrPage;
 use Poppy\Area\Action\Area;
 use Poppy\Area\Models\SysArea;
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Classes\Traits\PamTrait;
-use function input;
-use function is_post;
 
 class FormAreaEstablish extends FormWidget
 {
-    use PamTrait;
+    use PamTrait, AppTrait;
 
     public $ajax = true;
 

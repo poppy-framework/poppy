@@ -4,11 +4,9 @@ namespace Poppy\Version\Http\MgrPage;
 
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
-use Poppy\System\Classes\Traits\PamTrait;
 
 class FormSettingVersion extends FormSettingBase
 {
-    use PamTrait;
 
     protected $withContent = true;
 

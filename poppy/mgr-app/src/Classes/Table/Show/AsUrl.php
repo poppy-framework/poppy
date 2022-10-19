@@ -40,7 +40,7 @@ trait AsUrl
      * @param string $server 服务器地址
      * @return Column|AsUrl
      */
-    public function asDownload($server = ''): self
+    public function asDownload(string $server = ''): self
     {
         $this->type = 'download';
         return $this->display(function ($value) use ($server) {
@@ -48,10 +48,6 @@ trait AsUrl
                 $value = $value->toArray();
             }
             return collect((array) $value)->filter()->map(function ($value) use ($server) {
-                if (empty($value)) {
-                    return [];
-                }
-
                 if (url()->isValidUrl($value)) {
                     $src = $value;
                 }

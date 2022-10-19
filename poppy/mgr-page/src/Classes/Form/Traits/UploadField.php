@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Poppy\MgrPage\Classes\Form;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use function csrf_token;
-use function Poppy\System\Classes\Form\Traits\config;
-use function trans;
 
 trait UploadField
 {

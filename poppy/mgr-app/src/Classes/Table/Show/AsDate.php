@@ -58,7 +58,7 @@ trait AsDate
      */
     public function diffForHumans($locale = null): self
     {
-        $this->asDiffForHumans($locale);
+        return $this->asDiffForHumans($locale);
     }
 
 }

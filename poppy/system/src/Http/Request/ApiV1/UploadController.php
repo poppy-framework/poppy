@@ -4,8 +4,8 @@ namespace Poppy\System\Http\Request\ApiV1;
 
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Helper\UtilHelper;
-use Poppy\System\Classes\Contracts\UploadContract;
-use Poppy\System\Classes\Uploader\DefaultUploadProvider;
+use Poppy\System\Classes\Contracts\FileContract;
+use Poppy\System\Classes\File\DefaultFileProvider;
 use Request;
 use Throwable;
 use Validator;
@@ -55,8 +55,8 @@ class UploadController extends JwtApiController
             return $this->demo();
         }
 
-        /** @var DefaultUploadProvider $Image */
-        $Image = app(UploadContract::class);
+        /** @var DefaultFileProvider $Image */
+        $Image = app(FileContract::class);
         $Image->setFolder($image_type);
 
         if ($watermark) {
@@ -207,7 +207,7 @@ class UploadController extends JwtApiController
             return $this->demo();
         }
 
-        $Uploader = app(UploadContract::class);
+        $Uploader = app(FileContract::class);
         $Uploader->setType($type);
         $urls = [];
         if ($ext) {

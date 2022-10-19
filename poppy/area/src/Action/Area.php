@@ -77,6 +77,9 @@ class Area
         if ($id && !$this->initArea($id)) {
             return false;
         }
+        if (!$initDb['parent_id'] && $data['top_id']) {
+            $initDb['parent_id'] = (int) $data['top_id'];
+        }
         $needUpdate = [];
         $this->matchKv(true);
         if ($id) {

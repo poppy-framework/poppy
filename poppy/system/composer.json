@@ -15,7 +15,8 @@
         "tymon/jwt-auth": "1.0.*",
         "hieu-le/active": "4.0.*",
         "poppy/core": "4.0.x-dev",
-        "mlocati/ip-lib": "1.*"
+        "mlocati/ip-lib": "1.*",
+        "intervention/image": "2.*"
     },
     "autoload": {
         "psr-4": {

@@ -4,22 +4,18 @@ namespace Poppy\MgrApp\Http\MgrApp;
 
 use Auth;
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrApp\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Pam;
 use Poppy\System\Classes\Contracts\PasswordContract;
 use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Models\PamAccount;
-use function app;
-use function data_get;
-use function input;
-use function is_post;
-use function sys_is_demo;
 
 class FormPassword extends FormWidget
 {
 
-    use PamTrait;
+    use PamTrait, AppTrait;
 
     protected string $title = '修改密码';
 

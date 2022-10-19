@@ -23,7 +23,6 @@ abstract class FilterItem implements Structable
      */
     protected $name = '';
 
-
     /**
      * 默认
      * @var string
@@ -35,7 +34,7 @@ abstract class FilterItem implements Structable
      *
      * @var string
      */
-    protected $label;
+    protected string $label;
 
     /**
      * @var array|string
@@ -144,7 +143,7 @@ abstract class FilterItem implements Structable
     /**
      * Set default value for filter.
      *
-     * @param null $default
+     * @param null|mixed $default
      * @return $this
      */
     public function default($default = null): self

@@ -176,7 +176,7 @@ class AliPush
         switch ($this->target) {
             // 设备分批
             case PushMessage::TARGET_DEVICE;
-                if (!count($ids ?? [])) {
+                if (!count($ids)) {
                     throw new PushException('用户设备号不能为空');
                 }
                 $regs = array_chunk($ids, $this->cutNum);

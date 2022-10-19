@@ -4,9 +4,11 @@ namespace Poppy\Area\Models\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
+use Poppy\Area\Models\SysArea;
 
 /**
  * 地区resource
+ * @mixin SysArea
  */
 class AreaContentResource extends Resource
 {

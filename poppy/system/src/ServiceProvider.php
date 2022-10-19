@@ -16,9 +16,9 @@ use Poppy\System\Classes\Auth\Provider\DevelopProvider;
 use Poppy\System\Classes\Auth\Provider\PamProvider;
 use Poppy\System\Classes\Auth\Provider\WebProvider;
 use Poppy\System\Classes\Contracts\ApiSignContract;
+use Poppy\System\Classes\Contracts\FileContract;
 use Poppy\System\Classes\Contracts\PasswordContract;
-use Poppy\System\Classes\Contracts\UploadContract;
-use Poppy\System\Classes\Uploader\DefaultUploadProvider;
+use Poppy\System\Classes\File\DefaultFileProvider;
 use Poppy\System\Events\LoginTokenPassedEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
@@ -117,7 +117,7 @@ class ServiceProvider extends PoppyServiceProvider
      */
     private function registerContracts()
     {
-        $this->app->bind('poppy.system.api_sign', function ($app) {
+        $this->app->bind('poppy.system.api_sign', function () {
             /** @var ApiSignContract $signProvider */
             $signProvider = config('poppy.system.api_sign_provider') ?: DefaultApiSignProvider::class;
             return new $signProvider();
@@ -125,7 +125,7 @@ class ServiceProvider extends PoppyServiceProvider
         $this->app->alias('poppy.system.api_sign', ApiSignContract::class);
 
 
-        $this->app->bind('poppy.system.password', function ($app) {
+        $this->app->bind('poppy.system.password', function () {
             $pwdClass = config('poppy.system.password_provider') ?: DefaultPasswordProvider::class;
             return new $pwdClass();
         });
@@ -134,17 +134,31 @@ class ServiceProvider extends PoppyServiceProvider
 
         /* 文件上传提供者
          * ---------------------------------------- */
-        $this->app->bind('poppy.system.uploader', function ($app) {
+        $this->app->bind('poppy.system.uploader', function () {
             $uploadType = sys_setting('py-system::picture.save_type');
             $hooks      = sys_hook('poppy.system.upload_type');
             if (!$uploadType) {
                 $uploadType = 'default';
             }
             $uploader      = $hooks[$uploadType];
-            $uploaderClass = $uploader['provider'] ?? DefaultUploadProvider::class;
+            $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
             return new $uploaderClass();
         });
-        $this->app->alias('poppy.system.uploader', UploadContract::class);
+        $this->app->alias('poppy.system.uploader', FileContract::class);
+
+        /* 文件提供者
+         * ---------------------------------------- */
+        $this->app->bind('poppy.system.file', function () {
+            $uploadType = sys_setting('py-system::picture.save_type');
+            $hooks      = sys_hook('poppy.system.upload_type');
+            if (!$uploadType) {
+                $uploadType = 'default';
+            }
+            $uploader      = $hooks[$uploadType];
+            $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
+            return new $uploaderClass();
+        });
+        $this->app->alias('poppy.system.file', FileContract::class);
 
     }
 
@@ -160,16 +174,16 @@ class ServiceProvider extends PoppyServiceProvider
 
     private function registerAuth()
     {
-        app('auth')->provider('pam.web', function ($app) {
+        app('auth')->provider('pam.web', function () {
             return new WebProvider(PamAccount::class);
         });
-        app('auth')->provider('pam.backend', function ($app) {
+        app('auth')->provider('pam.backend', function () {
             return new BackendProvider(PamAccount::class);
         });
-        app('auth')->provider('pam.develop', function ($app) {
+        app('auth')->provider('pam.develop', function () {
             return new DevelopProvider(PamAccount::class);
         });
-        app('auth')->provider('pam', function ($app) {
+        app('auth')->provider('pam', function () {
             return new PamProvider(PamAccount::class);
         });
     }

@@ -4,7 +4,6 @@ namespace Poppy\MgrPage\Classes\Form;
 
 use Illuminate\Contracts\Support\Renderable;
 use Poppy\Framework\Helper\ArrayHelper;
-use function view;
 
 class Footer implements Renderable
 {

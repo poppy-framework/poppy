@@ -1,10 +1,8 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Container\Container;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Poppy\Framework\Foundation\Application;
 use Poppy\Framework\Helper\EnvHelper;
 use Poppy\Framework\Helper\StrHelper;
 use Poppy\Framework\Helper\TimeHelper;
@@ -16,7 +14,7 @@ if (!function_exists('sys_setting')) {
     /**
      * Get System Setting
      * @param string $key
-     * @param null   $default
+     * @param null $default
      * @return mixed
      */
     function sys_setting(string $key, $default = null)
@@ -64,7 +62,7 @@ if (!function_exists('sys_trans')) {
     /**
      * translate line
      * @param string $line
-     * @param array  $replace
+     * @param array $replace
      * @return string
      */
     function sys_trans(string $line, array $replace = []): string
@@ -161,16 +159,16 @@ if (!function_exists('sys_get')) {
     /**
      * 获取 data 中的数据
      * 支持批量获取
-     * @param array|object      $data
+     * @param array|object $data
      * @param string|null|array $key
-     * @param string            $default
+     * @param string|null|mixed $default
      * @return null|array|string
      */
     function sys_get($data, $key, $default = '')
     {
         if (is_array($key)) {
             $arr = Arr::only($data, $key);
-            return array_map(function ($value) use ($data) {
+            return array_map(function ($value) {
                 if (empty($value)) {
                     return '';
                 }
@@ -227,9 +225,9 @@ if (!function_exists('sys_parent_id')) {
 if (!function_exists('sys_url')) {
     /**
      * URL生成
-     * @param string|array $key   url 参数
-     * @param null|string  $value 值
-     * @param bool         $root  是否生成根地址
+     * @param string|array $key url 参数
+     * @param null|string $value 值
+     * @param bool $root 是否生成根地址
      * @return string
      */
     function sys_url($key, $value = null, $root = false)
@@ -311,7 +309,7 @@ if (!function_exists('sys_api_demo')) {
     function sys_api_demo(): bool
     {
         $all = input();
-        if(isset($all['_py_secret']) && $all['_py_secret']) {
+        if (isset($all['_py_secret']) && $all['_py_secret']) {
             return $all['_py_secret'] === config('poppy.system.secret');
         }
         return false;
@@ -321,11 +319,11 @@ if (!function_exists('sys_api_demo')) {
 if (!function_exists('sys_content_trim')) {
     /**
      * 清空word 代码
-     * @param string $content        内容
+     * @param string $content 内容
      * @param string $allowable_tags 允许保留的标签
      * @return string
      */
-    function sys_content_trim(string $content, $allowable_tags = 'p,img'): string
+    function sys_content_trim(string $content, string $allowable_tags = 'p,img'): string
     {
         mb_regex_encoding('UTF-8');
         //replace MS special characters first
@@ -355,13 +353,11 @@ if (!function_exists('sys_content_trim')) {
         //on some of the ?newer MS Word exports, where you get conditionals of the form 'if gte mso 9', etc., it appears
         //that whatever is in one of the html comments prevents strip_tags from eradicating the html comment that contains
         //some MS Style Definitions - this last bit gets rid of any leftover comments */
-        $num_matches = preg_match_all("/<!--/u", $content, $matches);
+        $num_matches = preg_match_all("/<!--/u", $content);
         if ($num_matches) {
             $content = preg_replace('/<!--(.)*-->/su', '', $content);
         }
-        $content = preg_replace('/mso-([a-z-A-Z]*:\s?[a-z-A-Z]*;?)/i', '', $content);
-
-        return $content;
+        return preg_replace('/mso-([a-z-A-Z]*:\s?[a-z-A-Z]*;?)/i', '', $content);
     }
 }
 

@@ -7,15 +7,15 @@ use Illuminate\Support\Facades\Route;
 use Poppy\Area\Action\Area;
 use Poppy\Area\Models\SysArea;
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrApp\Classes\Widgets\FormWidget;
 use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Models\PamAccount;
-use function input;
 
 class FormAreaEstablish extends FormWidget
 {
-    use PamTrait;
+    use PamTrait, AppTrait;
 
     protected string $title = '新建地域';
 

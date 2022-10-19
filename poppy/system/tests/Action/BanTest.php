@@ -8,7 +8,7 @@ use Poppy\System\Tests\Base\SystemTestCase;
 
 class BanTest extends SystemTestCase
 {
-    protected $enableDb = true;
+    protected bool $enableDb = true;
 
     /**
      * Ip 测试

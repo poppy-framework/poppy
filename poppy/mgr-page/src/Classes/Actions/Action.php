@@ -6,9 +6,6 @@ use BadMethodCallException;
 use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use function e;
-use function Poppy\System\Classes\Actions\admin_url;
-use function Poppy\System\Classes\Actions\spl_object_id;
 
 /**
  * @method    success($title, $text = '', $options = [])
@@ -24,82 +21,50 @@ abstract class Action implements Renderable
 {
 
     /**
-     * @var string
-     */
-    public $event = 'click';
-    /**
-     * @var string
-     */
-    public $selectorPrefix = '.action-';
-    /**
-     * @var string
-     */
-    public $name;
-    /**
-     * @var Response
-     */
-    protected $response;
-    /**
-     * @var string
-     */
-    protected $selector;
-    /**
-     * @var string
-     */
-    protected $method = 'POST';
-    /**
-     * @var array
-     */
-    protected $attributes = [];
-    /**
-     * @var \Poppy\MgrPage\Classes\Actions\Interactor\Interactor
-     */
-    protected $interactor;
-    /**
      * @var array
      */
     protected static $selectors = [];
 
     /**
-     * Action constructor.
+     * @var string
      */
-    public function __construct()
-    {
-        $this->initInteractor();
-    }
+    public $event = 'click';
+
+    /**
+     * @var string
+     */
+    public $selectorPrefix = '.action-';
+
+    /**
+     * @var string
+     */
+    public $name;
+
+    /**
+     * @var string
+     */
+    protected $selector;
+
+    /**
+     * @var string
+     */
+    protected $method = 'POST';
+
+    /**
+     * @var array
+     */
+    protected $attributes = [];
+
+
 
     /**
      * @return mixed
      */
     public function render()
     {
-
-        $content = $this->html();
-
-        if ($content && $this->interactor instanceof \Poppy\MgrPage\Classes\Actions\Interactor\Form) {
-            return $this->interactor->addElementAttr($content, $this->selector);
-        }
-
         return $this->html();
     }
 
-    /**
-     * @throws Exception
-     */
-    protected function initInteractor()
-    {
-        if ($hasForm = method_exists($this, 'form')) {
-            $this->interactor = new \Poppy\MgrPage\Classes\Actions\Interactor\Form($this);
-        }
-
-        if ($hasDialog = method_exists($this, 'dialog')) {
-            $this->interactor = new \Poppy\MgrPage\Classes\Actions\Interactor\Dialog($this);
-        }
-
-        if ($hasForm && $hasDialog) {
-            throw new Exception('Can only define one of the methods in `form` and `dialog`');
-        }
-    }
 
     /**
      * Get batch action title.
@@ -154,49 +119,6 @@ abstract class Action implements Renderable
     }
 
     /**
-     * Format the field attributes.
-     *
-     * @return string
-     */
-    protected function formatAttributes()
-    {
-        $html = [];
-
-        foreach ($this->attributes as $name => $value) {
-            $html[] = $name . '="' . e($value) . '"';
-        }
-
-        return implode(' ', $html);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getElementClass()
-    {
-        return ltrim($this->selector($this->selectorPrefix), '.');
-    }
-
-    /**
-     * @return Response
-     */
-    public function response()
-    {
-        if (is_null($this->response)) {
-            $this->response = new Response();
-        }
-
-        if (method_exists($this, 'dialog')) {
-            $this->response->swal();
-        }
-        else {
-            $this->response->toastr();
-        }
-
-        return $this->response;
-    }
-
-    /**
      * @return string
      */
     public function getMethod()
@@ -221,14 +143,6 @@ abstract class Action implements Renderable
     }
 
     /**
-     * @return string
-     */
-    protected function getModelClass()
-    {
-        return '';
-    }
-
-    /**
      * @return array
      */
     public function parameters()
@@ -241,18 +155,14 @@ abstract class Action implements Renderable
      *
      * @return $this
      */
-    public function validate(Request $request)
+    public function validate()
     {
-        if ($this->interactor instanceof \Poppy\MgrPage\Classes\Actions\Interactor\Form) {
-            $this->interactor->validate($request);
-        }
-
         return $this;
     }
 
     /**
      * @param string $method
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return mixed
      * @throws Exception
@@ -260,9 +170,6 @@ abstract class Action implements Renderable
      */
     public function __call($method, $arguments = [])
     {
-        if (in_array($method, \Poppy\MgrPage\Classes\Actions\Interactor\Interactor::$elements)) {
-            return $this->interactor->{$method}(...$arguments);
-        }
 
         throw new BadMethodCallException("Method {$method} does not exist.");
     }
@@ -272,5 +179,37 @@ abstract class Action implements Renderable
      */
     public function html()
     {
+    }
+
+    /**
+     * Format the field attributes.
+     *
+     * @return string
+     */
+    protected function formatAttributes()
+    {
+        $html = [];
+
+        foreach ($this->attributes as $name => $value) {
+            $html[] = $name . '="' . e($value) . '"';
+        }
+
+        return implode(' ', $html);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getElementClass()
+    {
+        return ltrim($this->selector($this->selectorPrefix), '.');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getModelClass()
+    {
+        return '';
     }
 }

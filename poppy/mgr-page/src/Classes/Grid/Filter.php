@@ -13,8 +13,24 @@ use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter;
 use Poppy\MgrPage\Classes\Grid\Filter\Between;
 use Poppy\MgrPage\Classes\Grid\Filter\BetweenDate;
+use Poppy\MgrPage\Classes\Grid\Filter\Date;
+use Poppy\MgrPage\Classes\Grid\Filter\Day;
+use Poppy\MgrPage\Classes\Grid\Filter\EndsWith;
+use Poppy\MgrPage\Classes\Grid\Filter\Equal;
+use Poppy\MgrPage\Classes\Grid\Filter\Group;
+use Poppy\MgrPage\Classes\Grid\Filter\Gt;
+use Poppy\MgrPage\Classes\Grid\Filter\Hidden;
+use Poppy\MgrPage\Classes\Grid\Filter\In;
 use Poppy\MgrPage\Classes\Grid\Filter\Layout\Layout;
+use Poppy\MgrPage\Classes\Grid\Filter\Like;
+use Poppy\MgrPage\Classes\Grid\Filter\Lt;
+use Poppy\MgrPage\Classes\Grid\Filter\Month;
+use Poppy\MgrPage\Classes\Grid\Filter\NotEqual;
+use Poppy\MgrPage\Classes\Grid\Filter\NotIn;
 use Poppy\MgrPage\Classes\Grid\Filter\Scope;
+use Poppy\MgrPage\Classes\Grid\Filter\StartsWith;
+use Poppy\MgrPage\Classes\Grid\Filter\Where;
+use Poppy\MgrPage\Classes\Grid\Filter\Year;
 use Poppy\MgrPage\Classes\Grid\Tools\FilterButton;
 use Throwable;
 use function collect;
@@ -49,6 +65,31 @@ use function view;
  */
 class Filter extends FilterButton
 {
+    /**
+     * @var array
+     */
+    protected static $supports = [
+        'equal'       => Equal::class,
+        'notEqual'    => NotEqual::class,
+        'like'        => Like::class,
+        'gt'          => Gt::class,
+        'lt'          => Lt::class,
+        'between'     => Between::class,
+        'betweenDate' => BetweenDate::class,
+        'group'       => Group::class,
+        'where'       => Where::class,
+        'in'          => In::class,
+        'notIn'       => NotIn::class,
+        'date'        => Date::class,
+        'day'         => Day::class,
+        'month'       => Month::class,
+        'year'        => Year::class,
+        'hidden'      => Hidden::class,
+        'contains'    => Like::class,
+        'startsWith'  => StartsWith::class,
+        'endsWith'    => EndsWith::class,
+    ];
+
     /**
      * 是否展开
      * @var bool
@@ -118,31 +159,6 @@ class Filter extends FilterButton
      * @var mixed
      */
     protected $primaryKey;
-
-    /**
-     * @var array
-     */
-    protected static $supports = [
-        'equal'       => \Poppy\MgrPage\Classes\Grid\Filter\Equal::class,
-        'notEqual'    => \Poppy\MgrPage\Classes\Grid\Filter\NotEqual::class,
-        'like'        => \Poppy\MgrPage\Classes\Grid\Filter\Like::class,
-        'gt'          => \Poppy\MgrPage\Classes\Grid\Filter\Gt::class,
-        'lt'          => \Poppy\MgrPage\Classes\Grid\Filter\Lt::class,
-        'between'     => \Poppy\MgrPage\Classes\Grid\Filter\Between::class,
-        'betweenDate' => \Poppy\MgrPage\Classes\Grid\Filter\BetweenDate::class,
-        'group'       => \Poppy\MgrPage\Classes\Grid\Filter\Group::class,
-        'where'       => \Poppy\MgrPage\Classes\Grid\Filter\Where::class,
-        'in'          => \Poppy\MgrPage\Classes\Grid\Filter\In::class,
-        'notIn'       => \Poppy\MgrPage\Classes\Grid\Filter\NotIn::class,
-        'date'        => \Poppy\MgrPage\Classes\Grid\Filter\Date::class,
-        'day'         => \Poppy\MgrPage\Classes\Grid\Filter\Day::class,
-        'month'       => \Poppy\MgrPage\Classes\Grid\Filter\Month::class,
-        'year'        => \Poppy\MgrPage\Classes\Grid\Filter\Year::class,
-        'hidden'      => \Poppy\MgrPage\Classes\Grid\Filter\Hidden::class,
-        'contains'    => \Poppy\MgrPage\Classes\Grid\Filter\Like::class,
-        'startsWith'  => \Poppy\MgrPage\Classes\Grid\Filter\StartsWith::class,
-        'endsWith'    => \Poppy\MgrPage\Classes\Grid\Filter\EndsWith::class,
-    ];
 
     /**
      * Create a new filter instance.
@@ -361,7 +377,7 @@ class Filter extends FilterButton
      * Add a new layout column.
      *
      * @param int|float $width
-     * @param Closure   $closure
+     * @param Closure $closure
      *
      * @return $this
      */
@@ -396,7 +412,7 @@ class Filter extends FilterButton
 
     /**
      * @param callable $callback
-     * @param int      $count
+     * @param int $count
      *
      * @return bool
      */
@@ -464,7 +480,7 @@ class Filter extends FilterButton
         $columns->push($pageKey);
 
         $groupNames = collect($this->filters)->filter(function ($filter) {
-            return $filter instanceof \Poppy\MgrPage\Classes\Grid\Filter\Group;
+            return $filter instanceof Group;
         })->map(function (AbstractFilter $filter) {
             return "{$filter->getId()}_group";
         });
@@ -486,7 +502,7 @@ class Filter extends FilterButton
 
     /**
      * @param string $abstract
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return AbstractFilter
      * @throws ApplicationException
@@ -503,7 +519,7 @@ class Filter extends FilterButton
      * Generate a filter object and add to grid.
      *
      * @param string $method
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return AbstractFilter|$this
      * @throws ApplicationException
@@ -535,13 +551,12 @@ class Filter extends FilterButton
      */
     protected function initLayout()
     {
-        $this->layout = new \Poppy\MgrPage\Classes\Grid\Filter\Layout\Layout($this);
+        $this->layout = new Layout($this);
     }
 
     /**
      * @param $inputs
-     *
-     * @return array
+     * @return void
      */
     protected function sanitizeInputs(&$inputs)
     {

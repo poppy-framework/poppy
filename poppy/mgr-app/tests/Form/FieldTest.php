@@ -16,10 +16,10 @@ class FieldTest extends SystemTestCase
     public function testAttr()
     {
         $field = new Number('', '');
-        $this->assertEquals('number', $field->fieldType());
+        $this->assertEquals('number', $field->struct()['type']);
 
         $text = new Text('', '');
-        $this->assertEquals('text', $text->fieldType());
+        $this->assertEquals('text', $text->struct()['type']);
     }
 
     public function testExtend()

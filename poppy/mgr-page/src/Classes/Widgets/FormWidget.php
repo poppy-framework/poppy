@@ -2,7 +2,6 @@
 
 namespace Poppy\MgrPage\Classes\Widgets;
 
-use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -16,66 +15,64 @@ use Poppy\Framework\Helper\ArrayHelper;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form as BaseForm;
 use Poppy\MgrPage\Classes\Form\Field;
+use Poppy\MgrPage\Classes\Form\Field\Checkbox;
+use Poppy\MgrPage\Classes\Form\Field\Color;
+use Poppy\MgrPage\Classes\Form\Field\Currency;
+use Poppy\MgrPage\Classes\Form\Field\Display;
+use Poppy\MgrPage\Classes\Form\Field\Editor;
+use Poppy\MgrPage\Classes\Form\Field\Email;
+use Poppy\MgrPage\Classes\Form\Field\Hidden;
+use Poppy\MgrPage\Classes\Form\Field\Ip;
+use Poppy\MgrPage\Classes\Form\Field\Link;
+use Poppy\MgrPage\Classes\Form\Field\Month;
+use Poppy\MgrPage\Classes\Form\Field\MultiImage;
+use Poppy\MgrPage\Classes\Form\Field\Password;
+use Poppy\MgrPage\Classes\Form\Field\Text;
+use Poppy\MgrPage\Classes\Form\Field\Timezone;
 use Poppy\MgrPage\Classes\Layout\Content;
-use function app;
-use function back;
-use function collect;
-use function input;
-use function is_post;
-use function request;
-use function tap;
-use function view;
 
 /**
  * Class Form.
  *
  * @method Field\Code           code($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Text           text($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Button         button($label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Link           link($label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Password       password($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Checkbox       checkbox($name, $label = '')
+ * @method Text                 text($name, $label = '')
+ * @method Link                 link($label = '')
+ * @method Password             password($name, $label = '')
+ * @method Checkbox             checkbox($name, $label = '')
  * @method Field\Radio          radio($name, $label = '')
  * @method Field\Select         select($name, $label = '')
  * @method Field\MultipleSelect multipleSelect($name, $label = '')
  * @method Field\Textarea       textarea($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Hidden         hidden($name, $label = '')
+ * @method Hidden               hidden($name, $label = '')
  * @method Field\Id             id($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Ip             ip($name, $label = '')
+ * @method Ip                   ip($name, $label = '')
  * @method Field\Url            url($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Color          color($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Email          email($name, $label = '')
+ * @method Color                color($name, $label = '')
+ * @method Email                email($name, $label = '')
  * @method Field\Mobile         mobile($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Slider         slider($name, $label = '')
  * @method Field\File           file($name, $label = '')
  * @method Field\Image          image($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\MultiImage     multiImage($name, $label = '')
+ * @method MultiImage           multiImage($name, $label = '')
  * @method Field\Date           date($name, $label = '')
  * @method Field\Datetime       datetime($name, $label = '')
  * @method Field\Time           time($name, $label = '')
  * @method Field\Year           year($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Month          month($column, $label = '')
+ * @method Month                month($column, $label = '')
  * @method Field\DateRange      dateRange($start, $end, $label = '')
  * @method Field\DateTimeRange  dateTimeRange($start, $end, $label = '')
  * @method Field\TimeRange      timeRange($start, $end, $label = '')
  * @method Field\Number         number($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Currency       currency($name, $label = '')
+ * @method Currency             currency($name, $label = '')
  * @method Field\SwitchField    switch ($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Display        display($name, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Rate           rate($name, $label = '')
+ * @method Display              display($name, $label = '')
  * @method Field\Divider        divider($title = '')
- * @method \Poppy\MgrPage\Classes\Form\Field\Editor         editor($name, $label = '')
+ * @method Editor               editor($name, $label = '')
  * @method Field\Decimal        decimal($column, $label = '')
  * @method Field\Html           html($html, $arguments)
  * @method Field\Tags           tags($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Icon           icon($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Listbox        listbox($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\Table          table($column, $label, $builder)
- * @method \Poppy\MgrPage\Classes\Form\Field\Timezone       timezone($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\KeyValue       keyValue($column, $label = '')
+ * @method Timezone             timezone($column, $label = '')
  * @method Field\Keyword        keyWord($column, $label = '')
  * @method Field\Hook           hook($column, $label = '')
- * @method \Poppy\MgrPage\Classes\Form\_Back\ListField      list($column, $label = '')
  * @method mixed                handle(Request $request)
  */
 class FormWidget implements Renderable
@@ -143,6 +140,7 @@ class FormWidget implements Renderable
         'label' => 3,
         'field' => 9,
     ];
+
     /**
      * @var bool
      */
@@ -204,7 +202,7 @@ class FormWidget implements Renderable
      * Add form attributes.
      *
      * @param string|array $attr
-     * @param string       $value
+     * @param string $value
      *
      * @return $this
      */
@@ -410,26 +408,6 @@ class FormWidget implements Renderable
         return $message->any() ? $message : false;
     }
 
-    /**
-     * Add a fieldset to form.
-     *
-     * @param string  $title
-     * @param Closure $setCallback
-     *
-     * @return \Poppy\MgrPage\Classes\Form\_Back\Fieldset
-     */
-    public function fieldset(string $title, Closure $setCallback)
-    {
-        $fieldset = new \Poppy\MgrPage\Classes\Form\_Back\Fieldset();
-
-        $this->html($fieldset->start($title))->plain();
-
-        $setCallback($this);
-
-        $this->html($fieldset->end())->plain();
-
-        return $fieldset;
-    }
 
     public function unbox()
     {
@@ -507,7 +485,7 @@ class FormWidget implements Renderable
      * Generate a Field object and add to form builder if Field exists.
      *
      * @param string $method
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return Field|$this
      */
@@ -714,7 +692,7 @@ class FormWidget implements Renderable
                 $jqRules = $funJqRules($field->getRules(), $field);
                 if (count($jqRules)) {
                     $name = $field->formatName($field->column());
-                    if ($field instanceof \Poppy\MgrPage\Classes\Form\Field\Checkbox) {
+                    if ($field instanceof Checkbox) {
                         $name .= '[]';
                     }
                     $rules[$name] = $jqRules;

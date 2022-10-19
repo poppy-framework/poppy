@@ -3,18 +3,18 @@
 namespace Poppy\MgrPage\Http\MgrPage;
 
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Ban;
 use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Models\PamBan;
-use function input;
 
 class FormBanEstablish extends FormWidget
 {
 
-    use PamTrait;
+    use PamTrait, AppTrait;
 
     public $ajax = true;
 
