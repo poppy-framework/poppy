@@ -1,13 +1,13 @@
-backend:
-  title: 广告管理
-  icon: 'fa fa-audio-description'
-  groups:
+backend :
+  title : 广告管理
+  icon : 'fa fa-audio-description'
+  groups :
     -
-      title: 广告管理
-      icon: 'fa fa-audio-description'
-      injection: 'poppy.mgr-page/backend||setting'
-      children:
+      title : 广告管理
+      icon : 'fa fa-audio-description'
+      injection : 'poppy.mgr-page/backend||setting'
+      children :
         -
-          title: 广告位管理
-          route: py-ad:backend.place.index
-          permission: backend:poppy-ad.place.manage
+          title : 广告位管理
+          route : py-ad:backend.place.index
+          permission : backend:poppy-ad.place.manage

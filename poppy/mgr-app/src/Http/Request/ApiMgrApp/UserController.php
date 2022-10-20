@@ -24,7 +24,7 @@ class UserController extends BackendController
     {
         return Resp::success('获取成功', [
             'user'  => new PamResource($this->pam),
-            'menus' => $this->coreModule()->path()->withPermission(PamAccount::TYPE_BACKEND, false, $this->pam)
+            'menus' => $this->coreModule()->path()->withPermission(PamAccount::TYPE_BACKEND, false, $this->pam),
         ]);
     }
 

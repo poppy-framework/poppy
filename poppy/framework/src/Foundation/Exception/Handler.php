@@ -32,11 +32,11 @@ class Handler extends ExceptionHandler
      * All the register exception handlers.
      * @var array
      */
-    protected array $handlers = [];
+    protected $handlers = [];
 
     /**
      * Render an exception into an HTTP response.
-     * @param Request $request request
+     * @param Request   $request   request
      * @param Exception $exception exception
      * @return \Illuminate\Http\Response
      * @throws \ReflectionException
@@ -115,8 +115,8 @@ class Handler extends ExceptionHandler
 
     /**
      * Handle the given exception.
-     * @param Exception $exception exception
-     * @param bool $fromConsole from console
+     * @param Exception $exception   exception
+     * @param bool      $fromConsole from console
      * @return void
      * @throws \ReflectionException
      */
@@ -149,7 +149,7 @@ class Handler extends ExceptionHandler
 
     /**
      * Determine if the given handler handles this exception.
-     * @param Closure $handler handler
+     * @param Closure   $handler   handler
      * @param Exception $exception exception
      * @return bool
      * @throws \ReflectionException
@@ -164,7 +164,7 @@ class Handler extends ExceptionHandler
     /**
      * Determine if the given handler type hints the exception.
      * @param ReflectionFunction $reflection reflection
-     * @param Exception $exception exception
+     * @param Exception          $exception  exception
      * @return bool
      */
     protected function hints(ReflectionFunction $reflection, $exception)

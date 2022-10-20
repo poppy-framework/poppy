@@ -2,7 +2,7 @@
 
 namespace Poppy\Ad\Action;
 
-use Poppy\Ad\Models\AdContent;
+use Poppy\Ad\Models\SysAdContent;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Classes\Traits\PamTrait;
@@ -22,7 +22,7 @@ class Ad
      */
     protected $adTable;
     /**
-     * @var AdContent $adContent
+     * @var SysAdContent $adContent
      */
     private $adContent;
     /**
@@ -32,7 +32,7 @@ class Ad
 
     public function __construct()
     {
-        $this->adTable = (new AdContent())->getTable();
+        $this->adTable = (new SysAdContent())->getTable();
     }
 
     /**
@@ -111,7 +111,7 @@ class Ad
             ],
             'status'       => [
                 Rule::integer(),
-                Rule::in(array_keys(AdContent::kvStatus())),
+                Rule::in(array_keys(SysAdContent::kvStatus())),
             ],
             'list_order'   => [
                 Rule::required(),
@@ -145,8 +145,8 @@ class Ad
             $this->adContent->update($initDb);
         }
         else {
-            /** @var AdContent $adContent */
-            $adContent       = AdContent::create($initDb);
+            /** @var SysAdContent $adContent */
+            $adContent       = SysAdContent::create($initDb);
             $this->adContent = $adContent;
         }
 
@@ -192,10 +192,10 @@ class Ad
         }
 
         if ($this->adContent->status) {
-            $this->adContent->status = AdContent::STATUS_NO;
+            $this->adContent->status = SysAdContent::STATUS_NO;
         }
         else {
-            $this->adContent->status = AdContent::STATUS_YES;
+            $this->adContent->status = SysAdContent::STATUS_YES;
         }
         $this->adContent->save();
 
@@ -210,7 +210,7 @@ class Ad
     public function init($id)
     {
         try {
-            $this->adContent = AdContent::findOrFail($id);
+            $this->adContent = SysAdContent::findOrFail($id);
             $this->id        = $this->adContent->id;
 
             return true;

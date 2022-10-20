@@ -3,7 +3,7 @@
 namespace Poppy\Ad\Hooks\FormPlaceSelection;
 
 use Illuminate\Support\HtmlString;
-use Poppy\Ad\Models\AdPlace;
+use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Core\Services\Contracts\ServiceForm;
 
 /**
@@ -25,8 +25,8 @@ class Place implements ServiceForm
             'class'       => 'layui-input',
             'placeholder' => '请选择广告位',
         ];
-        $places  = AdPlace::pluck('title', 'id');
+        $places  = SysAdPlace::pluck('title', 'id');
 
-        return \Form::select($name, $places, $value, $options);
+        return app('poppy.mgr-page.form')->select($name, $places, $value, $options);
     }
 }

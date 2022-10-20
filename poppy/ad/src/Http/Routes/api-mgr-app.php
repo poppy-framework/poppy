@@ -8,20 +8,20 @@ Route::group([
     /* 广告位管理
      * ---------------------------------------- */
     $router->any('place', 'PlaceController@index')
-        ->name('py-ad:mgr_app.place.index');
+        ->name('py-ad:api-backend.place.index');
     $router->any('place/establish/{id?}', 'PlaceController@establish')
-        ->name('py-ad:mgr_app.place.establish');
+        ->name('py-ad:api-backend.place.establish');
     $router->any('place/delete/{id}', 'PlaceController@delete')
-        ->name('py-ad:mgr_app.place.delete');
+        ->name('py-ad:api-backend.place.delete');
 
     /* 广告内容管理
      * ---------------------------------------- */
     $router->any('content', 'ContentController@index')
-        ->name('py-ad:mgr_app.content.index');
+        ->name('py-ad:api-backend.content.index');
     $router->any('content/establish/{id?}', 'ContentController@establish')
-        ->name('py-ad:mgr_app.content.establish');
+        ->name('py-ad:api-backend.content.establish');
     $router->any('content/delete/{id}', 'ContentController@delete')
-        ->name('py-ad:mgr_app.content.delete');
+        ->name('py-ad:api-backend.content.delete');
     $router->any('content/toggle/{id}', 'ContentController@toggle')
-        ->name('py-ad:mgr_app.content.toggle');
+        ->name('py-ad:api-backend.content.toggle');
 });

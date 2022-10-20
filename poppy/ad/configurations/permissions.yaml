@@ -1,13 +1,13 @@
 -
-  title: 广告
-  description: 管理广告/广告位
-  slug: backend:py-ad
-  groups:
+  title : 广告
+  description : 管理广告/广告位
+  slug : backend:py-ad
+  groups :
     -
-      slug: place
-      title: 广告位管理
-      description: 管理广告位
-      permissions:
+      slug : place
+      title : 广告位管理
+      description : 管理广告位
+      permissions :
         -
-          slug: manage
-          description: 管理广告位
+          slug : manage
+          description : 管理广告位

@@ -13,10 +13,10 @@ use Poppy\Framework\Helper\HtmlHelper;
 if (!function_exists('route_url')) {
     /**
      * 自定义可以传值的路由写法
-     * @param string $route
+     * @param string            $route
      * @param array|string|null $route_params
-     * @param array|null $params
-     * @param bool $absolute 是否绝对路径
+     * @param array|null        $params
+     * @param bool              $absolute 是否绝对路径
      * @return string
      */
     function route_url(string $route = '', $route_params = [], $params = null, $absolute = true): string
@@ -85,8 +85,8 @@ if (!function_exists('kv')) {
      * 返回定义的kv 值
      * 一般用户模型中的数据返回
      * @param array $desc
-     * @param null $key
-     * @param bool $check_key 检查key 是否正常
+     * @param null  $key
+     * @param bool  $check_key 检查key 是否正常
      * @return array|string
      */
     function kv(array $desc, $key = null, $check_key = false)
@@ -167,7 +167,7 @@ if (!function_exists('poppy_path')) {
     /**
      * Return the path to the given module file.
      * @param string|null $slug
-     * @param string $file
+     * @param string      $file
      * @return string
      */
     function poppy_path($slug = null, $file = ''): string
@@ -277,12 +277,12 @@ if (!function_exists('py_console')) {
 if (!function_exists('py_faker')) {
     /**
      * Get Console Container.
-     * @return Faker\Generator
+     * @return Poppy\Faker\Generator
      * @throws FakerException
      */
-    function py_faker(): Faker\Generator
+    function py_faker(): Poppy\Faker\Generator
     {
-        if (class_exists('\Faker\Factory')) {
+        if (class_exists('Poppy\Faker\Factory')) {
             return Factory::create('zh_CN');
         }
         else {
@@ -327,7 +327,7 @@ if (!function_exists('x_header')) {
      * 获取 Header 中的 x-{ph} 信息, 不支持获取 x-app 里存储的 json 信息
      * 完整列表参考以下地址
      * @url https://wulicode.com/develop/standard/client/
-     * @param string $type ver,id,os
+     * @param string $type    ver,id,os
      * @param string $default 增加默认参数
      * @return string
      * @since 3.2

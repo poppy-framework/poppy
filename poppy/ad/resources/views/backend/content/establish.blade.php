@@ -37,7 +37,7 @@
 
     <div class="layui-form-item">
         {!! Form::label('action', '动作', ['class' => 'validation']) !!}
-        {!! Form::select('action', \Poppy\Ad\Models\AdContent::kvAction(), null, ['placeholder' => '请选择']) !!}
+        {!! Form::select('action', \Poppy\Ad\Models\SysAdContent::kvAction(), null, ['placeholder' => '请选择']) !!}
     </div>
 
     <div class="layui-form-item">
@@ -52,7 +52,7 @@
 
     <div class="layui-form-item">
         {!! Form::label('status', '广告状态', ['class' => 'validation']) !!}
-        {!! Form::select('status', \Poppy\Ad\Models\AdContent::kvStatus(), null, ['placeholder' => '请选择']) !!}
+        {!! Form::select('status', \Poppy\Ad\Models\SysAdContent::kvStatus(), null, ['placeholder' => '请选择']) !!}
     </div>
 
     <div class="layui-form-item">

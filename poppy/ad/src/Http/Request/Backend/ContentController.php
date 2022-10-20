@@ -9,8 +9,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Poppy\Ad\Action\Ad;
-use Poppy\Ad\Models\AdContent;
-use Poppy\Ad\Models\AdPlace;
+use Poppy\Ad\Models\SysAdContent;
+use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 
@@ -36,7 +36,7 @@ class ContentController extends BackendController
     {
         $place_id = input('place_id');
 
-        $items = AdContent::where('place_id', $place_id)
+        $items = SysAdContent::where('place_id', $place_id)
             ->orderBy('list_order')
             ->paginate($this->pagesize);
         $items->appends(input());
@@ -57,7 +57,7 @@ class ContentController extends BackendController
 
         $input    = input();
         $place_id = $input['place_id'];
-        $place    = AdPlace::find($place_id);
+        $place    = SysAdPlace::find($place_id);
         $info     = '名称：' . $place->title . ' [ 宽度：' . $place->width . 'px , 高度：' . $place->height . 'px ]';
 
         if (is_post()) {

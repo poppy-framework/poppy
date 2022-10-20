@@ -3,6 +3,7 @@
 namespace Poppy\Ad\Models;
 
 use Carbon\Carbon;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -22,19 +23,20 @@ use Poppy\System\Models\SysConfig;
  * @property int         $height     高度
  * @property Carbon|null $created_at 创建时间
  * @property Carbon|null $updated_at 修改时间
- * @method static Builder|AdPlace filter($input = [], $filter = null)
- * @method static Builder|AdPlace pageFilter(PageInfo $pageInfo)
- * @method static Builder|AdPlace paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
- * @method static Builder|AdPlace simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
- * @method static Builder|AdPlace whereBeginsWith($column, $value, $boolean = 'and')
- * @method static Builder|AdPlace whereEndsWith($column, $value, $boolean = 'and')
- * @method static Builder|AdPlace whereLike($column, $value, $boolean = 'and')
+ * @method static Builder|SysAdPlace filter($input = [], $filter = null)
+ * @method static Builder|SysAdPlace pageFilter(PageInfo $pageInfo)
+ * @method static Builder|SysAdPlace paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ * @method static Builder|SysAdPlace simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ * @method static Builder|SysAdPlace whereBeginsWith($column, $value, $boolean = 'and')
+ * @method static Builder|SysAdPlace whereEndsWith($column, $value, $boolean = 'and')
+ * @method static Builder|SysAdPlace whereLike($column, $value, $boolean = 'and')
+ * @mixin Eloquent
  */
-class AdPlace extends Model
+class SysAdPlace extends Model
 {
     use FilterTrait;
 
-    protected $table = 'ad_place';
+    protected $table = 'sys_ad_place';
 
     protected $fillable = [
         'id',
@@ -87,18 +89,17 @@ class AdPlace extends Model
     public static function returnAdContent($id)
     {
         $picture = [];
-        if (AdContent::where('place_id', $id)->exists()) {
-            $adContent = AdContent::where('place_id', $id)->where('status', SysConfig::YES)->select(['image_src', 'action', 'image_url', 'title', 'action'])->get();
+        if (SysAdContent::where('place_id', $id)->exists()) {
+            $adContent = SysAdContent::where('place_id', $id)->where('status', SysConfig::YES)->select(['image_src', 'action', 'image_url', 'title', 'action'])->get();
 
             foreach ($adContent as $content) {
-                $picture[] =
-                    [
-                        'picture'    => $content->image_src,
-                        'is_open'    => $content->action !== AdContent::ACTION_NO_CLICK ? 'Y' : 'N',
-                        'return_url' => $content->image_url,
-                        'title'      => $content->title,
-                        'action'     => $content->action,
-                    ];
+                $picture[] = [
+                    'picture'    => $content->image_src,
+                    'is_open'    => $content->action !== SysAdContent::ACTION_NO_CLICK ? 'Y' : 'N',
+                    'return_url' => $content->image_url,
+                    'title'      => $content->title,
+                    'action'     => $content->action,
+                ];
             }
         }
 

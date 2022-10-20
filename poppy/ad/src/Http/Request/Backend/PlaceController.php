@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Poppy\Ad\Action\Place;
-use Poppy\Ad\Models\AdPlace;
+use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Ad\Models\Filters\AdPlaceFilter;
 use Poppy\Ad\Models\Policies\AdPlacePolicy;
 use Poppy\Framework\Classes\Resp;
@@ -34,7 +34,7 @@ class PlaceController extends BackendController
     {
         $input = input();
 
-        $items = AdPlace::filter($input, AdPlaceFilter::class)->paginateFilter($this->pagesize);
+        $items = SysAdPlace::filter($input, AdPlaceFilter::class)->paginateFilter($this->pagesize);
 
         return view('py-ad::backend.place.index', [
             'items' => $items,

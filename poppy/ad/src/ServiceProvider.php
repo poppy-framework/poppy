@@ -10,7 +10,7 @@ class ServiceProvider extends ModuleServiceProviderBase
 {
 
     protected array $policies = [
-        Models\AdPlace::class => Models\Policies\AdPlacePolicy::class,
+        Models\SysAdPlace::class => Models\Policies\AdPlacePolicy::class,
     ];
 
     /**

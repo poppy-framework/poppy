@@ -3,6 +3,7 @@
 namespace Poppy\Ad\Models;
 
 use Carbon\Carbon;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Poppy\Framework\Http\Pagination\PageInfo;
@@ -34,15 +35,16 @@ use Poppy\System\Classes\Traits\FilterTrait;
  * @property int         $status           0: 不显示, 1:显示
  * @property Carbon|null $created_at       创建时间
  * @property Carbon|null $updated_at       修改时间
- * @method static Builder|AdContent filter($input = [], $filter = null)
- * @method static Builder|AdContent pageFilter(PageInfo $pageInfo)
- * @method static Builder|AdContent paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
- * @method static Builder|AdContent simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
- * @method static Builder|AdContent whereBeginsWith($column, $value, $boolean = 'and')
- * @method static Builder|AdContent whereEndsWith($column, $value, $boolean = 'and')
- * @method static Builder|AdContent whereLike($column, $value, $boolean = 'and')
+ * @method static Builder|SysAdContent filter($input = [], $filter = null)
+ * @method static Builder|SysAdContent pageFilter(PageInfo $pageInfo)
+ * @method static Builder|SysAdContent paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ * @method static Builder|SysAdContent simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ * @method static Builder|SysAdContent whereBeginsWith($column, $value, $boolean = 'and')
+ * @method static Builder|SysAdContent whereEndsWith($column, $value, $boolean = 'and')
+ * @method static Builder|SysAdContent whereLike($column, $value, $boolean = 'and')
+ * @mixin Eloquent
  */
-class AdContent extends Model
+class SysAdContent extends Model
 {
     use FilterTrait;
 
@@ -54,7 +56,7 @@ class AdContent extends Model
     const ACTION_NO_CLICK      = 'no_click';
     const TOPIC                = 'topic';
 
-    protected $table = 'ad_content';
+    protected $table = 'sys_ad_content';
 
     protected $fillable = [
         'title',

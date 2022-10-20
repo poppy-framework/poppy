@@ -2,8 +2,8 @@
 
 namespace Poppy\Ad\Action;
 
-use Poppy\Ad\Models\AdContent;
-use Poppy\Ad\Models\AdPlace;
+use Poppy\Ad\Models\SysAdContent;
+use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Classes\Traits\PamTrait;
@@ -20,7 +20,7 @@ class Place
      */
     protected $placeTable;
     /**
-     * @var AdPlace $adPlace
+     * @var SysAdPlace $adPlace
      */
     private $adPlace;
     /**
@@ -30,7 +30,7 @@ class Place
 
     public function __construct()
     {
-        $this->placeTable = (new AdPlace())->getTable();
+        $this->placeTable = (new SysAdPlace())->getTable();
     }
 
     /**
@@ -107,8 +107,8 @@ class Place
             $this->adPlace->update($initDb);
         }
         else {
-            /** @var AdPlace $adPlace */
-            $adPlace       = AdPlace::create($initDb);
+            /** @var SysAdPlace $adPlace */
+            $adPlace       = SysAdPlace::create($initDb);
             $this->adPlace = $adPlace;
         }
 
@@ -129,7 +129,7 @@ class Place
             return false;
         }
 
-        if (AdContent::where('place_id', $id)->exists()) {
+        if (SysAdContent::where('place_id', $id)->exists()) {
             return $this->setError('存在广告, 不得删除!');
         }
 
@@ -150,7 +150,7 @@ class Place
     public function init($id)
     {
         try {
-            $this->adPlace = AdPlace::findOrFail($id);
+            $this->adPlace = SysAdPlace::findOrFail($id);
             $this->id      = $this->adPlace->id;
 
             return true;

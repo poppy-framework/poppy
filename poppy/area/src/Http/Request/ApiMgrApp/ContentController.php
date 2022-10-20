@@ -11,7 +11,6 @@ use Poppy\Area\Http\MgrApp\FormAreaEstablish;
 use Poppy\Area\Http\MgrApp\GridArea;
 use Poppy\Area\Models\SysArea;
 use Poppy\Framework\Classes\Resp;
-use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrApp\Classes\Widgets\GridWidget;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 use Throwable;
@@ -32,8 +31,7 @@ class ContentController extends BackendController
 
     /**
      * 地区列表
-     * @return Response|JsonResponse|RedirectResponse|Resp
-     * @throws ApplicationException
+     * @return JsonResponse|RedirectResponse|Response
      * @throws Throwable
      */
     public function index()

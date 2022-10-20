@@ -4,7 +4,7 @@ namespace Poppy\MgrApp\Http\Request\ApiMgrApp;
 
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrApp\Classes\Widgets\SettingWidget;
-use function sys_cache;
+use Throwable;
 
 /**
  * 用户
@@ -23,6 +23,7 @@ class HomeController extends BackendController
 
     public function clearCache()
     {
+
         sys_cache('py-core')->flush();
         sys_cache('py-system')->flush();
         $this->pyConsole()->call('poppy:optimize');

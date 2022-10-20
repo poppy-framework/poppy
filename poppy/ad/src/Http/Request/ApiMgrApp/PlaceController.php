@@ -1,6 +1,6 @@
 <?php
 
-namespace Poppy\Ad\Http\Request\Backend;
+namespace Poppy\Ad\Http\Request\ApiMgrApp;
 
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
@@ -9,10 +9,11 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Poppy\Ad\Action\Place;
-use Poppy\Ad\Models\AdPlace;
-use Poppy\Ad\Models\Filters\AdPlaceFilter;
+use Poppy\Ad\Http\MgrApp\GridAdPlace;
 use Poppy\Ad\Models\Policies\AdPlacePolicy;
+use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Framework\Classes\Resp;
+use Poppy\MgrApp\Classes\Widgets\GridWidget;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 
 /**
@@ -28,23 +29,19 @@ class PlaceController extends BackendController
 
     /**
      * 广告位列表
-     * @return Factory|View
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function index()
     {
-        $input = input();
-
-        $items = AdPlace::filter($input, AdPlaceFilter::class)->paginateFilter($this->pagesize);
-
-        return view('py-ad::backend.place.index', [
-            'items' => $items,
-        ]);
+        $grid = new GridWidget(new SysAdPlace());
+        $grid->setLists(GridAdPlace::class);
+        return $grid->resp();
     }
 
     /**
      * 创建/编辑广告位
      * @param null $id 广告位ID
-     * @return Factory|JsonResponse|RedirectResponse|Response|Redirector|View
+     * @return Factory|JsonResponse|RedirectResponse|Response|View
      */
     public function establish($id = null)
     {

@@ -1,7 +1,8 @@
 <?php
 
-namespace Poppy\Ad\Http\Request\MgrApp;
+namespace Poppy\Ad\Http\Request\ApiMgrApp;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -9,9 +10,11 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Poppy\Ad\Action\Ad;
-use Poppy\Ad\Models\AdContent;
-use Poppy\Ad\Models\AdPlace;
+use Poppy\Ad\Models\SysAdPlace;
+use Poppy\Area\Http\MgrApp\GridArea;
+use Poppy\Area\Models\SysArea;
 use Poppy\Framework\Classes\Resp;
+use Poppy\MgrApp\Classes\Widgets\GridWidget;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 
 /**
@@ -30,26 +33,19 @@ class ContentController extends BackendController
 
     /**
      * 广告列表
-     * @return Factory|View
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function index()
     {
-        $place_id = input('place_id');
-
-        $items = AdContent::where('place_id', $place_id)
-            ->orderBy('list_order')
-            ->paginate($this->pagesize);
-        $items->appends(input());
-
-        return view('py-ad::backend.content.index', [
-            'items' => $items,
-        ]);
+        $grid = new GridWidget(new SysArea());
+        $grid->setLists(GridArea::class);
+        return $grid->resp();
     }
 
     /**
      * 创建/编辑广告
      * @param null $id 广告ID
-     * @return Factory|JsonResponse|RedirectResponse|Response|Redirector|View
+     * @return Factory|Application|JsonResponse|RedirectResponse|Response|View
      */
     public function establish($id = null)
     {
@@ -57,7 +53,7 @@ class ContentController extends BackendController
 
         $input    = input();
         $place_id = $input['place_id'];
-        $place    = AdPlace::find($place_id);
+        $place    = SysAdPlace::find($place_id);
         $info     = '名称：' . $place->title . ' [ 宽度：' . $place->width . 'px , 高度：' . $place->height . 'px ]';
 
         if (is_post()) {

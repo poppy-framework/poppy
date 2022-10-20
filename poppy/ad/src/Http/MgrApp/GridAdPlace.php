@@ -2,16 +2,13 @@
 
 namespace Poppy\Ad\Http\MgrApp;
 
-use Poppy\Ad\Models\AdPlace;
+use Poppy\Ad\Models\SysAdPlace;
 use Poppy\MgrApp\Classes\Filter\FilterPlugin;
 use Poppy\MgrApp\Classes\Grid\GridBase;
 use Poppy\MgrApp\Classes\Grid\Tools\Interactions;
 use Poppy\MgrApp\Classes\Table\Render\GridActions;
 use Poppy\MgrApp\Classes\Table\Render\Render;
 use Poppy\MgrApp\Classes\Table\TablePlugin;
-use function collect;
-use function data_get;
-use function route;
 
 class GridAdPlace extends GridBase
 {
@@ -27,7 +24,7 @@ class GridAdPlace extends GridBase
         $table->add('thumb', "示意图")->asImage();
         $table->add('introduce', "说明");
         $table->add('size', "尺寸")->display(function () {
-            /** @var $this AdPlace */
+            /** @var $this SysAdPlace */
             return $this->width . 'x' . $this->height;
         });
 
@@ -53,6 +50,6 @@ class GridAdPlace extends GridBase
 
     public function quick(Interactions $actions)
     {
-        $actions->page('新建广告位', route('py-ad:mgr-app.place.establish'), 'form');
+        $actions->page('新建广告位', route('py-ad:api-backend.place.establish'), 'form');
     }
 }
