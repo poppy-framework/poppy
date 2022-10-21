@@ -18,25 +18,19 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
      */
     public function createApplication()
     {
-        static $app;
-        if (!$app) {
-            $file         = __DIR__ . '/../../../../storage/bootstrap/app.php';
-            $fileInVendor = __DIR__ . '/../../../../../storage/bootstrap/app.php';
-            if (file_exists($file)) {
-                $app = require_once $file;
-            }
-            elseif (file_exists($fileInVendor)) {
-                $app = require_once $fileInVendor;
-            }
-
-            if ($app !== null) {
-                $app->make(Kernel::class)->bootstrap();
-
-                return $app;
-            }
+        $app          = null;
+        $file         = __DIR__ . '/../../../../storage/bootstrap/app.php';
+        $fileInVendor = __DIR__ . '/../../../../../storage/bootstrap/app.php';
+        if (file_exists($file)) {
+            $app = require_once $file;
+        }
+        elseif (file_exists($fileInVendor)) {
+            $app = require_once $fileInVendor;
+        }
+        if ($app !== null) {
+            $app->make(Kernel::class)->bootstrap();
         }
         return $app;
-
     }
 
     /**

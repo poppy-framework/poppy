@@ -20,14 +20,14 @@ class Mocker
      *     "name" : "name"
      * }
      * @param string|array $json
-     * @param string $locale
+     * @param string       $locale
      * @return array
      */
     public static function generate($json, string $locale = Factory::DEFAULT_LOCALE): array
     {
         self::$factory = Factory::create($locale);
 
-        if (Arr::isAssoc($json)) {
+        if (is_array($json) && Arr::isAssoc($json)) {
             $define = (object) $json;
         }
         else {
