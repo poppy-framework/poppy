@@ -2,18 +2,64 @@
 
 namespace Poppy\System\Tests\Action;
 
-use Poppy\Core\Redis\RdsDb;
+use Exception;
 use Poppy\System\Action\Ban;
+use Poppy\System\Models\PamBan;
 use Poppy\System\Tests\Base\SystemTestCase;
 
 class BanTest extends SystemTestCase
 {
-    protected bool $enableDb = true;
+
+    protected bool $enableDb = false;
 
     /**
      * Ip 测试
      */
     public function testIpv4(): void
+    {
+        $ips = [
+            "136.60.196.79",
+            "10.205.182.1-10.205.182.254",
+            "172.31.204.*",
+            "172.20.76.100",
+            "192.168.81.1/24",
+        ];
+
+
+        try {
+            PamBan::where('account_type', 'user')->whereIn('value', $ips)->delete();
+        } catch (Exception $e) {
+            $this->fail($e->getMessage());
+        }
+
+        $Ban = new Ban();
+        foreach ($ips as $ip) {
+            // range
+            if ($Ban->establish([
+                'account_type' => 'user',
+                'type'         => 'ip',
+                'value'        => $ip,
+            ])) {
+                $this->assertTrue(true);
+            }
+            else {
+                $this->fail($Ban->getError());
+            }
+        }
+
+        $this->assertTrue($Ban->checkIn('user', 'ip', '136.60.196.79'));
+        $this->assertTrue($Ban->checkIn('user', 'ip', '10.205.182.222'));
+        $this->assertTrue($Ban->checkIn('user', 'ip', '172.31.204.3'));
+        $this->assertTrue($Ban->checkIn('user', 'ip', '172.20.76.100'));
+        $this->assertTrue($Ban->checkIn('user', 'ip', '192.168.81.255'));
+    }
+
+
+    /**
+     * 添加随机IP 范围
+     * @return void
+     */
+    public function testCreate()
     {
         $ipv4         = $this->faker()->ipv4;
         $localIpv4    = $this->faker()->localIpv4;
@@ -49,16 +95,5 @@ class BanTest extends SystemTestCase
                 $this->fail($Ban->getError());
             }
         }
-    }
-
-    public function testIn()
-    {
-        $Ban = new Ban();
-        var_dump($Ban->checkIn('user', 'ip', '10.100.2.176'));
-        var_dump($Ban->checkIn('user', 'ip', '10.100.2.175'));
-        var_dump($Ban->checkIn('user', 'ip', '10.231.151.1'));
-        var_dump($Ban->checkIn('user', 'ip', '10.187.99.2'));
-        var_dump($Ban->checkIn('user', 'ip', '192.168.89.30'));
-        var_dump($Ban->checkIn('user', 'device', '11223344'));
     }
 }

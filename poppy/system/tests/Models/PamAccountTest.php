@@ -2,22 +2,19 @@
 
 namespace Poppy\System\Tests\Models;
 
+use Illuminate\Auth\AuthenticationException;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Tests\Base\SystemTestCase;
+use Poppy\System\Tests\Testing\TestingPam;
 use Tymon\JWTAuth\JWTGuard;
 
 class PamAccountTest extends SystemTestCase
 {
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->initPam();
-    }
-
     public function testPermissions()
     {
-        $permissions = PamAccount::permissions($this->pam);
+        $pam         = TestingPam::randBackend();
+        $permissions = PamAccount::permissions($pam);
         $this->assertNotNull($permissions, 'User has no permission');
         $names = $permissions->pluck('name');
         $this->assertNotNull($names, 'User has no permission');
@@ -25,21 +22,33 @@ class PamAccountTest extends SystemTestCase
 
     public function testJwtToken()
     {
+        $user = TestingPam::randUser();
         /** @var JWTGuard $Jwt */
         $Jwt   = auth('jwt_web');
-        $token = $Jwt->tokenById($this->pam->id);
+        $token = $Jwt->tokenById($user->id);
 
-        if ($Jwt->setToken($token)->authenticate()) {
-            $this->assertTrue(true);
-        }
-        else {
-            $this->fail('use `jwt:secret` generate token');
+        try {
+            if ($Jwt->setToken($token)->authenticate()) {
+                $this->assertTrue(true);
+            }
+            else {
+                $this->fail('use `jwt:secret` generate token');
+            }
+        } catch (AuthenticationException $e) {
+            $this->fail($e->getMessage());
         }
     }
 
     public function testType()
     {
-        $type = PamAccount::passportType('a-zhou9999@qq.com');
+        $mail = $this->faker()->email;
+        $type = PamAccount::passportType($mail);
         $this->assertEquals('email', $type);
+    }
+
+    public function testExclude()
+    {
+        $exclude = TestingPam::exclude();
+        $this->assertNotNull($exclude);
     }
 }

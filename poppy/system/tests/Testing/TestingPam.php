@@ -16,7 +16,7 @@ class TestingPam
      * @param bool $is_register 是否已经注册
      * @return mixed
      */
-    public static function username($is_register = true)
+    public static function username(bool $is_register = true)
     {
         $Db = PamAccount::orderByRaw('rand()');
         if ($is_register) {
@@ -34,7 +34,7 @@ class TestingPam
      * @param bool $is_register 是否已经注册
      * @return int
      */
-    public static function id($is_register = true)
+    public static function id(bool $is_register = true): int
     {
         $Db = PamAccount::orderByRaw('rand()');
         if ($is_register) {
@@ -45,6 +45,26 @@ class TestingPam
         }
 
         return $Db->value('id');
+    }
+
+    /**
+     * 获取随机账号
+     * @return PamAccount
+     */
+    public static function randUser(): PamAccount
+    {
+        $Db = PamAccount::where('type', PamAccount::TYPE_USER)->orderByRaw('rand()');
+        return $Db->first();
+    }
+
+    /**
+     * 获取随机后台账号
+     * @return PamAccount
+     */
+    public static function randBackend(): PamAccount
+    {
+        $Db = PamAccount::where('type', PamAccount::TYPE_BACKEND)->orderByRaw('rand()');
+        return $Db->first();
     }
 
     /**

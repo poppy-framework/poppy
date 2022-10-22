@@ -75,15 +75,16 @@ class Pam
      * @param string $passport 通行证
      * @param string $captcha  验证码
      * @param string $guard    认证 Guard
+     * @param string $platform 注册平台
      * @return bool
      * @throws Throwable
      */
-    public function captchaLogin(string $passport, string $captcha, string $guard): bool
+    public function captchaLogin(string $passport, string $captcha, string $guard, string $platform = ''): bool
     {
         $initDb = [
             'passport' => $passport,
             'captcha'  => $captcha,
-            'platform' => x_header('os'),
+            'platform' => $platform ?: x_header('os'),
         ];
 
         // 数据验证

@@ -139,11 +139,6 @@ class SysConfig extends Model
             $tbStatus[$table] = $hasTable;
             app('poppy.system.setting')->set($statusKey, $tbStatus);
         }
-
-        if (isset($tbStatus[$table])) {
-            return $tbStatus[$table];
-        }
-
         return $tbStatus[$table];
     }
 }

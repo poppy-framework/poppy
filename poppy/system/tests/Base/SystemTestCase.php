@@ -4,7 +4,6 @@ namespace Poppy\System\Tests\Base;
 
 use DB;
 use Exception;
-use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\Arrayable;
 use Log;
 use Poppy\Framework\Application\TestCase;
@@ -20,24 +19,23 @@ class SystemTestCase extends TestCase
 
     use DbTrait, AppTrait;
 
+    /**
+     * 是否开启数据库存入
+     * @var bool
+     */
     protected bool $enableDb = false;
 
     /**
-     * @var PamAccount
+     * 临时指定账号
+     * @var PamAccount|null
      */
-    protected $pam;
+    protected ?PamAccount $pam;
 
     /**
      * 控制台输出
      * @var array
      */
-    protected $reportType = ['log', 'console'];
-
-    /**
-     * 访问内容
-     * @var string|null
-     */
-    protected $visitContent;
+    protected array $reportType = ['log', 'console'];
 
     public function setUp(): void
     {
@@ -47,6 +45,7 @@ class SystemTestCase extends TestCase
             try {
                 DB::beginTransaction();
             } catch (Exception $e) {
+                $this->runLog(false, $e->getMessage());
             }
         }
     }
@@ -59,21 +58,21 @@ class SystemTestCase extends TestCase
                 DB::rollBack();
                 parent::tearDown();
             } catch (Throwable $e) {
-
+                $this->runLog(false, $e->getMessage());
             }
         }
     }
 
     /**
      * 测试日志
-     * @param bool $result 测试结果
+     * @param bool   $result  测试结果
      * @param string $message 测试消息
-     * @param mixed $context 上下文信息, 数组
+     * @param mixed  $context 上下文信息, 数组
      * @return string
      */
-    public function runLog($result = true, $message = '', $context = null): string
+    public function runLog(bool $result = true, string $message = '', $context = null): string
     {
-        $type    = $result ? '[Success]' : '[ Error ]';
+        $type    = $result ? '[Success]' : '[Error]';
         $message = 'Test : ' . $type . $message;
         if ($context instanceof Arrayable) {
             $context = $context->toArray();
@@ -82,7 +81,7 @@ class SystemTestCase extends TestCase
             Log::info($message, $context ?: []);
         }
         if (in_array('console', $this->reportType(), true)) {
-            dump([
+            var_dump([
                 'message' => $message,
                 'context' => $context ?: [],
             ]);
@@ -100,17 +99,16 @@ class SystemTestCase extends TestCase
     }
 
     /**
-     * 设置环境变量
+     * 获取环境变量
      * @param string $key
      * @param string $default
      * @return mixed|string
      */
-    protected function env($key = '', $default = ''): string
+    protected function env(string $key = '', string $default = ''): string
     {
         if (!$key) {
             return '';
         }
-
         return env('TESTING_' . strtoupper($key), $default);
     }
 
@@ -141,24 +139,6 @@ class SystemTestCase extends TestCase
                 'Query', 'Time',
             ])->rows($logs);
             $Table->display();
-        }
-    }
-
-    /**
-     * 对 Url 地址进行请求并且获取请求内容, 单元测试不进行Url 请求, 请求使用Seldom
-     * @param $url
-     * @deprecated
-     */
-    protected function visit($url)
-    {
-        try {
-
-            $Curl = new Client();
-            $resp = $Curl->get($url);
-            $this->assertTrue(true);
-            $this->visitContent = $resp->getBody()->getContents();
-        } catch (Throwable $e) {
-            $this->fail('Visit Url ' . $url . ' Failed,  Reason:' . $e->getMessage());
         }
     }
 

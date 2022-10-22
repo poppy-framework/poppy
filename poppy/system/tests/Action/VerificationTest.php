@@ -8,15 +8,6 @@ use Poppy\System\Tests\Base\SystemTestCase;
 class VerificationTest extends SystemTestCase
 {
 
-    protected $verification;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->verification = new Verification();
-    }
-
     public function testCaptcha()
     {
         $Verification = new Verification();
@@ -46,15 +37,16 @@ class VerificationTest extends SystemTestCase
      */
     public function testOnceCode()
     {
-        $hidden   = 'once-code';
-        $onceCode = $this->verification->genOnceVerifyCode(5, $hidden);
-        $this->verification->verifyOnceCode($onceCode, false);
-        $this->assertEquals($hidden, $this->verification->getHidden());
+        $Verification = new Verification();
+        $hidden       = 'once-code';
+        $onceCode     = $Verification->genOnceVerifyCode(5, $hidden);
+        $Verification->verifyOnceCode($onceCode, false);
+        $this->assertEquals($hidden, $Verification->getHidden());
 
         // 支持数组隐藏
         $hidden   = ['a', 'b'];
-        $onceCode = $this->verification->genOnceVerifyCode(5, $hidden);
-        $this->verification->verifyOnceCode($onceCode, false);
-        $this->assertEquals($hidden, $this->verification->getHidden());
+        $onceCode = $Verification->genOnceVerifyCode(5, $hidden);
+        $Verification->verifyOnceCode($onceCode, false);
+        $this->assertEquals($hidden, $Verification->getHidden());
     }
 }

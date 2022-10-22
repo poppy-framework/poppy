@@ -2,11 +2,14 @@
 
 namespace Poppy\System\Tests\Action;
 
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Action\Pam;
 use Poppy\System\Action\Verification;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
 use Poppy\System\Tests\Base\SystemTestCase;
+use Poppy\System\Tests\Testing\TestingPam;
+use Throwable;
 
 class PamTest extends SystemTestCase
 {
@@ -24,15 +27,18 @@ class PamTest extends SystemTestCase
         if (!$Verification->genCaptcha($mobile)) {
             $this->fail($Verification->getError());
         }
-        else {
-            $platform = collect(array_keys(PamAccount::kvPlatform()))->random(1)[0];
-            $Pam      = new Pam();
-            if ($Pam->captchaLogin($mobile, $Verification->getCaptcha(), $platform)) {
+
+        $platform = collect(array_keys(PamAccount::kvPlatform()))->random(1)[0];
+        $Pam      = new Pam();
+        try {
+            if ($Pam->captchaLogin($mobile, $Verification->getCaptcha(), 'user', $platform)) {
                 $this->assertTrue(true);
             }
             else {
                 $this->fail($Pam->getError());
             }
+        } catch (Throwable $e) {
+            $this->fail($e->getMessage());
         }
     }
 
@@ -45,11 +51,15 @@ class PamTest extends SystemTestCase
         $mobile = $this->faker()->phoneNumber;
 
         $Pam = new Pam();
-        if ($Pam->register($mobile)) {
-            $this->assertTrue(true);
-        }
-        else {
-            $this->fail($Pam->getError());
+        try {
+            if ($Pam->register($mobile)) {
+                $this->assertTrue(true);
+            }
+            else {
+                $this->fail($Pam->getError());
+            }
+        } catch (Throwable $e) {
+            $this->fail($e->getMessage());
         }
     }
 
@@ -58,33 +68,41 @@ class PamTest extends SystemTestCase
         $passport = $this->faker()->lexify('test_????????');
         $password = $this->faker()->lexify('????????');
         $Pam      = new Pam();
-        if ($Pam->register($passport, $password)) {
-            $this->assertTrue(true);
-        }
-        else {
-            $this->fail($Pam->getError());
+        try {
+            if ($Pam->register($passport, $password)) {
+                $this->assertTrue(true);
+            }
+            else {
+                $this->fail($Pam->getError());
+            }
+        } catch (Throwable $e) {
+            $this->fail($e->getMessage());
         }
     }
 
     public function testRegisterDevelop()
     {
-        $passport = $this->faker()->lexify('test_????????');
+        $passport = $this->faker()->lexify('develop_????????');
         $Pam      = new Pam();
-        if ($Pam->register($passport, '', PamRole::DEV_USER)) {
-            $this->assertTrue(true);
-        }
-        else {
-            $this->fail($Pam->getError());
+        try {
+            if ($Pam->register($passport, '', PamRole::DEV_USER)) {
+                $this->assertTrue(true);
+            }
+            else {
+                $this->fail($Pam->getError());
+            }
+        } catch (Throwable $e) {
+            $this->fail($e->getMessage());
         }
     }
 
 
     public function testRebind()
     {
-        $this->initPam();
+        $pam    = TestingPam::randUser();
         $mobile = $this->faker()->phoneNumber;
         $Pam    = new Pam();
-        if ($Pam->rebind($this->pam, $mobile)) {
+        if ($Pam->rebind($pam, $mobile)) {
             $this->assertTrue(true);
         }
         else {
@@ -97,54 +115,24 @@ class PamTest extends SystemTestCase
      */
     public function testSetPassword(): void
     {
-        $this->initPam();
+        $pam      = TestingPam::randUser();
         $Pam      = new Pam();
         $password = $this->faker()->bothify('?#?#?#');
-        if ($Pam->setPassword($this->pam, $password)) {
+        if ($Pam->setPassword($pam, $password)) {
             $this->assertTrue(true);
-            if (!$Pam->loginCheck($this->pam->mobile, $password)) {
-                $this->fail($Pam->getError());
-            }
-            else {
-                $this->assertTrue(true);
+            try {
+                if (!$Pam->loginCheck($pam->mobile, $password)) {
+                    $this->fail($Pam->getError());
+                }
+                else {
+                    $this->assertTrue(true);
+                }
+            } catch (ApplicationException $e) {
+                $this->fail($e->getMessage());
             }
         }
         else {
             $this->fail($Pam->getError());
-        }
-    }
-
-    /**
-     * 输出变量
-     */
-    public function testOutput()
-    {
-        $pam       = $this->pam;
-        $variables = [
-            'id',
-            'username',
-            'mobile',
-            'email',
-            'parent_id',
-            'password',
-            'password_key',
-            'type',
-            'is_enable',
-            'disable_reason',
-            'disable_start_at',
-            'disable_end_at',
-            'login_times',
-            'login_ip',
-            'reg_ip',
-            'reg_platform',
-            'remember_token',
-            'created_at',
-            'logined_at',
-            'updated_at',
-        ];
-
-        foreach ($variables as $variable) {
-            $this->assertTrue(isset($pam->{$variable}), 'Error Key @ Pam : ' . $variable);
         }
     }
 }
