@@ -117,7 +117,8 @@ trait FixTrait
     {
         if ($this->fix['total']) {
             $percentage = round((($this->fix['total'] - $this->fix['left']) / $this->fix['total']) * 100);
-        } else {
+        }
+        else {
             $percentage = '0';
         }
 
@@ -148,7 +149,8 @@ trait FixTrait
     {
         if ($this->fix['total']) {
             $percentage = round((($this->fix['total'] - $this->fix['left']) / $this->fix['total']) * 100);
-        } else {
+        }
+        else {
             $percentage = 0;
         }
 

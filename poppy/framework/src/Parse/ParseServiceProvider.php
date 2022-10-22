@@ -2,18 +2,14 @@
 
 namespace Poppy\Framework\Parse;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
 /**
  * ParseServiceProvider
  */
-class ParseServiceProvider extends ServiceProvider
+class ParseServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-     * @var bool
-     */
-    protected $defer = true;
 
     /**
      * Register the service provider.
@@ -35,8 +31,7 @@ class ParseServiceProvider extends ServiceProvider
     }
 
     /**
-     * Get the services provided by the provider.
-     * @return array
+     * @inheritDoc
      */
     public function provides()
     {

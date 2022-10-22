@@ -2,15 +2,11 @@
 
 namespace Poppy\Extension\Alipay;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class ExtensionServiceProvider extends ServiceProvider
+class ExtensionServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-     * @var bool
-     */
-    protected $defer = true;
 
     /**
      * Bootstrap the application events.

@@ -6,11 +6,11 @@ use Poppy\Area\Commands\InitCommand;
 use Poppy\Area\Http\RouteServiceProvider;
 use Poppy\Framework\Events\PoppyOptimized;
 use Poppy\Framework\Exceptions\ModuleNotFoundException;
-use Poppy\Framework\Support\PoppyServiceProvider as ModuleServiceProviderBase;
+use Poppy\Framework\Support\PoppyServiceProvider;
 use Poppy\MgrPage\Classes\Form;
 use Poppy\MgrPage\Classes\Grid\Filter;
 
-class ServiceProvider extends ModuleServiceProviderBase
+class ServiceProvider extends PoppyServiceProvider
 {
     protected array $listens = [
         PoppyOptimized::class => [

@@ -12,17 +12,18 @@ use ReflectionException;
  */
 class LogViewer
 {
-    
+
     const MAX_FILE_SIZE = 20428800;
 
     /**
      * @var string file
      */
-    private static $file;
+    private static string $file;
+
     /**
      * @var array 级别样式
      */
-    private static $levelsClasses = [
+    private static array $levelsClasses = [
         'debug'     => 'info',
         'info'      => 'info',
         'notice'    => 'info',
@@ -32,10 +33,11 @@ class LogViewer
         'alert'     => 'danger',
         'emergency' => 'danger',
     ];
+
     /**
      * @var array 级别图片
      */
-    private static $levelsImgs = [
+    private static array $levelsImgs = [
         'debug'     => 'info',
         'info'      => 'info',
         'notice'    => 'info',
@@ -141,7 +143,6 @@ class LogViewer
 
     /**
      * @return array
-     * @throws ReflectionException
      */
     private static function getLogLevels()
     {

@@ -6,7 +6,6 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Poppy\Framework\Classes\Mocker;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Action\Apidoc;
-use Poppy\System\Classes\TestHelper;
 
 /**
  * 系统信息控制
@@ -56,7 +55,7 @@ class CoreController extends JwtApiController
         $doc  = new Apidoc();
         if ($content = $doc->local($type)) {
             return Resp::success('获取文档信息', [
-                'content' => $content
+                'content' => $content,
             ]);
         }
 
@@ -73,20 +72,6 @@ class CoreController extends JwtApiController
     public function mock()
     {
         $data = Mocker::generate(input('mock'), 'zh_CN');
-        return Resp::success('Success', $data);
-    }
-
-    /**
-     * @api                    {post} /api_v1/system/core/helper [Sys]帮助
-     * @apiVersion             1.0.0
-     * @apiName                SysCoreHelper
-     * @apiGroup               Poppy
-     * @apiQuery {string}      type   标识
-     */
-    public function helper()
-    {
-        $type = input('type');
-        $data = TestHelper::generate($type);
         return Resp::success('Success', $data);
     }
 }

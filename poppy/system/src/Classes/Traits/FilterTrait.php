@@ -31,7 +31,7 @@ trait FilterTrait
     }
 
     /**
-     * @param Model  $Db       数据对象
+     * @param Model           $Db       数据对象
      * @param string|\Closure $resource 资源
      * @param array           $append   增加
      * @return JsonResponse

@@ -2,13 +2,12 @@
 
 namespace Poppy\CanalEs;
 
-use Poppy\CanalEs\Commands\MonitorCommand;
 use Poppy\CanalEs\Commands\CreateIndexCommand;
 use Poppy\CanalEs\Commands\ImportCommand;
-use Poppy\Framework\Exceptions\ModuleNotFoundException;
-use Poppy\Framework\Support\PoppyServiceProvider as ModuleServiceProviderBase;
+use Poppy\CanalEs\Commands\MonitorCommand;
+use Poppy\Framework\Support\PoppyServiceProvider;
 
-class ServiceProvider extends ModuleServiceProviderBase
+class ServiceProvider extends PoppyServiceProvider
 {
 
     public function boot()

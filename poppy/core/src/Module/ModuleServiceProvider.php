@@ -2,17 +2,14 @@
 
 namespace Poppy\Core\Module;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
 /**
  * Class ModuleServiceProvider.
  */
-class ModuleServiceProvider extends ServiceProvider
+class ModuleServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * @var bool
-     */
-    protected $defer = true;
 
     /**
      * Register for service provider.

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Poppy\AliyunPush;
 
 use Poppy\Framework\Exceptions\ModuleNotFoundException;
-use Poppy\Framework\Support\PoppyServiceProvider as ModuleServiceProviderBase;
+use Poppy\Framework\Support\PoppyServiceProvider;
 
-class ServiceProvider extends ModuleServiceProviderBase
+class ServiceProvider extends PoppyServiceProvider
 {
 
     /**

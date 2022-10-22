@@ -7,12 +7,12 @@ namespace Poppy\System\Classes\Traits;
  */
 trait FieldFilterTrait
 {
-	/**
-	 * @param int $id 用户id
-	 * @return mixed
-	 */
-	public function account($id)
-	{
-		return $this->where('account_id', $id);
-	}
+    /**
+     * @param int $id 用户id
+     * @return mixed
+     */
+    public function account($id)
+    {
+        return $this->where('account_id', $id);
+    }
 }

@@ -3,11 +3,11 @@
 namespace Poppy\SensitiveWord;
 
 use Poppy\Framework\Exceptions\ModuleNotFoundException;
-use Poppy\Framework\Support\PoppyServiceProvider as ModuleServiceProviderBase;
+use Poppy\Framework\Support\PoppyServiceProvider;
 use Poppy\SensitiveWord\Commands\InitCommand;
 use Poppy\SensitiveWord\Http\RouteServiceProvider;
 
-class ServiceProvider extends ModuleServiceProviderBase
+class ServiceProvider extends PoppyServiceProvider
 {
 
     /**

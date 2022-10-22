@@ -3,13 +3,13 @@
 namespace Poppy\Sms;
 
 use Poppy\Framework\Exceptions\ModuleNotFoundException;
-use Poppy\Framework\Support\PoppyServiceProvider as ModuleServiceProviderBase;
+use Poppy\Framework\Support\PoppyServiceProvider;
 use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Classes\Contracts\SmsContract;
 use Poppy\Sms\Classes\Factory;
 use Poppy\Sms\Http\RouteServiceProvider;
 
-class ServiceProvider extends ModuleServiceProviderBase
+class ServiceProvider extends PoppyServiceProvider
 {
 
     /**
