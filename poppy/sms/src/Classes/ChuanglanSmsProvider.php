@@ -8,8 +8,10 @@ use Poppy\Sms\Classes\Contracts\SmsContract;
 
 class ChuanglanSmsProvider extends BaseSms implements SmsContract
 {
-    /** @var SmsApi */
-    private $clApi;
+    /**
+     * @var SmsApi
+     */
+    private SmsApi $clApi;
 
     /**
      * @inheritDoc

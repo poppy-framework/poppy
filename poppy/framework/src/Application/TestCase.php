@@ -2,10 +2,8 @@
 
 namespace Poppy\Framework\Application;
 
-use Faker\Generator;
-use Illuminate\Container\Container;
 use Illuminate\Contracts\Console\Kernel;
-use Poppy\Framework\Foundation\Application;
+use Poppy\Faker\Generator;
 use Poppy\Framework\Helper\UtilHelper;
 
 /**
@@ -49,7 +47,7 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
      * @param array|string $vars 需要输出的内容
      * @param string       $description
      */
-    protected function outputVariables($vars, $description = '')
+    protected function outputVariables($vars, string $description = '')
     {
         if ($description) {
             fwrite(STDOUT, print_r($description . ':' . PHP_EOL, true));
@@ -85,6 +83,6 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
 
     protected function faker(): Generator
     {
-        return app(Generator::class);
+        return py_faker();
     }
 }

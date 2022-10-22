@@ -142,6 +142,7 @@ return [
         Poppy\Framework\FrameworkServiceProvider::class,
 
         Poppy\CodeGenerator\ServiceProvider::class,
+        Poppy\Extension\IpStore\ExtensionServiceProvider::class,
     ],
 
     /*
@@ -189,7 +190,7 @@ return [
         'View'         => Illuminate\Support\Facades\View::class,
 
 
-        'Form'   => Poppy\MgrPage\Facade\FormFacade::class,
-        'Html'   => Collective\Html\HtmlFacade::class,
+        'Form' => Poppy\MgrPage\Facade\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 ];

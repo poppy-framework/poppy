@@ -21,11 +21,4 @@ class FieldTest extends SystemTestCase
         $text = new Text('', '');
         $this->assertEquals('text', $text->struct()['type']);
     }
-
-    public function testExtend()
-    {
-        $form = new FormWidget();
-        $form->text('my', 'o');
-        $form->frame();
-    }
 }

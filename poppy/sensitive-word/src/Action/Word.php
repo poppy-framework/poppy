@@ -11,21 +11,21 @@ use Poppy\System\Classes\Traits\PamTrait;
 use Validator;
 
 /**
- * 地区
+ * 敏感词表
  */
 class Word
 {
     use AppTrait, PamTrait;
 
     /**
-     * @var SysSensitiveWord
+     * @var SysSensitiveWord|null
      */
-    protected $item;
+    protected ?SysSensitiveWord $item = null;
 
     /**
      * @var string
      */
-    protected $wordTable;
+    protected string $wordTable;
 
     public function __construct()
     {
@@ -81,12 +81,12 @@ class Word
 
     /**
      * 删除数据
-     * @param array $id 敏感词id
+     * @param array|int $id 敏感词id
      * @return bool|null
-     * @throws Exception
      */
-    public function delete(array $id): bool
+    public function delete($id): bool
     {
+        $id = (array) $id;
         try {
             SysSensitiveWord::whereIn('id', $id)->delete();
             // 移除词典

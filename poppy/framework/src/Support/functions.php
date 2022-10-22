@@ -4,7 +4,6 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
 use Illuminate\Support\Str;
 use Poppy\Faker\Factory;
-use Poppy\Framework\Exceptions\FakerException;
 use Poppy\Framework\Foundation\Application;
 use Poppy\Framework\Foundation\Console\Kernel;
 use Poppy\Framework\Helper\HtmlHelper;
@@ -278,15 +277,15 @@ if (!function_exists('py_faker')) {
     /**
      * Get Console Container.
      * @return Poppy\Faker\Generator
-     * @throws FakerException
      */
-    function py_faker(): Poppy\Faker\Generator
+    function py_faker(): ?Poppy\Faker\Generator
     {
         if (class_exists('Poppy\Faker\Factory')) {
             return Factory::create('zh_CN');
         }
         else {
-            throw new FakerException('未安装扩展 `poppy/faker`, 无法生成假数据');
+            sys_error('poppy', __CLASS__, '未安装 `poppy/faker`, 无法生成假数据');
+            return null;
         }
     }
 }

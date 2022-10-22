@@ -10,34 +10,35 @@ class Words
     public const TYPE_CHECK   = 'check';
     public const TYPE_WORDS   = 'words';
     public const TYPE_REPLACE = 'replace';
-    /**
-     * 敏感词树
-     * @var null|HashMap
-     */
-    private $wordTree;
-
-    /**
-     * 敏感词
-     * @var array
-     */
-    private $illegalWords = [];
-
-    /**
-     * 检测所有敏感词
-     * @var bool $searchAllIllegal
-     */
-    private $searchAllIllegal = false;
-
-    /**
-     * 内容
-     * @var string $content
-     */
-    private $content = '';
 
     /**
      * @var self $instance
      */
     private static $instance;
+
+    /**
+     * 敏感词树
+     * @var null|HashMap
+     */
+    private ?HashMap $wordTree;
+
+    /**
+     * 敏感词
+     * @var array
+     */
+    private array $illegalWords = [];
+
+    /**
+     * 检测所有敏感词
+     * @var bool $searchAllIllegal
+     */
+    private bool $searchAllIllegal = false;
+
+    /**
+     * 内容
+     * @var string $content
+     */
+    private string $content = '';
 
     /**
      * @param $data

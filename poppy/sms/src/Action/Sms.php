@@ -28,13 +28,13 @@ class Sms
      * 所有的模版
      * @var Collection
      */
-    private $templates;
+    private Collection $templates;
 
     /**
      * 项目条目
      * @var array
      */
-    private $item;
+    private array $item;
 
     public function __construct()
     {
@@ -152,7 +152,7 @@ class Sms
      * @param bool        $check_key 检测key是否存在
      * @return array|string
      */
-    public static function kvType($key = null, $check_key = false)
+    public static function kvType(string $key = null, bool $check_key = false)
     {
         $desc = collect(config('poppy.sms.types') ?: [])->pluck('title', 'type')->toArray();
         return kv($desc, $key, $check_key);
@@ -164,9 +164,9 @@ class Sms
      * @param false       $check_key
      * @return array|bool|string
      */
-    public static function kvPlatform($key = null, $check_key = false)
+    public static function kvPlatform(string $key = null, bool $check_key = false)
     {
-        $sendTypes = sys_hook('poppy.sms.send_type');
+        $sendTypes     = sys_hook('poppy.sms.send_type');
         $desc['local'] = '本地';
         foreach ($sendTypes as $k => $d) {
             $desc[$k] = $d['title'];

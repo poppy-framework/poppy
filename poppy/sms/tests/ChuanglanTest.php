@@ -17,7 +17,7 @@ class ChuanglanTest extends BaseSms
         // config
         config([
             'poppy.sms.send_type'                   => Sms::SCOPE_CHUANGLAN,
-            'poppy.sms.sign'                        => data_get($this->conf, 'chuanglan_sign'),
+            'poppy.sms.sign'                        => (string) data_get($this->conf, 'chuanglan_sign'),
             'poppy.sms.chuanglan.access_key'        => data_get($this->conf, 'chuanglan_access_key'),
             'poppy.sms.chuanglan.access_secret'     => data_get($this->conf, 'chuanglan_access_secret'),
             'poppy.sms.chuanglan.cty_access_key'    => data_get($this->conf, 'chuanglan_cty_access_key'),

@@ -12,13 +12,13 @@ abstract class BaseSms
     /**
      * @var array 短信
      */
-    protected $sms;
+    protected array $sms;
 
     /**
      * 短信签名
      * @var string
      */
-    protected $sign;
+    protected string $sign;
 
     /**
      * 检查短信是否为空

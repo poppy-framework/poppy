@@ -263,9 +263,9 @@ class RdsZSetTest extends RdsBaseTest
         $this->rds->del($key);
         $range = range(1, 200);
         $add   = [];
-        foreach ($range as $value) {
-            $username       = $this->faker()->userName;
-            $add[$username] = $value;
+        foreach ($range as $i => $value) {
+            $username                  = $this->faker()->userName;
+            $add[$username . '-' . $i] = $value;
         }
         $this->rds->zAdd($key, $add);
 

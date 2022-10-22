@@ -1,7 +1,7 @@
 <?php
 
 use Demo\Models\DemoComment;
-use Faker\Generator as Faker;
+use Poppy\Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 
 // php artisan poppy:seed module.demo --class='\Demo\Database\Seeds\DemoUserDatabaseSeeder'

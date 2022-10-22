@@ -71,7 +71,7 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
                 return true;
             }
             return $this->setError('Aliyun:' . $resp['Message']);
-        } catch (ClientException | ServerException $e) {
+        } catch (ClientException|ServerException $e) {
             return $this->setError($e->getErrorMessage());
         } catch (SmsException $e) {
             return $this->setError($e->getMessage());

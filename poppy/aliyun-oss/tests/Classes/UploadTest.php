@@ -1,8 +1,9 @@
 <?php
 
-namespace Poppy\AliyunOss\Tests;
+namespace Poppy\AliyunOss\Tests\Classes;
 
 use Poppy\AliyunOss\Classes\Provider\OssFileProvider;
+use Poppy\AliyunOss\Tests\Testing\TestingAliyunOss;
 use Poppy\Framework\Application\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Throwable;
@@ -16,17 +17,14 @@ class UploadTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $filePath = dirname(__DIR__) . '/tests/config/account.test.json';
-        $config   = file_get_contents($filePath);
-        $arrConf  = json_decode($config, true);
-
+        $config = TestingAliyunOss::config();
         // config
         config([
-            'poppy.aliyun-oss.access_key'    => $arrConf['access_key'],
-            'poppy.aliyun-oss.access_secret' => $arrConf['access_secret'],
-            'poppy.aliyun-oss.bucket'        => $arrConf['bucket'],
-            'poppy.aliyun-oss.url'           => $arrConf['url'],
-            'poppy.aliyun-oss.endpoint'      => $arrConf['endpoint'],
+            'poppy.aliyun-oss.access_key'    => $config['access_key'],
+            'poppy.aliyun-oss.access_secret' => $config['access_secret'],
+            'poppy.aliyun-oss.bucket'        => $config['bucket'],
+            'poppy.aliyun-oss.url'           => $config['url_prefix'],
+            'poppy.aliyun-oss.endpoint'      => $config['endpoint'],
         ]);
     }
 
@@ -44,7 +42,7 @@ class UploadTest extends TestCase
 
             // 检测文件存在
             $url = $Upload->getUrl();
-            if ($content = file_get_contents($url)) {
+            if (file_get_contents($url)) {
                 $this->outputVariables($url);
                 $this->assertTrue(true);
             }

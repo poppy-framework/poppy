@@ -2,23 +2,19 @@
 
 namespace Poppy\System\Setting;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Poppy\Core\Classes\Contracts\SettingContract;
 use Poppy\System\Setting\Repository\SettingRepository;
 
-class SettingServiceProvider extends ServiceProvider
+class SettingServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * @var bool
-     */
-    protected $defer = true;
-
     /**
      * @return array
      */
     public function provides(): array
     {
-        return ['poppy.system.setting'];
+        return ['poppy.system.setting', SettingContract::class];
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Poppy\Extension\IpStore;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Poppy\Extension\IpStore\Classes\Contracts\IpContract;
 
@@ -13,21 +14,8 @@ use Poppy\Extension\IpStore\Classes\Contracts\IpContract;
 | mon17   :  https://www.ipip.net/
 */
 
-class ExtensionServiceProvider extends ServiceProvider
+class ExtensionServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
-     * Bootstrap the application events.
-     * @return void
-     */
-    public function boot()
-    {
-    }
 
     /**
      * Register the service provider.
@@ -44,7 +32,7 @@ class ExtensionServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['poppy.ext.ip_store'];
+        return ['poppy.ext.ip_store', IpContract::class];
     }
 
     private function registerIp()

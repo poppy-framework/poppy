@@ -30,36 +30,36 @@ class Sts
      * 子用户的key
      * @var string
      */
-    private $tempAppKey;
+    private string $tempAppKey;
 
     /**
      * 子用户的密钥
      * @var string
      */
-    private $tempAppSecret;
+    private string $tempAppSecret;
 
     /**
      * @var string
      */
-    private $bucket;
+    private string $bucket;
 
     /**
      * @var string
      */
-    private $endpoint;
+    private string $endpoint;
 
     /**
      * 角色资源描述符，在RAM的控制台的资源详情页上可以获取
      * @url https://ram.console.aliyun.com/#/role/list
      */
-    private $roleArn;
+    private string $roleArn;
 
 
     /**
      * 子目录
      * @var string
      */
-    private $subDirectory = '';
+    private string $subDirectory = '';
 
     /**
      * @return array 获取临时授权
@@ -69,7 +69,16 @@ class Sts
         return $this->tempKey;
     }
 
-    public function setConfig($app_key, $app_secret, $bucket, $endpoint, $role_arn, $url_prefix = '')
+    /**
+     * @param string $app_key
+     * @param string $app_secret
+     * @param string $bucket
+     * @param string $endpoint
+     * @param string $role_arn
+     * @param string $url_prefix
+     * @return void
+     */
+    public function setConfig(string $app_key, string $app_secret, string $bucket, string $endpoint, string $role_arn, string $url_prefix = '')
     {
         $this->tempAppKey    = $app_key;
         $this->tempAppSecret = $app_secret;

@@ -3,7 +3,6 @@
 namespace Poppy\Sms\Classes;
 
 use Poppy\Framework\Classes\Traits\AppTrait;
-use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Sms\Classes\Contracts\SmsContract;
 use SimpleXMLElement;
 
@@ -11,13 +10,12 @@ class Factory
 {
 
     /**
-     * @var SmsContract
+     * @var SmsContract|null
      */
-    private static $instance;
+    private static ?SmsContract $instance = null;
 
     /**
      * @return mixed|SimpleXMLElement
-     * @throws ApplicationException
      */
     public static function instance(): BaseSms
     {

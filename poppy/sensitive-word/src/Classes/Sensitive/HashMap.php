@@ -13,14 +13,14 @@ class HashMap implements HashMapContract
     /**
      * @var array $hashTable
      */
-    protected $hashTable = [];
+    protected array $hashTable = [];
 
     /**
      * @param string $key   key
      * @param mixed  $value value
      * @return mixed
      */
-    public function put(string $key, $value)
+    public function put(string $key, $value): self
     {
         $this->hashTable[$key] = $value;
 
@@ -31,7 +31,7 @@ class HashMap implements HashMapContract
      * @param string $key key
      * @return mixed|null
      */
-    public function get($key)
+    public function get(string $key)
     {
         if (array_key_exists($key, $this->hashTable)) {
             return $this->hashTable[$key];

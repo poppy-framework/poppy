@@ -2,13 +2,14 @@
 
 namespace Poppy\SensitiveWord\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 地区表
- *
+ * 敏感词表
  * @property int    $id
  * @property string $word      文字
+ * @mixin Eloquent
  */
 class SysSensitiveWord extends Model
 {

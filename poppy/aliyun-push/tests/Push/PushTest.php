@@ -27,19 +27,29 @@ class PushTest extends SystemTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $conf = $this->readJson('poppy.aliyun-push', 'tests/config/account.test.json');
-
         // config
         app('config')->set([
-            'poppy.aliyun-push.access_key'       => $conf['access_key'],
-            'poppy.aliyun-push.access_secret'    => $conf['access_secret'],
-            'poppy.aliyun-push.android_app_key'  => $conf['android_app_key'],
-            'poppy.aliyun-push.ios_app_key'      => $conf['ios_app_key'],
-            'poppy.aliyun-push.android_activity' => $conf['android_activity'],
-            'poppy.aliyun-push.android_channel'  => $conf['android_channel'],
-            'poppy.aliyun-push.ios_is_open'      => $conf['ios_is_open'],
-            'poppy.aliyun-push.android_is_open'  => $conf['android_is_open'],
-            'poppy.aliyun-push.registration_ids' => $conf['registration_ids'],
+            'poppy.aliyun-push.access_key'       => sys_setting('py-aliyun-push::push.access_key'),
+            'poppy.aliyun-push.access_secret'    => sys_setting('py-aliyun-push::push.access_secret'),
+            'poppy.aliyun-push.android_app_key'  => sys_setting('py-aliyun-push::push.android_app_key'),
+            'poppy.aliyun-push.ios_app_key'      => sys_setting('py-aliyun-push::push.ios_app_key'),
+            'poppy.aliyun-push.android_activity' => sys_setting('py-aliyun-push::push.android_activity'),
+            'poppy.aliyun-push.android_channel'  => sys_setting('py-aliyun-push::push.android_channel'),
+            'poppy.aliyun-push.ios_is_open'      => sys_setting('py-aliyun-push::push.ios_is_open'),
+            'poppy.aliyun-push.android_is_open'  => sys_setting('py-aliyun-push::push.android_is_open'),
+            'poppy.aliyun-push.registration_ids' => [
+                'ios'     => [
+                    'd733ae6c57754f22a4de519e0eafe816',
+                    'ddc547251d204e98ab1c664dc44b50ba',
+                    'b59f5b4cfc764599843f277e1a092adb',
+                ],
+                'android' => [
+                    'daa0b0b2887f4f1fb4c1084d06a729f6',
+                    'c7e36ac34833a66e7722f8cfde5b9256',
+                    '7408a80f8dd04f5c809ec34f544e9019',
+                    '7d04dd3d071641d4a2bd5d5b7dcecb21',
+                ],
+            ],
         ]);
     }
 
