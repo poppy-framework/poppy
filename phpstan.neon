@@ -1,5 +1,5 @@
 includes:
-    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./poppy/ext-phpstan/extension.neon
 parameters:
 	level: 1
 	paths:
@@ -9,6 +9,6 @@ parameters:
 		- '#Unsafe usage of new static#'
 
 	excludePaths:
-		- ./*/*/FileToBeExcluded.php
+		- poppy/ext-phpstan
 
 	checkMissingIterableValueType: false

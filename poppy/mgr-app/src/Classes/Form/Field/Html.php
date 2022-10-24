@@ -16,11 +16,6 @@ class Html extends FormItem
     protected $html = '';
 
     /**
-     * @var string
-     */
-    protected $label = '';
-
-    /**
      * @var bool
      */
     protected $plain = false;
@@ -33,8 +28,7 @@ class Html extends FormItem
      */
     public function __construct($html, $arguments)
     {
-        $this->html = $html;
-
+        $this->html  = $html;
         $this->label = Arr::get($arguments, 0);
     }
 

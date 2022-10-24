@@ -1,0 +1,62 @@
+{
+    "name": "poppy/ext-phpstan",
+    "type": "phpstan-extension",
+    "description": "Poppy phpstan extension for laravel - Discover bugs in your code without running it. A phpstan/phpstan wrapper for Poppy",
+    "keywords": [
+        "laravel",
+        "phpstan",
+        "php",
+        "package",
+        "static analysis",
+        "code analysis",
+        "code analyse"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nuno Maduro",
+            "email": "enunomaduro@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2 || ^8.0",
+        "ext-json": "*",
+        "symfony/process": "^4.3 || ^5.0 || ^6.0",
+        "hamcrest/hamcrest-php": "^2.0.1",
+        "mockery/mockery": "^1.5.1"
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Poppy\\Extension\\Phpstan\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
+        "phpstan": {
+            "includes": [
+                "extension.neon"
+            ]
+        }
+    },
+    "scripts": {
+        "test:types": "phpstan analyse --ansi",
+        "test:unit": "phpunit --colors=always",
+        "test": [
+            "@test:types",
+            "@test:unit"
+        ]
+    }
+}

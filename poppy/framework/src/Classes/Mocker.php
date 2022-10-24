@@ -2,10 +2,10 @@
 
 namespace Poppy\Framework\Classes;
 
-use Faker\Factory;
-use Faker\Generator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Poppy\Faker\Factory;
+use Poppy\Faker\Generator;
 use Poppy\Framework\Helper\UtilHelper;
 use Throwable;
 

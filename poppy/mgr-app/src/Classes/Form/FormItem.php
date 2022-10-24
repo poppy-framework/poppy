@@ -43,7 +43,7 @@ abstract class FormItem implements Structable
     /**
      * @var string 标签
      */
-    protected string $label;
+    protected string $label = '';
 
     /**
      * 字段名字

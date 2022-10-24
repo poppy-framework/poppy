@@ -41,15 +41,15 @@
         "mlocati/ip-lib": "^1.16",
         "guzzlehttp/guzzle": "^7.3",
         "overtrue/pinyin": "^4.0",
-        "ovidigital/js-object-to-json": "^1.0"
+        "ovidigital/js-object-to-json": "^1.0",
+        "hamcrest/hamcrest-php": "^2.0.1",
+        "mockery/mockery": "^1.5.1"
     },
     "require-dev": {
         "itsgoingd/clockwork": "^5.1",
         "barryvdh/laravel-ide-helper": "2.8.*",
         "doctrine/dbal": "^2.6",
-        "kitloong/laravel-migrations-generator": "^5.2",
-        "nunomaduro/larastan": "^1.0",
-        "orchestra/testbench": "^4.0"
+        "kitloong/laravel-migrations-generator": "^5.2"
     },
     "autoload": {
         "psr-4": {
@@ -57,8 +57,8 @@
             "Poppy\\Extension\\Alipay\\Tests\\": "poppy/ext-alipay/tests",
             "Poppy\\Extension\\IpStore\\": "poppy/ext-ip_store/src",
             "Poppy\\Extension\\IpStore\\Tests\\": "poppy/ext-ip_store/tests",
+            "Poppy\\Extension\\Phpstan\\": "poppy/ext-phpstan/src",
             "Poppy\\Faker\\": "poppy/faker/src",
-            "Faker\\": "poppy/faker/src/Faker",
             "Poppy\\Faker\\Tests\\": "poppy/faker/tests",
             "Poppy\\Framework\\": "poppy/framework/src",
             "Poppy\\Framework\\Tests\\": "poppy/framework/tests",
@@ -139,7 +139,8 @@
             "git subtree push --prefix=poppy/ext-ip_store  codeup-ext-ip_store 4.0",
             "git subtree push --prefix=poppy/ad  codeup-ad 4.0",
             "git subtree push --prefix=poppy/canal-es  codeup-canal-es 4.0",
-            "git subtree push --prefix=poppy/code-generator codeup-code-generator 4.0"
+            "git subtree push --prefix=poppy/code-generator codeup-code-generator 4.0",
+            "git subtree push --prefix=poppy/ext-phpstan codeup-ext-phpstan 4.0"
         ],
         "github": [
             "git subtree push --prefix=poppy/system  gh-system 4.0",

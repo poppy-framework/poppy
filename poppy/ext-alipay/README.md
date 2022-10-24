@@ -3,7 +3,7 @@
 ## 安装
 
 ```
-composer require poppy/ext-alipay 3.2
+composer require poppy/ext-alipay 4.0-dev
 ```
 
 更新你的依赖包 `composer update` 或者全新安装 `composer install`

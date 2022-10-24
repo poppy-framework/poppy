@@ -72,6 +72,6 @@ abstract class GridAction extends Action
      */
     protected function modelUseSoftDeletes($modelClass)
     {
-        return in_array(SoftDeletes::class, class_uses_deep($modelClass));
+        return in_array(SoftDeletes::class, $modelClass);
     }
 }

@@ -135,14 +135,6 @@ abstract class Action implements Renderable
     }
 
     /**
-     * @return string
-     */
-    public function getHandleRoute()
-    {
-        return admin_url('_handle_action_');
-    }
-
-    /**
      * @return array
      */
     public function parameters()
