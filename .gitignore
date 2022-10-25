@@ -51,7 +51,6 @@ Thumbs.db
 .sass-cache
 /vendor
 /storage/framework/*.php
-.phpunit.cache
 /public/uploads/*
 modules/op/tests/files/account.json
 /public/dev/*
@@ -66,6 +65,7 @@ _ide_helper_models.php
 .phpstorm.meta.php
 .phpunit.result.cache
 /storage/clockwork/
-/resources/http/http-client.private.env.json
 /storage/phpunit/
+/storage/phpstan/
+/resources/http/http-client.private.env.json
 

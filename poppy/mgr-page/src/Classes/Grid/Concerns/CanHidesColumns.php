@@ -5,7 +5,6 @@ namespace Poppy\MgrPage\Classes\Grid\Concerns;
 use Illuminate\Support\Collection;
 use Poppy\MgrPage\Classes\Grid;
 use Poppy\MgrPage\Classes\Grid\Column;
-use Poppy\MgrPage\Classes\Grid\Tools\ColumnSelector;
 use function collect;
 
 trait CanHidesColumns
@@ -121,9 +120,6 @@ trait CanHidesColumns
      */
     protected function getVisibleColumnsFromQuery()
     {
-        $columns = explode(',', request(ColumnSelector::SELECT_COLUMN_NAME));
-
-        return array_filter($columns) ?:
-            array_values(array_diff($this->columnNames, $this->hiddenColumns));
+        return array_values(array_diff($this->columnNames, $this->hiddenColumns));
     }
 }

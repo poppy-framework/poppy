@@ -39,6 +39,10 @@ class ListPoppyDemo extends ListBase
         $this->column('hide-email', '邮箱(隐藏显示)')->width(150)->display(function () {
             return StrHelper::hideEmail(data_get($this, 'email'));
         });
+
+        $this->column('qr', '邮箱二维码')->width(150)->qrcode(function ($value, $row) {
+            return data_get($row, 'email');
+        });
         // 邮箱
         $this->column('email', '头像[gravatar]')->gravatar()->width(130);
 

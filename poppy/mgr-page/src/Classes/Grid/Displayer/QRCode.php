@@ -2,7 +2,7 @@
 
 namespace Poppy\MgrPage\Classes\Grid\Displayer;
 
-use Illuminate\Support\Str;
+use Closure;
 
 /**
  * Class QRCode.
@@ -13,25 +13,16 @@ class QRCode extends AbstractDisplayer
     {
         $content = $this->getValue();
 
-        if ($formatter instanceof \Closure) {
+        if ($formatter instanceof Closure) {
             $content = call_user_func($formatter, $content, $this->row);
         }
 
         $img = sprintf(
-            "https://api.qrserver.com/v1/create-qr-code/?size=%sx%s&data=%s",
-            $width, $height, $content
+            "https://cli.im/api/qrcode/code?text=%s",
+            rawurlencode($content)
         );
-
-        $id = 'qr-'.Str::random();
-        $dialogWidth = $width + 50;
-        $dialogHeight = $width + 120;
         return <<<HTML
-<script type="text/tmplate" id="$id">
-<div style="text-align:center">
-    <img src="$img" style="max-height:{$height}px;max-width:{$width}px;" title="二维码"/>
-</div>
-</script>
-<a href="javascript:void(0);" class="J_dialog" data-element="#$id" data-width="$dialogWidth" data-height="$dialogHeight">
+<a href="{$img}" class="J_iframe" data-width="600" data-height="600">
     <i class="fa fa-qrcode"></i>
 </a>&nbsp
 HTML;

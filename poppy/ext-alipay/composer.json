@@ -11,7 +11,8 @@
 	],
 	"require": {
 		"php": ">=7.4",
-		"ext-libxml": "*"
+		"ext-libxml": "*",
+		"ext-mcrypt": "*"
 	},
 	"autoload": {
 		"psr-4": {

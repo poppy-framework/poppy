@@ -6,8 +6,9 @@ use Poppy\System\Classes\File\DefaultFileProvider;
 
 /**
  * 图片上传类
- * @deprecated
- * @see DefaultFileProvider
+ * @see        DefaultFileProvider
+ * @deprecated 4.0-dev
+ * @removed    4.0.0
  */
 class DefaultUploadProvider extends DefaultFileProvider
 {

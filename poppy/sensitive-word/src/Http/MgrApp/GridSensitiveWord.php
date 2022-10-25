@@ -23,8 +23,7 @@ class GridSensitiveWord extends GridBase
         $table->add('id', "ID")->sortable()->quickId();
         $table->add('word', "敏感词");
         $table->add('handle', '操作')->asAction(function (GridActions $actions) {
-            /** @var $this Render */
-            $row = $this->getRow();
+            $row = $actions->getRow();
             $actions->quickIcon();
             $actions->request('删除', route_url('py-sensitive-word:api-backend.word.delete', data_get($row, 'id')))
                 ->icon('Close')->danger();

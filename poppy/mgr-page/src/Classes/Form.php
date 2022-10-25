@@ -229,7 +229,7 @@ class Form implements Renderable
      * Create a new form instance.
      *
      * @param          $model
-     * @param Closure $callback
+     * @param Closure  $callback
      */
     public function __construct($model, Closure $callback = null)
     {
@@ -302,7 +302,7 @@ class Form implements Renderable
     /**
      * Use tab to split form.
      *
-     * @param string $title
+     * @param string  $title
      * @param Closure $content
      *
      * @return $this
@@ -424,7 +424,7 @@ class Form implements Renderable
     /**
      * Handle update.
      *
-     * @param int $id
+     * @param int  $id
      * @param null $data
      *
      * @return bool|ResponseFactory|JsonResponse|RedirectResponse|\Illuminate\Http\Response|mixed|null|Response
@@ -499,27 +499,6 @@ class Form implements Renderable
         $this->ignored = array_merge($this->ignored, (array) $fields);
 
         return $this;
-    }
-
-    /**
-     * Add a fieldset to form.
-     *
-     * @param string $title
-     * @param Closure $setCallback
-     *
-     * @return Fieldset
-     */
-    public function fieldset(string $title, Closure $setCallback)
-    {
-        $fieldset = new Fieldset();
-
-        $this->html($fieldset->start($title))->plain();
-
-        $setCallback($this);
-
-        $this->html($fieldset->end())->plain();
-
-        return $fieldset;
     }
 
     /**
@@ -795,7 +774,7 @@ class Form implements Renderable
      * Get or set input data.
      *
      * @param string $key
-     * @param null $value
+     * @param null   $value
      *
      * @return array|mixed
      */
@@ -811,7 +790,7 @@ class Form implements Renderable
     /**
      * Add a new layout column.
      *
-     * @param int $width
+     * @param int     $width
      * @param Closure $closure
      *
      * @return $this
@@ -841,7 +820,7 @@ class Form implements Renderable
      * Setter.
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return array
      */
@@ -854,7 +833,7 @@ class Form implements Renderable
      * Generate a Field object and add to form builder if Field exists.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return Field
      */
@@ -999,7 +978,7 @@ class Form implements Renderable
      * Remove files in record.
      *
      * @param Model $model
-     * @param bool $forceDelete
+     * @param bool  $forceDelete
      */
     protected function deleteFiles(Model $model, $forceDelete = false)
     {
@@ -1194,7 +1173,7 @@ class Form implements Renderable
     /**
      * Handle updates for single column.
      *
-     * @param int $id
+     * @param int   $id
      * @param array $data
      *
      * @return array|ResponseFactory|\Illuminate\Http\Response|Response
@@ -1283,7 +1262,7 @@ class Form implements Renderable
     /**
      * Handle orderable update.
      *
-     * @param int $id
+     * @param int   $id
      * @param array $input
      *
      * @return bool
@@ -1422,7 +1401,7 @@ class Form implements Renderable
      * Prepare input data for update.
      *
      * @param array $updates
-     * @param bool $oneToOneRelation If column is one-to-one relation.
+     * @param bool  $oneToOneRelation If column is one-to-one relation.
      *
      * @return array
      */
@@ -1462,7 +1441,7 @@ class Form implements Renderable
 
     /**
      * @param string|array $columns
-     * @param bool $containsDot
+     * @param bool         $containsDot
      *
      * @return bool
      */
@@ -1532,7 +1511,7 @@ class Form implements Renderable
     }
 
     /**
-     * @param array $data
+     * @param array        $data
      * @param string|array $columns
      *
      * @return array|mixed
