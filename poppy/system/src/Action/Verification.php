@@ -23,25 +23,25 @@ class Verification
     const TYPE_MOBILE = 'mobile';
 
     /**
-     * @var string
+     * @var RdsDb
      */
-    private $captcha;
+    private static $db;
+
     /**
      * @var string
      */
-    private $passportKey;
+    private string $captcha;
+
+    /**
+     * @var string
+     */
+    private string $passportKey;
 
     /**
      * 隐藏的数据
      * @var mixed
      */
     private $hidden;
-
-    /**
-     * @var RdsDb
-     */
-    private static $db;
-
 
     public function __construct()
     {
@@ -160,7 +160,7 @@ class Verification
      * @param string|array $hidden_str  隐藏的验证字串
      * @return string
      */
-    public function genOnceVerifyCode($expired_min = 10, $hidden_str = ''): string
+    public function genOnceVerifyCode(int $expired_min = 10, $hidden_str = ''): string
     {
         $randStr = Str::random();
 
@@ -181,9 +181,9 @@ class Verification
      * @param bool   $forget 是否删除验证码
      * @return bool
      */
-    public function verifyOnceCode(string $code, $forget = true): bool
+    public function verifyOnceCode(string $code, bool $forget = true): bool
     {
-        if ($data = self::$db->get(PySystemDef::ckTagVerificationOnce() . ':' . $code, true)) {
+        if ($data = self::$db->get(PySystemDef::ckTagVerificationOnce() . ':' . $code)) {
             $this->hidden = unserialize($data['hidden']);
             if ($forget) {
                 self::$db->del(PySystemDef::ckTagVerificationOnce() . ':' . $code);
@@ -197,6 +197,51 @@ class Verification
     {
         self::$db->del(PySystemDef::ckTagVerificationOnce() . ':' . $code);
         return true;
+    }
+
+    /**
+     * @param string       $key
+     * @param int          $expired_min 过期时间
+     * @param string|array $word
+     */
+    public function saveWord(string $key, $word = '', int $expired_min = 5): void
+    {
+        if (!is_array($word)) {
+            $word = (string) $word;
+        }
+        self::$db->set(PySystemDef::ckTagVerificationWord() . ':' . $key, $word, 'ex', $expired_min * 60);
+    }
+
+    /**
+     * 验证校验值, 不进行删除
+     * @param string       $key  验证KEy
+     * @param string|array $word 验证值
+     * @return bool
+     */
+    public function verifyWord(string $key, $word = ''): bool
+    {
+        if (!is_array($word)) {
+            $word = (string) $word;
+        }
+        if (!$word) {
+            return $this->setError('请输入校验值');
+        }
+
+        if ($data = self::$db->get(PySystemDef::ckTagVerificationWord() . ':' . $key)) {
+            if ($data === $word) {
+                return true;
+            }
+        }
+        return $this->setError('校验值填写错误');
+    }
+
+    /**
+     * 删除验证数据
+     * @param string $key
+     */
+    public function removeWord(string $key)
+    {
+        self::$db->del(PySystemDef::ckTagVerificationWord() . ':' . $key);
     }
 
 

@@ -49,4 +49,26 @@ class VerificationTest extends SystemTestCase
         $Verification->verifyOnceCode($onceCode, false);
         $this->assertEquals($hidden, $Verification->getHidden());
     }
+
+    /**
+     * 验证存储的值
+     */
+    public function testWord()
+    {
+        $Verification = new Verification();
+        $str          = 'once-code';
+        $key          = '1-2-3';
+        // 存在, 成功
+        $Verification->saveWord($key, $str);
+        $this->assertTrue($Verification->verifyWord($key, $str), $Verification->getError());
+
+        // 不存在, 失败
+        $Verification->removeWord($key);
+        $this->assertFalse($Verification->verifyWord($key, $str), $Verification->getError());
+
+        // 支持数组隐藏
+        $str = ['a', 'b'];
+        $Verification->saveWord($key, $str);
+        $this->assertTrue($Verification->verifyWord($key, $str), $Verification->getError());
+    }
 }

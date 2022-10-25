@@ -42,6 +42,15 @@ class PySystemDef
     }
 
     /**
+     * 自定义验证
+     * @return string
+     */
+    public static function ckTagVerificationWord(): string
+    {
+        return 'tag:py-system:verification-word';
+    }
+
+    /**
      * 验证码
      * @return string
      */
