@@ -10,9 +10,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Poppy\Framework\Helper\ArrayHelper;
-use function __;
-use function request;
-use function view;
 
 class Selector implements Renderable
 {

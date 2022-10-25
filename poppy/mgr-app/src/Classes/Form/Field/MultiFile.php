@@ -3,7 +3,6 @@
 namespace Poppy\MgrApp\Classes\Form\Field;
 
 use Illuminate\Support\Str;
-use function collect;
 
 class MultiFile extends File
 {

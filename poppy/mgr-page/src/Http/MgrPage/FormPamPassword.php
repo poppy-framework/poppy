@@ -9,10 +9,6 @@ use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Pam;
 use Poppy\System\Models\PamAccount;
-use function input;
-use function is_post;
-use function request;
-use function sys_is_demo;
 
 class FormPamPassword extends FormWidget
 {

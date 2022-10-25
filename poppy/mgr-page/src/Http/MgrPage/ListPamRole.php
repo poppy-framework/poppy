@@ -11,7 +11,6 @@ use Poppy\MgrPage\Classes\Grid\ListBase;
 use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
-use function route;
 
 class ListPamRole extends ListBase
 {

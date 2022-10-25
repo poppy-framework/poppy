@@ -33,10 +33,6 @@ use Poppy\MgrPage\Classes\Grid\Filter\Where;
 use Poppy\MgrPage\Classes\Grid\Filter\Year;
 use Poppy\MgrPage\Classes\Grid\Tools\FilterButton;
 use Throwable;
-use function collect;
-use function request;
-use function tap;
-use function view;
 
 /**
  * 筛选器

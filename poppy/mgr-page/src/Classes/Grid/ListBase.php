@@ -18,9 +18,6 @@ use Illuminate\Support\Traits\Macroable;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
 use Poppy\System\Models\PamAccount;
-use function app;
-use function collect;
-use function tap;
 
 abstract class ListBase implements ListContract
 {

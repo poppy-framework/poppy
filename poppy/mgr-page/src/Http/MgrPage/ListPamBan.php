@@ -12,10 +12,6 @@ use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamBan;
 use Poppy\System\Models\SysConfig;
-use function input;
-use function route;
-use function route_url;
-use function sys_setting;
 
 class ListPamBan extends ListBase
 {

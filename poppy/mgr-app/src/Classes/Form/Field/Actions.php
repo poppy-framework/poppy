@@ -5,7 +5,6 @@ namespace Poppy\MgrApp\Classes\Form\Field;
 use Poppy\MgrApp\Classes\Action\Action;
 use Poppy\MgrApp\Classes\Action\PageAction;
 use Poppy\MgrApp\Classes\Form\FormItem;
-use function tap;
 
 class Actions extends FormItem
 {

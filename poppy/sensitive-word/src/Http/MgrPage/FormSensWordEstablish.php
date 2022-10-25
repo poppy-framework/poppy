@@ -5,7 +5,6 @@ namespace Poppy\SensitiveWord\Http\MgrPage;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\SensitiveWord\Action\Word;
-use function input;
 
 class FormSensWordEstablish extends FormWidget
 {

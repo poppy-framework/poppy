@@ -8,7 +8,6 @@ use Poppy\Framework\Validation\Rule;
 use Poppy\MgrApp\Classes\Widgets\FormWidget;
 use Poppy\Sms\Action\Sms;
 use Poppy\System\Classes\Traits\PamTrait;
-use function input;
 
 class FormSmsEstablish extends FormWidget
 {

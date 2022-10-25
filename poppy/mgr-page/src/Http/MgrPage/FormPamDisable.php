@@ -8,8 +8,6 @@ use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Pam;
 use Poppy\System\Models\PamAccount;
-use function input;
-use function request;
 
 class FormPamDisable extends FormWidget
 {

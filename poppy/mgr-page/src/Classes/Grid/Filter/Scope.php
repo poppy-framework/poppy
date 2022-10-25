@@ -5,8 +5,6 @@ namespace Poppy\MgrPage\Classes\Grid\Filter;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use function input;
-use function request;
 
 class Scope implements Renderable
 {

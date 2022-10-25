@@ -16,9 +16,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Poppy\MgrPage\Classes\Grid;
-use function collect;
-use function redirect;
-use function request;
 
 class Model
 {

@@ -25,9 +25,6 @@ use Poppy\MgrPage\Classes\Grid\Displayer\ProgressBar;
 use Poppy\MgrPage\Classes\Grid\Displayer\QRCode;
 use Poppy\MgrPage\Classes\Grid\Displayer\Suffix;
 use Poppy\MgrPage\Classes\Grid\Displayer\SwitchDisplay;
-use function request;
-use function sys_debug;
-use function view;
 
 /**
  * Class Column.

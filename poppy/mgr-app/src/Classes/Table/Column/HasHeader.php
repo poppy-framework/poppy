@@ -5,8 +5,6 @@ namespace Poppy\MgrApp\Classes\Table\Column;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use Poppy\MgrApp\Classes\Grid\Query\QueryModel;
-use function collect;
-use function request;
 
 trait HasHeader
 {

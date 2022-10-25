@@ -7,7 +7,6 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Poppy\MgrPage\Classes\Form\Field;
-use function collect;
 
 class Tags extends Field
 {

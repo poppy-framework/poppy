@@ -47,10 +47,10 @@ class SmsController extends BackendController
 
     /**
      * 短信模板c2e
-     * @param null|int $id
+     * @param null|string $id
      * @return Factory|JsonResponse|RedirectResponse|Response|View
      */
-    public function establish(int $id = null)
+    public function establish(string $id = null)
     {
         $Sms = $this->action();
         if (is_post()) {
@@ -74,10 +74,10 @@ class SmsController extends BackendController
 
     /**
      * 删除短信模板
-     * @param null|int $id id
+     * @param null|string $id id
      * @return JsonResponse|RedirectResponse|Response
      */
-    public function destroy(int $id = null)
+    public function destroy(string $id = null)
     {
         $Sms = $this->action();
         if (!$Sms->destroy($id)) {

@@ -4,7 +4,6 @@ namespace Poppy\MgrPage\Http\MgrPage;
 
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
-use function app;
 
 class FormSettingSite extends FormSettingBase
 {

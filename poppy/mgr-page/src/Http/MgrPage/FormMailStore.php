@@ -6,7 +6,6 @@ use Poppy\Framework\Classes\Traits\KeyParserTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\Field\Link;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
-use function route;
 
 class FormMailStore extends FormSettingBase
 {

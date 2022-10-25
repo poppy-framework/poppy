@@ -4,7 +4,6 @@ namespace Poppy\MgrApp\Classes\Table\Column;
 
 use Illuminate\Support\Arr;
 use Poppy\MgrApp\Classes\Grid\Query\QueryModel;
-use function request;
 
 class Filter
 {

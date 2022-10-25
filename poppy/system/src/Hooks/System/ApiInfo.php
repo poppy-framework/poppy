@@ -3,7 +3,6 @@
 namespace Poppy\System\Hooks\System;
 
 use Poppy\Core\Services\Contracts\ServiceArray;
-use function sys_setting;
 
 class ApiInfo implements ServiceArray
 {

@@ -5,7 +5,6 @@ namespace Poppy\MgrApp\Http\Request\ApiMgrApp;
 use Poppy\Framework\Application\Controller;
 use Poppy\Framework\Classes\Traits\PoppyTrait;
 use Poppy\System\Models\PamAccount;
-use function py_container;
 
 /**
  * 后台初始化控制器

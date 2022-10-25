@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Contracts\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
-use function in_array;
 use Poppy\Extension\Phpstan\Concerns;
 use Poppy\Extension\Phpstan\Contracts\Methods\PassableContract;
 use Poppy\Extension\Phpstan\Contracts\Methods\Pipes\PipeContract;

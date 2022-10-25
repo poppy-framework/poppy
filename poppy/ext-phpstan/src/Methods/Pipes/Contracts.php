@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Poppy\Extension\Phpstan\Methods\Pipes;
 
 use Closure;
-use function get_class;
 use Illuminate\Support\Str;
 use Poppy\Extension\Phpstan\Concerns;
 use Poppy\Extension\Phpstan\Contracts\Methods\PassableContract;

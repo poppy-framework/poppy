@@ -14,7 +14,6 @@ use Poppy\MgrPage\Classes\Grid\Filter\Presenter\Presenter;
 use Poppy\MgrPage\Classes\Grid\Filter\Presenter\Radio;
 use Poppy\MgrPage\Classes\Grid\Filter\Presenter\Select;
 use Poppy\MgrPage\Classes\Grid\Filter\Presenter\Text;
-use function view;
 
 /**
  * Class AbstractFilter.

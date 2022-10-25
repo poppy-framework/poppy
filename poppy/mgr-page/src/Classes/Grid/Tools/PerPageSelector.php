@@ -3,8 +3,6 @@
 namespace Poppy\MgrPage\Classes\Grid\Tools;
 
 use Poppy\MgrPage\Classes\Grid;
-use function collect;
-use function trans;
 
 class PerPageSelector extends AbstractTool
 {

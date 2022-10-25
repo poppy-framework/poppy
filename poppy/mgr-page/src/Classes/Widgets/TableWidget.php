@@ -6,7 +6,6 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrPage\Classes\Layout\Content;
-use function view;
 
 class TableWidget extends Widget implements Renderable
 {

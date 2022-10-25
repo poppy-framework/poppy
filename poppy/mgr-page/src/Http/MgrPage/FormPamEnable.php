@@ -7,8 +7,6 @@ use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Pam;
 use Poppy\System\Models\PamAccount;
-use function input;
-use function request;
 
 class FormPamEnable extends FormWidget
 {

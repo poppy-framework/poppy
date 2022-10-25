@@ -70,5 +70,10 @@ class VerificationTest extends SystemTestCase
         $str = ['a', 'b'];
         $Verification->saveWord($key, $str);
         $this->assertTrue($Verification->verifyWord($key, $str), $Verification->getError());
+
+        $str = 428;
+        // 存在, 成功
+        $Verification->saveWord($key, $str);
+        $this->assertTrue($Verification->verifyWord($key, $str), $Verification->getError());
     }
 }

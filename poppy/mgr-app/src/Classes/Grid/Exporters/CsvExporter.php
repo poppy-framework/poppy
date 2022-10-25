@@ -5,8 +5,6 @@ namespace Poppy\MgrApp\Classes\Grid\Exporters;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Poppy\MgrApp\Classes\Table\Column\Column;
-use function collect;
-use function response;
 
 class CsvExporter extends AbstractExporter
 {

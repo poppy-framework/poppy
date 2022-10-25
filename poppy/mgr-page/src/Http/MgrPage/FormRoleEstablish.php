@@ -9,8 +9,6 @@ use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Role;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
-use function is_post;
-use function request;
 
 class FormRoleEstablish extends FormWidget
 {

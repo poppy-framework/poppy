@@ -12,9 +12,6 @@ use Poppy\MgrApp\Classes\Widgets\FormWidget;
 use Poppy\System\Exceptions\FormException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use function app;
-use function input;
-use function is_post;
 
 abstract class SettingBase extends FormWidget
 {

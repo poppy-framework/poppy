@@ -4,7 +4,6 @@ namespace Poppy\MgrPage\Classes\Grid\Tools;
 
 use Illuminate\Contracts\Support\Renderable;
 use Poppy\MgrPage\Classes\Grid;
-use function csrf_token;
 
 abstract class BatchAction implements Renderable
 {

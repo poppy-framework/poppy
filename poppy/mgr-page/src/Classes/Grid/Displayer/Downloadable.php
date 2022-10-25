@@ -3,8 +3,6 @@
 namespace Poppy\MgrPage\Classes\Grid\Displayer;
 
 use Illuminate\Contracts\Support\Arrayable;
-use function collect;
-use function url;
 
 /**
  * 将文件渲染为可下载的

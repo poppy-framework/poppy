@@ -15,11 +15,6 @@ use Poppy\Framework\Helper\ArrayHelper;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form;
 use Throwable;
-use function e;
-use function request;
-use function trans;
-use function validator;
-use function view;
 
 /**
  * Class Field.

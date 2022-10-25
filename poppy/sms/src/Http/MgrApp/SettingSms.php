@@ -4,7 +4,6 @@ namespace Poppy\Sms\Http\MgrApp;
 
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrApp\Classes\Form\SettingBase;
-use function sys_hook;
 
 class SettingSms extends SettingBase
 {

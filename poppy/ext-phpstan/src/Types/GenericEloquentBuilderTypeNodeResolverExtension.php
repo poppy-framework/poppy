@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Poppy\Extension\Phpstan\Types;
 
-use function count;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use PHPStan\Analyser\NameScope;

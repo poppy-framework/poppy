@@ -20,7 +20,6 @@ use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamLog;
 use Poppy\System\Models\PamToken;
 use Throwable;
-use function event;
 
 /**
  * 账户管理

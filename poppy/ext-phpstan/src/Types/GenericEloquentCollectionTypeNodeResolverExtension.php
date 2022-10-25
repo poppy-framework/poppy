@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Poppy\Extension\Phpstan\Types;
 
-use function count;
 use Illuminate\Database\Eloquent\Collection;
 use PHPStan\Analyser\NameScope;
 use PHPStan\PhpDoc\TypeNodeResolver;

@@ -9,8 +9,6 @@ use Poppy\MgrPage\Classes\Grid\Displayer\Actions;
 use Poppy\MgrPage\Classes\Grid\Filter;
 use Poppy\MgrPage\Classes\Grid\ListBase;
 use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
-use function route;
-use function route_url;
 
 class ListArea extends ListBase
 {

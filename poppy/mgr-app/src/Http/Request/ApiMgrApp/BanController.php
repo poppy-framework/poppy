@@ -14,9 +14,6 @@ use Poppy\MgrApp\Http\MgrApp\GridPamBan;
 use Poppy\System\Action\Ban;
 use Poppy\System\Models\PamBan;
 use Poppy\System\Models\SysConfig;
-use function app;
-use function input;
-use function sys_setting;
 
 
 class BanController extends BackendController

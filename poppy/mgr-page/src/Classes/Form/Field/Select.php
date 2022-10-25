@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use Poppy\MgrPage\Classes\Form\Field;
-use function collect;
 
 class Select extends Field
 {

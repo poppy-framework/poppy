@@ -8,11 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Poppy\Framework\Exceptions\PoppyException;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Throwable;
-use function app;
-use function dump;
-use function input;
-use function is_post;
-use function view;
 
 class Content implements Renderable
 {

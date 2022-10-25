@@ -9,8 +9,6 @@ use Illuminate\Support\Str;
 use Poppy\Framework\Helper\StrHelper;
 use Poppy\MgrApp\Classes\Contracts\Structable;
 use Poppy\MgrApp\Classes\Form\Traits\UseFieldAttr;
-use function collect;
-use function validator;
 
 /**
  * 表单条目

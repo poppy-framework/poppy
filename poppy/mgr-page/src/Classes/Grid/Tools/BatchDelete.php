@@ -2,7 +2,6 @@
 
 namespace Poppy\MgrPage\Classes\Grid\Tools;
 
-use function trans;
 
 class BatchDelete extends BatchAction
 {

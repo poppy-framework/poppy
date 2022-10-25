@@ -4,7 +4,6 @@
 namespace Poppy\MgrApp\Classes\Form\Traits;
 
 use Illuminate\Support\Str;
-use function collect;
 
 trait UseText
 {

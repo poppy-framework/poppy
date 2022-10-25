@@ -7,9 +7,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Poppy\MgrPage\Classes\Grid\Column;
 use Poppy\MgrPage\Classes\Grid\Tools;
-use function collect;
-use function request;
-use function tap;
 
 /**
  * Trait HasQuickSearch.

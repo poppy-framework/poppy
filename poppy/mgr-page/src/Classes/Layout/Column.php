@@ -5,7 +5,6 @@ namespace Poppy\MgrPage\Classes\Layout;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Poppy\MgrPage\Classes\Grid;
-use function collect;
 
 class Column implements Buildable
 {

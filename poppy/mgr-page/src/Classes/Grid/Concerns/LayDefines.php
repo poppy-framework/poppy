@@ -4,7 +4,6 @@ namespace Poppy\MgrPage\Classes\Grid\Concerns;
 
 use Poppy\Framework\Classes\Traits\PoppyTrait;
 use Poppy\MgrPage\Classes\Grid\Column;
-use function collect;
 
 /**
  * Layui 的参数定义

@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrApp\Classes\Form\FormItem;
 use Poppy\MgrApp\Exceptions\InvalidFieldParamException;
-use function collect;
 
 class Number extends FormItem
 {

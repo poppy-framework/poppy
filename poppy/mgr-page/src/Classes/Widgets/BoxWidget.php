@@ -4,7 +4,6 @@ namespace Poppy\MgrPage\Classes\Widgets;
 
 use Illuminate\Contracts\Support\Renderable;
 use Throwable;
-use function view;
 
 class BoxWidget extends Widget implements Renderable
 {

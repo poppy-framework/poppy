@@ -13,10 +13,6 @@ use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
 use Poppy\System\Models\PamRoleAccount;
-use function data_get;
-use function input;
-use function route;
-use function route_url;
 
 class ListPamAccount extends ListBase
 {

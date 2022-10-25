@@ -3,7 +3,6 @@
 namespace Poppy\MgrPage\Classes\Widgets;
 
 use Illuminate\Support\Fluent;
-use function input;
 
 abstract class Widget extends Fluent
 {

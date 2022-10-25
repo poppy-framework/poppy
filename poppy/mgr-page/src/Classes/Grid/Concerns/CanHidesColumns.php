@@ -5,7 +5,6 @@ namespace Poppy\MgrPage\Classes\Grid\Concerns;
 use Illuminate\Support\Collection;
 use Poppy\MgrPage\Classes\Grid;
 use Poppy\MgrPage\Classes\Grid\Column;
-use function collect;
 
 trait CanHidesColumns
 {

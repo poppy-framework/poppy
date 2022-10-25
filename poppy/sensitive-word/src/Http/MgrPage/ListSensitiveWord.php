@@ -10,8 +10,6 @@ use Poppy\MgrPage\Classes\Grid\Filter;
 use Poppy\MgrPage\Classes\Grid\ListBase;
 use Poppy\MgrPage\Classes\Grid\Tools\ActionButton;
 use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
-use function route;
-use function route_url;
 
 class ListSensitiveWord extends ListBase
 {

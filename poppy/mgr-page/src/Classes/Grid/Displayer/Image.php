@@ -3,8 +3,6 @@
 namespace Poppy\MgrPage\Classes\Grid\Displayer;
 
 use Illuminate\Contracts\Support\Arrayable;
-use function collect;
-use function url;
 
 class Image extends AbstractDisplayer
 {

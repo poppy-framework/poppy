@@ -5,7 +5,6 @@ namespace Poppy\MgrPage\Classes\Grid\Concerns;
 use Poppy\MgrPage\Classes\Grid\Exporter;
 use Poppy\MgrPage\Classes\Grid\Exporters\AbstractExporter;
 use Poppy\MgrPage\Classes\Grid\Tools\ExportButton;
-use function request;
 
 trait HasExport
 {

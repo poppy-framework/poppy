@@ -6,8 +6,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Arr;
 use Illuminate\View\View;
 use Poppy\MgrPage\Classes\Grid\Concerns\HasQuickSearch;
-use function request;
-use function view;
 
 class QuickSearch extends AbstractTool
 {

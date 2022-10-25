@@ -3,9 +3,6 @@
 namespace Poppy\MgrPage\Classes\Grid\Tools;
 
 use Poppy\MgrPage\Classes\Grid;
-use function request;
-use function trans;
-use function view;
 
 class ExportButton extends AbstractTool
 {

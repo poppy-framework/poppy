@@ -14,7 +14,6 @@ use Poppy\MgrApp\Classes\Grid\GridBase;
 use Poppy\MgrApp\Classes\Grid\GridPlugin;
 use Poppy\MgrApp\Classes\Grid\Query\Query;
 use Poppy\MgrApp\Classes\Grid\Query\QueryFactory;
-use function input;
 
 /**
  * Grid 插件

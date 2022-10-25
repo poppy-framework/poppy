@@ -16,7 +16,6 @@ use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Exceptions\FormException;
 use Poppy\System\Models\PamAccount;
 use Response;
-use function app;
 
 abstract class FormSettingBase extends FormWidget
 {

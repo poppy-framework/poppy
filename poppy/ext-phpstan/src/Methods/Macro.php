@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Poppy\Extension\Phpstan\Methods;
 
-use function array_map;
 use Closure;
 use ErrorException;
 use Illuminate\Validation\ValidationException;

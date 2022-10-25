@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Poppy\MgrPage\Classes\Grid;
-use function collect;
-use function request;
 
 abstract class AbstractExporter implements ExporterInterface
 {

@@ -3,7 +3,6 @@
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 use DateTimeZone;
-use function collect;
 
 class Timezone extends Select
 {

@@ -9,7 +9,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\MessageBag;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrApp\Classes\Form\FormPlugin;
-use function app;
 
 /**
  * Form 表单

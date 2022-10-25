@@ -228,6 +228,9 @@ class Verification
         }
 
         if ($data = self::$db->get(PySystemDef::ckTagVerificationWord() . ':' . $key)) {
+            if (is_numeric($data)) {
+                $data = (string) $word;
+            }
             if ($data === $word) {
                 return true;
             }

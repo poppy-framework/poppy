@@ -5,8 +5,6 @@ namespace Poppy\MgrPage\Classes\Grid\Column;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 use Poppy\MgrPage\Classes\Grid\Column;
-use function __;
-use function request;
 
 class Filter implements Renderable
 {

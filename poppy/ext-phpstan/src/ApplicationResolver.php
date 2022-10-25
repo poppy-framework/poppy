@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Poppy\Extension\Phpstan;
 
 use Composer\Autoload\ClassMapGenerator;
-use const DIRECTORY_SEPARATOR;
 use Illuminate\Contracts\Foundation\Application;
-use function in_array;
 
 /**
  * @internal

@@ -4,7 +4,6 @@ namespace Poppy\MgrPage\Classes\Grid\Tools;
 
 use Poppy\MgrPage\Classes\Grid\Filter;
 use Throwable;
-use function view;
 
 /**
  * 筛选按钮

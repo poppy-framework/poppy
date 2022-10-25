@@ -23,8 +23,6 @@ use Poppy\Framework\Helper\UtilHelper;
 use Poppy\MgrApp\Classes\Filter\FilterPlugin;
 use Poppy\MgrApp\Classes\Table\Column\Column;
 use Poppy\MgrApp\Classes\Table\TablePlugin;
-use function collect;
-use function request;
 
 class QueryModel extends Query
 {

@@ -8,7 +8,6 @@ use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Pam;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
-use function input;
 
 class FormPamEstablish extends FormWidget
 {

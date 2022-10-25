@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Poppy\Extension\Phpstan\ReturnTypes\Helpers;
 
-use function count;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;

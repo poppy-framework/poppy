@@ -7,7 +7,6 @@ use Poppy\MgrPage\Classes\Grid\Column;
 use Poppy\MgrPage\Classes\Grid\Displayer\Actions;
 use Poppy\MgrPage\Classes\Grid\ListBase;
 use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
-use function route;
 
 class ListPamToken extends ListBase
 {

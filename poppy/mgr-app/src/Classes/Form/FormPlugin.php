@@ -50,7 +50,6 @@ use Poppy\MgrApp\Classes\Form\Field\Url;
 use Poppy\MgrApp\Classes\Form\Field\Year;
 use Poppy\MgrApp\Classes\Table\Column\Column;
 use Poppy\MgrApp\Classes\Traits\UseQuery;
-use function tap;
 
 /**
  * Form Widget

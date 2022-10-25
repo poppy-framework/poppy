@@ -6,10 +6,7 @@ use Poppy\MgrApp\Classes\Filter\FilterPlugin;
 use Poppy\MgrApp\Classes\Grid\GridBase;
 use Poppy\MgrApp\Classes\Grid\Tools\Interactions;
 use Poppy\MgrApp\Classes\Table\Render\GridActions;
-use Poppy\MgrApp\Classes\Table\Render\Render;
 use Poppy\MgrApp\Classes\Table\TablePlugin;
-use function route;
-use function route_url;
 
 class GridSensitiveWord extends GridBase
 {

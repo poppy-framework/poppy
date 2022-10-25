@@ -3,7 +3,6 @@
 namespace Poppy\MgrApp\Classes\Form\Field;
 
 use Poppy\MgrApp\Classes\Form\FormItem;
-use function collect;
 
 class File extends FormItem
 {
