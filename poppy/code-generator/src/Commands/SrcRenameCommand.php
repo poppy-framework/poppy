@@ -41,7 +41,7 @@ class SrcRenameCommand extends Command
             $this->error('模块 `' . $module . '` 不存在');
             return;
         }
-        $files = app('files')->allFiles($srcDirectory);
+        $files = app('files')->allFiles($srcDirectory, true);
         if (!count($files)) {
             $this->error('目录下不存在文件');
             return;
@@ -49,14 +49,18 @@ class SrcRenameCommand extends Command
         foreach ($files as $file) {
             $relativePath = $file->getRelativePathname();
             // src 目录
-            if (Str::contains($relativePath, 'modules/' . $module . '/src')) {
+            if (Str::contains($relativePath, 'src/')) {
                 $path     = Str::beforeLast($relativePath, '/');
                 $filename = Str::afterLast($relativePath, '/');
 
                 $firstNames = explode('/', $path);
                 $names2     = [];
                 foreach ($firstNames as $n) {
-                    $names2[] = Str::studly($n);
+                    if ($n === 'src') {
+                        $names2[] = 'src';
+                    } else {
+                        $names2[] = Str::studly($n);
+                    }
                 }
 
                 $rename2 = implode('/', $names2);
