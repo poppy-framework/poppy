@@ -58,23 +58,30 @@ class SrcRenameCommand extends Command
                 foreach ($firstNames as $n) {
                     if ($n === 'src') {
                         $names2[] = 'src';
-                    } else {
+                    }
+                    else {
                         $names2[] = Str::studly($n);
                     }
                 }
 
                 $rename2 = implode('/', $names2);
 
-                $aimFile = $aimDirectory . '/' . $rename2 . '/' . $filename;
+                if (Str::startsWith($rename2, 'src/Database')) {
+                    $aimFile = $aimDirectory . '/' . Str::replaceFirst('src/', 'resources/', $relativePath);
+                }
+                else {
+                    $aimFile = $aimDirectory . '/' . $rename2 . '/' . $filename;
+                }
+
             }
             else {
                 $aimFile = $aimDirectory . '/' . $relativePath;
             }
-            if (!app('files')->isDirectory(dirname($aimFile))){
+            if (!app('files')->isDirectory(dirname($aimFile))) {
                 app('files')->makeDirectory(dirname($aimFile), 0755, true);
             }
             app('files')->move($file->getPathname(), $aimFile);
-            $this->info('Move To '.$aimFile);
+            $this->info('Move To ' . $aimFile);
         }
         $this->info('Move Success');
     }
