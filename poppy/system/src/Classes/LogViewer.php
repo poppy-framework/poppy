@@ -18,7 +18,7 @@ class LogViewer
     /**
      * @var string file
      */
-    private static string $file;
+    private static string $file = '';
 
     /**
      * @var array 级别样式
