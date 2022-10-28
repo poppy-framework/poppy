@@ -76,19 +76,19 @@ class FrameworkServiceProvider extends ServiceProvider
 
     private function bootValidation(): void
     {
-        app('validator')->extend('mobile', function ($attribute, $value, $parameters) {
+        app('validator')->extend('mobile', function ($attribute, $value) {
             return UtilHelper::isMobile($value);
         });
-        app('validator')->extend('json', function ($attribute, $value, $parameters) {
+        app('validator')->extend('json', function ($attribute, $value) {
             return UtilHelper::isJson($value);
         });
-        app('validator')->extend('date', function ($attribute, $value, $parameters) {
+        app('validator')->extend('date', function ($attribute, $value) {
             return UtilHelper::isDate($value);
         });
-        app('validator')->extend('chid', function ($attribute, $value, $parameters) {
+        app('validator')->extend('chid', function ($attribute, $value) {
             return UtilHelper::isChId($value);
         });
-        app('validator')->extend('simple_pwd', function ($attribute, $value, $parameters) {
+        app('validator')->extend('simple_pwd', function ($attribute, $value) {
             return UtilHelper::isPwd($value);
         });
         app('validator')->extend('username', function ($attribute, $value, $parameters) {

@@ -3,7 +3,6 @@
 namespace Poppy\System\Http\Request\ApiV1;
 
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Poppy\Framework\Classes\Mocker;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Action\Apidoc;
 
@@ -60,18 +59,5 @@ class CoreController extends JwtApiController
         }
 
         return Resp::error($doc->getError());
-    }
-
-    /**
-     * @api                   {post} /api_v1/system/core/mock [Sys]Mock
-     * @apiVersion            1.0.0
-     * @apiName               SysCoreMock
-     * @apiGroup              Poppy
-     * @apiQuery {string}     mock   Json 格式的数据
-     */
-    public function mock()
-    {
-        $data = Mocker::generate(input('mock'), 'zh_CN');
-        return Resp::success('Success', $data);
     }
 }

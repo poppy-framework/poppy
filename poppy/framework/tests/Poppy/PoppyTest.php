@@ -22,8 +22,6 @@ class PoppyTest extends TestCase
         $this->assertEquals('Poppy\System\ServiceProvider', $namespace);
         $namespace = poppy_class('poppy.system');
         $this->assertEquals('Poppy\System', $namespace);
-        $namespace = poppy_class('poppy.un_exist');
-        $this->assertEquals('', $namespace);
     }
 
 
@@ -55,14 +53,6 @@ class PoppyTest extends TestCase
         /** @var Collection $enabled */
         $enabled = app('poppy')->all();
         $this->assertNotEquals(0, $enabled->count());
-    }
-
-    public function testEnabled()
-    {
-        $this->testOptimize();
-
-        $enabled = app('poppy')->enabled();
-        $this->assertGreaterThan(0, $enabled->count());
     }
 
     public function testOptimize(): void

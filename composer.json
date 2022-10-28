@@ -86,9 +86,11 @@
             "Poppy\\AliyunOss\\Tests\\": "poppy/aliyun-oss/tests",
             "Poppy\\CanalEs\\": "poppy/canal-es/src/",
             "Poppy\\CanalEs\\Tests\\": "poppy/canal-es/tests/",
-            "Poppy\\CodeGenerator\\": "poppy/code-generator/src/"
+            "Poppy\\CodeGenerator\\": "poppy/code-generator/src/",
+            "Demo\\": "modules/demo/src/"
         },
         "files": [
+            "modules/demo/src/Classes/functions.php",
             "poppy/framework/src/Support/functions.php",
             "poppy/system/src/Support/functions.php",
             "poppy/core/src/Support/functions.php",

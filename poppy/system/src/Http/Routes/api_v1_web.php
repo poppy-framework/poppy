@@ -19,7 +19,6 @@ Route::group([
 ], function (Illuminate\Routing\Router $route) {
     $route->post('core/info', 'CoreController@info');
     $route->post('core/translate', 'CoreController@translate');
-    $route->post('core/mock', 'CoreController@mock');
 });
 
 /* 可以对用户设备进行封禁

@@ -17,19 +17,6 @@ use Poppy\Framework\Http\Middlewares\VerifyCsrfToken;
  */
 class Kernel extends HttpKernel
 {
-    /**
-     * The bootstrap classes for the application.
-     * @var array
-     */
-    protected $bootstrappers = [
-        'Poppy\Framework\Foundation\Bootstrap\RegisterClassLoader',   // poppy class loader
-        'Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables',
-        'Illuminate\Foundation\Bootstrap\LoadConfiguration',
-        'Illuminate\Foundation\Bootstrap\HandleExceptions',
-        'Illuminate\Foundation\Bootstrap\RegisterFacades',
-        'Illuminate\Foundation\Bootstrap\RegisterProviders',
-        'Illuminate\Foundation\Bootstrap\BootProviders',
-    ];
 
     /**
      * The application's global HTTP middleware stack.

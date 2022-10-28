@@ -189,18 +189,13 @@ if (!function_exists('poppy_path')) {
 if (!function_exists('poppy_class')) {
     /**
      * Return the full path to the given module class or namespace.
+     * Class may not exist
      * @param string $slug
      * @param string $class
      * @return string
      */
     function poppy_class(string $slug, $class = ''): string
     {
-        $module = app('poppy')->where('slug', $slug);
-
-        if (is_null($module) || count($module) === 0) {
-            return '';
-        }
-
         $type       = Str::before($slug, '.');
         $moduleName = Str::after($slug, '.');
         $namespace  = Str::studly($moduleName);

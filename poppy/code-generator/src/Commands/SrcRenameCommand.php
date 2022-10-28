@@ -73,6 +73,12 @@ class SrcRenameCommand extends Command
                     $aimFile = $aimDirectory . '/' . $rename2 . '/' . $filename;
                 }
 
+                if ($filename === 'RouteServiceProvider.php') {
+                    $content = $file->getContents();
+                    $content = str_replace(['src/http/routes'], ['src/Http/Routes'], $content);
+                    app('files')->put($file->getPathname(), $content);
+                }
+
             }
             else {
                 $aimFile = $aimDirectory . '/' . $relativePath;

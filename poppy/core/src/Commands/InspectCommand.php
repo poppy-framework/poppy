@@ -765,7 +765,7 @@ class InspectCommand extends Command
             $seoDb = [];
             try {
                 foreach ($files as $file) {
-                    if (preg_match('/[mM]odels\/(?<model>[A-Za-z]+)\.php/', $file, $matches)) {
+                    if (preg_match('/Models\/(?<model>[A-Za-z]+)\.php/', $file, $matches)) {
                         $key           = Str::snake($matches['model']);
                         $className     = poppy_class($slug, 'Models\\' . $matches['model']);
                         $ref           = new ReflectionClass($className);
@@ -811,7 +811,7 @@ class InspectCommand extends Command
                 $moduleName = $this->moduleName($pathName);
 
                 // 排除指定的类
-                if (!Str::contains($pathName, ['http/request/'])) {
+                if (!Str::contains($pathName, ['Http/Request/'])) {
                     continue;
                 }
 
@@ -822,7 +822,7 @@ class InspectCommand extends Command
                     return;
                 }
 
-                if (!preg_match('/request\/([a-z0-9_]+)\/([A-Z0-9a-z]+)Controller.php/', $pathName, $match)) {
+                if (!preg_match('/Request\/([a-zA-Z0-9_]+)\/([A-Z0-9a-z]+)Controller.php/', $pathName, $match)) {
                     continue;
                 }
 

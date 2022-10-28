@@ -46,14 +46,14 @@ class RouteServiceProvider extends PoppyFrameworkRouteServiceProvider
             // todo auth
             'prefix' => 'DummySlug',
         ], function (Router $route) {
-            require_once poppy_path('DummySlug', 'src/http/routes/web.php');
+            require_once poppy_path('DummySlug', 'src/Http/Routes/web.php');
         });
 
         Route::group([
             'prefix'     => $this->prefix . '/DummySlug',
             'middleware' => 'backend-auth',
         ], function (Router $route) {
-            require_once poppy_path('DummySlug', 'src/http/routes/backend.php');
+            require_once poppy_path('DummySlug', 'src/Http/Routes/backend.php');
         });
     }
 
@@ -68,7 +68,7 @@ class RouteServiceProvider extends PoppyFrameworkRouteServiceProvider
             // todo auth
             'prefix' => 'api/DummySlug',
         ], function (Router $route) {
-            require_once poppy_path('DummySlug', 'src/http/routes/api.php');
+            require_once poppy_path('DummySlug', 'src/Http/Routes/api.php');
         });
     }
 }

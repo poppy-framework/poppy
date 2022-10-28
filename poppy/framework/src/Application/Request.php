@@ -7,7 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Redirector;
 use Poppy\Framework\Classes\Resp;
 
 /**
@@ -18,7 +17,7 @@ abstract class Request extends FormRequest
     /**
      * response
      * @param array $errors errors
-     * @return array|JsonResponse|RedirectResponse|Response|Redirector
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function response(array $errors)
     {
