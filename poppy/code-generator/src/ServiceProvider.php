@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Poppy\CodeGenerator;
 
 use Poppy\CodeGenerator\Commands\SettingGenerateCommand;
+use Poppy\CodeGenerator\Commands\SrcRenameCommand;
 use Poppy\Framework\Support\PoppyServiceProvider;
 
 class ServiceProvider extends PoppyServiceProvider
@@ -24,6 +25,7 @@ class ServiceProvider extends PoppyServiceProvider
     {
         $this->commands([
             SettingGenerateCommand::class,
+            SrcRenameCommand::class,
         ]);
     }
 }
