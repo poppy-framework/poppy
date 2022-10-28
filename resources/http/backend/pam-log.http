@@ -1,8 +1,0 @@
-GET {{domain}}/mgr-page/system/pam/log?_query=1
-
-> {%
-     client.test("登录日志", function(){
-        client.assert(response.status === 200, 'Response status is not 200');
-        client.assert(response.body.status === 0, 'Response status id not 0');
-    })
-%}

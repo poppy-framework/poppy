@@ -24,7 +24,7 @@ class UploadController extends JwtApiController
      * @apiGroup              Poppy
      * @apiQuery {string}     image         图片内容(支持多张/单张上传)
      * @apiQuery {string}     [type]        上传图片的类型 [form|表单(默认),base64,url]
-     * @apiQuery {string}     [image_type]  图片图片存储类型[default|默认]
+     * @apiQuery {string}     [image_type]  图片图片存储类型[default|默认], 不同的图片存储到不同的文件夹下
      * @apiQuery {string}     [from]        上传来源,根据不同来源返回不同的格式 [wang-editor]
      * @apiQuery {string}     [watermark]   是否开启水印[1:开启]
      */
@@ -79,6 +79,9 @@ class UploadController extends JwtApiController
             }
 
             foreach ($image as $_img) {
+                if (is_null($_img)) {
+                    return Resp::error('图片内容为空, 请检查是否上传图片或者支持类型是否正确');
+                }
                 if ($Image->saveFile($_img)) {
                     $urls[] = $Image->getUrl();
                 }
@@ -138,8 +141,11 @@ class UploadController extends JwtApiController
                     if ($Image->saveInput($_img)) {
                         $urls[] = $Image->getUrl();
                     }
+                    else {
+                        return Resp::error($Image->getError());
+                    }
                 } catch (Throwable $e) {
-                    continue;
+                    return Resp::error($e->getMessage());
                 }
             }
         }
@@ -181,6 +187,7 @@ class UploadController extends JwtApiController
      * @apiGroup              Poppy
      * @apiQuery {string}     file        内容
      * @apiQuery {string}     type        上传类型[audio|音频;video|视频;images|图片;file|文件上传]
+     * @apiQuery {string}     [folder]    [4.0]文件存储目录
      * @apiQuery {string}     [ext]       上传限制扩展(后台进行限制), 多个使用 ',' 分隔, 默认是 后台进行限制
      * @apiQuery {string}     [district]  图片大小限制(最高边, 默认是 1440)
      */
@@ -189,6 +196,7 @@ class UploadController extends JwtApiController
         $type     = input('type', 'audio');
         $ext      = input('ext', '');
         $district = (int) input('district', 1440);
+        $folder   = input('folder', '');
 
         $input = input();
 
@@ -209,6 +217,9 @@ class UploadController extends JwtApiController
 
         $Uploader = app(FileContract::class);
         $Uploader->setType($type);
+        if ($folder) {
+            $Uploader->setFolder($folder);
+        }
         $urls = [];
         if ($ext) {
             $extensions = explode(',', $ext);

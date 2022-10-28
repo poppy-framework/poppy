@@ -32,8 +32,11 @@
     <coverage cacheDirectory="storage/phpunit/coverage-cache" processUncoveredFiles="true">
         <include>
             <directory suffix=".php">poppy/**/src</directory>
-            <directory suffix=".php">modules/**/src</directory>
+<!--            <directory suffix=".php">modules/**/src</directory>-->
         </include>
+        <report>
+            <html outputDirectory="storage/phpunit/coverage-html" lowUpperBound="50" highLowerBound="90"/>
+        </report>
     </coverage>
     <php>
         <env name="APP_ENV" value="testing"/>

@@ -70,9 +70,9 @@ interface FileContract
     /**
      * 裁剪和压缩
      * @param mixed $content 需要压缩的内容
-     * @param int $width 宽度
-     * @param int $height 高度
-     * @param bool $crop 是否进行裁剪
+     * @param int   $width   宽度
+     * @param int   $height  高度
+     * @param bool  $crop    是否进行裁剪
      * @return StreamInterface
      */
     public function resize($content, int $width = 1920, int $height = 1440, bool $crop = false): StreamInterface;
@@ -101,13 +101,11 @@ interface FileContract
      */
     public function getUrl(): string;
 
-
     /**
      * 前缀Url
      * @return string
      */
     public function getReturnUrl(): string;
-
 
     /**
      * 启用水印

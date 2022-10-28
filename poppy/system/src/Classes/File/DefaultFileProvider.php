@@ -69,7 +69,7 @@ class DefaultFileProvider implements FileContract
     /**
      * @var string 图片mime类型
      */
-    private string $mimeType;
+    private string $mimeType = '';
 
     public function __construct()
     {
@@ -366,8 +366,8 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 重设内容
-     * @param string $extension 扩展
-     * @param mixed $img_stream 压缩内容
+     * @param string $extension  扩展
+     * @param mixed  $img_stream 压缩内容
      * @return bool|StreamInterface
      */
     private function resizeContent(string $extension, $img_stream)

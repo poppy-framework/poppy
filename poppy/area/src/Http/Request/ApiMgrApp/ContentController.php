@@ -52,11 +52,12 @@ class ContentController extends BackendController
 
     /**
      * 删除地区
-     * @param int $id 地区id
+     * @param string $id 地区id
      * @throws Exception
      */
-    public function delete(int $id)
+    public function delete(string $id)
     {
+        $id = (int) $id;
         $Area = $this->action();
         if ($Area->delete($id)) {
             return Resp::success('删除成功', 'motion|grid:reload');

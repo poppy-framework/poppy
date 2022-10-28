@@ -213,7 +213,7 @@ class Pam
             return $this->setError($validator->messages());
         }
 
-        if (is_string($role_name)) {
+        if (!is_numeric($role_name)) {
             $role = PamRole::whereIn('name', (array) $role_name)->get();
         }
         else {
