@@ -4,9 +4,9 @@ namespace DummyNamespace;
 
 use DummyNamespace\Http\RouteServiceProvider;
 use Poppy\Framework\Exceptions\ModuleNotFoundException;
-use Poppy\Framework\Support\PoppyServiceProvider as ModuleServiceProviderBase;
+use Poppy\Framework\Support\PoppyServiceProvider;
 
-class ServiceProvider extends ModuleServiceProviderBase
+class ServiceProvider extends PoppyServiceProvider
 {
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Poppy\Framework\Classes\Traits;
 
-use Illuminate\Support\Str;
 
 /**
  * MigrationTrait
@@ -34,10 +33,7 @@ trait MigrationTrait
      */
     protected function getMigrationPath(string $module)
     {
-        if (Str::startsWith($module, 'poppy.')) {
-            return poppy_path($module, 'src/Database/Migrations');
-        }
-        return poppy_path($module, 'src/database/migrations');
+        return poppy_path($module, 'resources/migrations');
     }
 }
 

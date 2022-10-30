@@ -60,7 +60,6 @@ class Poppy
 
         $modules->each(function ($module) {
             $this->registerServiceProvider($module);
-            $this->autoloadFiles($module);
         });
     }
 
@@ -94,23 +93,6 @@ class Poppy
 
         if (class_exists($serviceProvider)) {
             $this->app->register($serviceProvider);
-        }
-    }
-
-    /**
-     * Autoload custom module files.
-     * @param array $module module
-     * @return void
-     */
-    private function autoloadFiles($module)
-    {
-        if (isset($module['autoload'])) {
-            foreach ($module['autoload'] as $file) {
-                $path = poppy_path($module['slug'], $file);
-                if (file_exists($path)) {
-                    include $path;
-                }
-            }
         }
     }
 }
