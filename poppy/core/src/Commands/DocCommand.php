@@ -134,7 +134,7 @@ class DocCommand extends Command
         }
         else {
             $matches = [
-                'web'     => 'api.*/web|ApiWeb|ApiV1|api.*/web',
+                'web'     => 'Api.*/Web|ApiWeb|ApiV1|Api.*/Web',
                 'dev'     => 'api.*/dev|ApiDev|api/dev',
                 'mgr-app' => 'ApiMgrApp|api/mgr_app|api.*/mgr_app',
             ];
@@ -144,7 +144,7 @@ class DocCommand extends Command
 
         $arrMatches = explode('|', $match);
         $f = array_map(function ($mt) {
-            $f = ' -f "modules/.*/src/http/request/' . $mt . '/.*\.php$"';
+            $f = ' -f "modules/.*/src/Http/Request/' . $mt . '/.*\.php$"';
             $f .= ' -f "poppy/.*/src/Http/Request/' . $mt . '/.*\.php$"';
             $f .= ' -f "vendor/poppy/.*/src/Http/Request/' . $mt . '/.*\.php$"';
             return $f;
