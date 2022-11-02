@@ -6,7 +6,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Poppy\Framework\Classes\Resp;
@@ -34,19 +33,13 @@ class ProgressController extends DevelopController
 
         // 读取每个模块 找到 progress 文件下的 每个类
         app('poppy')->enabled()->pluck('slug')->map(function ($item) {
-            if (Str::startsWith($item, 'poppy.')) {
-                $path = poppy_path($item, 'src/Progress');
-            }
-            else {
-                $path = poppy_path($item, 'src/progress');
-            }
+            $path = poppy_path($item, 'src/Progress');
             if (app('files')->isDirectory($path)) {
                 return [
                     'path'   => $path,
                     'module' => $item,
                 ];
             }
-
             return '';
         })->filter()->each(function ($item) {
             $files = app('files')->files($item['path']);
@@ -78,7 +71,7 @@ class ProgressController extends DevelopController
 
     /**
      * 展示更新进度
-     * @return Factory|JsonResponse|RedirectResponse|Response|Redirector|View
+     * @return Factory|JsonResponse|RedirectResponse|Response|View
      */
     public function index()
     {
