@@ -30,21 +30,8 @@ class FunctionsTest extends TestCase
         $poppyCoreModel = poppy_class('poppy.core', 'Models');
         $this->assertEquals('Poppy\\Core\\Models', $poppyCoreModel);
 
-        $moduleSiteModal = poppy_class('module.core', 'Models');
-        if (app('poppy')->exists('module.core')) {
-            $this->assertEquals('Core\\Models', $moduleSiteModal);
-        }
-        else {
-            $this->assertEquals('', $moduleSiteModal);
-        }
-
         $moduleSiteModal = poppy_class('module.site', 'Models');
-        if (app('poppy')->exists('module.site')) {
-            $this->assertEquals('Site\\Models', $moduleSiteModal);
-        }
-        else {
-            $this->assertEquals('', $moduleSiteModal);
-        }
+        $this->assertEquals('Site\\Models', $moduleSiteModal);
     }
 
 

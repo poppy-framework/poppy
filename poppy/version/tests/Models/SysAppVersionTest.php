@@ -2,7 +2,6 @@
 
 namespace Poppy\Version\Tests\Models;
 
-use DB;
 use Exception;
 use Poppy\Core\Redis\RdsDb;
 use Poppy\System\Tests\Base\SystemTestCase;

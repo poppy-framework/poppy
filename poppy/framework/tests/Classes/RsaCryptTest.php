@@ -10,20 +10,20 @@ class RsaCryptTest extends TestCase
 {
 
     /**
-     * @var false|string
+     * @var string
      */
-    private $privateKey;
+    private string $privateKey;
 
     /**
-     * @var false|string
+     * @var string
      */
-    private $pubKey;
+    private string $pubKey;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->privateKey = file_get_contents(dirname(__DIR__) . '/files/demo-private.pem');
-        $this->pubKey     = file_get_contents(dirname(__DIR__) . '/files/demo-pub.pem');
+        $this->privateKey = file_get_contents(dirname(__DIR__) . '/files/private.pem');
+        $this->pubKey     = file_get_contents(dirname(__DIR__) . '/files/public.pem');
     }
 
     public function testEncrypt()

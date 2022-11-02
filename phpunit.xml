@@ -32,8 +32,14 @@
     <coverage cacheDirectory="storage/phpunit/coverage-cache" processUncoveredFiles="true">
         <include>
             <directory suffix=".php">poppy/**/src</directory>
-<!--            <directory suffix=".php">modules/**/src</directory>-->
+            <directory suffix=".php">modules/**/src</directory>
         </include>
+        <exclude>
+            <directory suffix=".php">modules/**/src/Http/Routes</directory>
+            <file>modules/**/src/Http/RouteServiceProvider.php</file>
+            <directory suffix=".php">poppy/**/src/Http/Routes</directory>
+            <file>poppy/**/src/Http/RouteServiceProvider.php</file>
+        </exclude>
         <report>
             <html outputDirectory="storage/phpunit/coverage-html" lowUpperBound="50" highLowerBound="90"/>
         </report>

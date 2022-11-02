@@ -3,6 +3,7 @@
 namespace Poppy\SensitiveWord\Tests;
 
 use Poppy\SensitiveWord\Action\Word;
+use Poppy\SensitiveWord\Classes\Sensitive\Dict;
 use Poppy\SensitiveWord\Classes\Sensitive\Words;
 use Poppy\SensitiveWord\Models\SysSensitiveWord;
 use Poppy\System\Tests\Base\SystemTestCase;
@@ -11,11 +12,11 @@ class WordsTest extends SystemTestCase
 {
     protected string $banWord = '暴政';
 
+
     public function testFilter(): void
     {
         $Word = new Word();
         if (!SysSensitiveWord::where('word', $this->banWord)->exists()) {
-
             if (!$Word->establish([
                 'word' => $this->banWord,
             ])) {
@@ -23,6 +24,8 @@ class WordsTest extends SystemTestCase
             }
         }
         $id = SysSensitiveWord::where('word', $this->banWord)->value('id');
+
+        (new Dict())->build();
 
         $value = sensitive_words('暴政');
         $this->assertFalse($value);

@@ -155,7 +155,7 @@ class TimeHelperTest extends TestCase
         $start = Carbon::createFromFormat('Y-m-d', '2019-12-28');
         for ($i = 0; $i < 10; $i++) {
             $start->addDay();
-            echo $start->format('Y-m-d,Y,W') . '-' . implode('-', TimeHelper::week($start->toDateString())) . PHP_EOL;
+            $this->outputVariables($start->format('Y-m-d,Y,W') . '-' . implode('-', TimeHelper::week($start->toDateString())));
         }
 
         // 11-02 - 11-08 (2020-45)
