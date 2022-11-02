@@ -60,13 +60,6 @@ class DocCommand extends Command
                     'php-cs-fixer fix ' . framework_path() . ' --config=' . framework_path('.php_cs') . ' --diff --dry-run --verbose --diff-format=udiff'
                 );
                 break;
-            case 'lint':
-                $this->warn('First. Run `composer global require overtrue/phplint -vvv` to install phplint');
-                $this->info(
-                    'Then. Run Command:' . "\n" .
-                    'phplint ' . base_path() . ' -c ' . framework_path('.phplint.yml')
-                );
-                break;
             case 'php':
                 $doctum = storage_path('doctum/doctum.phar');
                 $config = storage_path('doctum/config.php');
@@ -111,7 +104,7 @@ class DocCommand extends Command
     protected function getArguments()
     {
         return [
-            ['type', InputArgument::REQUIRED, ' Support Type [api,phpcs|cs,log,php,lint|phplint].'],
+            ['type', InputArgument::REQUIRED, ' Support Type [api,phpcs|cs,log,php].'],
         ];
     }
 

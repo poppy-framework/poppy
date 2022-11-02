@@ -29,16 +29,6 @@ php artisan py-core:doc {slug}
     - log   : 查看当天的 storage 日志
 ```
 
-**关于 phplint**
-
-[phplint](https://github.com/overtrue/phplint)是一个快速检测 php 语法错误的工具, 此工具无需安装在项目中, 全局安装即可.
-
-```
-$ composer global require overtrue/phplint -vvv
-$ php artisan py-core:doc lint
-$ phplint /path/of/code -c /framework/path/.phplint.yml
-```
-
 ### 检查代码
 
 ```
