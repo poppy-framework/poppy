@@ -2,6 +2,7 @@
 
 namespace Poppy\SensitiveWord\Tests;
 
+use Poppy\Core\Redis\RdsDb;
 use Poppy\SensitiveWord\Action\Word;
 use Poppy\SensitiveWord\Classes\Sensitive\Dict;
 use Poppy\SensitiveWord\Classes\Sensitive\Words;
@@ -12,6 +13,10 @@ class WordsTest extends SystemTestCase
 {
     protected string $banWord = '暴政';
 
+    public function testClear()
+    {
+        RdsDb::instance()->del('tag:py-sensitive-word:*');
+    }
 
     public function testFilter(): void
     {

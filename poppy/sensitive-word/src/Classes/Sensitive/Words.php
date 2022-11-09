@@ -12,15 +12,15 @@ class Words
     public const TYPE_REPLACE = 'replace';
 
     /**
-     * @var self $instance
+     * @var self|null $instance
      */
-    private static $instance;
+    private static ?self $instance = null;
 
     /**
      * 敏感词树
      * @var null|HashMap
      */
-    private ?HashMap $wordTree;
+    private ?HashMap $wordTree = null;
 
     /**
      * 敏感词
@@ -41,14 +41,12 @@ class Words
     private string $content = '';
 
     /**
-     * @param $data
+     * @param array $data
      * @return $this
      * @throws DirectoryNotFoundException
      */
-    public function setTree($data): self
+    public function setTree(array $data): self
     {
-        $data = (array) $data;
-
         if (!$data) {
             throw new DirectoryNotFoundException('词库不存在');
         }
@@ -69,7 +67,7 @@ class Words
      * @param string $content 内容
      * @return bool
      */
-    public function illegal($content): bool
+    public function illegal(string $content): bool
     {
         $this->content  = $content;
         $content_length = $this->getLength($this->content);
@@ -140,7 +138,7 @@ class Words
      * 构建字典树
      * @param string $words 词汇
      */
-    protected function buildTree($words): void
+    protected function buildTree(string $words): void
     {
         $length = $this->getLength($words);
 
@@ -166,7 +164,7 @@ class Words
      * @param int $flag         标识
      * @return bool
      */
-    private function searchIllegalWords($currentIndex, $totalLength, &$flag): bool
+    private function searchIllegalWords(int $currentIndex, int $totalLength, int &$flag): bool
     {
         $root = $this->wordTree;
 
@@ -208,13 +206,11 @@ class Words
      * 获取字符
      * @param string $content 内容
      * @param int    $start   起始位置
-     * @param int    $count   数量
-     * @param string $charset 字符集
      * @return string
      */
-    private function getContentWords($content, $start, $count = 1, $charset = 'utf-8'): string
+    private function getContentWords(string $content, int $start): string
     {
-        return mb_substr($content, $start, $count, $charset);
+        return mb_substr($content, $start, 1, 'utf-8');
     }
 
     /**
@@ -223,7 +219,7 @@ class Words
      * @param HashMap $tree 字典树
      * @return HashMap
      */
-    private function addSubTree($char, $tree): HashMap
+    private function addSubTree(string $char, HashMap $tree): HashMap
     {
         $subTree = new HashMap();
         $subTree->put('ending', false);

@@ -21,7 +21,7 @@ class RdsStore
      * @param int    $second 秒数
      * @return mixed
      */
-    public static function seconds(string $key, $value, $second = 30)
+    public static function seconds(string $key, $value, int $second = 30)
     {
         $cacheData = [
             'expired' => Carbon::now()->addSeconds($second)->timestamp,
@@ -47,7 +47,7 @@ class RdsStore
      * @param string $key  Key
      * @return string
      */
-    public static function redisKey($type, $key): string
+    public static function redisKey(string $type, string $key): string
     {
         return 'redis:' . $type . ':' . $key;
     }
@@ -74,7 +74,7 @@ class RdsStore
      * @param mixed|null $value 设置值
      * @return bool
      */
-    public static function set($key, $index, $value = null): bool
+    public static function set(string $key, $index, $value = null): bool
     {
         $tag       = Str::before($key, '.');
         $fetchData = (array) sys_cache($tag)->get($key);
@@ -93,7 +93,7 @@ class RdsStore
      * @param string|int|array $index 索引值
      * @return bool
      */
-    public static function unset($key, $index): bool
+    public static function unset(string $key, $index): bool
     {
         $tag       = Str::before($key, '.');
         $fetchData = (array) sys_cache($tag)->get($key);
