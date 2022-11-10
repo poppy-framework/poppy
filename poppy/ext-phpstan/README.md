@@ -1,14 +1,3 @@
-# Poppy phpstan extension
+# Phpstan Extension Of Poppy Framework [READ ONLY]
 
-## 安装
-
-```
-composer require poppy/ext-phpstan 4.0-dev
-```
-
-`~/phpstan.neon` 中增加 
-
-```
-includes:
-    - vendor/poppy/ext-phpstan/extension.neon
-```
+[Phpstan Document](https://poppy-framework.com/4.x/extension/phpstan.html)

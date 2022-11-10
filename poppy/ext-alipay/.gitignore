@@ -1,5 +1,0 @@
-/.idea
-/vendor
-!/vendor/.gitkeep
-/composer.lock
-resources/keys/*
