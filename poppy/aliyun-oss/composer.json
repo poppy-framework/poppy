@@ -14,6 +14,9 @@
         "aliyuncs/oss-sdk-php": "2.*",
         "poppy/system": "4.1.x-dev"
     },
+    "require-dev": {
+        "guzzlehttp/guzzle": "^7.3"
+    },
     "autoload": {
         "psr-4": {
             "Poppy\\AliyunOss\\": "src/",

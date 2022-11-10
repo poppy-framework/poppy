@@ -6,7 +6,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Poppy\AliyunOss\Http\MgrApp\SettingAliyunOss;
-use Poppy\Framework\Classes\Resp;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 
 /**
@@ -26,7 +25,7 @@ class UploadController extends BackendController
 
     /**
      * 上传配置
-     * @return JsonResponse|RedirectResponse|Resp|Response
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function store()
     {

@@ -3,7 +3,6 @@
 namespace Poppy\AliyunOss\Classes\Provider;
 
 use Exception;
-use OSS\Core\OssException;
 use OSS\OssClient;
 use Poppy\Framework\Exceptions\LoadConfigurationException;
 use Poppy\System\Classes\File\DefaultFileProvider;
@@ -35,7 +34,6 @@ class OssFileProvider extends DefaultFileProvider
     /**
      * OssDefaultUploadProvider constructor.
      * @throws LoadConfigurationException
-     * @throws OssException
      */
     public function __construct()
     {
