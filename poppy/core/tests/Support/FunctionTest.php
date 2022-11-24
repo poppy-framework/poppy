@@ -3,9 +3,13 @@
 namespace Poppy\Core\Tests\Support;
 
 use Carbon\Carbon;
-use Poppy\System\Tests\Base\SystemTestCase;
+use Exception;
+use Poppy\Framework\Application\TestCase;
+use Poppy\Framework\Classes\Resp;
+use Poppy\System\Models\PamAccount;
+use Throwable;
 
-class FunctionTest extends SystemTestCase
+class FunctionTest extends TestCase
 {
 
     public function testSysCacher(): void
@@ -31,7 +35,6 @@ class FunctionTest extends SystemTestCase
         }
     }
 
-
     /**
      * 缓存测试, 带标签的使用 Flush 来清除标签缓存
      */
@@ -50,11 +53,38 @@ class FunctionTest extends SystemTestCase
     }
 
 
-    public function testSysInfos()
+    public function testSysFn()
     {
-        sys_debug('testing', self::class, 'debug@' . $this->faker()->words('20', true));
-        sys_info('testing', self::class, 'info@' . $this->faker()->words('20', true));
-        sys_error('testing', self::class, 'error@' . $this->faker()->words('20', true));
+        $exception  = new Exception('Test Exception');
+        $queryError = null;
+        try {
+            PamAccount::whereNotNull('column_not_exist')->first();
+        } catch (Throwable $e) {
+            $queryError = $e;
+        }
+        $resp = new Resp(112233, $this->faker()->words(12, true));
+
+        $params = [
+            $this->faker()->words(18, true),
+            $exception,
+            $queryError,
+            $resp,
+        ];
+
+        // 当前支持的参数和非参数
+        array_map(function ($param) {
+            sys_error($param);
+            sys_info($param);
+            sys_debug($param);
+            sys_warning($param);
+            sys_error($param, true);
+            sys_info($param, true);
+            sys_debug($param, true);
+            sys_warning($param, true);
+        }, $params);
+
+        // 兼容之前的写法
+        sys_error('user', self::class, $queryError);
         $this->assertTrue(true);
     }
 

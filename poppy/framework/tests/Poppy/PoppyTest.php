@@ -34,13 +34,13 @@ class PoppyTest extends TestCase
     public function testGenKey(): void
     {
         $arr    = [
-            'location' => 'http://www.baidu.com',
+            'location' => 'https://www.baidu.com',
             'status'   => 'error',
         ];
         $genKey = ArrayHelper::genKey($arr);
 
         // 组合数组
-        $this->assertEquals('location|http://www.baidu.com;status|error', $genKey);
+        $this->assertEquals('location|https://www.baidu.com;status|error', $genKey);
 
         // 组合空
         $this->assertEquals('', ArrayHelper::genKey([]));

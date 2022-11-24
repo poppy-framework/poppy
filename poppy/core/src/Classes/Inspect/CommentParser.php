@@ -32,7 +32,9 @@ class CommentParser
      */
     public function parseMethod(string $doc): array
     {
-        $result = ['description' => '', 'params' => []];
+        $result = [
+            'params' => []
+        ];
 
         $result['description'] = trim(preg_replace('/(?:[ \t]*\*[ \t]*@(.*?)\n|[ \t]*\*[ \t]*)/si', '', $doc), '/ ' . PHP_EOL);
 
@@ -75,7 +77,7 @@ class CommentParser
      */
     private function parseVarType(string $str): string
     {
-        if (preg_match('/@[a-z]+\s+([\\a-zA-Z|]+)\s+\$/i', $str, $match)) {
+        if (preg_match('/@[a-z]+\s+([\\a-z|]+)\s+\$/i', $str, $match)) {
             return trim($match[1]);
         }
 
@@ -89,7 +91,7 @@ class CommentParser
      */
     private function parseVarName(string $str): string
     {
-        if (preg_match('/\s+(\$[a-zA-z0-9]+)\s*/i', $str, $match)) {
+        if (preg_match('/\s+(\$[a-z0-9]+)\s*/i', $str, $match)) {
             return $match[1];
         }
 
@@ -103,7 +105,7 @@ class CommentParser
      */
     private function parseVarDesc(string $str): string
     {
-        if (preg_match('/\s+\$[a-zA-z0-9]+\s(.*+)/i', $str, $match)) {
+        if (preg_match('/\s+\$[a-z0-9]+\s(.*+)/i', $str, $match)) {
             return trim($match[1]);
         }
 

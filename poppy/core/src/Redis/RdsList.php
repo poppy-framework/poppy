@@ -6,19 +6,19 @@ class RdsList
 {
     /**
      * 列表最大长度
-     * @var int $maxLength
+     * @var int
      */
     private $maxLength;
 
     /**
-     * @var RdsDb $redis
+     * @var RdsDb
      */
     private $redis;
 
     /**
      * @var string $cacheKey
      */
-    private $cacheKey;
+    private string $cacheKey;
 
     public function __construct($database = 'default', $cache_key, $max_length = 0)
     {

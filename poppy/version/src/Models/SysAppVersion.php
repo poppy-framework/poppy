@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Poppy\Version\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -14,17 +15,18 @@ use Poppy\Version\Classes\PyVersionDef;
 /**
  * User\Models\AppVersion
  *
- * @property int $id
- * @property string $title        版本号
- * @property string $description  描述
- * @property string $download_url 下载地址
- * @property int $is_upgrade   是否强制升级当前版本
- * @property string $platform     操作平台 android ios
+ * @property int         $id
+ * @property string      $title        版本号
+ * @property string      $description  描述
+ * @property string      $download_url 下载地址
+ * @property int         $is_upgrade   是否强制升级当前版本
+ * @property string      $platform     操作平台 android ios
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @method static Builder|SysAppVersion newModelQuery()
  * @method static Builder|SysAppVersion newQuery()
  * @method static Builder|SysAppVersion query()
+ * @mixin Eloquent
  */
 class SysAppVersion extends Model
 {
@@ -45,7 +47,7 @@ class SysAppVersion extends Model
 
     /**
      * @param null|string $key
-     * @param bool $check_key
+     * @param bool        $check_key
      * @return array|string
      */
     public static function kvType(string $key = null, bool $check_key = false)
@@ -146,12 +148,10 @@ class SysAppVersion extends Model
      */
     protected static function versions(string $platform = self::PLATFORM_ANDROID): array
     {
-        $versions = self::query()->where('platform', $platform)->get();
+        $versions = self::where('platform', $platform)->get();
         if ($versions->count()) {
             $arrVersions = $versions->toArray();
-            usort($arrVersions, function ($v1, $v2) {
-                return version_compare($v1['title'], $v2['title']);
-            });
+            usort($arrVersions, fn($v1, $v2) => version_compare($v1['title'], $v2['title']));
             return $arrVersions;
         }
         return [];

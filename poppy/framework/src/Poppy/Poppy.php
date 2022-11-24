@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Poppy;
 
 use Illuminate\Foundation\Application;
@@ -32,12 +34,12 @@ class Poppy
     /**
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * @var Repository
      */
-    protected $repository;
+    protected Repository $repository;
 
     /**
      * Create a new Poppy Modules instance.
@@ -72,7 +74,7 @@ class Poppy
     }
 
     /**
-     * Oh sweet sweet magical method.
+     * magical method.
      * @param string $method
      * @param mixed  $arguments
      * @return mixed
@@ -87,7 +89,7 @@ class Poppy
      * @param array $module module
      * @return void
      */
-    private function registerServiceProvider($module): void
+    private function registerServiceProvider(array $module): void
     {
         $serviceProvider = poppy_class($module['slug'], 'ServiceProvider');
 

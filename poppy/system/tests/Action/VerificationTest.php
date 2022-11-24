@@ -75,5 +75,7 @@ class VerificationTest extends SystemTestCase
         // 存在, 成功
         $Verification->saveWord($key, $str);
         $this->assertTrue($Verification->verifyWord($key, $str), $Verification->getError());
+        // 验证不匹配, 失败
+        $this->assertFalse($Verification->verifyWord($key, $str + 1), $Verification->getError());
     }
 }

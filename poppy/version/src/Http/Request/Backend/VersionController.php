@@ -4,7 +4,7 @@ namespace Poppy\Version\Http\Request\Backend;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
+use Illuminate\Http\Response;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
@@ -14,7 +14,6 @@ use Poppy\Version\Http\MgrPage\FormSettingVersion;
 use Poppy\Version\Http\MgrPage\FormVersionEstablish;
 use Poppy\Version\Http\MgrPage\ListAppVersion;
 use Poppy\Version\Models\SysAppVersion;
-use Response;
 use Throwable;
 
 /**
@@ -66,7 +65,7 @@ class VersionController extends BackendController
     /**
      * 删除
      * @param $id
-     * @return array|JsonResponse|RedirectResponse|\Illuminate\Http\Response|Redirector|Resp|Response
+     * @return Response|JsonResponse|RedirectResponse
      */
     public function delete($id)
     {

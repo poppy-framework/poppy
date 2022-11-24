@@ -321,7 +321,6 @@ class RdsPersist
                 // 从缓冲中删除key
                 $rdsDb->hdel($rdsKey, [$where]);
             }
-
         }
     }
 

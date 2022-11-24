@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Poppy\Contracts;
 
 use Illuminate\Support\Collection;
@@ -15,7 +17,7 @@ interface Repository
      *
      * @return bool
      */
-    public function optimize();
+    public function optimize(): bool;
 
     /**
      * Get all modules.
@@ -29,7 +31,7 @@ interface Repository
      *
      * @return Collection
      */
-    public function slugs();
+    public function slugs(): Collection;
 
     /**
      * Get modules based on where clause.
@@ -39,7 +41,7 @@ interface Repository
      *
      * @return Collection
      */
-    public function where(string $key, $value);
+    public function where(string $key, $value): Collection;
 
     /**
      * Sort modules by given key in ascending order.
@@ -48,7 +50,7 @@ interface Repository
      *
      * @return Collection
      */
-    public function sortBy(string $key);
+    public function sortBy(string $key): Collection;
 
     /**
      * Sort modules by given key in descending order.
@@ -57,7 +59,7 @@ interface Repository
      *
      * @return Collection
      */
-    public function sortByDesc(string $key);
+    public function sortByDesc(string $key): Collection;
 
     /**
      * Determines if the given module exists.
@@ -66,14 +68,14 @@ interface Repository
      *
      * @return bool
      */
-    public function exists(string $slug);
+    public function exists(string $slug): bool;
 
     /**
      * Returns a count of all modules.
      *
      * @return int
      */
-    public function count();
+    public function count(): int;
 
     /**
      * Returns the modules defined manifest properties.
@@ -82,7 +84,7 @@ interface Repository
      *
      * @return Collection
      */
-    public function getManifest(string $slug);
+    public function getManifest(string $slug): Collection;
 
     /**
      * Returns the given module property.
@@ -102,21 +104,21 @@ interface Repository
      *
      * @return bool
      */
-    public function set(string $property, $value);
+    public function set(string $property, $value): bool;
 
     /**
      * Get all enabled modules.
      *
      * @return Collection
      */
-    public function enabled();
+    public function enabled(): Collection;
 
     /**
      * Get all disabled modules.
      *
      * @return Collection
      */
-    public function disabled();
+    public function disabled(): Collection;
 
     /**
      * Determines if the specified module is enabled.
@@ -125,7 +127,7 @@ interface Repository
      *
      * @return bool
      */
-    public function isEnabled(string $slug);
+    public function isEnabled(string $slug): bool;
 
     /**
      * Determines if the specified module is disabled.
@@ -134,14 +136,14 @@ interface Repository
      *
      * @return bool
      */
-    public function isDisabled(string $slug);
+    public function isDisabled(string $slug): bool;
 
     /**
      * Module is poppy module
      * @param string $slug
-     * @return mixed
+     * @return bool
      */
-    public function isPoppy(string $slug);
+    public function isPoppy(string $slug): bool;
 
     /**
      * Enables the specified module.
@@ -150,7 +152,7 @@ interface Repository
      *
      * @return bool
      */
-    public function enable(string $slug);
+    public function enable(string $slug): bool;
 
     /**
      * Disables the specified module.
@@ -159,5 +161,5 @@ interface Repository
      *
      * @return bool
      */
-    public function disable(string $slug);
+    public function disable(string $slug): bool;
 }

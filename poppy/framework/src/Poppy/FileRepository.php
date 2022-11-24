@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Poppy;
 
 use Exception;
@@ -17,8 +19,7 @@ class FileRepository extends Repository
 {
 
     /**
-     * Get all modules.
-     * @return Collection
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function all(): Collection
@@ -27,8 +28,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Get all module slugs.
-     * @return Collection
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function slugs(): Collection
@@ -43,10 +43,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Get modules based on where clause.
-     * @param string $key   the filter key
-     * @param mixed  $value value
-     * @return Collection
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function where(string $key, $value): Collection
@@ -55,9 +52,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Sort modules by given key in ascending order.
-     * @param string $key sort by key
-     * @return Collection
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function sortBy(string $key): Collection
@@ -68,22 +63,17 @@ class FileRepository extends Repository
     }
 
     /**
-     * Sort modules by given key in ascending order.
-     * @param string $key sort by key
-     * @return Collection
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function sortByDesc(string $key): Collection
     {
         $collection = $this->all();
-
         return $collection->sortByDesc($key);
     }
 
     /**
-     * Determines if the given module exists.
-     * @param string $slug module name
-     * @return bool
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function exists(string $slug): bool
@@ -92,8 +82,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Returns count of all modules.
-     * @return int
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function count(): int
@@ -102,10 +91,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Get a module property value.
-     * @param string $property module property
-     * @param mixed  $default  default value
-     * @return mixed
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function get(string $property, $default = null)
@@ -118,10 +104,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Set the given module property value.
-     * @param string $property module property
-     * @param mixed  $value    set module
-     * @return bool
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function set(string $property, $value): bool
@@ -151,8 +134,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Get all enabled modules.
-     * @return Collection
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function enabled(): Collection
@@ -161,8 +143,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Get all disabled modules.
-     * @return Collection
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function disabled(): Collection
@@ -171,9 +152,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Check if specified module is enabled.
-     * @param string $slug module name
-     * @return bool
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function isEnabled(string $slug): bool
@@ -184,9 +163,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Check if specified module is disabled.
-     * @param string $slug module name
-     * @return bool
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function isDisabled(string $slug): bool
@@ -197,9 +174,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Enables the specified module.
-     * @param string $slug module name
-     * @return bool
+     * @inerhitDoc
      * @throws ApplicationException
      */
     public function enable(string $slug): bool
@@ -208,9 +183,7 @@ class FileRepository extends Repository
     }
 
     /**
-     * Disables the specified module.
-     * @param string $slug module name
-     * @return bool
+     * @inheritDoc
      * @throws ApplicationException
      */
     public function disable(string $slug): bool
@@ -220,11 +193,9 @@ class FileRepository extends Repository
 
 
     /**
-     * 是否是 Poppy 模块
-     * @param string $slug
-     * @return bool|mixed
+     * @inerhitDoc
      */
-    public function isPoppy(string $slug)
+    public function isPoppy(string $slug): bool
     {
         return Str::startsWith($slug, 'poppy');
     }
@@ -238,8 +209,7 @@ class FileRepository extends Repository
     */
 
     /**
-     * Update cached repository of module information.
-     * @return bool
+     * @inerhitDoc
      * @throws ApplicationException
      * @throws Exception
      */
@@ -310,7 +280,11 @@ class FileRepository extends Repository
             $cachePath = $this->getCachePath();
 
             if (!$this->files->exists($cachePath)) {
-                $this->createCache();
+
+                // create empty cache
+                $cachePath = $this->getCachePath();
+                $content   = json_encode([], JSON_PRETTY_PRINT);
+                $this->files->put($cachePath, $content);
 
                 $this->optimize();
             }
@@ -319,20 +293,6 @@ class FileRepository extends Repository
         } catch (Throwable $e) {
             throw new ApplicationException($e->getMessage());
         }
-    }
-
-    /**
-     * Create an empty instance of the cache file.
-     * @return Collection
-     */
-    private function createCache(): Collection
-    {
-        $cachePath = $this->getCachePath();
-        $content   = json_encode([], JSON_PRETTY_PRINT);
-
-        $this->files->put($cachePath, $content);
-
-        return collect(json_decode($content, true));
     }
 
     /**

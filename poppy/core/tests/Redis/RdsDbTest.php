@@ -2,6 +2,8 @@
 
 namespace Poppy\Core\Tests\Redis;
 
+use Poppy\Core\Redis\RdsDb;
+
 class RdsDbTest extends RdsBaseTest
 {
     public function testExists()
@@ -75,5 +77,29 @@ class RdsDbTest extends RdsBaseTest
 
         $int = $this->rds->del([$key, $key1]);
         $this->assertEquals(2, $int);
+    }
+
+
+    public function testTag()
+    {
+        $Tag = sys_tag('py-core');
+        $Tag->hSet('testing-tag-h', 'a', 1);
+        $Tag->hMSet('testing-tag-h', [
+            'b' => 2,
+            'c' => 3,
+        ]);
+
+        $all = RdsDb::instance()->hGetAll('tag:py-core:testing-tag-h');
+        $this->assertCount(3, $all);
+
+        $Tag->set('testing-tag-s', 'abc');
+        $Tag->set('any-s', 'abc');
+
+        $Tag->clear('testing-tag*');
+
+        $this->assertEquals(null, $Tag->get('testing-tag-s'));
+        $this->assertEquals('abc', $Tag->get('any-s'));
+
+        $Tag->del('any-s');
     }
 }

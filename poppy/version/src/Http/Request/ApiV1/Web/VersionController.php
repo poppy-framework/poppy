@@ -3,7 +3,7 @@
 namespace Poppy\Version\Http\Request\ApiV1\Web;
 
 use Poppy\Framework\Classes\Resp;
-use Poppy\System\Http\Request\ApiV1\Web\WebApiController;
+use Poppy\System\Http\Request\ApiV1\WebApiController;
 use Poppy\Version\Models\SysAppVersion;
 
 class VersionController extends WebApiController
@@ -18,7 +18,7 @@ class VersionController extends WebApiController
      * @apiSuccess  {string}    description   描述
      * @apiSuccess  {string}    version       版本
      * @apiSuccess  {string}    is_upgrade    是否需要强制更新
-     * @apiSuccessExample  data
+     * @apiSuccessExample       data
      *  {
      *     "download_url": "http://www.domain.com",
      *     "description": "android",

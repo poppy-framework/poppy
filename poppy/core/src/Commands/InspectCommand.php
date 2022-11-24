@@ -48,12 +48,12 @@ class InspectCommand extends Command
     /**
      * @var array  File Rules
      */
-    private $fileRules = [];
+    private array $fileRules = [];
 
     /**
      * @var array Name Rules
      */
-    private $nameRules = [];
+    private array $nameRules = [];
 
     /**
      * Execute the console command.
@@ -173,7 +173,7 @@ class InspectCommand extends Command
             if (!$name) {
                 return;
             }
-            if (!preg_match('/(.+?):(.+?)\.(.+?)\.(.+?)/', $name, $match)) {
+            if (!preg_match('/(.+?):(.+?)\.(.+?)\.(.+?)/', $name)) {
                 $unUniformedKeys[] = [
                     $name,
                 ];
@@ -386,7 +386,6 @@ class InspectCommand extends Command
                     if ($field['type'] !== $item && Str::contains($field['field'], $string)) {
                         $table[] = $funToTable($field, $type, $url);
                     }
-                    continue;
                 }
             }
         };
@@ -446,7 +445,7 @@ class InspectCommand extends Command
             foreach ($files as $file) {
                 $pathName = $file->getPathname();
 
-                $module = $this->moduleName($pathName);
+                $moduleName = $this->moduleName($pathName);
 
                 // 排除指定的类
                 if (Str::contains($pathName, [
@@ -458,21 +457,15 @@ class InspectCommand extends Command
                 }
 
                 // 模块名称解析错误
-                if (!$module) {
+                if (!$moduleName) {
                     $this->warn('Error module name in path:' . $pathName);
                     return;
                 }
 
                 $slug = '';
-                if ($module['type'] === 'modules') {
-                    $slug = 'module.' . $module['module'];
-                }
-                if ($module['type'] === 'poppy') {
-                    $slug = 'poppy.' . $module['module'];
-                }
 
                 $relativePath = $file->getRelativePath();
-                $className    = $this->className($slug, $relativePath, $file->getFilename());
+                $className    = $this->className($moduleName, $relativePath, $file->getFilename());
 
                 try {
                     $refection = new ReflectionClass($className);
@@ -587,10 +580,10 @@ class InspectCommand extends Command
                                     $commentDesc    .= "{$name} ";
                                     $varCommentDesc = '';
                                     if (!$type) {
-                                        $varCommentDesc .= 'type:' . ($type ?: '--') . ',';
+                                        $varCommentDesc .= 'type:' . ',';
                                     }
                                     if (!$desc) {
-                                        $varCommentDesc .= 'desc:' . ($desc ?: '--') . ',';
+                                        $varCommentDesc .= 'desc:' . ',';
                                     }
                                     $commentDesc .= $varCommentDesc ? '[' . rtrim($varCommentDesc, ',') . ']' : '';
                                     $commentDesc .= "\n";
@@ -830,7 +823,7 @@ class InspectCommand extends Command
                 $requestAction = $match[2] ?? '';
 
                 $relativePath = $file->getRelativePath();
-                $className    = $this->className($moduleName, $relativePath, $file->getFilename());
+                $className = $this->className($moduleName, $relativePath, $file->getFilename());
                 try {
                     $refection = new ReflectionClass($className);
                 } catch (Throwable $e) {
@@ -982,20 +975,16 @@ class InspectCommand extends Command
     }
 
     /**
-     * 获取模块信息ß
-     * @param mixed $path path
-     * @return array
+     * 获取模块信息
+     * @param string $path path
+     * @return string
      */
-    private function moduleName($path): array
+    private function moduleName(string $path): string
     {
         if (preg_match('/\/(poppy|modules)\/([a-z-_]{1,20})\/src/', $path, $match)) {
-            return [
-                'type'   => $match[1],
-                'module' => $match[2],
-            ];
+            return ($match[1] === 'poppy' ? 'poppy' : 'module') . '.' . $match[2];
         }
-
-        return [];
+        return '';
     }
 
     /**
@@ -1019,7 +1008,6 @@ class InspectCommand extends Command
             else {
                 $className = 'Poppy\\' . ucfirst(Str::camel($m));
             }
-
         }
         $paths = explode('/', $relative_path);
         foreach ($paths as $path) {

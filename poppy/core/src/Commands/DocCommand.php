@@ -3,7 +3,6 @@
 namespace Poppy\Core\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\Process;
 

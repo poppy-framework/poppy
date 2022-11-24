@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Classes\Traits;
 
 use DB;
 use Illuminate\Support\Str;
+use Poppy\Framework\Classes\ConsoleTable;
 
 /**
  * Db Trait Db 工具
@@ -12,24 +15,39 @@ trait DbTrait
 {
 
     /**
+     * 对数据进行批量排序
+     * @param string                       $table  表名
+     * @param array<int|string,int|string> $values 排序信息
+     * @param string                       $field  需要批量更新的字段
+     * @param string                       $key    key
+     * @return void
+     */
+    public function fieldVals(string $table, array $values, string $field, string $key = 'id')
+    {
+        $sql = "UPDATE {$table} SET `{$field}` = CASE `{$key}` ";
+        foreach ($values as $id => $sort) {
+            $sort = (int) $sort;
+            $sql  .= " WHEN {$id} THEN {$sort} ";
+        }
+
+        $sql .= sprintf(' END WHERE %s in (%s) ', $key, implode(',', array_keys($values)));
+        DB::statement($sql);
+    }
+
+    /**
      * 更新数据库字段值
      * @param string $table 数据表名称
      * @param int    $id    ID
      * @param string $field 更新字段
      * @param string $val   更新值
-     * @return bool
+     * @see        fieldVals
+     * @deprecated 4.1
      */
     public function fieldVal(string $table, int $id, string $field, string $val)
     {
-        $item = DB::table($table)->where('id', $id)->first();
-        if (!$item) {
-            return $this->setError('查无此数据');
-        }
         DB::table($table)->where('id', $id)->update([
             $field => $val,
         ]);
-
-        return true;
     }
 
     /**
@@ -80,5 +98,21 @@ trait DbTrait
             return $formats;
         }
         return $logs;
+    }
+
+    /**
+     * SQL Log 提示
+     */
+    protected function printSqlLog(): void
+    {
+        $logs = $this->fetchQueryLog();
+
+        if (count($logs)) {
+            $Table = new ConsoleTable();
+            $Table->headers([
+                'Query', 'Time',
+            ])->rows($logs);
+            $Table->display();
+        }
     }
 }

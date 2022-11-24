@@ -1,4 +1,6 @@
-<?php namespace Poppy\Version\Action;
+<?php
+
+namespace Poppy\Version\Action;
 
 use Exception;
 use Poppy\Core\Redis\RdsDb;
@@ -20,23 +22,23 @@ class Version
     /**
      * @var SysAppVersion
      */
-    protected $item;
+    protected SysAppVersion $item;
 
     /**
      * @var string Table Name
      */
-    protected $table;
+    protected string $table;
 
     /**
      * @var int $id
      */
-    protected $id;
+    protected int $id;
 
     /**
      * 是否允许覆盖
      * @var bool
      */
-    private $allowCopy = false;
+    private bool $allowCopy = false;
 
     public function __construct()
     {
@@ -123,7 +125,7 @@ class Version
      * @param int $id 版本ID
      * @return bool|null
      */
-    public function delete($id)
+    public function delete(int $id): bool
     {
         if ($id && !$this->init($id)) {
             return false;
@@ -143,7 +145,7 @@ class Version
      * @param int $id 版本ID
      * @return bool
      */
-    public function init($id): bool
+    public function init(int $id): bool
     {
         try {
             $this->item = SysAppVersion::findOrFail($id);

@@ -1,9 +1,13 @@
 <?php
+
+declare(strict_types = 1);
+
+namespace Poppy\Framework\Classes;
+
 /**
  * This file is part of the PHPLucidFrame library.
  * The class makes you easy to build console style tables
  *
- * @package     PHPLucidFrame\Console
  * @since       PHPLucidFrame v 1.12.0
  * @copyright   Copyright (c), PHPLucidFrame.
  * @author      Sithu K. <cithukyaw@gmail.com>
@@ -13,33 +17,55 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE
  */
-
-namespace Poppy\Framework\Classes;
-
 class ConsoleTable
 {
     const HEADER_INDEX = -1;
     const HR           = 'HR';
 
-    /** @var array Array of table data */
-    protected $data = [];
-    /** @var boolean Border shown or not */
-    protected $border = true;
-    /** @var boolean All borders shown or not */
-    protected $allBorders = false;
-    /** @var integer Table padding */
-    protected $padding = 1;
-    /** @var integer Table left margin */
-    protected $indent = 0;
-    /** @var integer */
-    private $rowIndex = -1;
-    /** @var array */
-    private $columnWidths = [];
+    /**
+     * Array of table data
+     * @var array
+     */
+    protected array $data = [];
+
+    /**
+     * Border shown or not
+     * @var boolean
+     */
+    protected bool $border = true;
+
+    /**
+     *  All borders shown or not
+     * @var boolean
+     */
+    protected bool $allBorders = false;
+
+    /**
+     *  Table padding
+     * @var integer
+     */
+    protected int $padding = 1;
+
+    /**
+     * Table left margin
+     * @var integer
+     */
+    protected int $indent = 0;
+
+    /**
+     * @var integer
+     */
+    private int $rowIndex = -1;
+
+    /**
+     * @var array
+     */
+    private array $columnWidths = [];
 
 
     /**
      * Set headers for the columns in one-line
-     * @param array  Array of header cell content
+     * @param array $content Array of header cell content
      * @return self
      */
     public function headers(array $content): self
@@ -63,7 +89,7 @@ class ConsoleTable
      */
     public function getHeaders()
     {
-        return isset($this->data[self::HEADER_INDEX]) ? $this->data[self::HEADER_INDEX] : null;
+        return $this->data[self::HEADER_INDEX] ?? null;
     }
 
     /**
@@ -102,10 +128,10 @@ class ConsoleTable
 
     /**
      * Set padding for each cell
-     * @param integer $value The integer value, defaults to 1
+     * @param int $value The integer value, defaults to 1
      * @return self
      */
-    public function setPadding($value = 1): self
+    public function setPadding(int $value = 1): self
     {
         $this->padding = $value;
 
@@ -114,10 +140,10 @@ class ConsoleTable
 
     /**
      * Set left indentation for the table
-     * @param integer $value The integer value, defaults to 1
+     * @param int $value The integer value, defaults to 1
      * @return self
      */
-    public function setIndent($value = 0): self
+    public function setIndent(int $value = 0): self
     {
         $this->indent = $value;
 
@@ -148,9 +174,8 @@ class ConsoleTable
     /**
      * Adds a row to the table
      * @param array|null $data The row data to add
-     * @return self
      */
-    private function addRow(array $data = null): self
+    private function addRow(array $data = null): void
     {
         $this->rowIndex++;
 
@@ -159,8 +184,6 @@ class ConsoleTable
                 $this->data[$this->rowIndex][$col] = $content;
             }
         }
-
-        return $this;
     }
 
     /**
@@ -209,7 +232,7 @@ class ConsoleTable
     }
 
     /**
-     * Get the printable border line
+     * Get the printable borderline
      * @return string
      */
     private function getBorderLine(): string
@@ -241,15 +264,14 @@ class ConsoleTable
     /**
      * Get the printable cell content
      *
-     * @param integer $index The column index
-     * @param array   $row   The table row
+     * @param integer    $index The column index
+     * @param array|null $row   The table row
      * @return string
      */
-    private function getCellOutput(int $index, $row = null): string
+    private function getCellOutput(int $index, array $row = null): string
     {
         $cell    = $row ? $row[$index] : '-';
         $width   = $this->columnWidths[$index];
-        $pad     = $row ? $width - mb_strlen($cell, 'UTF-8') : $width;
         $padding = str_repeat($row ? ' ' : '-', $this->padding);
 
         $output = '';
@@ -262,14 +284,14 @@ class ConsoleTable
             $output .= $row ? '|' : '+';
         }
 
-        $output  .= $padding; # left padding
+        $output  .= $padding;                               # left padding
         $cell    = trim(preg_replace('/\s+/', ' ', $cell)); # remove line breaks
-        $content = preg_replace('#\x1b[[][^A-Za-z]*[A-Za-z]#', '', $cell);
+        $content = preg_replace('#\x1b[][^A-Za-z]*[A-Za-z]#', '', $cell);
         $delta   = mb_strlen($cell, 'UTF-8') - mb_strlen($content, 'UTF-8');
         $output  .= $this->strPadUnicode($cell, $width + $delta, $row ? ' ' : '-'); # cell content
-        $output  .= $padding; # right padding
+        $output  .= $padding;                                                       # right padding
         if ($row && $index == count($row) - 1 && $this->border) {
-            $output .= $row ? '|' : '+';
+            $output .= '|';
         }
 
         return $output;
@@ -277,14 +299,14 @@ class ConsoleTable
 
     /**
      * Calculate maximum width of each column
-     * @return array
+     * @return void
      */
-    private function calculateColumnWidth(): array
+    private function calculateColumnWidth(): void
     {
-        foreach ($this->data as $y => $row) {
+        foreach ($this->data as $row) {
             if (is_array($row)) {
                 foreach ($row as $x => $col) {
-                    $content = preg_replace('#\x1b[[][^A-Za-z]*[A-Za-z]#', '', $col);
+                    $content = preg_replace('#\x1b[][^A-Za-z]*[A-Za-z]#', '', $col);
                     if (!isset($this->columnWidths[$x])) {
                         $this->columnWidths[$x] = mb_strlen($content, 'UTF-8');
                     }
@@ -297,19 +319,18 @@ class ConsoleTable
             }
         }
 
-        return $this->columnWidths;
     }
 
     /**
      * Multibyte version of str_pad() function
      * @source http://php.net/manual/en/function.str-pad.php
      */
-    private function strPadUnicode($str, $padLength, $padString = ' ', $dir = STR_PAD_RIGHT)
+    private function strPadUnicode($str, $padLength = 5, $padString = ' ')
     {
         $strLen    = mb_strlen($str, 'UTF-8');
         $padStrLen = mb_strlen($padString, 'UTF-8');
 
-        if (!$strLen && ($dir == STR_PAD_RIGHT || $dir == STR_PAD_LEFT)) {
+        if (!$strLen) {
             $strLen = 1;
         }
 
@@ -317,24 +338,10 @@ class ConsoleTable
             return $str;
         }
 
-        $result = null;
-        $repeat = ceil($strLen - $padStrLen + $padLength);
-        if ($dir == STR_PAD_RIGHT) {
-            $result = $str . str_repeat($padString, $repeat);
-            $result = mb_substr($result, 0, $padLength, 'UTF-8');
-        }
-        elseif ($dir == STR_PAD_LEFT) {
-            $result = str_repeat($padString, $repeat) . $str;
-            $result = mb_substr($result, -$padLength, null, 'UTF-8');
-        }
-        elseif ($dir == STR_PAD_BOTH) {
-            $length = ($padLength - $strLen) / 2;
-            $repeat = ceil($length / $padStrLen);
-            $result = mb_substr(str_repeat($padString, $repeat), 0, floor($length), 'UTF-8')
-                . $str
-                . mb_substr(str_repeat($padString, $repeat), 0, ceil($length), 'UTF-8');
-        }
 
-        return $result;
+        $repeat = (int) ceil($strLen - $padStrLen + $padLength);
+
+        $result = $str . str_repeat($padString, $repeat);
+        return mb_substr($result, 0, $padLength, 'UTF-8');
     }
 }

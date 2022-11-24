@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Foundation;
 
 use Closure;
@@ -16,7 +18,7 @@ class Application extends ApplicationBase
      * 请求执行上下文
      * @var string
      */
-    protected $executionContext;
+    protected string $executionContext;
 
     /**
      * namespace
@@ -130,7 +132,7 @@ class Application extends ApplicationBase
      */
     public function databasePath($path = ''): string
     {
-        return $this->resourcePath('database'.($path ? DIRECTORY_SEPARATOR . $path : $path));
+        return $this->resourcePath('database' . ($path ? DIRECTORY_SEPARATOR . $path : $path));
     }
 
     /*
@@ -178,6 +180,40 @@ class Application extends ApplicationBase
     }
 
     /**
+     * Get the path to the cached packages.php file.
+     * @return string
+     */
+    public function getCachedClassesPath(): string
+    {
+        return $this->storagePath() . '/framework/classes.php';
+    }
+
+    /**
+     * Get poppy framework path or assigned path.
+     * @param string $path path
+     * @return string
+     */
+    public function frameworkPath(string $path = ''): string
+    {
+        return dirname(__FILE__, 3) . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Poppy framework Config Path
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get poppy module path.
+     * @return string
+     */
+    public function modulePath(): string
+    {
+        return $this->basePath . DIRECTORY_SEPARATOR . 'modules';
+    }
+
+    /**
      * 绑定路径到 container
      * @return void
      */
@@ -188,39 +224,5 @@ class Application extends ApplicationBase
         $this->instance('path.framework', $this->frameworkPath());
         $this->instance('path.poppy', dirname($this->frameworkPath()));
         $this->instance('path.module', $this->modulePath());
-    }
-
-    /**
-     * Get the path to the cached packages.php file.
-     * @return string
-     */
-    public function getCachedClassesPath(): string
-    {
-        return $this->storagePath() . '/framework/classes.php';
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Poppy framework Config Path
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Get poppy framework path or assigned path.
-     * @param string $path path
-     * @return string
-     */
-    public function frameworkPath($path = ''): string
-    {
-        return dirname(__FILE__, 3) . ($path ? DIRECTORY_SEPARATOR . $path : $path);
-    }
-
-    /**
-     * Get poppy module path.
-     * @return string
-     */
-    public function modulePath(): string
-    {
-        return $this->basePath . DIRECTORY_SEPARATOR . 'modules';
     }
 }

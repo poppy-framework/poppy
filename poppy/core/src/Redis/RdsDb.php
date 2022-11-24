@@ -10,36 +10,38 @@ use Throwable;
 class RdsDb
 {
 
+    private static array $handleRepo;
+
     /**
-     * @var RdsNative $handler
+     * @var RdsNative
      */
-    private $handler;
-
-
-    private static $handleRepo;
+    private RdsNative $handler;
 
     /**
      * Handle constructor.
      * @param string $database
+     * @param string $tag 4.1 支持标签化的缓存
      */
-    public function __construct($database = '')
+    public function __construct(string $database = '', string $tag = '')
     {
         $database      = $database ?: 'default';
         $config        = config('database.redis.' . $database);
-        $this->handler = new RdsNative($config);
+        $this->handler = new RdsNative($config, $tag);
     }
 
     /**
      * 数据库单例
-     * @param string $db
-     * @return mixed|\Poppy\Core\Redis\RdsDb
+     * @param string $db  数据库
+     * @param string $tag 标签
+     * @return mixed|RdsDb
      */
-    public static function instance(string $db = 'default')
+    public static function instance(string $db = 'default', string $tag = '')
     {
-        if (!isset(self::$handleRepo[$db])) {
-            self::$handleRepo[$db] = new self($db);
+        $key = $db . ($tag ? '-' . $tag : '');
+        if (!isset(self::$handleRepo[$key])) {
+            self::$handleRepo[$key] = new self($db, $tag);
         }
-        return self::$handleRepo[$db];
+        return self::$handleRepo[$key];
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Poppy\Abstracts;
 
 use Exception;
@@ -19,17 +21,17 @@ abstract class Repository implements RepositoryContract
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var Filesystem
      */
-    protected $files;
+    protected Filesystem $files;
 
     /**
      * @var string Path to the defined modules directory
      */
-    protected $path;
+    protected string $path;
 
     /**
      * Constructor method.
@@ -40,6 +42,7 @@ abstract class Repository implements RepositoryContract
     {
         $this->config = $config;
         $this->files  = $files;
+        $this->path   = app('path.module');
     }
 
     /**
@@ -66,30 +69,9 @@ abstract class Repository implements RepositoryContract
      * Get modules path.
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
-        return $this->path ?: app('path.module');
-    }
-
-    /**
-     * Set modules path in "RunTime" mode.
-     * @param string $path
-     * @return object $this
-     */
-    public function setPath(string $path)
-    {
-        $this->path = $path;
-
-        return $this;
-    }
-
-    /**
-     * Get modules namespace.
-     * @return string
-     */
-    public function getNamespace()
-    {
-        return rtrim($this->config->get('poppy.namespace'), '/\\');
+        return $this->path;
     }
 
     /**
