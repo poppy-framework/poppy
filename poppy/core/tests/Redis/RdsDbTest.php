@@ -70,12 +70,9 @@ class RdsDbTest extends RdsBaseTest
 
     public function testDel()
     {
-        $key  = $this->key('del');
-        $key1 = $this->key('del-1');
-        $this->rds->set($key, 'del');
-        $this->rds->set($key1, 'del');
-
-        $int = $this->rds->del([$key, $key1]);
+        $this->rds->set('del-0', 'del');
+        $this->rds->set('del-1', 'del');
+        $int = $this->rds->del(['del-0', 'del-1']);
         $this->assertEquals(2, $int);
     }
 

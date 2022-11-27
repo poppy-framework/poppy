@@ -11,12 +11,12 @@ class RdsBaseTest extends TestCase
      * Redis Client
      * @var RdsDb
      */
-    protected $rds;
+    protected RdsDb $rds;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->rds = new RdsDb();
+        $this->rds = sys_tag('py-core:testing');
     }
 
     /**

@@ -88,7 +88,8 @@
             "Poppy\\CanalEs\\": "poppy/canal-es/src/",
             "Poppy\\CanalEs\\Tests\\": "poppy/canal-es/tests/",
             "Poppy\\CodeGenerator\\": "poppy/code-generator/src/",
-            "Demo\\": "modules/demo/src/"
+            "Demo\\": "modules/demo/src/",
+            "Demo\\Tests\\": "modules/demo/tests/"
         },
         "files": [
             "poppy/framework/src/Support/functions.php",

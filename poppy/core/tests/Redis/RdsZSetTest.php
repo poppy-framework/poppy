@@ -205,13 +205,14 @@ class RdsZSetTest extends RdsBaseTest
         $member     = '';
         $memberLast = '';
         foreach ($range as $index => $value) {
-            $username       = $this->faker()->userName;
-            $add[$username] = $value;
+            $username     = $this->faker()->userName;
+            $unique       = $username . '-' . $value;
+            $add[$unique] = $value;
             if ($index === 30) {
-                $member = $username;
+                $member = $unique;
             }
             if ($index === 200) {
-                $memberLast = $username;
+                $memberLast = $unique;
             }
         }
         $this->rds->zAdd($key, $add);
@@ -284,7 +285,7 @@ class RdsZSetTest extends RdsBaseTest
         $range = range(1, 200);
         $add   = [];
         foreach ($range as $value) {
-            $add[$this->faker()->userName] = $value;
+            $add[$this->faker()->userName . '-' . $value] = $value;
         }
         $this->rds->zAdd($key, $add);
 

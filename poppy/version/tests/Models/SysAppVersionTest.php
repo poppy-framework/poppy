@@ -133,10 +133,6 @@ class SysAppVersionTest extends TestCase
         $latest = SysAppVersion::latestVersion(SysAppVersion::PLATFORM_IOS);
         $this->assertEquals('4.6.0', $latest['title'], '不匹配');
 
-        $this->printSqlLog();
-
-        $this->assertEquals('4.6.0', $latest, '不匹配');
-
         // 不强制更新
         $isUpgrade451 = SysAppVersion::isUpgrade(SysAppVersion::PLATFORM_IOS, '4.5.1');
         $this->assertFalse($isUpgrade451);
@@ -144,6 +140,7 @@ class SysAppVersionTest extends TestCase
 
     private function dataAndroid(): array
     {
+        dd(py_faker()->url);
         return [
             '4.4.4' => [
                 'title'        => '4.4.4',
