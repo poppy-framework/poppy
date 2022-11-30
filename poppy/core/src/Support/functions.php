@@ -158,7 +158,6 @@ if (!function_exists('sys_gen_mk')) {
         };
 
         // append data
-        $content = '';
         if (is_array($info)) {
             return $append($moduleMark . json_encode($info, $jsonMark));
         }
@@ -168,10 +167,10 @@ if (!function_exists('sys_gen_mk')) {
         else if ($info instanceof Resp) {
             return $append($moduleMark . implode(', code:', [$info->getMessage(), $info->getCode()]));
         }
-        else if ($info instanceof Exception) {
+        else if ($info instanceof Throwable) {
             $content = [
                 'type'  => get_class($info),
-                'info'  => [$info->getMessage(), $info->getCode()],
+                'info'  => ['message:' . $info->getMessage(), 'code' . $info->getCode()],
                 'trace' => collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 4))->map(function ($arr) {
                     unset($arr['args']);
                     return $arr;
@@ -182,7 +181,7 @@ if (!function_exists('sys_gen_mk')) {
             }
         }
         else {
-            dump($info);
+            $content = $info;
         }
 
         $content = json_encode($content, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
