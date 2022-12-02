@@ -21,13 +21,13 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 生成树选择
-     * @param string $name 名称
-     * @param array $tree 需要生成的树
+     * @param string $name     名称
+     * @param array  $tree     需要生成的树
      * @param string $selected 选择
-     * @param array $options 选项
-     * @param string $id ID KEY
-     * @param string $title Title KEY
-     * @param string $pid PID KEY
+     * @param array  $options  选项
+     * @param string $id       ID KEY
+     * @param string $title    Title KEY
+     * @param string $pid      PID KEY
      * @return string
      */
     public function tree(string $name, array $tree, $selected = '', $options = [], $id = 'id', $title = 'title', $pid = 'pid'): string
@@ -45,10 +45,10 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * radio 选择器(支持后台)
-     * @param string $name 名字
-     * @param array $lists 列表
-     * @param string|null $value 值
-     * @param array $options 选项
+     * @param string      $name    名字
+     * @param array       $lists   列表
+     * @param string|null $value   值
+     * @param array       $options 选项
      * @return string
      */
     public function radios(string $name, $lists = [], $value = null, $options = []): string
@@ -68,10 +68,10 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 选择器
-     * @param string $name 名字
-     * @param array $lists 数组
-     * @param null $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param array  $lists   数组
+     * @param null   $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function checkboxes(string $name, $lists = [], $value = null, $options = []): string
@@ -104,7 +104,7 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 代码编辑器
-     * @param string $name 名字
+     * @param string $name  名字
      * @param string $value 值
      * @return string
      */
@@ -120,9 +120,9 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 编辑器
-     * @param string $name 名字
-     * @param string $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param string $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function editor(string $name, $value = null, $options = []): string
@@ -216,10 +216,10 @@ Editor;
 
     /**
      * 生成排序链接
-     * @param string $name 名字
-     * @param string $value 值
+     * @param string $name       名字
+     * @param string $value      值
      * @param string $route_name 路由名字
-     * @param bool $pjax 是否是 Pjax 请求
+     * @param bool   $pjax       是否是 Pjax 请求
      * @return string
      */
     public function order(string $name, $value = '', $route_name = '', $pjax = false): string
@@ -255,8 +255,8 @@ Editor;
 
     /**
      * 提示组件
-     * @param string $description 描述
-     * @param string|null $name 名字
+     * @param string      $description 描述
+     * @param string|null $name        名字
      * @return string
      */
     public function tip(string $description, $name = null): string
@@ -278,9 +278,9 @@ TIP;
 
     /**
      * 上传缩略图
-     * @param string $name 名字
-     * @param null $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param null   $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function thumb(string $name, $value = null, array $options = []): string
@@ -362,9 +362,9 @@ CONTENT;
 
     /**
      * 上传缩略图
-     * @param string $name 名字
-     * @param null $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param null   $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function upload(string $name, $value = null, $options = []): string
@@ -469,9 +469,9 @@ CONTENT;
 
     /**
      * 多图上传组件
-     * @param string $name form 名称
-     * @param null $value 值
-     * @param array $options 选项
+     * @param string $name    form 名称
+     * @param null   $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function multiThumb(string $name, $value = null, array $options = []): string
@@ -681,8 +681,8 @@ MULTI;
 
     /**
      * 显示上传的单图
-     * @param string|array $url 需要显示的地址
-     * @param array $options 选项
+     * @param string|array $url     需要显示的地址
+     * @param array        $options 选项
      * @return string
      */
     public function showThumb($url, array $options = []): string
@@ -735,9 +735,9 @@ MULTI;
 
     /**
      * 日期选择器
-     * @param string $name 名字
-     * @param string $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param string $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function timePicker(string $name, $value = '', $options = []): string
@@ -749,9 +749,9 @@ MULTI;
 
     /**
      * 生成日期时间选择器
-     * @param string $name 名字
-     * @param string $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param string $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function datetimePicker(string $name, $value = '', $options = []): string
@@ -764,9 +764,9 @@ MULTI;
 
     /**
      * 日期选择器
-     * @param string $name 名字
-     * @param string $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param string $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function datetimeRangePicker(string $name, $value = '', $options = []): string
@@ -779,9 +779,9 @@ MULTI;
 
     /**
      * 生成日期选择器
-     * @param string $name 名字
-     * @param string $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param string $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function datePicker(string $name, $value = '', array $options = []): string
@@ -812,9 +812,9 @@ HTML;
 
     /**
      * 生成日期选择器
-     * @param string $name 名字
-     * @param string $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param string $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function yearPicker(string $name, $value = '', array $options = []): string
@@ -826,9 +826,9 @@ HTML;
 
 
     /**
-     * @param string $name 名字
-     * @param string $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param string $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function dateRangePicker(string $name, $value = '', $options = []): string
@@ -839,9 +839,9 @@ HTML;
     }
 
     /**
-     * @param string $name 名字
-     * @param string $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param string $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function monthPicker(string $name, $value = '', $options = []): string
@@ -852,9 +852,9 @@ HTML;
     }
 
     /**
-     * @param string $name 名字
-     * @param string $value 值
-     * @param array $options 选项
+     * @param string $name    名字
+     * @param string $value   值
+     * @param array  $options 选项
      * @return string
      */
     public function colorPicker(string $name, $value = '', $options = []): string
@@ -888,7 +888,7 @@ HTML;
 
     /**
      * Tab
-     * @param array $scopes
+     * @param array  $scopes
      * @param string $selected
      * @return string
      */
@@ -915,9 +915,9 @@ HTML;
 
     /**
      * @param string $name
-     * @param array $list
+     * @param array  $list
      * @param string $value
-     * @param array $options
+     * @param array  $options
      * @return string
      */
     public function tags(string $name, $list = [], $value = [], $options = []): string
@@ -952,9 +952,9 @@ HTML;
     /**
      * 下拉复选框
      * @param string $name
-     * @param array $lists
-     * @param null $value
-     * @param array $options
+     * @param array  $lists
+     * @param null   $value
+     * @param array  $options
      * @return string
      */
     public function multiSelect(string $name, $lists = [], $value = null, $options = []): string
@@ -965,10 +965,11 @@ HTML;
         $width       = $options['width'] ?? '';
         $width       = $width ? 'w' . $width : '';
         $id          = 'select_' . Str::random(6);
-        $direction   = $options['direction'] ?? 'down';//下拉方向
-        $paging      = $options['paging'] ?? false;    //是否开启分页
-        $filter      = $options['filter'] ?? false;    //是否开启搜索
-        $size        = $options['size'] ?? 8;          //分页数量
+        $direction   = $options['direction'] ?? 'down';                          //下拉方向
+        $paging      = $options['paging'] ?? false;                              //是否开启分页
+        $filter      = $options['filter'] ?? false;                              //是否开启搜索
+        $size        = $options['size'] ?? 8;                                    //分页数量
+        $disabled    = ($options['disabled'] ?? false) ? 'true' : 'false';//是否禁用
 
         if (is_string($value)) {
             $value = explode(',', $value);
@@ -1033,6 +1034,7 @@ HTML;
 		autoRow : true,
 		filterable: '{$filter}',
 		pageEmptyShow: false,
+		disabled: {$disabled},
 		data : []
 	});
 
@@ -1046,7 +1048,7 @@ HTML;
     /**
      * 可以拖拽的关键词
      * @param string $name
-     * @param array $value
+     * @param array  $value
      * @return string
      */
     public function keyword(string $name, $value = []): string

@@ -18,7 +18,7 @@ class Application extends ApplicationBase
      * 请求执行上下文
      * @var string
      */
-    protected string $executionContext;
+    protected string $executionContext = '';
 
     /**
      * namespace
