@@ -72,6 +72,26 @@ trait DbTrait
     }
 
     /**
+     * 禁用查询日志
+     * @since 4.1
+     */
+    protected function disableQueryLog(): void
+    {
+        DB::enableQueryLog();
+    }
+
+    /**
+     * 重新启用查询日志
+     * @since 4.1
+     */
+    protected function reEnableQueryLog(): void
+    {
+        DB::disableQueryLog();
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+    }
+
+    /**
      * 获取SqlLog
      * @return array
      */
@@ -102,8 +122,9 @@ trait DbTrait
 
     /**
      * SQL Log 提示
+     * @since 4.1
      */
-    protected function printSqlLog(): void
+    protected function printQueryLog(): void
     {
         $logs = $this->fetchQueryLog();
 
