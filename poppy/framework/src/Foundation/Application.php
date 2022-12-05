@@ -6,7 +6,6 @@ namespace Poppy\Framework\Foundation;
 
 use Closure;
 use Illuminate\Foundation\Application as ApplicationBase;
-use Symfony\Component\ErrorHandler\Error\FatalError;
 use Throwable;
 
 /**
@@ -36,25 +35,6 @@ class Application extends ApplicationBase
         $this['router']->matched($callback);
     }
 
-    /**
-     * 注册错误处理器
-     * @param Closure $callback callback
-     */
-    public function error(Closure $callback)
-    {
-        $this->make('Illuminate\Contracts\Debug\ExceptionHandler')->error($callback);
-    }
-
-    /**
-     * 注册严重错误处理器
-     * @param Closure $callback callback
-     */
-    public function fatal(Closure $callback)
-    {
-        $this->error(function (FatalError $e) use ($callback) {
-            return call_user_func($callback, $e);
-        });
-    }
 
     /**
      * 检测运行上下文

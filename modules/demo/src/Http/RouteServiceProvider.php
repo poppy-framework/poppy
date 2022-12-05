@@ -2,7 +2,6 @@
 
 namespace Demo\Http;
 
-use Illuminate\Routing\Router;
 use Route;
 
 class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProvider
@@ -43,19 +42,19 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
     {
         Route::group([
             'prefix' => 'demo',
-        ], function (Router $route) {
-            require_once poppy_path('demo', 'src/Http/Routes/web.php');
+        ], function () {
+            require_once __DIR__ . '/Routes/web.php';
         });
 
-        Route::group([], function (Router $route) {
-            require_once poppy_path('demo', 'src/Http/Routes/web-root.php');
+        Route::group([], function () {
+            require_once __DIR__ . '/Routes/web-root.php';
         });
 
         Route::group([
             'prefix'     => $this->prefix . '/demo',
             'middleware' => 'backend-auth',
-        ], function (Router $route) {
-            require_once poppy_path('demo', 'src/Http/Routes/backend.php');
+        ], function () {
+            require_once __DIR__ . '/Routes/backend.php';
         });
     }
 
@@ -68,8 +67,8 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
     {
         Route::group([
             'prefix' => 'api/demo',
-        ], function (Router $route) {
-            require_once poppy_path('demo', 'src/Http/Routes/api.php');
+        ], function () {
+            require_once __DIR__ . '/Routes/api.php';
         });
     }
 }

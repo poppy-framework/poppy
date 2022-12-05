@@ -88,10 +88,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
 
         $dirs      = explode('/', $pathInfo['dirname']);
         $lowerDirs = array_map(function ($item) use ($slug) {
-            if ($this->laravel['poppy']->isPoppy($slug)) {
-                return Str::studly($item);
-            }
-            return Str::snake($item);
+            return Str::studly($item);
         }, $dirs);
         $dirname   = implode('/', $lowerDirs);
         return poppy_path(

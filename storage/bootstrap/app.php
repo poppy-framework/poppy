@@ -6,13 +6,13 @@
 |
 | The first thing we will do is create a new Laravel application instance
 | which serves as the "glue" for all the components of Laravel, and is
-| the IoC container for the system binding all of the various parts.
+| the IoC container for the system binding all the various parts.
 |
 */
 
 
 $app = new Poppy\Framework\Foundation\Application(
-	realpath(dirname(__DIR__, 2) . '/')
+    realpath(dirname(__DIR__, 2) . '/')
 );
 
 /*
@@ -27,18 +27,18 @@ $app = new Poppy\Framework\Foundation\Application(
 */
 
 $app->singleton(
-	Illuminate\Contracts\Http\Kernel::class,
-	Poppy\Framework\Foundation\Http\Kernel::class
+    Illuminate\Contracts\Http\Kernel::class,
+    Poppy\Framework\Foundation\Http\Kernel::class
 );
 
 $app->singleton(
-	Illuminate\Contracts\Console\Kernel::class,
-	Poppy\Framework\Foundation\Console\Kernel::class
+    Illuminate\Contracts\Console\Kernel::class,
+    Poppy\Framework\Foundation\Console\Kernel::class
 );
 
 $app->singleton(
-	Illuminate\Contracts\Debug\ExceptionHandler::class,
-	Poppy\System\Http\Exception\Handler::class
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    Demo\Http\Exception\Handler::class
 );
 
 /*
@@ -47,7 +47,7 @@ $app->singleton(
 |--------------------------------------------------------------------------
 |
 | This script returns the application instance. The instance is given to
-| the calling script so we can separate the building of the instances
+| the calling script, so we can separate the building of the instances
 | from the actual running of the application and sending responses.
 |
 */

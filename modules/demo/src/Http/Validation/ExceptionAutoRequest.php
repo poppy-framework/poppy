@@ -2,11 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace DummyNamespace;
+namespace Demo\Http\Validation;
 
 use \Poppy\Framework\Application\Request;
+use Poppy\Framework\Validation\Rule;
 
-class DummyClass extends Request
+class ExceptionAutoRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +27,7 @@ class DummyClass extends Request
     public function rules(): array
     {
         return [
-            //
+            'title' => Rule::required(),
         ];
     }
 }

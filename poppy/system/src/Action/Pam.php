@@ -213,13 +213,14 @@ class Pam
             return $this->setError($validator->messages());
         }
 
-        if (!is_numeric($role_name)) {
+        $first = is_array($role_name) ? ($role_name[0] ?? null) : $role_name;
+        if (!is_numeric($first)) {
             $role = PamRole::whereIn('name', (array) $role_name)->get();
         }
         else {
-            $roleNames = (array) $role_name;
-            $role      = PamRole::whereIn('id', $roleNames)->get();
+            $role = PamRole::whereIn('id', (array) $role_name)->get();
         }
+
         if (!$role) {
             return $this->setError(trans('py-system::action.pam.role_not_exists'));
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Exceptions;
 
 use Exception;
@@ -11,6 +13,13 @@ use Throwable;
  */
 abstract class BaseException extends Exception
 {
+
+    /**
+     * Exception Context
+     * @var array
+     */
+    protected array $context;
+
     /**
      * BaseException constructor.
      * @param string         $message  message
@@ -25,5 +34,17 @@ abstract class BaseException extends Exception
         else {
             parent::__construct($message, $code, $previous);
         }
+    }
+
+
+    public function setContext(array $context = []): self
+    {
+        $this->context = $context;
+        return $this;
+    }
+
+    public function context(): array
+    {
+        return $this->context;
     }
 }

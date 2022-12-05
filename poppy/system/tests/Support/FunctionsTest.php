@@ -4,6 +4,7 @@ namespace Poppy\System\Tests\Support;
 
 use Poppy\Core\Classes\PyCoreDef;
 use Poppy\Framework\Application\TestCase;
+use Poppy\System\Models\PamAccount;
 
 class FunctionsTest extends TestCase
 {
@@ -14,6 +15,17 @@ class FunctionsTest extends TestCase
 
         sys_cache('py-core')->forget(PyCoreDef::ckModule('hook'));
         sys_cache('py-core')->forget(PyCoreDef::ckModule('module'));
+    }
+
+    public function testPoppyFriendly()
+    {
+        config('app.locale', 'en');
+        $name = poppy_friendly(PamAccount::class);
+        $this->assertEquals(trans('py-system::util.classes.models.pam_account'), $name);
+
+        config('app.locale', 'zh');
+        $name = poppy_friendly(PamAccount::class);
+        $this->assertEquals(trans('py-system::util.classes.models.pam_account'), $name);
     }
 
     public function testSysGet()

@@ -4,8 +4,8 @@ use Illuminate\Routing\Router;
 
 
 Route::group([
-//    'middleware' => 'sys-auth:jwt_web',
-    'namespace'  => 'Demo\Http\Request\Web',
+    //    'middleware' => 'sys-auth:jwt_web',
+    'namespace' => 'Demo\Http\Request\Web',
 ], function (Router $router) {
 
     $router->any('token', 'TokenController@index')
@@ -53,4 +53,13 @@ Route::group([
         ->name('demo:web.js.index');
     $router->any('mail/{slug}/{page?}', 'JsController@mail')
         ->name('demo:web.js.mail');
+
+
+    /* Exception
+     * ---------------------------------------- */
+    $router->any('exception/validation_when', 'ExceptionController@validationWhen');
+    $router->any('exception/validation_auto', 'ExceptionController@validationAuto');
+    $router->any('exception/validation', 'ExceptionController@validation');
+    $router->any('exception/{type}', 'ExceptionController@index')
+        ->name('demo:web.exception.index');
 });

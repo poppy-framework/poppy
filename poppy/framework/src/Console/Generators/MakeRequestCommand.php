@@ -45,6 +45,6 @@ class MakeRequestCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return poppy_class($this->argument('slug'), 'Http\\Request');
+        return poppy_class($this->argument('slug'), 'Http\\Validation');
     }
 }

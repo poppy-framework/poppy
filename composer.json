@@ -44,7 +44,8 @@
         "ovidigital/js-object-to-json": "^1.0",
         "hamcrest/hamcrest-php": "^2.0.1",
         "mockery/mockery": "^1.5.1",
-        "nikic/php-parser": "^4.15"
+        "nikic/php-parser": "^4.15",
+        "sentry/sentry-laravel": "3.*"
     },
     "require-dev": {
         "itsgoingd/clockwork": "^5.1",

@@ -1,13 +1,15 @@
 <?php
 
-declare(strict_types = 1);
+namespace Demo\Http\Validation;
 
-namespace DummyNamespace;
+use Poppy\Framework\Application\Request;
 
-use \Poppy\Framework\Application\Request;
-
-class DummyClass extends Request
+class ExceptionRequest extends Request
 {
+    protected bool $isValidate = false;
+
+
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,7 +28,7 @@ class DummyClass extends Request
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required',
         ];
     }
 }

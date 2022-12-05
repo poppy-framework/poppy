@@ -34,6 +34,14 @@ class FunctionsTest extends TestCase
         $this->assertEquals('Site\\Models', $moduleSiteModal);
     }
 
+    public function testPoppyFriendly()
+    {
+        $name = poppy_friendly('\Poppy\Framework\Poppy\Poppy');
+        $this->assertEquals(trans('poppy::util.classes.poppy.poppy'), $name);
+        $name = poppy_friendly('\Demo\Models\NotExistModel');
+        $this->assertEquals('demo::util.classes.models.not_exist_model', $name);
+    }
+
 
     public function testParseSeo()
     {

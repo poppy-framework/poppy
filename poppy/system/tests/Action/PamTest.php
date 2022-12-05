@@ -65,7 +65,7 @@ class PamTest extends SystemTestCase
 
     public function testRegisterWithUsername()
     {
-        $passport = $this->faker()->lexify('test_????????');
+        $passport = $this->faker()->lexify('testing_username_????????');
         $password = $this->faker()->lexify('????????');
         $Pam      = new Pam();
         try {
@@ -82,10 +82,46 @@ class PamTest extends SystemTestCase
 
     public function testRegisterDevelop()
     {
-        $passport = $this->faker()->lexify('develop_????????');
+        $passport = $this->faker()->lexify('testing_dev_????????');
         $Pam      = new Pam();
         try {
             if ($Pam->register($passport, '', PamRole::DEV_USER)) {
+                $this->assertTrue(true);
+            }
+            else {
+                $this->fail($Pam->getError());
+            }
+        } catch (Throwable $e) {
+            $this->fail($e->getMessage());
+        }
+
+        $passport = $this->faker()->lexify('testing_dev2_????????');
+        try {
+            if ($Pam->register($passport, '', [PamRole::DEV_USER])) {
+                $this->assertTrue(true);
+            }
+            else {
+                $this->fail($Pam->getError());
+            }
+        } catch (Throwable $e) {
+            $this->fail($e->getMessage());
+        }
+        $passport = $this->faker()->lexify('testing_dev3_????????');
+        $roleId   = PamRole::where('name', PamRole::DEV_USER)->value('id');
+        try {
+            if ($Pam->register($passport, '', [$roleId])) {
+                $this->assertTrue(true);
+            }
+            else {
+                $this->fail($Pam->getError());
+            }
+        } catch (Throwable $e) {
+            $this->fail($e->getMessage());
+        }
+
+        $passport = $this->faker()->lexify('testing_dev4_????????');
+        try {
+            if ($Pam->register($passport, '', $roleId)) {
                 $this->assertTrue(true);
             }
             else {

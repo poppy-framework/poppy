@@ -207,6 +207,32 @@ if (!function_exists('poppy_class')) {
     }
 }
 
+if (!function_exists('poppy_friendly')) {
+    /**
+     * 根据 Poppy / Module 的参数定义返回 util 中定义的 class 的友好名称
+     * @param string $class
+     * @return string
+     */
+    function poppy_friendly(string $class): string
+    {
+        $snake = collect(explode('\\', trim($class, '\\')))->map(function ($path) {
+            return Str::snake(lcfirst($path));
+        })->filter();
+
+        $part1 = $snake->first();
+        $part2 = $snake->offsetGet(1);
+        if ($part1 === 'poppy') {
+            $namespace = $part2 === 'framework' ? 'poppy' : 'py-' . $part2;
+            $path      = $snake->slice(2)->join('.');
+        }
+        else {
+            $namespace = $part1;
+            $path      = $snake->slice(1)->join('.');
+        }
+        return trans("{$namespace}::util.classes.{$path}");
+    }
+}
+
 if (!function_exists('is_production')) {
     /**
      * Check Env If Production
