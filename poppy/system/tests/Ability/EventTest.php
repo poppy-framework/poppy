@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Tests\Ability;
 
 use Carbon\Carbon;

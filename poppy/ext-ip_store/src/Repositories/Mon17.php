@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Extension\IpStore\Repositories;
 
 use Exception;
@@ -20,11 +22,15 @@ class Mon17 implements IpContract
 {
     use ExtIpStoreTrait;
 
-    private        $storePath;
     private static $ip;
+
     private static $fp;
+
     private static $offset;
+
     private static $index;
+
+    private $storePath;
 
     public function __construct()
     {

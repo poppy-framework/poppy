@@ -10,36 +10,36 @@ class Config
     /**
      * @var string
      */
-    protected $iosAppKey;
+    protected string $iosAppKey;
 
     /**
      * @var string
      */
-    protected $androidChannel;
+    protected string $androidChannel;
 
     /**
      * @var string
      */
-    protected $androidAppKey;
+    protected string $androidAppKey;
 
     /**
      * Aliyun Access Key
      * @var string
      */
-    protected $accessKey;
+    protected string $accessKey;
 
 
     /**
      * Aliyun Access Secret
      * @var string
      */
-    protected $accessSecret;
+    protected string $accessSecret;
 
     /**
      * 需要打开的页面
-     * @var mixed|string
+     * @var string
      */
-    protected $androidActivity;
+    protected string $androidActivity;
 
     public function __construct($ak, $sk, $android_app_id, $android_channel = '', $android_activity = '', $ios_key = '')
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Area\Listeners\PoppyOptimized;
 
 use Poppy\Framework\Events\PoppyOptimized;
@@ -15,7 +17,7 @@ class ClearCacheListener
      */
     public function handle(PoppyOptimized $event)
     {
-        sys_cache('py-area')->flush();
+        sys_tag('py-area')->clear();
     }
 }
 

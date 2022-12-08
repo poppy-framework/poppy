@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Tests\Support;
 
 use Carbon\Carbon;
@@ -20,16 +22,16 @@ class FunctionTest extends TestCase
                 return Carbon::now()->timestamp;
             }, 2);
             if ($i === 0) {
-                $this->assertEquals($timestamp, $core, $i);
+                $this->assertEquals($timestamp, $core);
             }
             // 第一秒 未过期
             if ($i === 1) {
-                $this->assertEquals($timestamp - 1, $core, $i);
+                $this->assertEquals($timestamp - 1, $core);
             }
 
             // 第二秒已经过期
             if ($i === 2) {
-                $this->assertEquals($timestamp, $core, $i);
+                $this->assertEquals($timestamp, $core);
             }
             sleep(1);
         }
@@ -40,16 +42,14 @@ class FunctionTest extends TestCase
      */
     public function testSysCache(): void
     {
-        sys_cache('py-core')->forever('test.sys.cache', 'sys_cache');
-        $value = sys_cache('py-core')->get('test.sys.cache');
+        sys_tag('py-core')->set('test.sys.cache', 'sys_cache');
+        $value = sys_tag('py-core')->get('test.sys.cache');
         $this->assertEquals('sys_cache', $value);
 
-        sys_cache('py-core')->forever('test.sys_cache', 5);
-        sys_cache()->forever('test.sys_cache', 8);
-        $this->assertEquals(5, sys_cache('py-core')->get('test.sys_cache'));
-        sys_cache('py-core')->flush();
-        $this->assertEquals(8, sys_cache()->get('test.sys_cache'));
-        $this->assertEquals(null, sys_cache('py-core')->get('test.sys_cache'));
+        sys_tag('py-core')->set('test.sys_cache', 5);
+        $this->assertEquals(5, sys_tag('py-core')->get('test.sys_cache'));
+        sys_tag('py-core')->clear();
+        $this->assertEquals(null, sys_tag('py-core')->get('test.sys_cache'));
     }
 
 
@@ -73,18 +73,10 @@ class FunctionTest extends TestCase
 
         // 当前支持的参数和非参数
         array_map(function ($param) {
-            sys_error($param);
-            sys_info($param);
-            sys_debug($param);
-            sys_warning($param);
-            sys_error($param, true);
-            sys_info($param, true);
-            sys_debug($param, true);
-            sys_warning($param, true);
+            $this->outputVariables(sys_gen_mk(self::class, $param));
         }, $params);
 
         // 兼容之前的写法
-        sys_error('user', self::class, $queryError);
         $this->assertTrue(true);
     }
 

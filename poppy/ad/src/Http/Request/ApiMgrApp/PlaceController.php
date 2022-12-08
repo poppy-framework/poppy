@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Ad\Http\Request\ApiMgrApp;
 
 use Illuminate\Contracts\View\Factory;

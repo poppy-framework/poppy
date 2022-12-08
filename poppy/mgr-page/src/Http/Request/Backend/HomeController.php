@@ -13,6 +13,7 @@ use Poppy\Core\Classes\Traits\CoreTrait;
 use Poppy\Core\Exceptions\PermissionException;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Classes\Traits\PoppyTrait;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Helper\EnvHelper;
 use Poppy\Framework\Helper\StrHelper;
 use Poppy\MgrPage\Classes\Setting\SettingView;
@@ -33,7 +34,7 @@ class HomeController extends BackendController
      * @return View
      * @throws PermissionException
      */
-    public function index()
+    public function index(): View
     {
         $isFullPermission = $this->pam->hasRole(PamRole::BE_ROOT);
         $this->pyView()->share([
@@ -53,6 +54,7 @@ class HomeController extends BackendController
 
     /**
      * 登录
+     * @throws ApplicationException
      */
     public function login()
     {
@@ -87,7 +89,7 @@ class HomeController extends BackendController
 
     public function clearCache()
     {
-        sys_cache('py-core')->flush();
+        sys_tag('py-core')->clear();
         sys_cache('py-system')->flush();
         $this->pyConsole()->call('poppy:optimize');
         return Resp::success('已清空缓存');

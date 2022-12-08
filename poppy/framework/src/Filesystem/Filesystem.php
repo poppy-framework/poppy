@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Filesystem;
 
 use FilesystemIterator;
@@ -272,8 +274,8 @@ class Filesystem extends FilesystemBase
 
     /**
      * Modify file/folder permissions
-     * @param string      $path path
-     * @param string|null $mask mask
+     * @param string   $path path
+     * @param int|null $mask mask
      * @return void
      */
     public function chmod($path, $mask = null)
@@ -289,7 +291,6 @@ class Filesystem extends FilesystemBase
         }
 
         @chmod($path, $mask);
-        return;
     }
 
     /**

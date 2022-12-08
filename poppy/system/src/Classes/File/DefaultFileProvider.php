@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Classes\File;
 
 use Carbon\Carbon;
@@ -162,7 +164,7 @@ class DefaultFileProvider implements FileContract
         $Disk             = $this->storage();
         $extension        = $file->getClientOriginalExtension();
         $fileRelativePath = $this->genRelativePath($extension);
-        $zipContent       = file_get_contents($file);
+        $zipContent       = file_get_contents($file->getPathname());
 
         /* 图片进行压缩, 其他不进行处理
          * ---------------------------------------- */

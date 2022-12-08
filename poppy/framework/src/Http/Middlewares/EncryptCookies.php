@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Http\Middlewares;
 
 use Illuminate\Contracts\Encryption\Encrypter as EncrypterContract;

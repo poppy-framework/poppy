@@ -15,7 +15,7 @@ trait DbTrait
 {
 
     /**
-     * 对数据进行批量排序
+     * 对数据进行批量设置
      * @param string                       $table  表名
      * @param array<int|string,int|string> $values 排序信息
      * @param string                       $field  需要批量更新的字段
@@ -25,11 +25,9 @@ trait DbTrait
     public function fieldVals(string $table, array $values, string $field, string $key = 'id')
     {
         $sql = "UPDATE {$table} SET `{$field}` = CASE `{$key}` ";
-        foreach ($values as $id => $sort) {
-            $sort = (int) $sort;
-            $sql  .= " WHEN {$id} THEN {$sort} ";
+        foreach ($values as $id => $val) {
+            $sql .= " WHEN {$id} THEN {$val} ";
         }
-
         $sql .= sprintf(' END WHERE %s in (%s) ', $key, implode(',', array_keys($values)));
         DB::statement($sql);
     }

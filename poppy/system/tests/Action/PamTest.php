@@ -2,16 +2,16 @@
 
 namespace Poppy\System\Tests\Action;
 
+use Poppy\Framework\Application\TestCase;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Action\Pam;
 use Poppy\System\Action\Verification;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
-use Poppy\System\Tests\Base\SystemTestCase;
 use Poppy\System\Tests\Testing\TestingPam;
 use Throwable;
 
-class PamTest extends SystemTestCase
+class PamTest extends TestCase
 {
 
     /**

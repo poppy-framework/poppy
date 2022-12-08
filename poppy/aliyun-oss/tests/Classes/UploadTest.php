@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\AliyunOss\Tests\Classes;
 
 use GuzzleHttp\Client;
@@ -50,7 +52,6 @@ class UploadTest extends TestCase
             $url  = $Upload->getUrl();
             $resp = self::$client->get($url);
             $this->assertEquals(200, $resp->getStatusCode());
-            $this->outputVariables($url);
 
             $copyAimPath = 'testing/oss/copy-demo.jpg';
             $aimUrl      = $Upload->getReturnUrl() . $copyAimPath;
@@ -59,8 +60,7 @@ class UploadTest extends TestCase
             $Upload->copyTo($copyAimPath);
             $resp = self::$client->get($aimUrl);
             $this->assertEquals(200, $resp->getStatusCode());
-            $this->outputVariables($aimUrl);
-            //
+
             // 检测删除
             $Upload->delete();
             try {

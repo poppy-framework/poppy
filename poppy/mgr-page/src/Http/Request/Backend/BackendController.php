@@ -3,7 +3,6 @@
 namespace Poppy\MgrPage\Http\Request\Backend;
 
 use Auth;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Poppy\Framework\Application\Controller;
 use Poppy\Framework\Classes\Traits\PoppyTrait;
 use Poppy\System\Models\PamAccount;

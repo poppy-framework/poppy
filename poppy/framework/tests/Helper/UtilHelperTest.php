@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Tests\Helper;
 
 use Carbon\Carbon;
@@ -72,7 +74,7 @@ class UtilHelperTest extends TestCase
 
     public function testIsMd5(): void
     {
-        $str = UtilHelper::isMd5(md5(Carbon::now()->timestamp));
+        $str = UtilHelper::isMd5(md5((string) Carbon::now()->timestamp));
         $this->assertEquals(true, $str);
         $this->assertFalse(UtilHelper::isMd5(Str::random()));
     }
@@ -215,14 +217,14 @@ class UtilHelperTest extends TestCase
 
     public function testSqlTime(): void
     {
-        $str = UtilHelper::sqlTime('1606091957');
+        $str = UtilHelper::sqlTime(1606091957);
         $this->assertEquals('2020-11-23 08:39:17', $str);
     }
 
     public function testToHour(): void
     {
-        $str = UtilHelper::toHour('2', '1');
-        $this->assertEquals('26', $str);
+        $str = UtilHelper::toHour(2, 1);
+        $this->assertEquals(26, $str);
     }
 
     public function testIsVersion(): void
@@ -233,7 +235,7 @@ class UtilHelperTest extends TestCase
 
     public function testGetDistance(): void
     {
-        $str = UtilHelper::getDistance('1.1', '1.2', '1.3', '1.4');
+        $str = UtilHelper::getDistance(1.1, 1.2, 1.3, 1.4);
         $this->assertEquals('31.48km', $str);
     }
 

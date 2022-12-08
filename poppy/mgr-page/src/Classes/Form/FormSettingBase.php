@@ -67,7 +67,7 @@ abstract class FormSettingBase extends FormWidget
                 $value = '';
             }
             $fullKey = $this->group . '.' . $key;
-            $class   = __CLASS__;
+            $class   = self::class;
             if (!$this->keyParserMatch($fullKey)) {
                 throw new FormException("Key {$fullKey} Not Match At Group `{$this->group}` In Class `{$class}`");
             }

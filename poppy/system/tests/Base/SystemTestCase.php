@@ -14,6 +14,10 @@ use Poppy\System\Classes\Traits\DbTrait;
 use Poppy\System\Models\PamAccount;
 use Throwable;
 
+/**
+ * @deprecated 4.1
+ * @see TestCase
+ */
 class SystemTestCase extends TestCase
 {
 

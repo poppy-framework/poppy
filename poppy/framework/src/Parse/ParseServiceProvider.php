@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Parse;
 
 use Illuminate\Contracts\Support\DeferrableProvider;

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Poppy\Core\Commands;
 
@@ -135,13 +136,13 @@ class DocCommand extends Command
         }
 
         $arrMatches = explode('|', $match);
-        $f = array_map(function ($mt) {
+        $f          = array_map(function ($mt) {
             $f = ' -f "modules/.*/src/Http/Request/' . $mt . '/.*\.php$"';
             $f .= ' -f "poppy/.*/src/Http/Request/' . $mt . '/.*\.php$"';
             $f .= ' -f "vendor/poppy/.*/src/Http/Request/' . $mt . '/.*\.php$"';
             return $f;
         }, $arrMatches);
-        $f = implode(' ', $f);
+        $f          = implode(' ', $f);
 
         $lower = strtolower($key);
         $shell = 'apidoc -i ' . $path . '  -o ' . $aim . ' ' . $f;

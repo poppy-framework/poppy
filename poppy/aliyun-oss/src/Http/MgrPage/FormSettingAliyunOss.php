@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\AliyunOss\Http\MgrPage;
 
 use Poppy\Framework\Validation\Rule;

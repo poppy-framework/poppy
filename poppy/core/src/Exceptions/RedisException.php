@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Exceptions;
 
-use Exception;
+use Poppy\Framework\Exceptions\BaseException;
 
-class RedisException extends Exception
+class RedisException extends BaseException
 {
 }

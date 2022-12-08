@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Tests\Classes;
 
 use Illuminate\Support\Str;

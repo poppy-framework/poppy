@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Http\Request\ApiV1;
 
 use Poppy\Framework\Classes\Resp;

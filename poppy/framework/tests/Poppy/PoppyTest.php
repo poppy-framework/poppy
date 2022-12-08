@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Tests\Poppy;
 
 use Illuminate\Support\Collection;

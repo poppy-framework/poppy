@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -14,7 +16,7 @@ if (!function_exists('sys_setting')) {
     /**
      * Get System Setting
      * @param string $key
-     * @param null $default
+     * @param null   $default
      * @return mixed
      */
     function sys_setting(string $key, $default = null)
@@ -29,7 +31,7 @@ if (!function_exists('sys_gen_order')) {
      * @param string $prefix
      * @return string
      */
-    function sys_gen_order($prefix = ''): string
+    function sys_gen_order(string $prefix = ''): string
     {
         try {
             $sequence = random_int(1000, 9999);
@@ -62,7 +64,7 @@ if (!function_exists('sys_trans')) {
     /**
      * translate line
      * @param string $line
-     * @param array $replace
+     * @param array  $replace
      * @return string
      */
     function sys_trans(string $line, array $replace = []): string
@@ -159,7 +161,7 @@ if (!function_exists('sys_get')) {
     /**
      * 获取 data 中的数据
      * 支持批量获取
-     * @param array|object $data
+     * @param array|object      $data
      * @param string|null|array $key
      * @param string|null|mixed $default
      * @return null|array|string
@@ -225,9 +227,9 @@ if (!function_exists('sys_parent_id')) {
 if (!function_exists('sys_url')) {
     /**
      * URL生成
-     * @param string|array $key url 参数
-     * @param null|string $value 值
-     * @param bool $root 是否生成根地址
+     * @param string|array $key   url 参数
+     * @param null|string  $value 值
+     * @param bool         $root  是否生成根地址
      * @return string
      */
     function sys_url($key, $value = null, $root = false)
@@ -319,7 +321,7 @@ if (!function_exists('sys_api_demo')) {
 if (!function_exists('sys_content_trim')) {
     /**
      * 清空word 代码
-     * @param string $content 内容
+     * @param string $content        内容
      * @param string $allowable_tags 允许保留的标签
      * @return string
      */

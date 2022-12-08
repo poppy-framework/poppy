@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Models\Query;
 
 use Illuminate\Support\Collection;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Area\Classes\Grid\Filter\Presenter;
 
 use Poppy\Area\Models\SysArea;

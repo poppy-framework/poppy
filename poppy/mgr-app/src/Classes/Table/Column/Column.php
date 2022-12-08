@@ -4,17 +4,16 @@ namespace Poppy\MgrApp\Classes\Table\Column;
 
 use Carbon\Carbon;
 use Closure;
-use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrApp\Classes\Contracts\Structable;
 use Poppy\MgrApp\Classes\Table\Option\Option;
 use Poppy\MgrApp\Classes\Table\Render\Render;
 use Poppy\MgrApp\Classes\Table\Show\AsAction;
 use Poppy\MgrApp\Classes\Table\Show\AsDate;
-use Poppy\MgrApp\Classes\Table\Show\WithDefault;
 use Poppy\MgrApp\Classes\Table\Show\AsImage;
 use Poppy\MgrApp\Classes\Table\Show\AsMath;
 use Poppy\MgrApp\Classes\Table\Show\AsOnOff;
@@ -22,13 +21,14 @@ use Poppy\MgrApp\Classes\Table\Show\AsQuick;
 use Poppy\MgrApp\Classes\Table\Show\AsSelect;
 use Poppy\MgrApp\Classes\Table\Show\AsText;
 use Poppy\MgrApp\Classes\Table\Show\AsUrl;
+use Poppy\MgrApp\Classes\Table\Show\WithDefault;
 
 /**
  * 列展示以及渲染, 当前的目的是使用前端方式渲染, 而不是依靠于 v-html 或者是后端生成
- * @property-read string $name        当前列的名称
- * @property-read string $relation    当前关系
- * @property-read bool $relationMany  是否是一对多关系
- * @property-read string $label       标签
+ * @property-read string $name          当前列的名称
+ * @property-read string $relation      当前关系
+ * @property-read bool   $relationMany  是否是一对多关系
+ * @property-read string $label         标签
  */
 class Column implements Structable
 {
@@ -51,7 +51,7 @@ class Column implements Structable
      *
      * @var array
      */
-    public static $defined = [];
+    public static array $defined = [];
 
     /**
      * 列名称
@@ -166,7 +166,7 @@ class Column implements Structable
     /**
      * 设置列宽度, 单个按钮 最优宽度 60(图标), 每个按钮增加 45 宽度
      * Datetime 最优宽度 170
-     * @param int $width 宽度
+     * @param int  $width 宽度
      * @param bool $fixed 是否是固定宽度
      * @return $this
      */
@@ -302,6 +302,7 @@ class Column implements Structable
     }
 
     /**
+     * @throws ApplicationException
      */
     public function fillVal($row)
     {
@@ -337,7 +338,7 @@ class Column implements Structable
      * Allow fluent calls on the Column object.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return $this
      */
@@ -378,9 +379,9 @@ class Column implements Structable
     /**
      * 定义全局列渲染
      * @param string $name
-     * @param mixed $definition
+     * @param mixed  $definition
      */
-    public static function define($name, $definition)
+    public static function define(string $name, $definition)
     {
         static::$defined[$name] = $definition;
     }
@@ -390,7 +391,7 @@ class Column implements Structable
      * 设置 Relation
      * @param string $relation
      * @param string $field
-     * @param bool $many
+     * @param bool   $many
      * @return $this
      */
     public function setRelation(string $relation, string $field, bool $many = false): self
@@ -406,13 +407,13 @@ class Column implements Structable
      *
      * @return bool
      */
-    protected function isRelation()
+    protected function isRelation(): bool
     {
         return (bool) $this->relation;
     }
 
     /**
-     * If has display callbacks.
+     * If it has display callbacks.
      *
      * @return bool
      */
@@ -424,7 +425,7 @@ class Column implements Structable
     /**
      * 调用所有的列渲染回调, 因为 row 可能未自定义的 Query 渲染, 所以返回可能是数组, 这里使用 collect 包裹处理
      * @param mixed $value
-     * @param $row
+     * @param       $row
      * @return mixed
      */
     protected function callDisplayCallbacks($value, $row)
@@ -459,6 +460,7 @@ class Column implements Structable
 
     /**
      * 使用全局列定义
+     * @throws ApplicationException
      */
     protected function useDefinedColumn()
     {
@@ -473,7 +475,7 @@ class Column implements Structable
         }
 
         if (!class_exists($class) || !is_subclass_of($class, Render::class)) {
-            sys_error('mgr-app', __CLASS__, "Invalid column render definition [$class]");
+            throw new ApplicationException("Invalid column render definition [$class]");
         }
 
         $this->display(function ($value) use ($class) {
@@ -487,7 +489,7 @@ class Column implements Structable
      * Find a render to display column.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return $this
      */
@@ -504,7 +506,7 @@ class Column implements Structable
      * Call Illuminate/Support.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      * @return $this
      */
     protected function callSupportRender(string $method, array $arguments): self
@@ -526,7 +528,7 @@ class Column implements Structable
      * Call Builtin.
      *
      * @param string|Closure $abstract
-     * @param array $arguments
+     * @param array          $arguments
      *
      * @return $this
      */

@@ -50,9 +50,9 @@ class PyCoreDef
      * 权限
      * @return string
      */
-    public static function ckPermissions(): string
+    public static function ckPermissionNames(): string
     {
-        return 'permissions';
+        return 'permission-names';
     }
 
     /**
@@ -67,20 +67,20 @@ class PyCoreDef
 
     /**
      * Rbac 角色缓存
-     * @param int $id
+     * @param int|string $id
      * @return string
      */
-    public static function rbacCkRolePermissions(int $id): string
+    public static function rbacCkRolePermissions($id): string
     {
         return 'permission-role-' . $id;
     }
 
     /**
      * 用户角色缓存
-     * @param int $id
+     * @param int|string $id
      * @return string
      */
-    public static function rbacCkUserRoles(int $id): string
+    public static function rbacCkUserRoles($id): string
     {
         return 'roles-user-' . $id;
     }
@@ -89,8 +89,8 @@ class PyCoreDef
      * 过期的KEY/Field
      * @return string
      */
-    public static function ckTagRdsKeyFieldExpired(): string
+    public static function ckRdsKeyFieldExpired(): string
     {
-        return 'tag:py-core:rds-key-field-expired';
+        return 'rds-key-field-expired';
     }
 }

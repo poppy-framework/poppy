@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Tests\Redis;
 
 use Carbon\Carbon;
@@ -201,6 +203,6 @@ class RdsPersistTest extends TestCase
 
     private function fetchOne()
     {
-        return DB::table('sys_test_persist')->orderByRaw('rand()')->first();
+        return DB::table('sys_test_persist')->inRandomOrder()->first();
     }
 }

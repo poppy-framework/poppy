@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Listeners\LoginSuccess;
 
 use Illuminate\Support\Str;

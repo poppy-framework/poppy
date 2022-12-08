@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Area\Classes\Form\Field;
 
 use Poppy\Area\Models\SysArea;

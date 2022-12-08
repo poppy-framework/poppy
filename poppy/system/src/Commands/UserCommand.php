@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Commands;
 
 use Carbon\Carbon;
@@ -87,7 +89,7 @@ class UserCommand extends Command
                         'mobile' => '33023-' . sprintf("%s%'.07d", '', $id),
                     ]);
                 });
-                $this->info(sys_mark('py-system', self::class, 'Fill Mobile Over'));
+                $this->info(sys_gen_mk(self::class, 'Fill Mobile Over'));
                 break;
             case 'clear_expired':
                 // 移除过期的 Jwt Token
@@ -99,7 +101,7 @@ class UserCommand extends Command
                     $Rds->hDel(PySystemDef::ckTagSso('valid'), $items);
                     $Rds->zRemRangeByScore(PySystemDef::ckTagSso('expired'), 0, $endTtl);
                 }
-                $this->info(sys_mark('py-system', self::class, 'Delete Expired Token, Num : ' . $num));
+                $this->info(sys_gen_mk(self::class, 'Delete Expired Token, Num : ' . $num));
                 break;
             case 'init_role':
                 $roles = [
@@ -131,19 +133,19 @@ class UserCommand extends Command
                 break;
             case 'auto_enable':
                 if (!sys_setting('py-system::pam.auto_enable')) {
-                    $this->info(sys_mark('py-system', __CLASS__, 'auto enable disabled!'));
+                    $this->info(sys_gen_mk(self::class, 'auto enable disabled!'));
                     return;
                 }
                 (new Pam())->autoEnable();
-                $this->info(sys_mark('py-system', __CLASS__, 'auto enable pam!'));
+                $this->info(sys_gen_mk(self::class, 'auto enable pam!'));
                 break;
             case 'clear_log':
                 (new Pam())->clearLog();
-                $this->info(sys_mark('py-system', __CLASS__, 'auto clear log!'));
+                $this->info(sys_gen_mk(self::class, 'auto clear log!'));
                 break;
             case 'ban_init':
                 (new Ban())->initAll();
-                $this->info(sys_mark('py-system', __CLASS__, 'Init Ban Cache!'));
+                $this->info(sys_gen_mk(self::class, 'Init Ban Cache!'));
                 break;
             default:
                 $this->error('Please type right action![reset_pwd, init_role, create_user, clear_expired, ban_init, auto_enable, clear_log, auto_fill]');

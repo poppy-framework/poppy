@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Classes;
 
 use Exception;
@@ -48,7 +50,7 @@ class Resp
 
     /**
      * Resp constructor.
-     * @param int $code code
+     * @param int               $code    code
      * @param string|MessageBag $message message
      */
     public function __construct(int $code, $message = '')
@@ -178,14 +180,14 @@ class Resp
 
     /**
      * 错误输出
-     * @param int $type 错误码
-     * @param string|array|MessageBag $msg 类型
-     * @param string|null|array $append
+     * @param int                     $type   错误码
+     * @param string|array|MessageBag $msg    类型
+     * @param string|null|array       $append
      *                                        _json: 强制以 json 数据返回
      *                                        _location : 重定向
      *                                        _reload : 刷新页面, 需要提前设定 Session::previousUrl()
      *                                        _time   : 刷新或者重定向的时间(毫秒), 如果为null, 则显示页面信息, false 为立即刷新或者重定向, true 默认为 3S, 指定时间则为 xx ms
-     * @param array|null $input 表单提交的数据, 是否连带返回
+     * @param array|null              $input  表单提交的数据, 是否连带返回
      * @return JsonResponse|RedirectResponse
      */
     public static function web(int $type, $msg, $append = null, array $input = null)
@@ -244,9 +246,9 @@ class Resp
 
     /**
      * 返回成功输入
-     * @param string|array|MessageBag $msg 提示消息
-     * @param string|null|array $append 追加的信息
-     * @param array|null $input 保留输入的数据
+     * @param string|array|MessageBag $msg    提示消息
+     * @param string|null|array       $append 追加的信息
+     * @param array|null              $input  保留输入的数据
      * @return JsonResponse|RedirectResponse
      */
     public static function success($msg, $append = null, array $input = null)
@@ -256,9 +258,9 @@ class Resp
 
     /**
      * 返回错误数组
-     * @param string|array|MessageBag $msg 提示消息
-     * @param string|null|array $append 追加的信息
-     * @param array|null $input 保留输入的数据
+     * @param string|array|MessageBag $msg    提示消息
+     * @param string|null|array       $append 追加的信息
+     * @param array|null              $input  保留输入的数据
      * @return JsonResponse|RedirectResponse
      */
     public static function error($msg, $append = null, array $input = null)
@@ -268,7 +270,7 @@ class Resp
 
     /**
      * 返回自定义信息
-     * @param int $code code
+     * @param int    $code    code
      * @param string $message message
      * @return array
      */
@@ -279,9 +281,9 @@ class Resp
 
     /**
      * 显示界面
-     * @param int|bool|null $time 时间
-     * @param string|null $location location
-     * @param array|null $input input
+     * @param int|bool|null $time     时间
+     * @param string|null   $location location
+     * @param array|null    $input    input
      * @return RedirectResponse|\Illuminate\Http\Response
      */
     private static function webView($code, $message, $time = null, string $location = null, array $input = null)
@@ -336,7 +338,7 @@ class Resp
     /**
      * 不支持 location
      * splash 不支持 location | back (Mark Zhao)
-     * @param Resp $resp resp
+     * @param Resp         $resp   resp
      * @param string|array $append append
      * @return JsonResponse
      */

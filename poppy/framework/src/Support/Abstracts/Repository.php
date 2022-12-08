@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Support\Abstracts;
 
 use Illuminate\Support\Collection;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -14,16 +16,17 @@ class TestMail extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * @var string 发送内容
+     * 发送内容
+     * @var string
      */
-    public $content;
+    public string $content;
 
     /**
      * Create a new message instance.
      *
-     * @param $content
+     * @param string $content
      */
-    public function __construct($content = '')
+    public function __construct(string $content = '')
     {
         $this->content = $content;
     }

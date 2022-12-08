@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Database\Migrations;
 
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
@@ -18,7 +20,7 @@ class Migrator extends BaseMigrator
     /**
      * @var string Table name
      */
-    protected $table;
+    protected string $table;
 
     /**
      * Create a new migrator instance.
@@ -50,7 +52,7 @@ class Migrator extends BaseMigrator
      */
     public function rollback($paths = [], array $options = [])
     {
-        $rolledBack  = [];
+        $rolledBack = [];
 
         $migrations = $this->getRanMigrations();
         $files      = $this->getMigrationFiles($paths);

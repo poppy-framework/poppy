@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Jobs;
 
 use Carbon\Carbon;
@@ -7,10 +9,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Log;
 use Poppy\Framework\Application\Job;
 use Poppy\Framework\Helper\ArrayHelper;
 use Poppy\Framework\Helper\UtilHelper;
-use Poppy\System\Classes\Traits\ListenerTrait;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -18,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class NotifyJob extends Job implements ShouldQueue
 {
-    use ListenerTrait, Queueable;
+    use  Queueable;
 
     /**
      * @var string 请求网址
@@ -42,10 +44,10 @@ class NotifyJob extends Job implements ShouldQueue
 
     /**
      * 统计用户计算数量
-     * @param string $url 请求的URL 地址
-     * @param string $method 请求的方法
-     * @param array $params 请求的参数
-     * @param int $exec_num 请求次数
+     * @param string $url      请求的URL 地址
+     * @param string $method   请求的方法
+     * @param array  $params   请求的参数
+     * @param int    $exec_num 请求次数
      */
     public function __construct(string $url, string $method, array $params = [], int $exec_num = 0)
     {
@@ -76,7 +78,7 @@ class NotifyJob extends Job implements ShouldQueue
         $curl    = new Client();
         $options = [
 
-            'timeout' => 10
+            'timeout' => 10,
         ];
         try {
             if ($this->method === 'post') {
@@ -89,15 +91,15 @@ class NotifyJob extends Job implements ShouldQueue
                     'query' => $this->params,
                 ]));
             }
-            sys_info('py-system', self::class, $this->log($resp));
+            Log::info(sys_gen_mk(self::class, $this->log($resp)));
         } catch (GuzzleException $e) {
             if ($this->execNum < count($timeMap)) {
                 $delayDesc = 'next will exec at (' . Carbon::now()->addSeconds($timeMap[$this->execNum])->toDateTimeString() . ')(' . $timeMap[$this->execNum] . 's)';
-                sys_error('py-system', self::class, $this->log($e, $delayDesc));
+                Log::warning(sys_gen_mk(self::class, $this->log($e, $delayDesc)));
                 dispatch((new self($this->url, $this->method, $this->params, $this->execNum + 1))->delay($timeMap[$this->execNum]));
             }
             else {
-                sys_error('py-system', self::class, $this->log($e));
+                Log::warning(sys_gen_mk(self::class, $this->log($e)));
             }
         }
     }
@@ -105,7 +107,7 @@ class NotifyJob extends Job implements ShouldQueue
     /**
      * 生成记录日志
      * @param GuzzleException|ResponseInterface $result
-     * @param string $append
+     * @param string                            $append
      * @return string
      */
     private function log($result, string $append = ''): string

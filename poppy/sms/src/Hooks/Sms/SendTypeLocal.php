@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Hooks\Sms;
 
 use Poppy\Core\Services\Contracts\ServiceArray;

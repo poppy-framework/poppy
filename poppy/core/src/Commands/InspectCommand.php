@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Commands;
 
 use DB;
@@ -141,13 +143,13 @@ class InspectCommand extends Command
         try {
             $content = app('files')->get($export);
         } catch (Throwable $e) {
-            $this->error(sys_mark('poppy.core', __CLASS__, $e->getMessage()));
+            $this->error(sys_gen_mk(self::class, $e->getMessage()));
             return;
         }
         if (preg_match_all("/trans\((.*)?['\"]/", $content, $matches, PREG_PATTERN_ORDER)) {
             $uniTrans = array_unique($matches[1]);
             if (!count($uniTrans)) {
-                $this->error(sys_mark('poppy.core', __CLASS__, '没有可以匹配的条目'));
+                $this->error(sys_gen_mk(self::class, '没有可以匹配的条目'));
                 return;
             }
             $trans = [];
@@ -784,7 +786,7 @@ class InspectCommand extends Command
 
             $models = array_merge($models, $seoDb);
         });
-        sys_cache('py-core')->forever(PyCoreDef::ckLangModels(), $models);
+        sys_tag('py-core')->set(PyCoreDef::ckLangModels(), $models);
         $this->info('Cached models Success!');
     }
 
@@ -823,7 +825,7 @@ class InspectCommand extends Command
                 $requestAction = $match[2] ?? '';
 
                 $relativePath = $file->getRelativePath();
-                $className = $this->className($moduleName, $relativePath, $file->getFilename());
+                $className    = $this->className($moduleName, $relativePath, $file->getFilename());
                 try {
                     $refection = new ReflectionClass($className);
                 } catch (Throwable $e) {

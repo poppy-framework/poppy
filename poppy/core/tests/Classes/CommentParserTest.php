@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Tests\Classes;
 
 use Poppy\Core\Classes\Inspect\CommentParser;

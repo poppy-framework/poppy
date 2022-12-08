@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Events;
 
 use Illuminate\Support\Collection;
@@ -10,7 +12,7 @@ class PermissionInitEvent extends Event
     /**
      * @var Collection
      */
-    public $permissions;
+    public Collection $permissions;
 
     public function __construct($permissions)
     {

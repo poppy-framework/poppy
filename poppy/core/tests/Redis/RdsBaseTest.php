@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Tests\Redis;
 
 use Poppy\Core\Redis\RdsDb;
@@ -26,6 +28,6 @@ class RdsBaseTest extends TestCase
      */
     protected function key(string $key): string
     {
-        return 'py-core:testing:rds-' . $key;
+        return 'rds-' . $key;
     }
 }

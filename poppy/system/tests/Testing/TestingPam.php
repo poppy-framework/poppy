@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Tests\Testing;
 
 use Poppy\Framework\Helper\StrHelper;
@@ -18,7 +20,7 @@ class TestingPam
      */
     public static function username(bool $is_register = true)
     {
-        $Db = PamAccount::orderByRaw('rand()');
+        $Db = PamAccount::inRandomOrder();
         if ($is_register) {
             $Db->where('password', '!=', '');
         }
@@ -36,7 +38,7 @@ class TestingPam
      */
     public static function id(bool $is_register = true): int
     {
-        $Db = PamAccount::orderByRaw('rand()');
+        $Db = PamAccount::inRandomOrder();
         if ($is_register) {
             $Db->where('password', '!=', '');
         }
@@ -53,7 +55,7 @@ class TestingPam
      */
     public static function randUser(): PamAccount
     {
-        $Db = PamAccount::where('type', PamAccount::TYPE_USER)->orderByRaw('rand()');
+        $Db = PamAccount::where('type', PamAccount::TYPE_USER)->inRandomOrder();
         return $Db->first();
     }
 
@@ -63,7 +65,7 @@ class TestingPam
      */
     public static function randBackend(): PamAccount
     {
-        $Db = PamAccount::where('type', PamAccount::TYPE_BACKEND)->orderByRaw('rand()');
+        $Db = PamAccount::where('type', PamAccount::TYPE_BACKEND)->inRandomOrder();
         return $Db->first();
     }
 

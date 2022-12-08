@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Application;
 
 use Illuminate\Contracts\Console\Kernel;

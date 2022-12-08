@@ -1,12 +1,12 @@
 <?php
 
-namespace Poppy\Framework\Exceptions;
+declare(strict_types = 1);
 
-use Exception;
+namespace Poppy\Framework\Exceptions;
 
 /**
  * RbacException
  */
-class RbacException extends Exception
+class RbacException extends BaseException
 {
 }

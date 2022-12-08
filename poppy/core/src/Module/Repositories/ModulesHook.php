@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Module\Repositories;
 
 use Illuminate\Support\Collection;
@@ -18,10 +20,11 @@ class ModulesHook extends Repository
     /**
      * Initialize.
      * @param Collection $data 集合
+     * @throws ApplicationException
      */
     public function initialize(Collection $data)
     {
-        $this->items = sys_cache('py-core')->remember(
+        $this->items = sys_tag('py-core')->remember(
             PyCoreDef::ckModule('hook'),
             PyCoreDef::MIN_HALF_DAY * 60,
             function () use ($data) {
@@ -56,8 +59,7 @@ class ModulesHook extends Repository
                                 $collection->put($item['name'], array_merge($data, $item['hooks']));
                                 break;
                             default:
-                                sys_error('core', __CLASS__, "`{$item['name']}` 的类型 `{$service['type']}` 不支持");
-                                break;
+                                throw new ApplicationException("`{$item['name']}` 的类型 `{$service['type']}` 不支持");
                         }
                     });
                 });

@@ -5,6 +5,8 @@ declare(strict_types = 1);
 
 namespace Poppy\AliyunPush\Jobs;
 
+use AlibabaCloud\Client\Exception\ClientException;
+use AlibabaCloud\Client\Exception\ServerException;
 use Poppy\AliyunPush\Classes\Config\Config;
 use Poppy\AliyunPush\Classes\Sender\PushMessage;
 use Poppy\AliyunPush\Classes\Sender\PushSender;
@@ -20,13 +22,13 @@ class SenderJob
      * 推送消息
      * @var PushMessage
      */
-    protected $message;
+    protected PushMessage $message;
 
     /**
      * 推送配置信息
      * @var Config
      */
-    private $config;
+    private Config $config;
 
 
     public function __construct(PushMessage $message, Config $config)
@@ -40,12 +42,12 @@ class SenderJob
      *
      * @return void
      * @throws PushException
+     * @throws ClientException
+     * @throws ServerException
      */
     public function handle()
     {
         $Sender = new PushSender($this->config);
-        if (!$Sender->send($this->message)) {
-            sys_error('poppy.aliyun-push', __CLASS__, $Sender->getError());
-        }
+        $Sender->send($this->message);
     }
 }

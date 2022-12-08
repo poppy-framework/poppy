@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Action;
 
 use Carbon\Carbon;
@@ -286,8 +288,8 @@ class Ban
                 return $this->setError('错误的IP格式写法');
             }
             $isRange = true;
-            $startIp = ip2long($range->getStartAddress());
-            $endIp   = ip2long($range->getEndAddress());
+            $startIp = ip2long((string) $range->getStartAddress());
+            $endIp   = ip2long((string) $range->getEndAddress());
         }
         // 192.168.1.1
         else {

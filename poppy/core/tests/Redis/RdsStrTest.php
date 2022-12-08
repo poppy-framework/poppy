@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Tests\Redis;
 
 use Illuminate\Support\Str;
@@ -145,7 +147,7 @@ class RdsStrTest extends RdsBaseTest
 
     public function testAppend()
     {
-        $value = $this->faker()->randomFloat(4);
+        $value = (string) $this->faker()->randomFloat(4);
         $key   = $this->key('str-append');
         $this->rds->del($key);
         $append = $this->rds->append($key, '');
@@ -158,7 +160,7 @@ class RdsStrTest extends RdsBaseTest
     public function testSetRange()
     {
         $key   = $this->key('str-set-range');
-        $value = $this->faker()->randomFloat(4);
+        $value = (string) $this->faker()->randomFloat(4);
         $this->rds->del($key);
         $length = $this->rds->setRange($key, 0, $value);
         $this->assertEquals(strlen($value), $length);

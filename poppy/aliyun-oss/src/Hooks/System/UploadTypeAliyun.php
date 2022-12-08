@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\AliyunOss\Hooks\System;
 
 use Poppy\AliyunOss\Classes\Provider\OssFileProvider;

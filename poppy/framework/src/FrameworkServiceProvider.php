@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework;
 
 use Carbon\Carbon;
@@ -13,7 +15,7 @@ use Poppy\Framework\Helper\UtilHelper;
 class FrameworkServiceProvider extends ServiceProvider
 {
 
-    protected static $registered = false;
+    protected static bool $registered = false;
 
     /**
      * Bootstrap the application events.

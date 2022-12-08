@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Module\Repositories;
 
 use Illuminate\Support\Collection;
@@ -7,6 +9,7 @@ use Poppy\Core\Classes\PyCoreDef;
 use Poppy\Core\Module\Module;
 use Poppy\Framework\Exceptions\LoadConfigurationException;
 use Poppy\Framework\Support\Abstracts\Repository;
+use SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -18,16 +21,17 @@ class Modules extends Repository
     /**
      * @var bool
      */
-    protected $loadFromCache = true;
+    protected bool $loadFromCache = true;
 
     /**
      * Initialize.
      * @param Collection $slugs 集合
+     * @throws LoadConfigurationException
      */
     public function initialize(Collection $slugs)
     {
         $files       = app('files');
-        $this->items = sys_cache('py-core')->remember(
+        $this->items = sys_tag('py-core')->remember(
             PyCoreDef::ckModule('module'),
             PyCoreDef::MIN_HALF_DAY * 60,
             function () use ($slugs, $files) {
@@ -102,10 +106,10 @@ class Modules extends Repository
             $configurations = collect();
 
             // put it in filename key
-            collect($files->files($directory))->each(function ($file) use ($configurations, $files) {
-                $name = basename(realpath($file), '.yaml');
+            collect($files->files($directory))->each(function (SplFileInfo $file) use ($configurations, $files) {
+                $name = basename($file->getBasename(), '.yaml');
                 if ($name !== 'module' && $files->isReadable($file)) {
-                    $configurations->put($name, Yaml::parse(file_get_contents($file)));
+                    $configurations->put($name, Yaml::parse(file_get_contents($file->getPathname())));
                 }
             });
 

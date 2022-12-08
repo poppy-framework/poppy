@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Classes\Progress;
 
 use Poppy\System\Classes\Contracts\ProgressContract;

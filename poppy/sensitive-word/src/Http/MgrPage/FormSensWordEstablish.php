@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\SensitiveWord\Http\MgrPage;
 
 use Poppy\Framework\Classes\Resp;

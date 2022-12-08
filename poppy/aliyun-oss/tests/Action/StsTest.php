@@ -6,9 +6,9 @@ use OSS\Core\OssException;
 use OSS\OssClient;
 use Poppy\AliyunOss\Action\Sts;
 use Poppy\AliyunOss\Tests\Testing\TestingAliyunOss;
-use Poppy\System\Tests\Base\SystemTestCase;
+use Poppy\Framework\Application\TestCase;
 
-class StsTest extends SystemTestCase
+class StsTest extends TestCase
 {
     /**
      * 测试授权KEY以及是否可以上传URL
@@ -34,7 +34,7 @@ class StsTest extends SystemTestCase
             // 测试上传文件
             try {
                 $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint, false, $temp['security_token']);
-                $url       = $temp['directory'] . '/demo.jpg';
+                $url       = $temp['directory'] . 'demo.jpg';
                 $ossClient->uploadFile($config['bucket'], $url, poppy_path('poppy.aliyun-oss', 'tests/files/demo.jpg'));
                 $file = $config['url_prefix'] . '/' . $url;
                 $this->outputVariables($file);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\AliyunPush\Classes\Sender;
 
 use AlibabaCloud\Client\AlibabaCloud;
@@ -21,37 +23,41 @@ abstract class BaseClient
     /**
      * @var string
      */
-    protected $iosAppKey;
+    protected string $iosAppKey;
 
     /**
      * @var string
      */
-    protected $androidChannel;
+    protected string $androidChannel;
 
     /**
      * @var string
      */
-    protected $androidAppKey;
+    protected string $androidAppKey;
 
 
     /**
      * Aliyun Access Key
      * @var string
      */
-    protected $accessKey;
+    protected string $accessKey;
 
 
     /**
      * Aliyun Access Secret
      * @var string
      */
-    protected $accessSecret;
+    protected string $accessSecret;
 
     /**
      * @var string
      */
-    protected $androidActivity;
+    protected string $androidActivity;
 
+    /**
+     * 执行结果
+     * @var mixed
+     */
     protected $result;
 
 

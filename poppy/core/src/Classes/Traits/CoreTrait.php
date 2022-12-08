@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Classes\Traits;
 
 use Poppy\Core\Module\ModuleManager;

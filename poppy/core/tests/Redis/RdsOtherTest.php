@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Tests\Redis;
 
 class RdsOtherTest extends RdsBaseTest
@@ -22,10 +24,10 @@ class RdsOtherTest extends RdsBaseTest
         $count = $this->rds->bitCount($key);
         $this->assertEquals(4, $count);
 
-        $pos = $this->rds->bitPos($key, 1, -1);
+        $pos = $this->rds->bitPos($key, '1', -1);
         $this->assertEquals(1111, $pos);
 
-        $pos = $this->rds->bitPos($key, 1);
+        $pos = $this->rds->bitPos($key, '1');
         $this->assertEquals(1, $pos);
         $this->rds->del($key);
     }

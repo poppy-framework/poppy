@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Foundation\Http;
 
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;

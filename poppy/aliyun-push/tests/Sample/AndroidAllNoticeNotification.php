@@ -5,7 +5,7 @@ namespace Poppy\AliyunPush\Tests\Sample;
 use Illuminate\Notifications\Notification;
 use Poppy\AliyunPush\Channels\AliPushChannel;
 use Poppy\AliyunPush\Contracts\AliPushChannel as AliPushChannelContract;
-use Poppy\Framework\Exceptions\FakerException;
+use Poppy\Framework\Exceptions\ApplicationException;
 
 
 class AndroidAllNoticeNotification extends Notification implements AliPushChannelContract
@@ -22,10 +22,10 @@ class AndroidAllNoticeNotification extends Notification implements AliPushChanne
     }
 
     /**
-     * @return array|mixed
-     * @throws FakerException
+     * @inheritDoc
+     * @throws ApplicationException
      */
-    public function toAliPush()
+    public function toAliPush(): array
     {
         return [
             'broadcast_type'   => 'all',

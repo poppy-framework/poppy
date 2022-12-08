@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Area\Action;
 
 use Exception;
@@ -9,7 +11,6 @@ use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Classes\Traits\FixTrait;
 use Poppy\System\Classes\Traits\PamTrait;
-use Throwable;
 use Validator;
 use View;
 
@@ -23,17 +24,17 @@ class Area
     /**
      * @var SysArea
      */
-    protected $area;
+    protected SysArea $area;
 
     /**
      * @var int AreaContent id
      */
-    protected $areaId;
+    protected int $areaId;
 
     /**
      * @var string
      */
-    protected $areaTable;
+    protected string $areaTable;
 
     public function __construct()
     {
@@ -42,11 +43,11 @@ class Area
 
     /**
      * 创建需求
-     * @param array $data 创建数据
+     * @param array    $data 创建数据
      *                       string  title       标题
      *                       int     parent_id   父id
      *                       int     top_id      顶级id
-     * @param null|int $id 地区id
+     * @param null|int $id   地区id
      * @return bool
      */
     public function establish(array $data, $id = null): bool
@@ -112,7 +113,7 @@ class Area
 
         $this->initArea($this->area->id);
         if ($this->area->level < 4) {
-            sys_cache('py-area')->forget(PyAreaDef::ckArea('tree-level-2'));
+            sys_tag('py-area')->del(PyAreaDef::ckArea('tree-level-2'));
         }
 
         return true;
@@ -141,11 +142,11 @@ class Area
 
     /**
      * 获取父元素IDs
-     * @param int $id 地区id
+     * @param int    $id   地区id
      * @param string $type 类型
      * @return string|array
      */
-    public function parentIds(int $id, $type = 'string')
+    public function parentIds(int $id, string $type = 'string')
     {
         $matchKv = $this->matchKv();
         $ids     = [];
@@ -297,14 +298,9 @@ class Area
      */
     public function initArea(int $id): bool
     {
-        try {
-            $this->area   = SysArea::findOrFail($id);
-            $this->areaId = $this->area->id;
-
-            return true;
-        } catch (Throwable $e) {
-            return $this->setError(trans('ID 不合法, 不存在此数据'));
-        }
+        $this->area   = SysArea::findOrFail($id);
+        $this->areaId = $this->area->id;
+        return true;
     }
 
     /**
@@ -325,10 +321,10 @@ class Area
     private function matchKv($clear = false)
     {
         if ($clear) {
-            sys_cache('py-area')->forget(PyAreaDef::ckMatchIdPid());
+            sys_tag('py-area')->del(PyAreaDef::ckMatchIdPid());
         }
 
-        return sys_cache('py-area')->remember(PyAreaDef::ckMatchIdPid(), 10, function () {
+        return sys_tag('py-area')->remember(PyAreaDef::ckMatchIdPid(), 10, function () {
             return SysArea::pluck('parent_id', 'id')->toArray();
         });
     }

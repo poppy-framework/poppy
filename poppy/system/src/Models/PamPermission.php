@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Models;
 
 use Eloquent;
@@ -30,9 +32,9 @@ class PamPermission extends Model implements RbacPermissionContract
 {
     use RbacPermissionTrait;
 
-    protected $table = 'pam_permission';
-
     public $timestamps = false;
+
+    protected $table = 'pam_permission';
 
     protected $fillable = [
         'name',

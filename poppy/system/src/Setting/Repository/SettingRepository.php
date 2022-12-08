@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Setting\Repository;
 
 use Exception;
@@ -110,7 +112,8 @@ class SettingRepository implements SettingContract
                 'item'      => $item,
                 'value'     => serialize($value),
             ]);
-        } else {
+        }
+        else {
             $record->value = serialize($value);
             $record->save();
         }

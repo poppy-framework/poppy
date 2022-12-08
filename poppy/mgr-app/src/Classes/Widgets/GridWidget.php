@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrApp\Classes\Grid\Exporter;
 use Poppy\MgrApp\Classes\Grid\Exporters\AbstractExporter;
 use Poppy\MgrApp\Classes\Grid\GridBase;
@@ -58,11 +59,12 @@ final class GridWidget extends GridPlugin
     /**
      * @param string $grid_class
      * @return GridWidget
+     * @throws ApplicationException
      */
     public function setLists(string $grid_class): self
     {
         if (!class_exists($grid_class)) {
-            sys_error('mgr-app', __CLASS__, 'Grid Class `' . $grid_class . '` Not Exists.');
+            throw new ApplicationException('Grid Class `' . $grid_class . '` Not Exists.');
         }
 
         /** @var GridBase $List */

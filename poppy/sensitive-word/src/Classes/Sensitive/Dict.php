@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\SensitiveWord\Classes\Sensitive;
 
 use Poppy\SensitiveWord\Classes\PySensitiveWordDef;
+use Poppy\SensitiveWord\Exceptions\DirectoryNotFoundException;
 use Poppy\SensitiveWord\Models\SysSensitiveWord;
-use Throwable;
 
 /**
  * 敏感词字典
@@ -13,11 +15,12 @@ class Dict
 {
 
     /**
-     * @return mixed|Words|null
+     * @return Words|null
+     * @throws DirectoryNotFoundException
      */
-    public function getDirectory()
+    public function getDirectory(): ?Words
     {
-        $directory = sys_cache('py-sensitive-word')->get(PySensitiveWordDef::ckDict());
+        $directory = sys_tag('py-sensitive-word')->get(PySensitiveWordDef::ckDict());
 
         if (!$directory) {
             $directory = $this->build();
@@ -29,17 +32,14 @@ class Dict
     /**
      * 构建敏感词字典
      * @return Words|null
+     * @throws DirectoryNotFoundException
      */
     public function build(): ?Words
     {
-        try {
-            $words     = SysSensitiveWord::pluck('word')->toArray();
-            $directory = Words::instance()->setTree($words);
-        } catch (Throwable $e) {
-            $directory = null;
-        }
+        $words     = SysSensitiveWord::pluck('word')->toArray();
+        $directory = Words::instance()->setTree($words);
 
-        sys_cache('py-sensitive-word')->forever(PySensitiveWordDef::ckDict(), $directory);
+        sys_tag('py-sensitive-word')->set(PySensitiveWordDef::ckDict(), $directory);
 
         return $directory;
     }

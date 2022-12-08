@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Console\Generators;
 
 use Poppy\Framework\Console\GeneratorCommand;

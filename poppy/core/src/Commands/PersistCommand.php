@@ -1,4 +1,8 @@
-<?php namespace Poppy\Core\Commands;
+<?php
+
+declare(strict_types = 1);
+
+namespace Poppy\Core\Commands;
 
 
 use Illuminate\Console\Command;
@@ -42,7 +46,7 @@ class PersistCommand extends Command
                 RdsPersist::execTable($table);
             }
         } catch (Throwable $e) {
-            $this->error(sys_mark('py-core', __CLASS__, $e->getMessage()));
+            $this->error(sys_gen_mk(self::class, $e->getMessage()));
         }
 
     }

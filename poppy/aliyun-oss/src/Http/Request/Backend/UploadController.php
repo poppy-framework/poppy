@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\AliyunOss\Http\Request\Backend;
 
 use Illuminate\Http\JsonResponse;

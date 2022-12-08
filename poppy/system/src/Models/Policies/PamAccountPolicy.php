@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Models\Policies;
 
 use Poppy\System\Models\PamAccount;

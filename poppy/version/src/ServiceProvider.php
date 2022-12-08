@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Version;
 
 use Poppy\Framework\Exceptions\ModuleNotFoundException;

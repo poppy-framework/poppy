@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Tests;
 
 use Illuminate\Support\Str;
@@ -37,7 +39,7 @@ class ChuanglanTest extends BaseSms
             $this->assertTrue(true);
         }
         else {
-            $this->fail($Sms->getError());
+            $this->fail($Sms->getError()->getMessage());
         }
     }
 
@@ -51,7 +53,7 @@ class ChuanglanTest extends BaseSms
             $this->assertTrue(true);
         }
         else {
-            $this->fail($Sms->getError());
+            $this->fail($Sms->getError()->getMessage());
         }
     }
 }

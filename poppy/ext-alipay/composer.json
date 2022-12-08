@@ -1,34 +1,35 @@
 {
-	"name": "poppy/ext-alipay",
-	"description": "Poppy Alipay Extension.",
-	"license": "MIT",
-	"type": "poppy-extension",
-	"authors": [
-		{
-			"name": "Mark Zhao",
-			"email": "zhaody901@126.com"
-		}
-	],
-	"require": {
-		"php": ">=7.4",
-		"ext-libxml": "*",
-		"ext-mcrypt": "*"
-	},
-	"autoload": {
-		"psr-4": {
-			"Poppy\\Extension\\Alipay\\": "src/",
-			"Poppy\\Extension\\Alipay\\Tests\\": "tests/"
-		}
-	},
-	"extra": {
-		"laravel": {
-			"providers": [
-				"Poppy\\Extension\\Alipay\\ExtensionServiceProvider"
-			]
-		}
-	},
-	"config": {
-		"preferred-install": "dist"
-	},
-	"minimum-stability": "dev"
+    "name": "poppy/ext-alipay",
+    "description": "Poppy Alipay Extension.",
+    "license": "MIT",
+    "type": "poppy-extension",
+    "authors": [
+        {
+            "name": "Mark Zhao",
+            "email": "zhaody901@126.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "ext-libxml": "*",
+        "ext-mcrypt": "*",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Poppy\\Extension\\Alipay\\": "src/",
+            "Poppy\\Extension\\Alipay\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Poppy\\Extension\\Alipay\\ExtensionServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "dev"
 }

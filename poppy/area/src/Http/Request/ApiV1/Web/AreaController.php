@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Area\Http\Request\ApiV1\Web;
 
 use Poppy\Area\Models\SysArea;

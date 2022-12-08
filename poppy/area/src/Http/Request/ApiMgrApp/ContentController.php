@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Area\Http\Request\ApiMgrApp;
 
 use Exception;
@@ -57,7 +59,7 @@ class ContentController extends BackendController
      */
     public function delete(string $id)
     {
-        $id = (int) $id;
+        $id   = (int) $id;
         $Area = $this->action();
         if ($Area->delete($id)) {
             return Resp::success('删除成功', 'motion|grid:reload');

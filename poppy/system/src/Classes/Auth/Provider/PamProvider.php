@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Classes\Auth\Provider;
 
 use Carbon\Carbon;

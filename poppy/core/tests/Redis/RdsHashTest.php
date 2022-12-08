@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Tests\Redis;
 
 
@@ -96,7 +98,7 @@ class RdsHashTest extends RdsBaseTest
     public function testHStrLen()
     {
         $key   = $this->key('h-str-len');
-        $value = $this->faker()->randomNumber(8);
+        $value = (string) $this->faker()->randomNumber(8);
         $len   = $this->rds->hStrLen($key, 'no-str');
         $this->assertEquals(0, $len);
         $this->rds->hSet($key, 'str-1', $value);
@@ -113,7 +115,7 @@ class RdsHashTest extends RdsBaseTest
         $this->assertEquals(1, $fault);
         $fault = $this->rds->hIncrBy($key, 'default', 30);
         $this->assertEquals(31, $fault);
-        $fault = $this->rds->hIncrBy($key, 'default', 5e3);
+        $fault = $this->rds->hIncrBy($key, 'default', (int) 5e3);
         $this->assertEquals(5031, $fault);
         $fault = $this->rds->hIncrByFloat($key, 'default', '0.01');
         $this->assertEquals(5031.01, $fault);

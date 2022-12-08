@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Helper;
 
 use Illuminate\Contracts\Support\Arrayable;
@@ -111,7 +113,7 @@ class StrHelper
      */
     public static function stripSlashes($input)
     {
-        return is_array($input) ? array_map([__CLASS__, __FUNCTION__], $input) : stripslashes($input);
+        return is_array($input) ? array_map([self::class, __FUNCTION__], $input) : stripslashes($input);
     }
 
     /**
@@ -121,7 +123,7 @@ class StrHelper
      */
     public static function addSlashes($input)
     {
-        return is_array($input) ? array_map([__CLASS__, __FUNCTION__], $input) : addslashes($input);
+        return is_array($input) ? array_map([self::class, __FUNCTION__], $input) : addslashes($input);
     }
 
     /**
@@ -158,7 +160,7 @@ class StrHelper
     public static function safe($input)
     {
         if (is_array($input)) {
-            return array_map([__CLASS__, __FUNCTION__], $input);
+            return array_map([self::class, __FUNCTION__], $input);
         }
 
         if (strlen($input) < 20) return $input;
@@ -342,7 +344,7 @@ class StrHelper
      */
     public static function randomNumber(int $min, int $max)
     {
-        return sprintf('%0' . strlen($max) . 'd', mt_rand($min, $max));
+        return sprintf('%0' . strlen((string) $max) . 'd', mt_rand($min, $max));
     }
 
     /**

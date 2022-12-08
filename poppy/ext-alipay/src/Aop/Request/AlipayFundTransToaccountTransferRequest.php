@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Extension\Alipay\Aop\Request;
 /**
  * ALIPAY API: alipay.fund.trans.toaccount.transfer request
  *
- * @author     auto create
- * @since      1.0, 2019-12-17 20:57:45
- * @deprecated 2020-10-13
  * @see        AlipayFundTransUniTransferRequest
  * @url        https://opendocs.alipay.com/apis/api_28/alipay.fund.trans.toaccount.transfer
  * @url        https://opendocs.alipay.com/open/00ou7f 资金支付升级指南
+ * @deprecated 2020-10-13
+ * @author     auto create
+ * @since      1.0, 2019-12-17 20:57:45
  */
 class AlipayFundTransToaccountTransferRequest
 {
@@ -18,15 +20,26 @@ class AlipayFundTransToaccountTransferRequest
      **/
     private $bizContent;
 
-    private $apiParas    = [];
+    private $apiParas = [];
+
     private $terminalType;
+
     private $terminalInfo;
+
     private $prodCode;
-    private $apiVersion  = "1.0";
+
+    private $apiVersion = "1.0";
+
     private $notifyUrl;
+
     private $returnUrl;
+
     private $needEncrypt = false;
 
+    public function getBizContent()
+    {
+        return $this->bizContent;
+    }
 
     public function setBizContent($bizContent)
     {
@@ -34,19 +47,9 @@ class AlipayFundTransToaccountTransferRequest
         $this->apiParas["biz_content"] = $bizContent;
     }
 
-    public function getBizContent()
-    {
-        return $this->bizContent;
-    }
-
     public function getApiMethodName()
     {
         return "alipay.fund.trans.toaccount.transfer";
-    }
-
-    public function setNotifyUrl($notifyUrl)
-    {
-        $this->notifyUrl = $notifyUrl;
     }
 
     public function getNotifyUrl()
@@ -54,14 +57,19 @@ class AlipayFundTransToaccountTransferRequest
         return $this->notifyUrl;
     }
 
-    public function setReturnUrl($returnUrl)
+    public function setNotifyUrl($notifyUrl)
     {
-        $this->returnUrl = $returnUrl;
+        $this->notifyUrl = $notifyUrl;
     }
 
     public function getReturnUrl()
     {
         return $this->returnUrl;
+    }
+
+    public function setReturnUrl($returnUrl)
+    {
+        $this->returnUrl = $returnUrl;
     }
 
     public function getApiParas()
@@ -99,14 +107,19 @@ class AlipayFundTransToaccountTransferRequest
         $this->prodCode = $prodCode;
     }
 
+    public function getApiVersion()
+    {
+        return $this->apiVersion;
+    }
+
     public function setApiVersion($apiVersion)
     {
         $this->apiVersion = $apiVersion;
     }
 
-    public function getApiVersion()
+    public function getNeedEncrypt()
     {
-        return $this->apiVersion;
+        return $this->needEncrypt;
     }
 
     public function setNeedEncrypt($needEncrypt)
@@ -114,11 +127,6 @@ class AlipayFundTransToaccountTransferRequest
 
         $this->needEncrypt = $needEncrypt;
 
-    }
-
-    public function getNeedEncrypt()
-    {
-        return $this->needEncrypt;
     }
 
 }

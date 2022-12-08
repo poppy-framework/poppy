@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Area\Models;
 
 use Eloquent;
@@ -15,14 +17,14 @@ use Poppy\System\Classes\Traits\FilterTrait;
 /**
  * 地区表
  *
- * @property int $id
- * @property string $code 编码
- * @property string $title 名称
- * @property string $parent_id       父级
- * @property string $top_parent_id   顶层ID
- * @property string $children        所有的子元素
- * @property int $has_child          是否有子元素
- * @property int $level              级别
+ * @property int    $id
+ * @property string $code               编码
+ * @property string $title              名称
+ * @property string $parent_id          父级
+ * @property string $top_parent_id      顶层ID
+ * @property string $children           所有的子元素
+ * @property int    $has_child          是否有子元素
+ * @property int    $level              级别
  * @method static Builder|SysArea filter($input = [], $filter = null)
  * @method static Builder|SysArea pageFilter(PageInfo $pageInfo)
  * @method static Builder|SysArea paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
@@ -57,7 +59,7 @@ class SysArea extends Model
 
     public static function cityTree()
     {
-        return sys_cache('py-area')->remember(PyAreaDef::ckArea('tree-level-2'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
+        return sys_tag('py-area')->remember(PyAreaDef::ckArea('tree-level-2'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
             $items = SysArea::selectRaw("id,title,parent_id")->where('level', '<', 4)->get()->keyBy('id')->toArray();
             $Tree  = new TreeHelper();
             $Tree->init($items, 'id', 'parent_id', 'title');
@@ -67,7 +69,7 @@ class SysArea extends Model
 
     public static function cityMgrTree()
     {
-        return sys_cache('py-area')->remember(PyAreaDef::ckArea('tree-level-2-mgr'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
+        return sys_tag('py-area')->remember(PyAreaDef::ckArea('tree-level-2-mgr'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
             $items       = SysArea::selectRaw("id,title,parent_id")->where('level', '<', 4)->get()->keyBy('id')->toArray();
             $Tree        = new TreeHelper();
             $Tree->space = ' ';
@@ -98,7 +100,7 @@ class SysArea extends Model
             'area'     => 4,
         ];
         $level  = $levels[$type] ?? 2;
-        return sys_cache('py-area')->remember(PyAreaDef::ckArea('cascader-' . $level), PyCoreDef::MIN_ONE_MONTH * 60, function () use ($level) {
+        return sys_tag('py-area')->remember(PyAreaDef::ckArea('cascader-' . $level), PyCoreDef::MIN_ONE_MONTH * 60, function () use ($level) {
             $items = SysArea::selectRaw("id as value,title as label,parent_id, if(level<4, 0, 1) as leaf")->where('level', '<=', $level)->get()->toArray();
             return UtilHelper::genTree($items, 'value', 'parent_id', 'children', false);
         });
@@ -113,7 +115,7 @@ class SysArea extends Model
     {
         static $cache;
         if (!$cache) {
-            $cache = sys_cache('py-area')->remember(PyAreaDef::ckArea('kv-4'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
+            $cache = sys_tag('py-area')->remember(PyAreaDef::ckArea('kv-4'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
                 return self::where('level', self::LEVEL_CITY)->selectRaw('left(code, 4) as code, title')->pluck('title', 'code')->toArray();
             });
         }
@@ -123,14 +125,14 @@ class SysArea extends Model
 
     /**
      * ID : Title
-     * @param string $id ID : Title
-     * @return mixed
+     * @param int|null $id ID : Title
+     * @return string|array
      */
-    public static function kvArea(string $id = '')
+    public static function kvArea(int $id = null)
     {
         static $cache;
         if (!$cache) {
-            $cache = sys_cache('py-area')->remember(PyAreaDef::ckArea('kv-area'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
+            $cache = sys_tag('py-area')->remember(PyAreaDef::ckArea('kv-area'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
                 return self::select(['id', 'title'])->pluck('title', 'id')->toArray();
             });
         }
@@ -147,7 +149,7 @@ class SysArea extends Model
     {
         static $cache;
         if (!$cache) {
-            $cache = sys_cache('py-area')->remember(PyAreaDef::ckArea('kv-province'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
+            $cache = sys_tag('py-area')->remember(PyAreaDef::ckArea('kv-province'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
                 return self::where('level', self::LEVEL_PROVINCE)->selectRaw('left(code, 2) as code, title')->pluck('title', 'code')->toArray();
             });
         }
@@ -163,7 +165,7 @@ class SysArea extends Model
     {
         static $cache;
         if (!$cache) {
-            $cache = sys_cache('py-area')->remember(PyAreaDef::ckArea('kv-city-id-' . $province), PyCoreDef::MIN_ONE_MONTH * 60, function () use ($province) {
+            $cache = sys_tag('py-area')->remember(PyAreaDef::ckArea('kv-city-id-' . $province), PyCoreDef::MIN_ONE_MONTH * 60, function () use ($province) {
                 return self::where('level', self::LEVEL_CITY)->where('parent_id', $province)->selectRaw('id, title')->pluck('title', 'id')->toArray();
             });
         }
@@ -179,7 +181,7 @@ class SysArea extends Model
     {
         static $cache;
         if (!$cache) {
-            $cache = sys_cache('py-area')->remember(PyAreaDef::ckArea('kv-province-id'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
+            $cache = sys_tag('py-area')->remember(PyAreaDef::ckArea('kv-province-id'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
                 return self::where('level', self::LEVEL_PROVINCE)->selectRaw('id, title')->pluck('title', 'id')->toArray();
             });
         }
@@ -196,7 +198,7 @@ class SysArea extends Model
     {
         static $cache;
         if (!$cache) {
-            $cache = sys_cache('py-area')->remember(PyAreaDef::ckCountry('kv'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
+            $cache = sys_tag('py-area')->remember(PyAreaDef::ckCountry('kv'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
                 $area    = self::country();
                 $collect = [];
                 collect($area)->each(function ($country) use (&$collect) {
@@ -214,7 +216,7 @@ class SysArea extends Model
      */
     public static function country()
     {
-        return sys_cache('py-area')->remember(PyAreaDef::ckCountry(), PyCoreDef::MIN_ONE_MONTH * 60, function () {
+        return sys_tag('py-area')->remember(PyAreaDef::ckCountry(), PyCoreDef::MIN_ONE_MONTH * 60, function () {
             $values = include poppy_path('poppy.area', 'resources/def/country.php');
             return collect($values)->sortBy('py')->map(function ($cty) {
                 $cty['py'] = strtoupper($cty['py']);

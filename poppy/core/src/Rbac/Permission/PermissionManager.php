@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Rbac\Permission;
 
 use Auth;
@@ -18,9 +20,9 @@ class PermissionManager
     use CoreTrait;
 
     /**
-     * @var PermissionRepository
+     * @var PermissionRepository|null
      */
-    protected $repository;
+    protected ?PermissionRepository $repository = null;
 
     /**
      * check permission
@@ -62,7 +64,7 @@ class PermissionManager
      * Get all permissions.
      * @return Collection|Permission[]
      */
-    public function permissions()
+    public function permissions(): Collection
     {
         $perms = collect();
         $this->repository()->each(function ($permissions, $module) use ($perms) {
@@ -109,27 +111,39 @@ class PermissionManager
 
     /**
      * @param string $permission 权限
-     * @param bool   $cache      是否读取缓存
      * @return bool
      */
-    public function has($permission, $cache = true): bool
+    public function has(string $permission): bool
     {
-        $minute = $cache ? 60 * 24 : 0;
-        /** @var Collection $permissions */
-        $permissions = sys_cache('py-core')->remember(PyCoreDef::ckPermissions(), $minute * 60, function () {
-            return $this->permissions()->keys();
-        });
-
-        return $permissions->contains($permission);
+        return $this->cachedPermissionNames()->contains($permission);
     }
 
+    /**
+     * 缓存的权限
+     * @return Collection
+     */
+    public function cachedPermissionNames(): Collection
+    {
+        return sys_tag('py-core')->remember(PyCoreDef::ckPermissionNames(), config('cache.ttl', 600), function () {
+            return $this->permissions()->keys();
+        });
+    }
+
+    /**
+     * 清除权限缓存
+     * @return void
+     */
+    public function clearCachedPermissionNames()
+    {
+        sys_tag('py-core')->del(PyCoreDef::ckPermissionNames());
+    }
 
     /**
      * Get default permission by group
      * @param string $group 获取分组
      * @return Collection
      */
-    public function defaultPermissions($group): Collection
+    public function defaultPermissions(string $group): Collection
     {
         $permissions = collect([]);
         $this->permissions()->each(function (Permission $permission) use ($permissions, $group) {

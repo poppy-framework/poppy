@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Classes\Contracts;
 
 /**
@@ -11,7 +13,7 @@ interface SettingContract
      * Delete a setting value.
      * @param string $key key need delete
      */
-    public function delete(string $key);
+    public function delete(string $key): bool;
 
     /**
      * Get a setting value by key.
@@ -26,5 +28,5 @@ interface SettingContract
      * @param string|array $key   获取设置key
      * @param mixed        $value 需要设置的值
      */
-    public function set(string $key, $value = '');
+    public function set(string $key, $value = ''): bool;
 }

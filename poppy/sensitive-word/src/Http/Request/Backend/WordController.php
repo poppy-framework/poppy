@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\SensitiveWord\Http\Request\Backend;
 
 use Illuminate\Http\JsonResponse;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Helper;
 
 use Carbon\Carbon;
@@ -27,7 +29,7 @@ class TimeHelper
      * @param string $sep  sep
      * @return bool
      */
-    public static function isDate(string $date, $sep = '-'): bool
+    public static function isDate(string $date, string $sep = '-'): bool
     {
         // 时间为空
         if (empty($date)) {
@@ -39,13 +41,17 @@ class TimeHelper
         }
         [$year, $month, $day] = explode($sep, $date);
 
+        $year  = (int) $year;
+        $month = (int) $month;
+        $day   = (int) $day;
+
         return checkdate($month, $day, $year);
     }
 
     /**
      * 格式化时间
-     * @param int    $time   time
-     * @param string $format format
+     * @param int|string $time   time
+     * @param string     $format format
      * @return bool|string
      */
     public static function datetime($time = 0, $format = '3-3')
@@ -142,27 +148,27 @@ class TimeHelper
             $date = Carbon::createFromFormat('Y-m-d', $date)->timestamp;
         }
 
-        return date('Y-m-d', $date) . ' 00:00:00';
+        return date('Y-m-d', (int) $date) . ' 00:00:00';
     }
 
     /**
      * 一天的结束
-     * @param string $date date
+     * @param string|int $date date
      * @return string
      */
-    public static function dayEnd(string $date): string
+    public static function dayEnd($date): string
     {
         if (preg_match('/\d{4}-\d{2}-\d{2}/', $date)) {
             $date = Carbon::createFromFormat('Y-m-d', $date)->timestamp;
         }
 
-        return date('Y-m-d', $date) . ' 23:59:59';
+        return date('Y-m-d', (int) $date) . ' 23:59:59';
     }
 
     /**
      * 格式化日期
-     * @param int    $time   time
-     * @param string $format format
+     * @param int|string $time   time
+     * @param string     $format format
      * @return bool|string
      */
     public static function format($time = 0, $format = 'Y-m-d H:i')
@@ -170,7 +176,7 @@ class TimeHelper
         //strtotime 强制将代入进来的时间格式都转成Unix时间戳
         $timestamp = !empty($time) ? (is_numeric($time) ? $time : strtotime($time)) : EnvHelper::time();
 
-        return date($format, $timestamp);
+        return date($format, (int) $timestamp);
     }
 
     /**
@@ -279,10 +285,10 @@ class TimeHelper
      * Returns a human readable time difference from the value to the
      * current time. Eg: **10 minutes ago**
      *
-     * @param string $datetime datetime
+     * @param string|int $datetime datetime
      * @return string
      */
-    public static function timeSince(string $datetime)
+    public static function timeSince($datetime)
     {
         return self::makeCarbon($datetime)->diffForHumans();
     }
@@ -317,7 +323,7 @@ class TimeHelper
     /**
      * Converts mixed inputs to a Carbon object.
      *
-     * @param Carbon|PhpDateTime|mixed $value value
+     * @param Carbon|PhpDateTime|string|int $value value
      * @return Carbon|null
      */
     public static function makeCarbon($value)
@@ -325,11 +331,15 @@ class TimeHelper
         if ($value instanceof PhpDateTime) {
             $value = Carbon::instance($value);
         }
+
         if (is_numeric($value)) {
             $value = Carbon::createFromTimestamp($value);
         }
-        if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $value)) {
-            $value = Carbon::createFromFormat('Y-m-d', $value)->startOfDay();
+
+        if (is_string($value)) {
+            if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $value)) {
+                $value = Carbon::createFromFormat('Y-m-d', $value)->startOfDay();
+            }
         }
 
         try {
@@ -376,13 +386,13 @@ class TimeHelper
             's' => 'ss',
             'u' => 'SSS',
             'e' => 'zz', // deprecated since version 1.6.0 of moment.js
-            'I' => '', // no equivalent
-            'O' => '', // no equivalent
-            'P' => '', // no equivalent
-            'T' => '', // no equivalent
-            'Z' => '', // no equivalent
-            'c' => '', // no equivalent
-            'r' => '', // no equivalent
+            'I' => '',   // no equivalent
+            'O' => '',   // no equivalent
+            'P' => '',   // no equivalent
+            'T' => '',   // no equivalent
+            'Z' => '',   // no equivalent
+            'c' => '',   // no equivalent
+            'r' => '',   // no equivalent
             'U' => 'X',
         ];
 

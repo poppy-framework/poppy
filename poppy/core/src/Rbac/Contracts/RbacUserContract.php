@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Rbac\Contracts;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,23 +16,23 @@ interface RbacUserContract
      * Many-to-Many relations with Role.
      * @return BelongsToMany
      */
-    public function roles();
+    public function roles(): BelongsToMany;
 
     /**
      * Checks if the user has a role by its name.
-     * @param string|array $name       role name or array of role names
-     * @param bool         $requireAll all roles in the array are required
+     * @param string|array $name        role name or array of role names
+     * @param bool         $require_all all roles in the array are required
      * @return bool
      */
-    public function hasRole($name, $requireAll = false);
+    public function hasRole($name, bool $require_all = false): bool;
 
     /**
      * Check if user has a permission by its name.
-     * @param string|array $permission permission string or array of permissions
-     * @param bool         $requireAll all permissions in the array are required
+     * @param string|array $permission  permission string or array of permissions
+     * @param bool         $require_all all permissions in the array are required
      * @return bool
      */
-    public function capable($permission, $requireAll = false);
+    public function capable($permission, bool $require_all = false): bool;
 
     /**
      * Checks role(s) and permission(s).
@@ -40,29 +42,17 @@ interface RbacUserContract
      * @return array|bool
      * @throws InvalidArgumentException
      */
-    public function ability($roles, $permissions, $options = []);
+    public function ability($roles, $permissions, array $options = []);
 
     /**
      * Alias to eloquent many-to-many relation's attach() method.
-     * @param mixed $role 角色
+     * @param int|array<int>|object|array<object> $id 角色ID, 角色, 角色数组, ID 数组
      */
-    public function attachRole($role);
+    public function attachRole($id);
 
     /**
      * Alias to eloquent many-to-many relation's detach() method.
-     * @param mixed $role 角色
+     * @param int|array<int>|object|array<object> $id 角色ID, 角色, 角色数组, ID 数组
      */
-    public function detachRole($role);
-
-    /**
-     * Attach multiple roles to a user
-     * @param array $roles 多个角色
-     */
-    public function attachRoles($roles);
-
-    /**
-     * Detach multiple roles from a user
-     * @param array $roles 多个角色
-     */
-    public function detachRoles($roles);
+    public function detachRole($id);
 }

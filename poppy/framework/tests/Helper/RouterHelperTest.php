@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Tests\Helper;
 
 use Poppy\Framework\Application\TestCase;

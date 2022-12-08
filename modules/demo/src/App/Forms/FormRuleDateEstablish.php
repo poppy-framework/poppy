@@ -14,12 +14,13 @@ class FormRuleDateEstablish extends FormWidget
     /**
      * @var SysArea
      */
-    private $item;
+    private SysArea $item;
 
     /**
      * 设置id
      * @param $id
      * @return $this
+     * @throws ApplicationException
      */
     public function setId($id): self
     {

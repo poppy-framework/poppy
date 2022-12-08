@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Validation;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Validation\Rule as IlluminateRule;
+use Illuminate\Validation\Rules\RequiredIf;
 
 /**
  * Class Rule.
@@ -195,7 +198,7 @@ class Rule extends IlluminateRule
      * @param string $format format
      * @return string
      */
-    public static function dateFormat($format): string
+    public static function dateFormat(string $format): string
     {
         return 'date_format:' . $format;
     }
@@ -426,9 +429,9 @@ class Rule extends IlluminateRule
      * 此功能用于前端进行校验时候不会对字段值进行清理
      * @param bool|callable $callback
      * @param array         $values
-     * @return string
+     * @return RequiredIf|string
      */
-    public static function requiredIf($callback, array $values = []): string
+    public static function requiredIf($callback, array $values = [])
     {
         if (is_callable($callback) || is_bool($callback)) {
             return parent::requiredIf($callback);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Extension\Alipay\Tests\Aop;
 
 use Poppy\Extension\Alipay\Aop\Request\AlipayFundTransUniTransferRequest;
@@ -21,10 +23,10 @@ class FundTest extends AlipayBaseTest
             'trans_amount' => rand(1, 20) / 10,                 // 订单总金额，单位为元，精确到小数点后两位
             'product_code' => 'TRANS_ACCOUNT_NO_PWD',           //业务产品码  单笔无密转账到支付宝账户
             'biz_scene'    => 'DIRECT_TRANSFER',                // 单笔无密转账到支付宝/银行卡, B2C现金红包;
-            'payee_info'   => [                                 // 收款方信息
-                'identity'      => $this->userAccount,          // 参与方唯一标识
-                'identity_type' => 'ALIPAY_LOGON_ID',           // 支付宝登录号，支持邮箱和手机号格式
-                'name'          => $this->userName,             // 参与方真实姓名,当identity_type=ALIPAY_LOGON_ID时，本字段必填。
+            'payee_info'   => [                                                                                                                      // 收款方信息
+                'identity'      => $this->userAccount,                                                                                               // 参与方唯一标识
+                'identity_type' => 'ALIPAY_LOGON_ID',                                                                                                // 支付宝登录号，支持邮箱和手机号格式
+                'name'          => $this->userName,                                                                                                  // 参与方真实姓名,当identity_type=ALIPAY_LOGON_ID时，本字段必填。
             ],
             'remark'       => '沙箱:测试:Poppy/Ext-Alipay', //可选 单笔转账
         ];

@@ -1,12 +1,12 @@
 <?php
 
-namespace Poppy\Framework\Exceptions;
+declare(strict_types = 1);
 
-use Exception;
+namespace Poppy\Framework\Exceptions;
 
 /**
  * 模块异常
  */
-class PoppyException extends Exception
+class PoppyException extends BaseException
 {
 }

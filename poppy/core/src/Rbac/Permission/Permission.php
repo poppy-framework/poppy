@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Rbac\Permission;
 
 use Poppy\Core\Rbac\Repositories\PermissionRepository;

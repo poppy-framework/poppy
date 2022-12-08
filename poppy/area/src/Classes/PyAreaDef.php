@@ -1,7 +1,8 @@
 <?php
 
-namespace Poppy\Area\Classes;
+declare(strict_types = 1);
 
+namespace Poppy\Area\Classes;
 
 class PyAreaDef
 {

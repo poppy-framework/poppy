@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Http\Request\ApiMgrApp;
 
 use Illuminate\Http\JsonResponse;

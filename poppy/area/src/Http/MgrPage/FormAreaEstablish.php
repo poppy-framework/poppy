@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Area\Http\MgrPage;
 
 use Poppy\Area\Action\Area;
@@ -45,7 +47,7 @@ class FormAreaEstablish extends FormWidget
 
     public function handle()
     {
-        $id   = input('id');
+        $id   = (int) input('id');
         $Area = (new Area())->setPam($this->pam);
         if (is_post()) {
             if ($Area->establish(input(), $id)) {

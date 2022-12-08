@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Ad\Http\Request\Backend;
 
 use Illuminate\Contracts\View\Factory;

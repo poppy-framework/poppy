@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Classes;
 
 use Log;
@@ -23,7 +25,7 @@ class LocalSmsProvider extends BaseSms implements SmsContract
         $sign    = $this->sign;
         $trans   = sys_trans($this->sms['code'], $params);
         $content = ($sign ? "[{$sign}]" : '') . $trans;
-        Log::info(sys_mark('poppy.sms', self::class, $content, true));
+        Log::info(sys_gen_mk(self::class, $content));
 
         return true;
     }

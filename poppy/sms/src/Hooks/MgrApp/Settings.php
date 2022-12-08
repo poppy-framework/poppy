@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Hooks\MgrApp;
 
 use Poppy\Core\Services\Contracts\ServiceArray;

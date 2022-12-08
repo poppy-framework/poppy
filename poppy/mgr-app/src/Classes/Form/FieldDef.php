@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrApp\Classes\Form;
 
 use Illuminate\Support\Str;
+use Poppy\Framework\Exceptions\ApplicationException;
 
 /**
  * 表单
@@ -14,8 +17,8 @@ class FieldDef
 
     /**
      * 创建表单条目
-     * @param string $type 字段类型
-     * @param string $name 表单字段Name
+     * @param string $type  字段类型
+     * @param string $name  表单字段Name
      * @param string $label 标签
      * @return FormItem|null
      */
@@ -30,6 +33,7 @@ class FieldDef
 
     /**
      * 注册依赖
+     * @throws ApplicationException
      */
     public static function registerDependencies()
     {
@@ -39,13 +43,11 @@ class FieldDef
         }
         foreach ($dependencies as $dependency) {
             if (!class_exists($dependency)) {
-                sys_error('mgr-app', __CLASS__, "表单依赖类不存在: {$dependency}");
-                continue;
+                throw new ApplicationException("表单依赖类不存在: {$dependency}");
             }
             $objDepend = new $dependency();
             if (!($objDepend instanceof FormDependence)) {
-                sys_error('mgr-app', __CLASS__, "表单依赖类未继承: FormDependence");
-                continue;
+                throw new ApplicationException("表单依赖类未继承: FormDependence");
             }
             if (!isset(self::$dependencies[$dependency])) {
                 self::$dependencies[$objDepend->name()] = $dependency;
@@ -76,7 +78,7 @@ class FieldDef
      * 获取关联字段属性
      * @param string $name
      * @param string $params
-     * @param array $values
+     * @param array  $values
      * @return array
      */
     public static function fetchDependField(string $name, string $params = '', array $values = []): array

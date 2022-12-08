@@ -13,8 +13,8 @@ class ServicesTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        sys_cache('py-core')->forget('module.repo.hooks');
-        sys_cache('py-core')->forget('module.repo.module');
+        sys_tag('py-core')->del('module.repo.hooks');
+        sys_tag('py-core')->del('module.repo.module');
     }
 
     public function testParse()

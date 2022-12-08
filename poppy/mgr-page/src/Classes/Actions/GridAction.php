@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Actions;
 
 use Illuminate\Database\Eloquent\SoftDeletes;

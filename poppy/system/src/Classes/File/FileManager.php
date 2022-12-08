@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Classes\File;
 
 use Poppy\System\Classes\Contracts\FileContract;

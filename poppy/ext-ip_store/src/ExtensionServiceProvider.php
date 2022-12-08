@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Extension\IpStore;
 
 use Illuminate\Contracts\Support\DeferrableProvider;

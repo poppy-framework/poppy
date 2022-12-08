@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Http;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;

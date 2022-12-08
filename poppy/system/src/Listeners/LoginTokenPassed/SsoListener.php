@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Listeners\LoginTokenPassed;
 
 use Poppy\Framework\Exceptions\ApplicationException;

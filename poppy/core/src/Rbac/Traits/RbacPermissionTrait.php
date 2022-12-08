@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Rbac\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * 权限 trait
@@ -10,16 +13,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 trait RbacPermissionTrait
 {
     /**
-     * Many-to-Many relations with role model.
-     * @return BelongsToMany
+     * @inheritDoc
      */
-    public function roles()
+    public function roles(): BelongsToMany
     {
+        $roleFk              = config('poppy.core.rbac.role_fk');
+        $permissionFk        = config('poppy.core.rbac.permission_fk');
         $roleModel           = config('poppy.core.rbac.role');
         $rolePermissionModel = config('poppy.core.rbac.role_permission');
         return $this->belongsToMany(
             $roleModel,
-            (new $rolePermissionModel)->getTable()
+            (new $rolePermissionModel)->getTable(),
+            $permissionFk,
+            $roleFk
         );
     }
 
@@ -27,18 +33,18 @@ trait RbacPermissionTrait
      * Boot the permission model
      * Attach event listener to remove the many-to-many records when trying to delete
      * Will NOT delete any records if the permission model uses soft deletes.
-     * @return void|bool
+     * 这个地方有点绕, 是我所属的所有角色中同步为空, 删除关于我的信息
+     * @return void
      */
     public static function boot()
     {
         parent::boot();
-        $permissionModel = config('poppy.core.rbac.permission');
-        static::deleting(function ($permission) use ($permissionModel) {
-            if (!method_exists(new $permissionModel, 'bootSoftDeletes')) {
-                $permission->roles()->sync([]);
+        static::deleting(function ($permission) {
+            $traits = class_uses_recursive(static::class);
+            if (isset($traits[SoftDeletes::class])) {
+                return;
             }
-
-            return true;
+            $permission->roles()->sync([]);
         });
     }
 }

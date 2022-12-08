@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Events;
 
 use Poppy\Framework\Application\Event;

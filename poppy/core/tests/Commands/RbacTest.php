@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Tests\Commands;
 
 use Poppy\Core\Rbac\Helper\RbacHelper;

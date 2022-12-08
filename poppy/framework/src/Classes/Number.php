@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Classes;
 
 /**
@@ -45,7 +47,7 @@ class Number
      *
      * @var int $numberScale
      */
-    protected $numberScale;
+    protected int $numberScale = 0;
 
     /**
      * Constructs a BigNumber object from a string, integer, float, or any
@@ -236,10 +238,10 @@ class Number
      *
      * @return int
      */
-    public function getScale()
+    public function getScale(): int
     {
         if ($this->numberScale === null) {
-            return ini_get('bcmath.scale');
+            return (int) ini_get('bcmath.scale');
         }
 
         return $this->numberScale;
@@ -464,7 +466,7 @@ class Number
         }
 
         $this->numberValue = bcpowmod(
-            (int) $this->numberValue,
+            $this->numberValue,
             $this->filterNumber($pow),
             $mod,
             $this->getScale()
@@ -484,7 +486,7 @@ class Number
     {
         $original = $this->getValue();
         $floored  = $this->floor()->getValue();
-        $diff     = bcsub($original, $floored, 20);
+        $diff     = (float) bcsub($original, $floored, 20);
         if ($this->isNegative()) {
             $roundedDiff = round($diff, $precision, PHP_ROUND_HALF_DOWN);
         }
@@ -494,7 +496,7 @@ class Number
 
         $this->numberValue = bcadd(
             $floored,
-            $roundedDiff,
+            (string) $roundedDiff,
             $precision
         );
 
@@ -549,7 +551,7 @@ class Number
     {
         $this->numberValue = bcmul(
             $this->numberValue,
-            bcpow('2', $bits)
+            bcpow('2', (string) $bits)
         );
 
         return $this;
@@ -566,7 +568,7 @@ class Number
     {
         $this->numberValue = bcdiv(
             $this->numberValue,
-            bcpow('2', $bits)
+            bcpow('2', (string) $bits)
         );
 
         return $this;
@@ -663,12 +665,12 @@ class Number
         $outNumber        = '';
         $returnDigitCount = 0;
 
-        while (bcdiv($number, bcpow($toBase, (string) $returnDigitCount)) > ($toBase - 1)) {
+        while (bcdiv($number, bcpow((string) $toBase, (string) $returnDigitCount)) > ($toBase - 1)) {
             $returnDigitCount++;
         }
 
         for ($i = $returnDigitCount; $i >= 0; $i--) {
-            $pow       = bcpow($toBase, (string) $i);
+            $pow       = bcpow((string) $toBase, (string) $i);
             $c         = bcdiv($number, $pow);
             $number    = bcsub($number, bcmul($c, $pow));
             $outNumber .= $digits[(int) $c];
@@ -716,7 +718,7 @@ class Number
                 continue;
             }
 
-            $base10Num = bcadd(bcmul($base10Num, $fromBase), (string) $c);
+            $base10Num = bcadd(bcmul($base10Num, (string) $fromBase), (string) $c);
         }
 
         return $base10Num;
@@ -731,7 +733,7 @@ class Number
      */
     public static function setDefaultScale(int $scale)
     {
-        ini_set('bcmath.scale', $scale);
+        ini_set('bcmath.scale', (string) $scale);
     }
 
     /**

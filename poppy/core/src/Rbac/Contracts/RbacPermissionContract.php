@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Rbac\Contracts;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,6 +15,6 @@ interface RbacPermissionContract
      * Many-to-Many relations with role model.
      * @return BelongsToMany
      */
-    public function roles();
+    public function roles(): BelongsToMany;
 }
 

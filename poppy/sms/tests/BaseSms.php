@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Tests;
 
-use Poppy\System\Tests\Base\SystemTestCase;
+use Poppy\Framework\Application\TestCase;
 
 /**
  * 发送短信
  */
-class BaseSms extends SystemTestCase
+class BaseSms extends TestCase
 {
 
     /**
@@ -20,7 +22,7 @@ class BaseSms extends SystemTestCase
      * 配置文件
      * @var array
      */
-    protected $conf;
+    protected array $conf;
 
     public function setUp(): void
     {

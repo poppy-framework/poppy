@@ -29,7 +29,7 @@ class MonitorCommand extends Command
         try {
             $Listener = (new Listener($index))->setOutput($output);
             if (!$Listener->monitor()) {
-                $this->error(sys_mark('canal-es', __CLASS__, $Listener->getError()));
+                $this->error(sys_gen_mk(self::class, $Listener->getError()));
             }
         } catch (Throwable $e) {
             $this->error($e);

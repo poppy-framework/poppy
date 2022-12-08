@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Tests;
 
 use Illuminate\Support\Str;
@@ -32,7 +34,7 @@ class LocalTest extends BaseSms
             $this->assertTrue(true);
         }
         else {
-            $this->fail($Sms->getError());
+            $this->fail($Sms->getError()->getMessage());
         }
     }
 
@@ -43,7 +45,7 @@ class LocalTest extends BaseSms
             $this->assertTrue(true);
         }
         else {
-            $this->fail($Sms->getError());
+            $this->fail($Sms->getError()->getMessage());
         }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Models;
 
 use Carbon\Carbon;
@@ -10,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Poppy\Core\Rbac\Contracts\RbacUserContract;
 use Poppy\Core\Rbac\Traits\RbacUserTrait;
 use Poppy\Framework\Helper\UtilHelper;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -41,7 +44,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property-read Collection|PamRole[] $roles
  * @mixin Eloquent
  */
-class PamAccount extends Model implements Authenticatable, JWTSubject
+class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserContract
 {
     use TraitAuthenticatable, RbacUserTrait, Authorizable, Notifiable;
 
@@ -224,8 +227,8 @@ class PamAccount extends Model implements Authenticatable, JWTSubject
 
     /**
      * 获取定义的 kv 值
-     * @param null|string $key       需要获取的key, 默认返回整个定义
-     * @param bool        $check_key 检测当前key 是否存在
+     * @param null|string|int $key       需要获取的key, 默认返回整个定义
+     * @param bool            $check_key 检测当前key 是否存在
      * @return array|string
      */
     public static function kvRegType($key = null, $check_key = false)

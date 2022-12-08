@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrApp\Classes\Grid\Query;
 
 use Illuminate\Database\Eloquent\Model;
+use Poppy\Framework\Exceptions\ApplicationException;
 
 class QueryFactory
 {
@@ -11,6 +14,7 @@ class QueryFactory
      * 返回查询对象
      * @param string|mixed $model
      * @return Query
+     * @throws ApplicationException
      */
     public static function create($model = null): Query
     {
@@ -24,11 +28,11 @@ class QueryFactory
             if (is_string($model)) {
                 $obj = new $model;
                 if (!($obj instanceof Query)) {
-                    sys_error('mgr-app', __CLASS__, "Type of {$model} is not subclass of Query");
+                    throw new ApplicationException("Type of {$model} is not subclass of Query");
                 }
                 return $obj;
             }
-            sys_error('mgr-app', __CLASS__, "Type of {$model} is error of Query");
+            throw new ApplicationException("Type of {$model} is error of Query");
         }
     }
 }

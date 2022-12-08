@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Tests;
 
 use Illuminate\Support\Str;
@@ -24,7 +26,7 @@ class AliyunTest extends BaseSms
     }
 
 
-    public function testCombile()
+    public function testMobile()
     {
         $mobiles      = '15555555551';
         $carryMobiles = function ($mobiles) {
@@ -61,7 +63,7 @@ class AliyunTest extends BaseSms
             $this->assertTrue(true);
         }
         else {
-            $this->fail($Sms->getError());
+            $this->fail($Sms->getError()->getMessage());
         }
     }
 
@@ -75,7 +77,7 @@ class AliyunTest extends BaseSms
             $this->assertTrue(true);
         }
         else {
-            $this->fail($Sms->getError());
+            $this->fail($Sms->getError()->getMessage());
         }
     }
 }

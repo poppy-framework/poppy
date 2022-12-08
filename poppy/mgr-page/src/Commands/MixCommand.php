@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Commands;
 
 use Illuminate\Console\Command;
@@ -34,7 +36,7 @@ class MixCommand extends Command
 
         collect($files)->each(function ($aim, $ori) {
             app('files')->copy(public_path($ori), base_path($aim));
-            $this->info(sys_mark('poppy.mgr-page', __CLASS__, "Copy {$ori} to {$aim} success"));
+            $this->info(sys_gen_mk(self::class, "Copy {$ori} to {$aim} success"));
         });
     }
 }

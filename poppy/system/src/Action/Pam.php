@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Action;
 
 use Auth;
@@ -250,7 +252,7 @@ class Pam
             $pam = PamAccount::create($initDb);
 
             // 给用户默认角色
-            $pam->roles()->attach($role->pluck('id'));
+            $pam->attachRole($role);
 
             // 如果没有设置账号, 则根据规范生成用户名
             if (!$hasAccountName) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Module\Repositories;
 
 use Illuminate\Support\Collection;
@@ -7,7 +9,6 @@ use Poppy\Core\Classes\PyCoreDef;
 use Poppy\Core\Exceptions\PermissionException;
 use Poppy\Core\Rbac\Contracts\RbacUserContract;
 use Poppy\Core\Rbac\Traits\RbacUserTrait;
-use Poppy\Framework\Helper\UtilHelper;
 use Poppy\Framework\Support\Abstracts\Repository;
 
 /**
@@ -17,18 +18,13 @@ class ModulesMenu extends Repository
 {
 
     /**
-     * @var Collection
-     */
-    protected $structures;
-
-    /**
      * Initialize.
      * @param Collection $uis 集合
      */
     public function initialize(Collection $uis)
     {
         // check serve setting
-        $this->items = sys_cache('py-core')->remember(
+        $this->items = sys_tag('py-core')->remember(
             PyCoreDef::ckModule('menu'),
             PyCoreDef::MIN_ONE_DAY * 60,
             function () use ($uis) {
@@ -292,7 +288,7 @@ class ModulesMenu extends Repository
         }
         $route     = $group['route'] ?? '';
         $routeHide = (array) config('poppy.core.route_hide');
-        if (in_array($route, $routeHide, false)) {
+        if (in_array($route, $routeHide)) {
             return null;
         }
         // 值补足

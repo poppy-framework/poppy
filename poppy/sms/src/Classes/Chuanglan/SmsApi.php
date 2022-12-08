@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Classes\Chuanglan;
 
 /* *
@@ -136,7 +138,7 @@ class SmsApi
         $ch         = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json; charset=utf-8'   //json版本需要填写  Content-Type: application/json;
+                'Content-Type: application/json; charset=utf-8',   //json版本需要填写  Content-Type: application/json;
             ]
         );
         curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4); //若果报错 name lookup timed out 报错时添加这一行代码

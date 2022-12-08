@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Setting\Facades;
 
 use Illuminate\Support\Facades\Facade as IlluminateFacade;

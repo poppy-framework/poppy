@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Classes\Uploader;
 
 use Poppy\System\Classes\File\DefaultFileProvider;

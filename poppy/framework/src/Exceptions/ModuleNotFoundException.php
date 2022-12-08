@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Exceptions;
 
-use Exception;
 use Illuminate\Support\Str;
 
 /**
  * ModuleNotFoundException
  */
-class ModuleNotFoundException extends Exception
+class ModuleNotFoundException extends BaseException
 {
     /**
      * ModuleNotFoundException constructor.

@@ -1,13 +1,13 @@
 <?php
 
-namespace Poppy\Framework\Exceptions;
+declare(strict_types = 1);
 
-use Exception;
+namespace Poppy\Framework\Exceptions;
 
 /**
  * PolicyException
  */
-class PolicyException extends Exception
+class PolicyException extends BaseException
 {
     /**
      * @var int $code

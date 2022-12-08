@@ -2,8 +2,8 @@
 
 namespace Poppy\Core\Exceptions;
 
-use Exception;
+use Poppy\Framework\Exceptions\BaseException;
 
-class SettingException extends Exception
+class SettingException extends BaseException
 {
 }

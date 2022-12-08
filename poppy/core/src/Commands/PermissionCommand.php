@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Commands;
 
 use Exception;
@@ -11,13 +13,16 @@ use Poppy\Core\Events\PermissionInitEvent;
 use Poppy\Core\Rbac\Permission\Permission;
 use Poppy\Core\Rbac\Permission\PermissionManager;
 use Poppy\Framework\Exceptions\ApplicationException;
+use Poppy\System\Classes\Traits\DbTrait;
+use Poppy\System\Models\PamPermission;
+use Poppy\System\Models\PamRole;
 
 /**
  * Permission Command
  */
 class PermissionCommand extends Command
 {
-    use CoreTrait;
+    use CoreTrait, DbTrait;
 
     protected $signature = 'py-core:permission
 		{do : The permission action to handle, allow <lists,init>}
@@ -27,36 +32,38 @@ class PermissionCommand extends Command
     protected $description = 'Permission manage list.';
 
     /**
-     * @var string Display Key;
-     */
-    private $key;
-
-
-    /**
      * @var PermissionManager
      */
-    private $permission;
+    private PermissionManager $permission;
 
     /**
-     * @var string
+     * @var PamRole
      */
-    private $roleModel;
+    private PamRole $pamRole;
 
     /**
-     * @var string
+     * @var PamPermission
      */
-    private $permissionModel;
+    private PamPermission $pamPermission;
 
 
+    /**
+     * @throws ApplicationException
+     */
     public function __construct()
     {
         parent::__construct();
-        $this->permission      = $this->corePermission();
-        $this->roleModel       = config('poppy.core.rbac.role');
-        $this->permissionModel = config('poppy.core.rbac.permission');
-        if (!$this->roleModel || !$this->permissionModel) {
+        $this->permission = $this->corePermission();
+
+        $mdlRole       = config('poppy.core.rbac.role');
+        $mdlPermission = config('poppy.core.rbac.permission');
+
+        if (!class_exists($mdlRole) || !class_exists($mdlPermission)) {
             throw new ApplicationException('你需要配置 `poppy.core` 的 RBAC 配置');
         }
+
+        $this->pamRole       = new $mdlRole();
+        $this->pamPermission = new $mdlPermission();
     }
 
     /**
@@ -66,8 +73,7 @@ class PermissionCommand extends Command
      */
     public function handle()
     {
-        $action    = $this->argument('do');
-        $this->key = $action;
+        $action = $this->argument('do');
         switch ($action) {
             case 'list':
                 $this->lists();
@@ -79,7 +85,9 @@ class PermissionCommand extends Command
                 $this->checkMenus();
                 break;
             case 'assign':
-                $this->assign();
+                $name = $this->ask('Which role you want assign permission ?');
+                $type = $this->ask('Which permission list <user type> you want to get ?');
+                $this->assign($name, $type);
                 break;
             case 'check':
                 $permission = $this->option('permission');
@@ -87,7 +95,7 @@ class PermissionCommand extends Command
                 break;
             default:
                 $this->error(
-                    sys_mark('poppy.core', self::class, ' Command Not Exists!')
+                    sys_gen_mk(self::class, ' Command Not Exists!')
                 );
                 break;
         }
@@ -111,58 +119,51 @@ class PermissionCommand extends Command
         );
     }
 
-    /**
-     * @throws Exception
-     */
     public function init()
     {
-        sys_cache('py-core')->forget(PyCoreDef::ckModule('module'));
-        sys_cache('py-core')->forget(PyCoreDef::ckPermissions());
+        sys_tag('py-core')->del(PyCoreDef::ckModule('module'));
+
+        $this->permission->clearCachedPermissionNames();
 
         // get all permission
         $permissions = $this->permission->permissions();
-        if (!$permissions) {
-            $this->info($this->key . 'No permission need import.');
-
+        if (!$permissions->count()) {
+            $this->info(sys_gen_mk(self::class, 'No permission need import.'));
             return;
         }
 
         event(new PermissionInitEvent($permissions));
 
-        $this->info(
-            sys_mark('poppy.core', self::class, 'Import permission Success! ')
-        );
-        sys_cache('py-core')->forget(PyCoreDef::ckPermissions());
+        $num = $this->permission->cachedPermissionNames()->count();
+
+        $this->info(sys_gen_mk(self::class, "Init {$num} permission Success!"));
     }
 
     /**
      * 将权限赋值给指定的用户组
      */
-    private function assign()
+    private function assign($name, $type)
     {
-        $name            = $this->ask('Which role you want assign permission ?');
-        $permission_type = $this->ask('Which permission you want to get ?');
-        $role            = (new $this->roleModel)::where('name', $name)->first();
+        /** @var PamRole $role */
+        $role = $this->pamRole::where('name', $name)->first();
 
         if (!$role) {
             $this->error(
-                sys_mark('poppy.core', self::class, 'Role [' . $name . '] not exists in table !')
+                sys_gen_mk(self::class, 'Role [' . $name . '] not exists in table !')
             );
 
             return;
         }
 
-        $permissions = (new $this->permissionModel)::where('type', $permission_type)->get();
+        $permissions = $this->pamPermission::where('type', $type)->get();
         if (!$permissions) {
             $this->error(
-                sys_mark('poppy.core', self::class, 'Permission type [' . $permission_type . '] has no permissions !')
+                sys_gen_mk(self::class, 'Permission type [' . $type . '] has no permissions !')
             );
-
             return;
         }
-        $role->savePermissions($permissions);
-        $role->flushPermissionRole();
-        $this->info("\nSave [{$permission_type}] permission to role [{$name}] !");
+        $role->syncPermission($permissions);
+        $this->info(sys_gen_mk(self::class, "Save [{$type}] permission to role [{$name}] !"));
     }
 
     /**
@@ -170,14 +171,14 @@ class PermissionCommand extends Command
      */
     private function checkPermission(string $permission)
     {
-        if ((new $this->permissionModel)::where('name', $permission)->exists()) {
+        if ($this->pamPermission::where('name', $permission)->exists()) {
             $this->info(
-                sys_mark('poppy.core', self::class, 'Permission `' . $permission . '` in table ')
+                sys_gen_mk(self::class, 'Permission `' . $permission . '` in table ')
             );
         }
         else {
             $this->error(
-                sys_mark('poppy.core', self::class, 'Permission `' . $permission . '` not in table')
+                sys_gen_mk(self::class, 'Permission `' . $permission . '` not in table')
             );
         }
     }
@@ -188,7 +189,7 @@ class PermissionCommand extends Command
     private function checkMenus()
     {
         // clear cache
-        sys_cache('py-core')->flush();
+        sys_tag('py-core')->clear();
 
         // calc
         $navigations = $this->coreModule()->menus();
@@ -229,12 +230,12 @@ class PermissionCommand extends Command
 
         if (!$faults->count()) {
             $this->info(
-                sys_mark('poppy.core', self::class, 'All Permission are right.')
+                sys_gen_mk(self::class, 'All Permission are right.')
             );
         }
         else {
             $this->warn(
-                sys_mark('poppy.core', self::class, 'Error Permission in menus:')
+                sys_gen_mk(self::class, 'Error Permission in menus:')
             );
             $this->table(
                 ['Title', 'Parent', 'Permission'],

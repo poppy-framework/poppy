@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 use Poppy\SensitiveWord\Classes\Sensitive\Dict;
 use Poppy\SensitiveWord\Classes\Sensitive\Words;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Classes\Inspect;
 
 /**
@@ -33,7 +35,7 @@ class CommentParser
     public function parseMethod(string $doc): array
     {
         $result = [
-            'params' => []
+            'params' => [],
         ];
 
         $result['description'] = trim(preg_replace('/(?:[ \t]*\*[ \t]*@(.*?)\n|[ \t]*\*[ \t]*)/si', '', $doc), '/ ' . PHP_EOL);

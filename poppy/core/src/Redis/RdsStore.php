@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Redis;
 
 use Carbon\Carbon;
@@ -26,14 +28,14 @@ class RdsStore
         $cacheData = [
             'expired' => Carbon::now()->addSeconds($second)->timestamp,
         ];
-        $fetchData = sys_cache('py-core')->get(PyCoreDef::ckCacher($key));
+        $fetchData = sys_tag('py-core')->get(PyCoreDef::ckCacher($key));
         // 无数据 / 已过期
         if (!$fetchData || $fetchData['expired'] <= Carbon::now()->timestamp) {
             if ($value instanceof Closure) {
                 $value = $value();
             }
             $cacheData['value'] = $value;
-            sys_cache('py-core')->forever(PyCoreDef::ckCacher($key), $cacheData);
+            sys_tag('py-core')->set(PyCoreDef::ckCacher($key), $cacheData);
 
             return $cacheData['value'];
         }

@@ -1,7 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\AliyunOss\Http\Request\ApiV1\Web;
 
+use AlibabaCloud\Client\Exception\ClientException;
+use AlibabaCloud\Client\Exception\ServerException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Poppy\AliyunOss\Action\Sts;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Http\Request\ApiV1\JwtApiController;
@@ -37,10 +44,16 @@ class StsController extends JwtApiController
      *         "endpoint": "oss-cn-beijing.aliyuncs.com",
      *         "security_token": "CAISqQJ1q6Ft5B2yfSjIr5fAB+....veLex67A==",
      *         "access_key_id": "STS.NTu...xC",
-     *         "access_key_secret": "2sKKB5cg9...JEJR2p",
+     *         "access_key_secret": "2sKKB5cg9...2p",
      *         "expiration": "2021-06-02T02:51:45Z"
      *     }
      * }
+     */
+
+    /**
+     * @return JsonResponse|RedirectResponse|Response
+     * @throws ClientException
+     * @throws ServerException
      */
     public function tempOss()
     {
@@ -50,10 +63,7 @@ class StsController extends JwtApiController
         $config = config('poppy.aliyun-oss');
         $Sts    = new Sts();
         $Sts->setConfig($config['temp_key'], $config['temp_secret'], $config['bucket'], $config['endpoint'], $config['role_arn'], $config['url']);
-        if ($Sts->tempOss()) {
-            return Resp::web(Resp::SUCCESS, '获取成功', $Sts->getTempKey());
-        }
-
-        return Resp::web(Resp::ERROR, $Sts->getError());
+        $tempKey = $Sts->tempOss();
+        return Resp::web(Resp::SUCCESS, '获取成功', $tempKey);
     }
 }

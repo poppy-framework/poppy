@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Listeners\AuthLogout;
 
 use Poppy\Framework\Helper\EnvHelper;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Area;
 
 use Poppy\Area\Commands\InitCommand;

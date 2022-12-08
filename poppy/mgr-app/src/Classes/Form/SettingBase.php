@@ -41,7 +41,7 @@ abstract class SettingBase extends FormWidget
             $this->items('model')->each(function (FormItem $field) use ($Setting, $all) {
                 $value   = $all[$field->name] ?? '';
                 $fullKey = $this->group . '.' . $field->name;
-                $class   = __CLASS__;
+                $class   = self::class;
                 if (!$this->keyParserMatch($fullKey)) {
                     throw new FormException("Key {$fullKey} Not Match At Group `{$this->group}` In Class `{$class}`");
                 }

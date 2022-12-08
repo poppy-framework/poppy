@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Console;
 
 use Illuminate\Console\GeneratorCommand as LaravelGeneratorCommand;

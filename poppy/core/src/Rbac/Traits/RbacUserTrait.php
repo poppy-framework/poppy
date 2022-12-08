@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Rbac\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Poppy\Core\Classes\PyCoreDef;
@@ -18,73 +21,50 @@ trait RbacUserTrait
     /**
      * @return Collection
      */
-    public function cachedRoles()
+    public function cachedRoles(): Collection
     {
-        static $cache;
-        $userPrimaryKey = $this->primaryKey;
-        $cacheKey       = PyCoreDef::rbacCkUserRoles($this->$userPrimaryKey);
-        if (!isset($cache[$cacheKey])) {
-            $cache[$cacheKey] = sys_cache('py-core-rbac')->remember($cacheKey, config('cache.ttl'), function () {
-                return $this->roles()->get();
-            });
-        }
-
-        return $cache[$cacheKey];
-    }
-
-    /**
-     * 保存
-     * @param array $options 选项
-     */
-    public function save(array $options = [])
-    {   //both inserts and updates
-        parent::save($options);
-        sys_cache('py-core-rbac')->flush();
-    }
-
-    /**
-     * 删除
-     * @param array $options 选项
-     */
-    public function delete(array $options = [])
-    {   //soft or hard
-        parent::delete($options);
-        sys_cache('py-core-rbac')->flush();
-    }
-
-    /**
-     * Boot the user model
-     * Attach event listener to remove the many-to-many records when trying to delete
-     * Will NOT delete any records if the user model uses soft deletes.
-     * @return void|bool
-     */
-    public static function boot()
-    {
-        parent::boot();
-        $accountModel = config('poppy.core.rbac.account');
-        static::deleting(function ($user) use ($accountModel) {
-            if (!method_exists((new $accountModel), 'bootSoftDeletes')) {
-                $user->roles()->sync([]);
-            }
-
-            return true;
+        $cacheKey       = PyCoreDef::rbacCkUserRoles($this->{$this->primaryKey});
+        return sys_tag('py-core-rbac')->remember($cacheKey, config('cache.ttl'), function () {
+            return $this->roles()->get();
         });
     }
 
     /**
-     * 清空
+     * @inheritDoc
      */
-    public function restore()
-    {   //soft delete undo's
-        parent::restore();
-        sys_cache('py-core-rbac')->flush();
+    public static function boot()
+    {
+        parent::boot();
+        $traits = class_uses_recursive(static::class);
+
+        // Attach event listener to remove the many-to-many records when trying to delete
+        // Will NOT delete any records if the user model uses soft deletes.
+        static::deleting(function ($user) use ($traits) {
+            if (!isset($traits[SoftDeletes::class])) {
+                $user->roles()->sync([]);
+            }
+            return true;
+        });
+        static::deleted(function () {
+            self::clearCachedRoles();
+        });
+        static::saved(function () {
+            self::clearCachedRoles();
+        });
+
+        if (isset($traits[SoftDeletes::class])) {
+            static::restored(function () {
+                self::clearCachedRoles();
+            });
+        }
     }
+
 
     /**
      * Many-to-Many relations with Role.
      * @return BelongsToMany
      */
-    public function roles()
+    public function roles(): BelongsToMany
     {
         $roleModel = config('poppy.core.rbac.role');
         $accountFk = config('poppy.core.rbac.account_fk');
@@ -98,30 +78,27 @@ trait RbacUserTrait
     }
 
     /**
-     * Checks if the user has a role by its name.
-     * @param string|array $name       role name or array of role names
-     * @param bool         $requireAll all roles in the array are required
-     * @return bool
+     * @inheritDoc
      */
-    public function hasRole($name, $requireAll = false): bool
+    public function hasRole($name, bool $require_all = false): bool
     {
         if (is_array($name)) {
             foreach ($name as $roleName) {
                 $hasRole = $this->hasRole($roleName);
 
-                if ($hasRole && !$requireAll) {
+                if ($hasRole && !$require_all) {
                     return true;
                 }
 
-                if (!$hasRole && $requireAll) {
+                if (!$hasRole && $require_all) {
                     return false;
                 }
             }
 
             // If we've made it this far and $requireAll is FALSE, then NONE of the roles were found
-            // If we've made it this far and $requireAll is TRUE, then ALL of the roles were found.
+            // If we've made it this far and $requireAll is TRUE, then ALL the roles were found.
             // Return the value of $requireAll;
-            return $requireAll;
+            return $require_all;
         }
 
         foreach ($this->cachedRoles() as $role) {
@@ -134,28 +111,25 @@ trait RbacUserTrait
     }
 
     /**
-     * Check if user has a permission by its name.
-     * @param string|array $permission permission string or array of permissions
-     * @param bool         $requireAll all permissions in the array are required
-     * @return bool
+     * @inheritDoc
      */
-    public function capable($permission, $requireAll = false): bool
+    public function capable($permission, bool $require_all = false): bool
     {
         if (is_array($permission)) {
             foreach ($permission as $permName) {
                 $hasPerm = $this->capable($permName);
-                if ($hasPerm && !$requireAll) {
+                if ($hasPerm && !$require_all) {
                     return true;
                 }
-                if (!$hasPerm && $requireAll) {
+                if (!$hasPerm && $require_all) {
                     return false;
                 }
             }
 
             // If we've made it this far and $requireAll is FALSE, then NONE of the perms were found
-            // If we've made it this far and $requireAll is TRUE, then ALL of the perms were found.
+            // If we've made it this far and $requireAll is TRUE, then ALL the perms were found.
             // Return the value of $requireAll;
-            return $requireAll;
+            return $require_all;
         }
         foreach ($this->cachedRoles() as $role) {
             // Validate against the Permission table
@@ -170,14 +144,9 @@ trait RbacUserTrait
     }
 
     /**
-     * Checks role(s) and permission(s).
-     * @param string|array $roles       Array of roles or comma separated string
-     * @param string|array $permissions array of permissions or comma separated string
-     * @param array        $options     validate_all (true|false) or return_type (boolean|array|both)
-     * @return array|bool
-     * @throws InvalidArgumentException
+     * @inheritDoc
      */
-    public function ability($roles, $permissions, $options = [])
+    public function ability($roles, $permissions, array $options = [])
     {
         // Convert string to array if that's what is passed in.
         if (!is_array($roles)) {
@@ -242,63 +211,27 @@ trait RbacUserTrait
     }
 
     /**
-     * Alias to eloquent many-to-many relation's attach() method.
-     * @param mixed $role 角色
+     * @inheritDoc
      */
-    public function attachRole($role)
+    public function attachRole($id)
     {
-        if (is_object($role)) {
-            $role = $role->getKey();
-        }
-
-        if (is_array($role)) {
-            $role = $role['id'];
-        }
-
-        $this->roles()->attach($role);
+        $this->roles()->attach($id);
+        self::clearCachedRoles();
     }
 
     /**
-     * Alias to eloquent many-to-many relation's detach() method.
-     * @param mixed $role 角色
+     * @inheritDoc
      */
-    public function detachRole($role)
+    public function detachRole($id)
     {
-        if (is_object($role)) {
-            $role = $role->getKey();
-        }
-
-        if (is_array($role)) {
-            $role = $role['id'];
-        }
-
-        $this->roles()->detach($role);
+        $this->roles()->detach($id);
+        self::clearCachedRoles();
     }
 
-    /**
-     * Attach multiple roles to a user
-     * @param array $roles 多个角色
-     */
-    public function attachRoles($roles)
-    {
-        foreach ($roles as $role) {
-            $this->attachRole($role);
-        }
-    }
 
-    /**
-     * Detach multiple roles from a user
-     * @param array $roles 多个角色
-     */
-    public function detachRoles($roles = null)
+    protected static function clearCachedRoles()
     {
-        if (!$roles) {
-            $roles = $this->roles()->get();
-        }
-
-        foreach ($roles as $role) {
-            $this->detachRole($role);
-        }
+        sys_tag('py-core-rbac')->clear(PyCoreDef::rbacCkUserRoles('*'));
     }
 
     /**

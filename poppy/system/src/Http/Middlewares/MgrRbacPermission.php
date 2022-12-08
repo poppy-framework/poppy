@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Http\Middlewares;
 
 use Poppy\Core\Classes\Traits\CoreTrait;

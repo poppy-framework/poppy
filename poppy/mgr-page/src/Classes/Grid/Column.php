@@ -434,7 +434,6 @@ class Column
     public function gravatar($size = 25): self
     {
         return $this->display(function ($value) use ($size) {
-            sys_debug('', '', $size);
             $src = sprintf(
                 'https://www.gravatar.com/avatar/%s?s=%d',
                 md5(strtolower($value)),

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Poppy\Area\Commands;
@@ -11,7 +12,7 @@ class InitCommand extends Command
 {
     protected $name = 'py-area:init';
 
-    private $rds;
+    private RdsDb $rds;
 
     public function handle()
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Listeners\PoppyOptimized;
 
 use Poppy\Framework\Events\PoppyOptimized;
@@ -16,7 +18,7 @@ class ClearCacheListener
      */
     public function handle(PoppyOptimized $event)
     {
-        sys_cache('py-core')->flush();
+        sys_tag('py-core')->clear();
 
         // cache files
         $disk = Storage::disk('storage');

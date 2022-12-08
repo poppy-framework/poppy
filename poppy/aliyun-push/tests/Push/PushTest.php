@@ -3,10 +3,13 @@
 namespace Poppy\AliyunPush\Tests\Push;
 
 
+use AlibabaCloud\Client\Exception\ClientException;
+use AlibabaCloud\Client\Exception\ServerException;
 use Notification;
 use Poppy\AliyunPush\Classes\BindTag;
 use Poppy\AliyunPush\Classes\Config\Config;
 use Poppy\AliyunPush\Classes\Sender\PushMessage;
+use Poppy\AliyunPush\Exceptions\PushException;
 use Poppy\AliyunPush\Tests\Sample\AndroidAllNoticeNotification;
 use Poppy\AliyunPush\Tests\Sample\AndroidMessageNotification;
 use Poppy\AliyunPush\Tests\Sample\AndroidNoticeNotification;
@@ -15,13 +18,12 @@ use Poppy\AliyunPush\Tests\Sample\IosNoticeNotification;
 use Poppy\AliyunPush\Tests\Sample\IosTagBoyPushNotification;
 use Poppy\AliyunPush\Tests\Sample\IosTagGirlPushNotification;
 use Poppy\AliyunPush\Tests\Sample\IosTagIosPushNotification;
-use Poppy\System\Tests\Base\SystemTestCase;
-use Throwable;
+use Poppy\Framework\Application\TestCase;
 
 /**
  * 推送测试
  */
-class PushTest extends SystemTestCase
+class PushTest extends TestCase
 {
 
     public function setUp(): void
@@ -55,103 +57,72 @@ class PushTest extends SystemTestCase
 
     public function testSendAndroidNotice()
     {
-        try {
-            Notification::send(null, new AndroidNoticeNotification());
-            $this->assertTrue(true);
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
+        Notification::send(null, new AndroidNoticeNotification());
+        $this->assertTrue(true);
     }
 
     public function testSendAndroidAll()
     {
-        try {
-            Notification::send(null, new AndroidAllNoticeNotification());
-            $this->assertTrue(true);
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
+        Notification::send(null, new AndroidAllNoticeNotification());
+        $this->assertTrue(true);
     }
 
     public function testSendAndroidMessage()
     {
-        try {
-            Notification::send(null, new AndroidMessageNotification());
-            $this->assertTrue(true);
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
+        Notification::send(null, new AndroidMessageNotification());
+        $this->assertTrue(true);
     }
 
     public function testSendIosNotice()
     {
-        try {
-            Notification::send(null, new IosNoticeNotification());
-            $this->assertTrue(true);
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
+        Notification::send(null, new IosNoticeNotification());
+        $this->assertTrue(true);
     }
 
     public function testSendIosMessage()
     {
-        try {
-            Notification::send(null, new IosMessageNotification());
-            $this->assertTrue(true);
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
+        Notification::send(null, new IosMessageNotification());
+        $this->assertTrue(true);
     }
 
     /**
      * 绑定倩倩的设备号设定标签为 girl
+     * @return void
+     * @throws ClientException
+     * @throws ServerException
+     * @throws PushException
      */
     public function testBindGirl()
     {
-        try {
-            $Bind = new BindTag(Config::default());
-            $qqId = 'a6e8a2f36e2d4da9a22762362a987476';
-            $dyId = 'd733ae6c57754f22a4de519e0eafe816';
-            $zxId = 'b59f5b4cfc764599843f277e1a092adb';
-            $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'girl', $qqId); // 倩倩
-            $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'boy', $zxId);  // 张新
-            $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'boy', $dyId);  // 赵殿有
-            $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'ios', $qqId);
-            $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'ios', $zxId);
-            $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'ios', $dyId);
-            $this->assertTrue(true);
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
+
+        $Bind = new BindTag(Config::default());
+        $qqId = 'a6e8a2f36e2d4da9a22762362a987476';
+        $dyId = 'd733ae6c57754f22a4de519e0eafe816';
+        $zxId = 'b59f5b4cfc764599843f277e1a092adb';
+        $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'girl', $qqId); // 倩倩
+        $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'boy', $zxId);  // 张新
+        $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'boy', $dyId);  // 赵殿有
+        $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'ios', $qqId);
+        $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'ios', $zxId);
+        $Bind->bindDevice(PushMessage::DEVICE_TYPE_IOS, 'ios', $dyId);
+        $this->assertTrue(true);
     }
 
     public function testSendIosTagGirl()
     {
-        try {
-            Notification::send(null, new IosTagGirlPushNotification());
-            $this->assertTrue(true);
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
+        Notification::send(null, new IosTagGirlPushNotification());
+        $this->assertTrue(true);
     }
 
     public function testSendIosTagIosPush()
     {
-        try {
-            Notification::send(null, new IosTagIosPushNotification());
-            $this->assertTrue(true);
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
+        Notification::send(null, new IosTagIosPushNotification());
+        $this->assertTrue(true);
     }
 
     public function testSendIosTagBoyPush()
     {
-        try {
-            Notification::send(null, new IosTagBoyPushNotification());
-            $this->assertTrue(true);
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
+        Notification::send(null, new IosTagBoyPushNotification());
+        $this->assertTrue(true);
     }
 }

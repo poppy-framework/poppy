@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Tests\Redis;
 
 use Poppy\Core\Classes\PyCoreDef;
@@ -49,9 +51,14 @@ class RdsFieldExpiredTest extends RdsBaseTest
                     break;
             }
 
-            RdsFieldExpired::setFieldExpireTime($key, $i, $type, $database, $expire);
+            $fullName = $this->rds->keyName($key);
 
-            $caches[$database . '_' . $key] = compact('database', 'key');
+            RdsFieldExpired::setFieldExpireTime($fullName, $i, $type, $database, $expire);
+
+            $caches[$database . '-' . $fullName] = [
+                'database' => $database,
+                'key'      => $fullName,
+            ];
 
             $this->rds->disconnect();
         }
@@ -67,11 +74,11 @@ class RdsFieldExpiredTest extends RdsBaseTest
     {
         $cache = new Client(config('database.redis.default'));
         $cache->multi();
-        $beforeCount = $cache->zcard(PyCoreDef::ckTagRdsKeyFieldExpired());
+        $beforeCount = $cache->zcard(PyCoreDef::ckRdsKeyFieldExpired());
 
         (new RdsFieldExpired)->clearExpiredField();
 
-        $afterCount = $cache->zcard(PyCoreDef::ckTagRdsKeyFieldExpired());
+        $afterCount = $cache->zcard(PyCoreDef::ckRdsKeyFieldExpired());
 
         $cache->exec();
         $this->assertGreaterThanOrEqual($beforeCount, $afterCount);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Rbac\Helper;
 
 use Illuminate\Database\Eloquent\Collection;

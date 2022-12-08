@@ -11,6 +11,6 @@ class PyMgrPageDef
      */
     public static function ckTagSearchPy(): string
     {
-        return 'tag:py-mgr-page:search-py';
+        return 'tag:py-mgr-page:search-pinyin';
     }
 }

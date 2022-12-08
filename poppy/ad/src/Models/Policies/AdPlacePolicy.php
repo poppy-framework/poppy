@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Ad\Models\Policies;
 
 use Poppy\System\Classes\Traits\PolicyTrait;
@@ -16,7 +18,7 @@ class AdPlacePolicy
     /**
      * @var array 权限映射
      */
-    protected static $permissionMap = [
+    protected static array $permissionMap = [
         // for controller
         'establish'  => 'backend:py-ad.place.establish',
         'global'     => 'backend:py-ad.place.manage',

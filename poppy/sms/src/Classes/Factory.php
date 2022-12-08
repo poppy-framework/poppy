@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Classes;
 
 use Poppy\Framework\Classes\Traits\AppTrait;

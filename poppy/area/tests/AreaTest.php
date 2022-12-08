@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Area\Tests;
 
 
 use Poppy\Area\Models\SysArea;
-use Poppy\System\Tests\Base\SystemTestCase;
+use Poppy\Framework\Application\TestCase;
 
-class AreaTest extends SystemTestCase
+class AreaTest extends TestCase
 {
     public function testCountryKv(): void
     {

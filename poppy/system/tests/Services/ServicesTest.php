@@ -12,8 +12,8 @@ class ServicesTest extends TestCase
     {
         parent::setUp();
 
-        sys_cache('py-core')->forget(PyCoreDef::ckModule('hook'));
-        sys_cache('py-core')->forget(PyCoreDef::ckModule('module'));
+        sys_tag('py-core')->del(PyCoreDef::ckModule('hook'));
+        sys_tag('py-core')->del(PyCoreDef::ckModule('module'));
     }
 
     public function testUploadType()

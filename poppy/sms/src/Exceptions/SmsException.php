@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms\Exceptions;
 
-use Exception;
+use Poppy\Framework\Exceptions\BaseException;
 
-class SmsException extends Exception
+class SmsException extends BaseException
 {
 
 }

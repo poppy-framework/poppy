@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 use Carbon\Carbon;
 use Illuminate\Cache\TaggableStore;
 use Illuminate\Cache\TaggedCache;
@@ -8,7 +10,6 @@ use Illuminate\Support\Str;
 use Poppy\Core\Classes\PyCoreDef;
 use Poppy\Core\Redis\RdsDb;
 use Poppy\Core\Redis\RdsStore;
-use Poppy\Core\Redis\RdsTag;
 use Poppy\Core\Services\Factory\ServiceFactory;
 use Poppy\Framework\Classes\Resp;
 
@@ -73,12 +74,12 @@ if (!function_exists('sys_db')) {
     {
         static $cache;
         if (!$cache) {
-            $cache = sys_cache('py-core')->get(PyCoreDef::ckLangModels());
+            $cache = sys_tag('py-core')->get(PyCoreDef::ckLangModels());
             if (!$cache) {
                 app(ConsoleKernelContract::class)->call('py-core:inspect', [
                     'type' => 'db_seo',
                 ]);
-                $cache = sys_cache('py-core')->get(PyCoreDef::ckLangModels());
+                $cache = sys_tag('py-core')->get(PyCoreDef::ckLangModels());
             }
         }
 
@@ -104,40 +105,14 @@ if (!function_exists('sys_hook')) {
 if (!function_exists('sys_gen_mk')) {
     /**
      * 根据异常类型生成符合条件格式的日志
+     * @param       $class
      * @param mixed $info
      * @param bool  $request
      * @return string
      */
-    function sys_gen_mk($info, bool $request = false): string
+    function sys_gen_mk($class, $info, bool $request = false): string
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-        $refer = $trace[1] ?? [];
-        if (!in_array($refer['function'] ?? '', ['sys_info', 'sys_error', 'sys_debug', 'sys_warning'])) {
-            return '本函数使用场景有问题, 请在固定函数中引用';
-        }
-
-        $file         = $refer['file'];
-        $relativePath = Str::after($file, base_path());
-        if (Str::contains($relativePath, 'poppy')) {
-            $module = 'poppy';
-            if (preg_match('/poppy\/(?<name>.*?)\/(tests|src)/', $relativePath, $matches)) {
-                $module .= '.' . $matches['name'];
-            }
-        }
-        else {
-            $module = 'module';
-            if (preg_match('/modules\/(?<name>.*?)\/(tests|src)/', $relativePath, $matches)) {
-                $module .= '.' . $matches['name'];
-            }
-        }
-
-        $path = $relativePath;
-        if (preg_match('/.*?\/(tests|src)\/(?<file>.*)/', $relativePath, $matches)) {
-            $path = $matches['file'];
-        }
-
-        $jsonMark   = JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
-        $moduleMark = "[{$module}][{$path}]:";
+        $jsonMark = JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
 
         $req = [];
         if ($request && Request::path() !== '/') {
@@ -153,19 +128,19 @@ if (!function_exists('sys_gen_mk')) {
             }
         }
 
-        $append = function ($info) use ($request, $req, $jsonMark) {
-            return $info . (($request && $req) ? PHP_EOL . json_encode($req, $jsonMark) : '');
+        $append = function ($info) use ($request, $req, $jsonMark, $class) {
+            return "[{$class}]:" . $info . (($request && $req) ? PHP_EOL . json_encode($req, $jsonMark) : '');
         };
 
         // append data
         if (is_array($info)) {
-            return $append($moduleMark . json_encode($info, $jsonMark));
+            return $append(json_encode($info, $jsonMark));
         }
         else if (is_string($info)) {
-            return $append($moduleMark . $info);
+            return $append($info);
         }
         else if ($info instanceof Resp) {
-            return $append($moduleMark . implode(', code:', [$info->getMessage(), $info->getCode()]));
+            return $append(implode(', code:', [$info->getMessage(), $info->getCode()]));
         }
         else if ($info instanceof Throwable) {
             $content = [
@@ -185,10 +160,9 @@ if (!function_exists('sys_gen_mk')) {
         }
 
         $content = json_encode($content, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        return "[{$module}][{$path}]:" . $content;
+        return "[{$class}]:" . $content;
     }
 }
-
 
 if (!function_exists('sys_mark')) {
     /**
@@ -198,7 +172,7 @@ if (!function_exists('sys_mark')) {
      * @param string|array  $append
      * @param bool          $with_time
      * @return string
-     * @see        sys_info, sys_warning, sys_error, sys_debug
+     * @see        sys_gen_mk()
      * @deprecated 4.1
      */
     function sys_mark($object, string $class, $append = '', bool $with_time = false): string
@@ -257,14 +231,14 @@ if (!function_exists('sys_error')) {
     /**
      * 用于记录系统异常信息, 通常需要开启请求
      * @param mixed        $object
-     * @param string|bool  $class_or_req
+     * @param string|bool  $class
      * @param string|array $append
+     * @see        Log::error()
+     * @deprecated 4.1
      */
-    function sys_error($object, $class_or_req = '', $append = '')
+    function sys_error($object, $class = '', $append = '')
     {
-        $info    = (($class_or_req === '' || is_bool($class_or_req)) && $append === '') ? $object : $append;
-        $request = is_bool($class_or_req) && $class_or_req;
-        app('log')->error(sys_gen_mk($info, $request));
+        app('log')->error(sys_gen_mk($class, $append));
     }
 }
 
@@ -272,15 +246,15 @@ if (!function_exists('sys_debug')) {
     /**
      * 4.1 更改为展示 debug 信息, 不区分环境, 用户追踪系统中的问题
      * @param mixed        $object
-     * @param string|bool  $class_or_req
+     * @param string|bool  $class
      * @param string|array $append
-     * @since 3.1
+     * @see        Log::debug()
+     * @deprecated 4.1
+     * @since      3.1
      */
-    function sys_debug($object, $class_or_req = '', $append = '')
+    function sys_debug($object, $class = '', $append = '')
     {
-        $info    = (($class_or_req === '' || is_bool($class_or_req)) && $append === '') ? $object : $append;
-        $request = is_bool($class_or_req) && $class_or_req;
-        app('log')->debug(sys_gen_mk($info, $request));
+        app('log')->debug(sys_gen_mk($class, $append));
     }
 }
 
@@ -289,26 +263,13 @@ if (!function_exists('sys_info')) {
     /**
      * 记录信息, 一般用户信息追溯
      * @param mixed        $object
-     * @param string|bool  $class_or_req
+     * @param string|bool  $class
      * @param string|array $append
+     * @see        Log::info()
+     * @deprecated 4.1
      */
-    function sys_info($object, $class_or_req = '', $append = '')
+    function sys_info($object, $class = '', $append = '')
     {
-        $info    = (($class_or_req === '') || is_bool($class_or_req) && $append === '') ? $object : $append;
-        $request = is_bool($class_or_req) && $class_or_req;
-        app('log')->info(sys_gen_mk($info, $request));
-    }
-}
-
-if (!function_exists('sys_warning')) {
-    /**
-     * 警告信息, 一般用户 deprecated 的提示
-     * @param mixed $object
-     * @param bool  $with_request
-     * @since 4.1
-     */
-    function sys_warning($object, bool $with_request = false)
-    {
-        app('log')->warning(sys_gen_mk($object, $with_request));
+        app('log')->info(sys_gen_mk($class, $append));
     }
 }

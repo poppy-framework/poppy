@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Rbac\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Poppy\Core\Classes\PyCoreDef;
 use Poppy\Core\Rbac\Permission\Permission;
 
@@ -19,77 +22,46 @@ trait RbacRoleTrait
      */
     public function cachedPermissions()
     {
-        static $cache;
-        $rolePrimaryKey = $this->primaryKey;
-        $cacheKey       = PyCoreDef::rbacCkRolePermissions($this->$rolePrimaryKey);
-        if (!isset($cache[$cacheKey])) {
-            $cache[$cacheKey] = sys_cache('py-core-rbac')->remember($cacheKey, config('cache.ttl'), function () {
-                return $this->perms()->get();
-            });
-        }
-
-        return $cache[$cacheKey];
-    }
-
-    /**
-     * @param array $options 选项
-     * @return bool
-     */
-    public function save(array $options = []): bool
-    {   //both inserts and updates
-        if (!parent::save($options)) {
-            return false;
-        }
-        $this->flushPermissionRole();
-
-        return true;
-    }
-
-    /**
-     * @param array $options 选项
-     * @return bool
-     */
-    public function delete(array $options = []): bool
-    {   //soft or hard
-        if (!parent::delete($options)) {
-            return false;
-        }
-        $this->flushPermissionRole();
-
-        return true;
-    }
-
-    /**
-     * Boot the role model
-     * Attach event listener to remove the many-to-many records when trying to delete
-     * Will NOT delete any records if the role model uses soft deletes.
-     * @return void|bool
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        $roleModel = config('poppy.core.rbac.role');
-        static::deleting(function ($role) use ($roleModel) {
-            if (!method_exists((new $roleModel), 'bootSoftDeletes')) {
-                $role->users()->sync([]);
-                $role->perms()->sync([]);
-            }
-            return true;
+        $cacheKey = PyCoreDef::rbacCkRolePermissions($this->{$this->primaryKey});
+        return sys_tag('py-core-rbac')->remember($cacheKey, config('cache.ttl'), function () {
+            return $this->perms()->get();
         });
     }
 
     /**
-     * @return bool
+     * @inheritDoc
      */
-    public function restore(): bool
-    {   //soft delete undo's
-        if (!parent::restore()) {
-            return false;
-        }
-        $this->flushPermissionRole();
+    public static function boot()
+    {
+        parent::boot();
+        $traits = class_uses_recursive(static::class);
 
-        return true;
+        // Attach event listener to remove the many-to-many records when trying to delete
+        // Will NOT delete any records if the role model uses soft deletes.
+        static::deleting(function ($role) use ($traits) {
+            // 非软删除
+            if (!isset($traits[SoftDeletes::class])) {
+                $role->users()->sync([]);
+                $role->perms()->sync([]);
+            }
+            self::clearCachedPermissions();
+            return true;
+        });
+
+        static::saved(function () {
+            self::clearCachedPermissions();
+        });
+        static::deleted(function () {
+            self::clearCachedPermissions();
+        });
+
+        // soft delete restore
+        if (isset($traits[SoftDeletes::class])) {
+            static::restored(function () {
+                self::clearCachedPermissions();
+            });
+        }
+
     }
 
     /**
@@ -97,14 +69,13 @@ trait RbacRoleTrait
      */
     public function flushPermissionRole()
     {
-        sys_cache('py-core-rbac')->flush();
+        self::clearCachedPermissions();
     }
 
     /**
-     * Many-to-Many relations with the user model.
-     * @return BelongsToMany
+     * @inheritDoc
      */
-    public function users()
+    public function users(): BelongsToMany
     {
         $accountClass     = config('poppy.core.rbac.account');
         $roleAccountClass = config('poppy.core.rbac.role_account');
@@ -120,10 +91,10 @@ trait RbacRoleTrait
 
     /**
      * Many-to-Many relations with the permission model.
-     * Named "perms" for backwards compatibility. Also because "perms" is short and sweet.
+     * Named "perms" for backwards compatibility. Also, because "perms" is short and sweet.
      * @return BelongsToMany
      */
-    public function perms()
+    public function perms(): BelongsToMany
     {
         $permissionClass = config('poppy.core.rbac.permission');
         $roleFk          = config('poppy.core.rbac.role_fk');
@@ -137,60 +108,59 @@ trait RbacRoleTrait
     }
 
     /**
-     * Save the inputted permissions.
-     * @param mixed $inputPermissions 需要保存的权限
-     * @return void
+     * @inheritDoc
      */
-    public function savePermissions($inputPermissions)
+    public function savePermissions($permissions)
     {
-        if (!empty($inputPermissions)) {
-            $this->perms()->sync($inputPermissions);
-        }
-        else {
-            $this->perms()->detach();
-        }
+        $this->perms()->sync($permissions);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function syncPermission($id)
+    {
+        $this->perms()->sync($id);
     }
 
     /**
      * Attach permission to current role.
-     * @param object|array|Permission $permission 权限
+     * @param object|array|Permission $id 权限
      * @return void
      */
-    public function attachPermission($permission)
+    public function attachPermission($id)
     {
-        if (is_object($permission)) {
-            $permission = $permission->getKey();
+        if (is_object($id)) {
+            $id = $id->getKey();
         }
 
-        if (is_array($permission)) {
-            $permission = $permission['id'];
+        if (is_array($id)) {
+            $id = $id['id'];
         }
 
-        $this->perms()->attach($permission);
+        $this->perms()->attach($id);
     }
 
     /**
      * Detach permission from current role.
-     * @param object|array $permission 权限
+     * @param object|array $id 权限
      * @return void
      */
-    public function detachPermission($permission)
+    public function detachPermission($id)
     {
-        if (is_object($permission)) {
-            $permission = $permission->getKey();
+        if (is_object($id)) {
+            $id = $id->getKey();
         }
 
-        if (is_array($permission)) {
-            $permission = $permission['id'];
+        if (is_array($id)) {
+            $id = $id['id'];
         }
 
-        $this->perms()->detach($permission);
+        $this->perms()->detach($id);
     }
 
     /**
-     * Attach multiple permissions to current role.
-     * @param array $permissions 权限
-     * @return void
+     * @inheritDoc
      */
     public function attachPermissions($permissions)
     {
@@ -200,9 +170,7 @@ trait RbacRoleTrait
     }
 
     /**
-     * Detach multiple permissions from current role
-     * @param array $permissions 权限
-     * @return void
+     * @inheritDoc
      */
     public function detachPermissions($permissions)
     {
@@ -213,29 +181,29 @@ trait RbacRoleTrait
 
     /**
      * Checks if the role has a permission by its name.
-     * @param string|array $name       permission name or array of permission names
-     * @param bool         $requireAll all permissions in the array are required
+     * @param string|array $name        permission name or array of permission names
+     * @param bool         $require_all all permissions in the array are required
      * @return bool
      */
-    public function hasPermission($name, $requireAll = false): bool
+    public function hasPermission($name, bool $require_all = false): bool
     {
         if (is_array($name)) {
             foreach ($name as $permissionName) {
                 $hasPermission = $this->hasPermission($permissionName);
 
-                if ($hasPermission && !$requireAll) {
+                if ($hasPermission && !$require_all) {
                     return true;
                 }
 
-                if (!$hasPermission && $requireAll) {
+                if (!$hasPermission && $require_all) {
                     return false;
                 }
             }
 
             // If we've made it this far and $requireAll is FALSE, then NONE of the permissions were found
-            // If we've made it this far and $requireAll is TRUE, then ALL of the permissions were found.
+            // If we've made it this far and $requireAll is TRUE, then ALL the permissions were found.
             // Return the value of $requireAll;
-            return $requireAll;
+            return $require_all;
         }
 
         foreach ($this->cachedPermissions() as $permission) {
@@ -245,6 +213,11 @@ trait RbacRoleTrait
         }
 
         return false;
+    }
+
+    protected static function clearCachedPermissions()
+    {
+        sys_tag('py-core-rbac')->clear(PyCoreDef::rbacCkRolePermissions('*'));
     }
 
     /**

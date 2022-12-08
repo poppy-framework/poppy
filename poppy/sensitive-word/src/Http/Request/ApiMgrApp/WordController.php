@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\SensitiveWord\Http\Request\ApiMgrApp;
 
 use Exception;

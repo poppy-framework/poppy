@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Services\Factory;
 
 use Form;
@@ -20,8 +22,8 @@ class ServiceFactory
 
     /**
      * 钩子
-     * @param string $id    钩子标示符
-     * @param array $params 参数
+     * @param string $id     钩子标示符
+     * @param array  $params 参数
      * @return null
      */
     public function parse(string $id, array $params = [])
@@ -108,7 +110,7 @@ class ServiceFactory
     /**
      * 分析表单
      * @param string $builder 构建器
-     * @param array $params   参数
+     * @param array  $params  参数
      * @return HtmlString|mixed
      */
     protected function parseForm($builder, $params)

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Exceptions;
 
-use Exception;
+use Poppy\Framework\Exceptions\BaseException;
 
-class FormException extends Exception
+class FormException extends BaseException
 {
 
 }

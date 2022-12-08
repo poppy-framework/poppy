@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Extension\IpStore\Repositories;
 
 use Poppy\Extension\IpStore\Classes\Contracts\IpContract;
@@ -60,7 +62,7 @@ class Qqwry implements IpContract
 
                 return 'System Error';
             }
-            $DataSeek = implode('', unpack('L', $DataSeek . chr(0)));
+            $DataSeek = (int) implode('', unpack('L', $DataSeek . chr(0)));
             fseek($fd, $DataSeek);
             $ipData2 = fread($fd, 4);
             if (strlen($ipData2) < 4) {
@@ -87,7 +89,7 @@ class Qqwry implements IpContract
 
                 return 'System Error';
             }
-            $ipSeek = implode('', unpack('L', $ipSeek . chr(0)));
+            $ipSeek = (int) implode('', unpack('L', $ipSeek . chr(0)));
             fseek($fd, $ipSeek);
             $ipFlag = fread($fd, 1);
         }
@@ -106,7 +108,7 @@ class Qqwry implements IpContract
 
                     return 'System Error';
                 }
-                $AddrSeek2 = implode('', unpack('L', $AddrSeek2 . chr(0)));
+                $AddrSeek2 = (int) implode('', unpack('L', $AddrSeek2 . chr(0)));
                 fseek($fd, $AddrSeek2);
             }
             else {
@@ -114,7 +116,7 @@ class Qqwry implements IpContract
             }
             while (($char = fread($fd, 1)) != chr(0))
                 $ipAddr2 .= $char;
-            $AddrSeek = implode('', unpack('L', $AddrSeek . chr(0)));
+            $AddrSeek = (int) implode('', unpack('L', $AddrSeek . chr(0)));
             fseek($fd, $AddrSeek);
             while (($char = fread($fd, 1)) != chr(0))
                 $ipAddr1 .= $char;
@@ -131,7 +133,7 @@ class Qqwry implements IpContract
 
                     return 'System Error';
                 }
-                $AddrSeek2 = implode('', unpack('L', $AddrSeek2 . chr(0)));
+                $AddrSeek2 = (int) implode('', unpack('L', $AddrSeek2 . chr(0)));
                 fseek($fd, $AddrSeek2);
             }
             else {

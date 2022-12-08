@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Redis;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Poppy\Core\Classes\PyCoreDef;
-use Predis\Client;
 use Throwable;
 
 /**
@@ -18,20 +20,15 @@ class RdsFieldExpired
     public const TYPE_ZSET = 'zset';
 
     /**
-     * @var RdsDb
-     */
-    private $cache;
-
-    /**
-     * @var RdsDb $expireHandler
-     */
-    private static $expireHandler;
-
-    /**
      * 分隔符号
      * @var string $stripTag
      */
-    private static $stripTag = '@@';
+    private static string $stripTag = '@@';
+
+    /**
+     * @var null|RdsDb
+     */
+    private ?RdsDb $rds = null;
 
     /**
      * 清理过期的field
@@ -39,14 +36,11 @@ class RdsFieldExpired
      */
     public function clearExpiredField(): bool
     {
-        self::initHandler();
-
         // 需要清理的field
-        $fields = self::$expireHandler->zrangebyscore(PyCoreDef::ckTagRdsKeyFieldExpired(), 0, time());
-
+        $fields = sys_tag('py-core')->zRangeByScore(PyCoreDef::ckRdsKeyFieldExpired(), 0, time());
         $this->convertClearFields($fields);
         if ($fields) {
-            self::$expireHandler->zrem(PyCoreDef::ckTagRdsKeyFieldExpired(), $fields);
+            sys_tag('py-core')->zRem(PyCoreDef::ckRdsKeyFieldExpired(), $fields);
         }
 
         return true;
@@ -55,38 +49,33 @@ class RdsFieldExpired
     public function __destruct()
     {
         try {
-            if ($this->cache) {
-                $this->cache->disconnect();
-                $this->cache = null;
+            if ($this->rds) {
+                $this->rds->disconnect();
+                $this->rds = null;
             }
-            self::$expireHandler->disconnect();
+            sys_tag('py-core')->disconnect();
         } catch (Throwable $e) {
         }
     }
 
     /**
-     * 设置过期时间
-     * @param string       $database   数据库
-     * @param string       $key        缓存key
-     * @param mixed|string $field      field
-     * @param string       $type       缓存类型
-     * @param float|int    $expireTime 有效期
+     * 设置过期时间, 这里设置缓存 KEY 的过期时间
+     * @param string     $database   数据库
+     * @param string     $key        缓存key
+     * @param int|string $field      field
+     * @param string     $type       缓存类型
+     * @param float|int  $expireTime 有效期
      * @return bool
      */
-    public static function setFieldExpireTime(string $key, string $field, string $type, $database = 'default', $expireTime = 3600 * 24): bool
+    public static function setFieldExpireTime(string $key, $field, string $type, string $database = 'default', $expireTime = 3600 * 24): bool
     {
-        self::initHandler();
-
         // "{$database}@@{$cacheKey}@@{$field}@@{$type}"
         $index = implode(self::$stripTag, [$database, $key, $field, $type]);
 
-        $expiredAt = time() + $expireTime;
-        self::$expireHandler->zadd(PyCoreDef::ckTagRdsKeyFieldExpired(), [
+        $expiredAt = Carbon::now()->timestamp + $expireTime;
+        sys_tag('py-core')->zAdd(PyCoreDef::ckRdsKeyFieldExpired(), [
             $index => $expiredAt,
         ]);
-
-        self::$expireHandler->disconnect();
-
         return true;
     }
 
@@ -98,7 +87,7 @@ class RdsFieldExpired
      */
     protected function clearHash($key, $fields): bool
     {
-        $this->cache->hdel($key, $fields);
+        $this->rds->hdel($key, $fields);
 
         return true;
     }
@@ -111,7 +100,7 @@ class RdsFieldExpired
      */
     protected function clearSet($key, $fields): bool
     {
-        $this->cache->srem($key, $fields);
+        $this->rds->srem($key, $fields);
 
         return true;
     }
@@ -124,16 +113,16 @@ class RdsFieldExpired
      */
     protected function clearZset($key, $fields): bool
     {
-        $this->cache->zrem($key, $fields);
+        $this->rds->zrem($key, $fields);
 
         return true;
     }
 
     /**
      * @param $fields
-     * @return bool
+     * @return void
      */
-    private function convertClearFields($fields): bool
+    private function convertClearFields($fields)
     {
         $clearFields = [];
 
@@ -148,12 +137,10 @@ class RdsFieldExpired
         }
 
         if (!$clearFields) {
-            return true;
+            return;
         }
 
         $this->groupClearFields($clearFields);
-
-        return true;
     }
 
     /**
@@ -163,11 +150,11 @@ class RdsFieldExpired
      */
     private function groupClearFields($clearFields): bool
     {
-        $this->cache = new RdsDb();
+        $this->rds = new RdsDb();
 
         collect($clearFields)->groupBy('database')
             ->map(function ($fields, $database) {
-                $this->cache->select($database);
+                $this->rds->select($database);
 
                 $fields->groupBy('key')->each(function ($field, $key) {
                     $fieldIndex = $field->pluck('field')->toArray();
@@ -188,18 +175,6 @@ class RdsFieldExpired
                     }
                 });
             });
-
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    private static function initHandler(): bool
-    {
-        if (!self::$expireHandler instanceof Client) {
-            self::$expireHandler = new RdsDb();
-        }
 
         return true;
     }

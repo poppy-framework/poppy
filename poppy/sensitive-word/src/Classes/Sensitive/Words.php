@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\SensitiveWord\Classes\Sensitive;
+
+use Poppy\SensitiveWord\Exceptions\DirectoryNotFoundException;
 
 /**
  * 敏感词库

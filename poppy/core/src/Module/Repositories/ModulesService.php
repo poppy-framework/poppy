@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Module\Repositories;
 
 use Illuminate\Support\Collection;
@@ -18,7 +20,7 @@ class ModulesService extends Repository
      */
     public function initialize(Collection $data)
     {
-        $this->items = sys_cache('py-core')->remember(
+        $this->items = sys_tag('py-core')->remember(
             PyCoreDef::ckModule('service'),
             PyCoreDef::MIN_HALF_DAY * 60,
             function () use ($data) {

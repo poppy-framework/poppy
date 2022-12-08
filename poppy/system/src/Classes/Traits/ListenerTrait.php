@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Classes\Traits;
 
 use Poppy\Framework\Classes\Traits\AppTrait;
 
 /**
  * Listener Helpers
+ * @deprecated 4.1
  */
 trait ListenerTrait
 {

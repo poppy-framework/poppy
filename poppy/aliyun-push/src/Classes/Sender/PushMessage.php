@@ -23,51 +23,57 @@ class PushMessage
     const TARGET_TAG     = 'TAG';
     const TARGET_ALL     = 'ALL';
 
-    const TARGET_VALUE_ALL     = 'ALL';
+    const TARGET_VALUE_ALL = 'ALL';
 
 
     /**
      * 设备类型
      * @var string
      */
-    private $deviceType;
+    private string $deviceType;
+
     /**
      * @var string 标题
      */
-    private $title;
+    private string $title;
+
     /**
      * Android推送时通知的内容/消息的内容；iOS消息/通知内容
      * @var string
      */
-    private $body;
+    private string $body;
+
     /**
      * 推送类型
      * @var string
      */
-    private $pushType;
+    private string $pushType;
+
     /**
      * 推送目标
      * @var string
      */
-    private $target;
+    private string $target;
 
     /**
      * @var string
      */
-    private $extParameters = '';
+    private string $extParameters = '';
+
     /**
      * @var array 附加的推送消息
      */
-    private $query = [
+    private array $query = [
         'base'    => [],
         'android' => [],
         'ios'     => [],
     ];
+
     /**
      * 推送 Target 值
      * @var string
      */
-    private $targetValue;
+    private string $targetValue;
 
     /**
      * @return string
@@ -104,7 +110,7 @@ class PushMessage
     /**
      * @return string
      */
-    public function getBody()
+    public function getBody(): string
     {
         return $this->body;
     }
@@ -121,7 +127,7 @@ class PushMessage
     /**
      * @return string
      */
-    public function getPushType()
+    public function getPushType(): string
     {
         return $this->pushType;
     }
@@ -138,7 +144,7 @@ class PushMessage
     /**
      * @return string
      */
-    public function getTarget()
+    public function getTarget(): string
     {
         return $this->target;
     }
@@ -155,7 +161,7 @@ class PushMessage
     /**
      * @return string
      */
-    public function getTargetValue()
+    public function getTargetValue(): string
     {
         return $this->targetValue;
     }
@@ -170,9 +176,9 @@ class PushMessage
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }

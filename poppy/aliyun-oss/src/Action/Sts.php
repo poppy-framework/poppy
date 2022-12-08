@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\AliyunOss\Action;
 
 use AlibabaCloud\Client\AlibabaCloud;
@@ -62,7 +64,10 @@ class Sts
     private string $subDirectory = '';
 
     /**
+     * 临时授权使用异常方式进行抛出报错, 不进行 Error 抓取
      * @return array 获取临时授权
+     * @see        tempOss()
+     * @deprecated 4.1
      */
     public function getTempKey(): array
     {
@@ -95,9 +100,11 @@ class Sts
 
     /**
      * 返回 Ali 授权key
-     * @return string
+     * @return array
+     * @throws ClientException
+     * @throws ServerException
      */
-    public function tempOss(): string
+    public function tempOss(): array
     {
         //加载aliyun配置
         $bucket = $this->bucket;
@@ -129,48 +136,42 @@ class Sts
 	]
 }
 POLICY;
-
-        try {
-            /**
-             * https://api.aliyun.com/#/?product=Sts&version=2015-04-01&api=AssumeRole&params={}&tab=DEMO&lang=PHP
-             * 你需要操作的资源所在的region，STS服务目前只有杭州节点可以签发Token，签发出的Token在所有Region都可用
-             */
-            AlibabaCloud::accessKeyClient($this->tempAppKey, $this->tempAppSecret)->regionId('cn-hangzhou')->asDefaultClient();
-            $result             = AlibabaCloud::rpc()
-                ->product('Sts')
-                ->scheme('https') // https | http
-                ->version('2015-04-01')
-                ->action('AssumeRole')
-                ->method('POST')
-                ->host('sts.aliyuncs.com')
-                ->options([
-                    'query' => [
-                        'RegionId'        => "cn-hangzhou",
-                        'RoleArn'         => $this->roleArn,
-                        'RoleSessionName' => 'app',  // 您可以使用您的客户的ID作为会话名称
-                        'DurationSeconds' => 3600,
-                        'Policy'          => $policy,
-                    ],
-                ])
-                ->request();
-            $respObj            = $result->toArray();
-            $resp               = $respObj['Credentials'];
-            $resp['directory']  = $dir;
-            $resp['prefix_url'] = $this->url;
-            $resp['bucket']     = $bucket;
-            $resp['endpoint']   = $this->endpoint;
-            foreach ($resp as $k => $v) {
-                $sk = Str::snake($k);
-                if ($sk !== $k) {
-                    $resp[$sk] = $v;
-                    unset($resp[$k]);
-                }
+        /**
+         * https://api.aliyun.com/#/?product=Sts&version=2015-04-01&api=AssumeRole&params={}&tab=DEMO&lang=PHP
+         * 你需要操作的资源所在的region，STS服务目前只有杭州节点可以签发Token，签发出的Token在所有Region都可用
+         */
+        AlibabaCloud::accessKeyClient($this->tempAppKey, $this->tempAppSecret)->regionId('cn-hangzhou')->asDefaultClient();
+        $result             = AlibabaCloud::rpc()
+            ->product('Sts')
+            ->scheme('https') // https | http
+            ->version('2015-04-01')
+            ->action('AssumeRole')
+            ->method('POST')
+            ->host('sts.aliyuncs.com')
+            ->options([
+                'query' => [
+                    'RegionId'        => "cn-hangzhou",
+                    'RoleArn'         => $this->roleArn,
+                    'RoleSessionName' => 'app',  // 您可以使用您的客户的ID作为会话名称
+                    'DurationSeconds' => 3600,
+                    'Policy'          => $policy,
+                ],
+            ])
+            ->request();
+        $respObj            = $result->toArray();
+        $resp               = $respObj['Credentials'];
+        $resp['directory']  = $dir;
+        $resp['prefix_url'] = $this->url;
+        $resp['bucket']     = $bucket;
+        $resp['endpoint']   = $this->endpoint;
+        foreach ($resp as $k => $v) {
+            $sk = Str::snake($k);
+            if ($sk !== $k) {
+                $resp[$sk] = $v;
+                unset($resp[$k]);
             }
-            $this->tempKey = $resp;
-
-            return true;
-        } catch (ClientException | ServerException $e) {
-            return $this->setError($e->getErrorMessage());
         }
+        $this->tempKey = $resp;
+        return $this->tempKey;
     }
 }

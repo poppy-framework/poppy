@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Translation;
 
 use Illuminate\Translation\TranslationServiceProvider as IlluminateTranslationServiceProvider;

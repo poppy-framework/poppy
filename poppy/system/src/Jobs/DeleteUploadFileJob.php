@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Poppy\Framework\Application\Job;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Classes\Contracts\FileContract;
-use Poppy\System\Classes\Traits\ListenerTrait;
 
 /**
  * 删除已经上传的文件
  */
 class DeleteUploadFileJob extends Job implements ShouldQueue
 {
-    use ListenerTrait, Queueable;
+    use Queueable;
 
     /**
      * @var string 需要删除的Url地址
@@ -31,13 +33,14 @@ class DeleteUploadFileJob extends Job implements ShouldQueue
 
     /**
      * 执行
+     * @throws ApplicationException
      */
     public function handle()
     {
         $Upload = app(FileContract::class);
         $dest   = parse_url($this->url)['path'] ?? '';
         if (!$dest) {
-            sys_error('py-system', __CLASS__, '文件 ' . $dest . ' @ ' . $this->url . ' 不存在, 不得删除');
+            throw new ApplicationException('文件 ' . $dest . ' @ ' . $this->url . ' 不存在, 不得删除');
         }
         $Upload->setDestination(trim($dest, '/'));
         $Upload->delete();

@@ -20,19 +20,24 @@ class AliPush
     use AppTrait;
 
     /**
+     * @var self|null
+     */
+    private static ?self $instance = null;
+
+    /**
      * @var int
      */
-    private $cutNum = 1000;
+    private int $cutNum = 1000;
 
     /**
      * @var Config
      */
-    private $config;
+    private Config $config;
 
     /**
      * @var string
      */
-    private $target;
+    private string $target;
 
     /**
      * @var
@@ -58,12 +63,7 @@ class AliPush
      * 附加的查询项目
      * @var array[]
      */
-    private $query;
-
-    /**
-     * @var self
-     */
-    private static $instance;
+    private array $query = [];
 
     /**
      * 发送

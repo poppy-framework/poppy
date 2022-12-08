@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\AliyunPush\Classes;
 
 use AlibabaCloud\Client\Exception\ClientException;
@@ -17,8 +19,11 @@ class BindTag extends BaseClient
      * @param string       $tag         标签
      * @param string|array $client_key  客户端代码
      * @return bool
+     * @throws ClientException
+     * @throws PushException
+     * @throws ServerException
      */
-    public function bindDevice(string $device_type, string $tag, $client_key):bool
+    public function bindDevice(string $device_type, string $tag, $client_key): bool
     {
         $device_type = strtolower($device_type);
 
@@ -32,24 +37,18 @@ class BindTag extends BaseClient
         if (is_array($client_key)) {
             $client_key = implode(',', $client_key);
         }
-        try {
-            $this->initClient();
-            $this->result = $this->rpc()
-                ->action('BindTag')
-                ->options([
-                    'query' => [
-                        'AppKey'    => $appKey,
-                        'ClientKey' => $client_key,
-                        'KeyType'   => "DEVICE",
-                        'TagName'   => $tag,
-                    ],
-                ])
-                ->request();
-            return true;
-        } catch (ClientException | ServerException $e) {
-            return $this->setError($e->getErrorMessage());
-        } catch (PushException $e) {
-            return $this->setError($e->getMessage());
-        }
+        $this->initClient();
+        $this->result = $this->rpc()
+            ->action('BindTag')
+            ->options([
+                'query' => [
+                    'AppKey'    => $appKey,
+                    'ClientKey' => $client_key,
+                    'KeyType'   => "DEVICE",
+                    'TagName'   => $tag,
+                ],
+            ])
+            ->request();
+        return true;
     }
 }

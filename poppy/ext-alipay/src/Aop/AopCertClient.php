@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Extension\Alipay\Aop;
 
 
@@ -37,7 +39,8 @@ class AopCertClient
 
     //网关
     public $gatewayUrl = "https://openapi.alipay.com/gateway.do";
-    public $format     = "json";
+
+    public $format = "json";
 
     //返回数据格式
     public $apiVersion = "1.0";
@@ -53,19 +56,23 @@ class AopCertClient
 
     //使用读取字符串格式，请只传递该值
     public $debugInfo = false;
-    public $signType  = "RSA";
+
+    public $signType = "RSA";
 
     //签名类型
     public $encryptKey;
 
     //加密密钥和类型
-    public    $encryptType      = "AES";
+    public $encryptType = "AES";
+
     protected $alipaySdkVersion = "alipay-sdk-php-easyalipay-20191227";
+
     /**
      * @var string 沙箱环境测试网关
      */
     private $sandboxGatewayUrl = 'https://openapi.alipaydev.com/gateway.do';
-    private $fileCharset       = "UTF-8";
+
+    private $fileCharset = "UTF-8";
 
     private $RESPONSE_SUFFIX = "_response";
 
@@ -252,7 +259,7 @@ class AopCertClient
         $dec = 0;
         $len = strlen($hex);
         for ($i = 1; $i <= $len; $i++) {
-            $dec = bcadd($dec, bcmul(strval(hexdec($hex[$i - 1])), bcpow('16', strval($len - $i))));
+            $dec = bcadd((string) $dec, bcmul(strval(hexdec($hex[$i - 1])), bcpow('16', strval($len - $i))));
         }
         return $dec;
     }
@@ -813,20 +820,19 @@ class AopCertClient
 
     /**
      * 转换字符集编码
-     * @param $data
-     * @param $targetCharset
+     * @param null|string $data
+     * @param             $targetCharset
      * @return string
      */
     public function charset($data, $targetCharset)
     {
-
         if (!empty($data)) {
             $fileType = $this->fileCharset;
             if (strcasecmp($fileType, $targetCharset) != 0) {
                 $data = mb_convert_encoding($data, $targetCharset, $fileType);
             }
         }
-        return $data;
+        return (string) $data;
     }
 
     /**

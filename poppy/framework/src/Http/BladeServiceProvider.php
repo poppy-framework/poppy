@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Http;
 
 use Illuminate\Support\ServiceProvider;

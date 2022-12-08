@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Commands;
 
 use Illuminate\Console\Command;
@@ -36,18 +38,18 @@ class OpCommand extends Command
                 $content = $this->option('content') ?: 'No Content';
                 $file    = $this->option('file');
                 if (!config('poppy.core.op_mail')) {
-                    $this->error(sys_mark('poppy.core', self::class, 'Config `poppy.core.op_mail` not set. Can not send Op Mail'));
+                    $this->error(sys_gen_mk(self::class, 'Config `poppy.core.op_mail` not set. Can not send Op Mail'));
                     return;
                 }
                 try {
                     Mail::to(config('poppy.core.op_mail'))->send(new MaintainMail($title, $content, $file));
                 } catch (Throwable $e) {
-                    $this->error(sys_mark('poppy.core', self::class, $e->getMessage()));
+                    $this->error(sys_gen_mk(self::class, $e->getMessage()));
                 }
                 break;
             case 'clear':
-                sys_cache('py-core')->flush();
-                $this->info(sys_mark('poppy.core', self::class, 'Clear Core Cache'));
+                sys_tag('py-core')->clear();
+                $this->info(sys_gen_mk(self::class, 'Clear Core Cache'));
                 break;
             default:
                 $this->warn('Error type in maintain tool.');

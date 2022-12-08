@@ -17,69 +17,65 @@ class PushSender extends BaseClient
      * 推送消息
      * @var PushMessage
      */
-    private $message;
+    private PushMessage $message;
 
     /**
      * 发送 Android 信息
      * @param PushMessage $message
-     * @return bool
+     * @throws ClientException
      * @throws PushException
+     * @throws ServerException
      */
-    public function send(PushMessage $message): bool
+    public function send(PushMessage $message)
     {
         $this->message = $message;
 
         $this->checkEnv();
-        try {
-            $query = [
-                'AppKey'      => $this->isAndroid() ? $this->androidAppKey : $this->iosAppKey,
-                'PushType'    => $message->getPushType(),
-                'DeviceType'  => $this->isAndroid() ? 'ANDROID' : "iOS",
-                'Title'       => $message->getTitle(),
-                'Body'        => $message->getBody(),
-                'Target'      => $message->getTarget(),
-                'TargetValue' => $message->getTargetValue(),
-            ];
+        $query = [
+            'AppKey'      => $this->isAndroid() ? $this->androidAppKey : $this->iosAppKey,
+            'PushType'    => $message->getPushType(),
+            'DeviceType'  => $this->isAndroid() ? 'ANDROID' : "iOS",
+            'Title'       => $message->getTitle(),
+            'Body'        => $message->getBody(),
+            'Target'      => $message->getTarget(),
+            'TargetValue' => $message->getTargetValue(),
+        ];
 
-            $queryExtend = $message->getQuery();
+        $queryExtend = $message->getQuery();
 
-            $query = array_merge($query, $queryExtend['base'] ?? []);
-            if ($this->isIos()) {
-                $query = array_merge($query, [
-                    'iOSExtParameters' => $message->getExtParameters() ?: '{}',
-                    'iOSApnsEnv'       => is_production() ? 'PRODUCT' : 'DEV',
-                ]);
-                $query = array_merge($query, $queryExtend['ios'] ?? []);
-            }
-
-            if ($this->isAndroid() && $this->isNotice()) {
-                $query = array_merge($query, [
-                    'AndroidExtParameters'       => $message->getExtParameters(),
-                    'AndroidNotificationChannel' => $this->androidChannel,
-                ]);
-                if ($this->androidActivity) {
-                    $query += [
-                        'AndroidOpenType'      => 'ACTIVITY',
-                        'AndroidActivity'      => $this->androidActivity,
-                        'AndroidPopupActivity' => $this->androidActivity,
-                        'AndroidPopupTitle'    => $message->getTitle(),
-                        'AndroidPopupBody'     => $message->getBody(),
-                        'StoreOffline'         => true,
-                    ];
-                }
-                $query = array_merge($query, $queryExtend['android'] ?? []);
-            }
-            $this->initClient();
-            $this->result = $this->rpc()
-                ->action('Push')
-                ->options([
-                    'query' => $query,
-                ])
-                ->request();
-            return true;
-        } catch (ClientException | ServerException $e) {
-            return $this->setError($e->getMessage());
+        $query = array_merge($query, $queryExtend['base'] ?? []);
+        if ($this->isIos()) {
+            $query = array_merge($query, [
+                'iOSExtParameters' => $message->getExtParameters() ?: '{}',
+                'iOSApnsEnv'       => is_production() ? 'PRODUCT' : 'DEV',
+            ]);
+            $query = array_merge($query, $queryExtend['ios'] ?? []);
         }
+
+        if ($this->isAndroid() && $this->isNotice()) {
+            $query = array_merge($query, [
+                'AndroidExtParameters'       => $message->getExtParameters(),
+                'AndroidNotificationChannel' => $this->androidChannel,
+            ]);
+            if ($this->androidActivity) {
+                $query += [
+                    'AndroidOpenType'      => 'ACTIVITY',
+                    'AndroidActivity'      => $this->androidActivity,
+                    'AndroidPopupActivity' => $this->androidActivity,
+                    'AndroidPopupTitle'    => $message->getTitle(),
+                    'AndroidPopupBody'     => $message->getBody(),
+                    'StoreOffline'         => true,
+                ];
+            }
+            $query = array_merge($query, $queryExtend['android'] ?? []);
+        }
+        $this->initClient();
+        $this->result = $this->rpc()
+            ->action('Push')
+            ->options([
+                'query' => $query,
+            ])
+            ->request();
     }
 
     /**

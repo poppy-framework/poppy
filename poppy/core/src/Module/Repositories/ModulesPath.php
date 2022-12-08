@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Core\Module\Repositories;
 
 use Illuminate\Support\Collection;
@@ -24,7 +26,7 @@ class ModulesPath extends Repository
     public function initialize(Collection $collection)
     {
         // check serve setting
-        $this->items = sys_cache('py-core')->remember(
+        $this->items = sys_tag('py-core')->remember(
             PyCoreDef::ckModule('path'),
             PyCoreDef::MIN_ONE_DAY * 60,
             function () use ($collection) {
@@ -75,9 +77,9 @@ class ModulesPath extends Repository
 
     /**
      * 根据用户返回合适的菜单
-     * @param string $type 指定用户的类型
-     * @param bool $is_full_permission 是否是全部权限
-     * @param null|RbacUserTrait|RbacUserContract $pam 用户
+     * @param string                              $type               指定用户的类型
+     * @param bool                                $is_full_permission 是否是全部权限
+     * @param null|RbacUserTrait|RbacUserContract $pam                用户
      * @return Collection
      * @throws PermissionException
      */
@@ -105,7 +107,8 @@ class ModulesPath extends Repository
                                 unset($submenu['permission'], $submenu['route']);
                                 $newSubmenus->push($submenu);
                             }
-                        } else {
+                        }
+                        else {
                             unset($submenu['route']);
                             $newSubmenus->push($submenu);
                         }
@@ -123,7 +126,8 @@ class ModulesPath extends Repository
                             unset($menu['permission'], $menu['route']);
                             $newMenu->push($menu);
                         }
-                    } else {
+                    }
+                    else {
                         unset($menu['route']);
                         $newMenu->push($menu);
                     }
@@ -138,8 +142,8 @@ class ModulesPath extends Repository
     }
 
     /**
-     * @param string $type 类型
-     * @param array $perms perms
+     * @param string $type  类型
+     * @param array  $perms perms
      * @return Collection
      */
     public function withType(string $type, array $perms): Collection
@@ -155,7 +159,8 @@ class ModulesPath extends Repository
                         if (in_array($url['permission'], $perms, true)) {
                             $children->push($url);
                         }
-                    } else {
+                    }
+                    else {
                         $children->push($url);
                     }
                 });
@@ -197,7 +202,8 @@ class ModulesPath extends Repository
             if (isset($submenu['children']) && is_array($submenu['children'])) {
                 // parse children
                 $submenu['children'] = $this->parseLink($submenu['children'], $slug);
-            } else {
+            }
+            else {
 
                 if (!isset($submenu['title'])) {
                     throw new ModuleException("Error define at module path {$slug}");

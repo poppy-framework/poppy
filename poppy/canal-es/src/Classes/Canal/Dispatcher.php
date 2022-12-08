@@ -16,6 +16,7 @@ class Dispatcher
      * @var Prepare
      */
     private $prepare;
+
     /**
      * @var Document
      */
@@ -51,10 +52,10 @@ class Dispatcher
             }, []);
             $desc = ArrayHelper::genKey(array_count_values($new));
             $this->document->bulk($records);
-            $output && $output(sys_mark('canal', __CLASS__, 'Records `' . $desc . '` sync to Es'));
+            $output && $output(sys_gen_mk(self::class, 'Records `' . $desc . '` sync to Es'));
         }
         else {
-            $output && $output(sys_mark('canal', __CLASS__, 'No Records sync to Es'));
+            $output && $output(sys_gen_mk(self::class, 'No Records sync to Es'));
         }
     }
 }

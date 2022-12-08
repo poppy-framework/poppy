@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Sms;
 
 use Poppy\Framework\Exceptions\ModuleNotFoundException;
@@ -60,8 +62,8 @@ class ServiceProvider extends PoppyServiceProvider
         if (sys_setting('py-sms::sms.send_type')) {
             // config 注入
             config([
-                'poppy.sms.send_type'      => sys_setting('py-sms::sms.send_type'),
-                'poppy.sms.sign'           => sys_setting('py-sms::sms.sign'),
+                'poppy.sms.send_type' => sys_setting('py-sms::sms.send_type'),
+                'poppy.sms.sign'      => sys_setting('py-sms::sms.sign'),
             ]);
         }
 

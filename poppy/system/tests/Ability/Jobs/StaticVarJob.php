@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Tests\Ability\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Log;
 use Poppy\Framework\Application\Job;
 use Poppy\Framework\Helper\ArrayHelper;
 
@@ -38,7 +41,7 @@ class StaticVarJob extends Job implements ShouldQueue
     {
         static $vars;
         $vars[] = $this->var;
-        sys_info('testing', self::class, 'vars:' . ArrayHelper::toKvStr($vars));
+        Log::info(sys_gen_mk(self::class, 'vars:' . ArrayHelper::toKvStr($vars)));
         if ($this->var < 20) {
             dispatch(new self($this->var + 1))->delay(1);
         }

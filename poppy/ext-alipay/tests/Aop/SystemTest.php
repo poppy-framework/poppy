@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Extension\Alipay\Tests\Aop;
 
+use Exception;
 use Poppy\Extension\Alipay\Aop\Request\AlipaySystemOauthTokenRequest;
 use Poppy\Extension\Alipay\Tests\AlipayBaseTest;
-use Throwable;
 
 class SystemTest extends AlipayBaseTest
 {
 
     /**
      * 使用证书方式进行转账
+     * @return void
+     * @throws Exception
      */
     public function testOauthToken(): void
     {
@@ -19,12 +23,8 @@ class SystemTest extends AlipayBaseTest
         $request->setGrantType('authorization_code');
         $request->setCode('democode');
 
-        try {
-            $result = $aop->execute($request);
-            $resp = data_get($result, 'error_response');
-            $this->assertEquals('40002', data_get($resp, 'code'));
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
+        $result = $aop->execute($request);
+        $resp   = data_get($result, 'error_response');
+        $this->assertEquals('40002', data_get($resp, 'code'));
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -16,17 +18,17 @@ class MaintainMail extends Mailable
     /**
      * @var string 标题
      */
-    public $title;
+    public string $title;
 
     /**
      * @var string 内容
      */
-    public $content;
+    public string $content;
 
     /**
      * @var string 附加的文件
      */
-    private $file;
+    private string $file;
 
     /**
      * Create a new message instance.
@@ -35,7 +37,7 @@ class MaintainMail extends Mailable
      * @param string $content
      * @param string $file
      */
-    public function __construct($title = '', $content = '', $file = '')
+    public function __construct(string $title = '', string $content = '', string $file = '')
     {
         $this->title   = $title;
         $this->subject = $title;

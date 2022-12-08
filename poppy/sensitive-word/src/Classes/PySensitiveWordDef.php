@@ -1,7 +1,8 @@
 <?php
 
-namespace Poppy\SensitiveWord\Classes;
+declare(strict_types = 1);
 
+namespace Poppy\SensitiveWord\Classes;
 
 class PySensitiveWordDef
 {

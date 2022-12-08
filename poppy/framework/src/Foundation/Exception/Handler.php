@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Foundation\Exception;
 
 use Exception;
@@ -13,7 +15,6 @@ use Illuminate\Validation\ValidationException;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\AjaxException;
 use Poppy\Framework\Exceptions\BaseException;
-use Poppy\System\Models\PamAccount;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**

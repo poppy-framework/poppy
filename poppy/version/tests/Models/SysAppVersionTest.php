@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types = 1);
 
 namespace Poppy\Version\Tests\Models;
@@ -140,7 +139,6 @@ class SysAppVersionTest extends TestCase
 
     private function dataAndroid(): array
     {
-        dd(py_faker()->url);
         return [
             '4.4.4' => [
                 'title'        => '4.4.4',

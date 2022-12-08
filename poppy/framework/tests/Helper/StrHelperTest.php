@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Tests\Helper;
 
 use Poppy\Framework\Application\TestCase;
@@ -78,7 +80,7 @@ class StrHelperTest extends TestCase
 
     public function testRandomCustom(): void
     {
-        $result = preg_match('/[a-zA-Z0-9]+$/', StrHelper::randomCustom('4'));
+        $result = preg_match('/[a-zA-Z0-9]+$/', StrHelper::randomCustom(4));
         $this->assertEquals(1, $result);
     }
 
@@ -156,7 +158,7 @@ class StrHelperTest extends TestCase
 
     public function testOrdinal(): void
     {
-        $this->assertEquals('101st', StrHelper::ordinal('101'));
+        $this->assertEquals('101st', StrHelper::ordinal(101));
     }
 
     public function testNormalizeEol(): void

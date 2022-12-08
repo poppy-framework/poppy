@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Framework\Helper;
 
 use Illuminate\Support\Str;
@@ -11,8 +13,8 @@ class UtilHelper
 {
     /**
      * 计算某个经纬度的周围某段距离的正方形的四个点
-     * @param float $lng 经度
-     * @param float $lat 纬度
+     * @param float $lng      经度
+     * @param float $lat      纬度
      * @param float $distance 该点所在圆的半径，该圆与此正方形内切，默认值为0.5千米
      * @return array 正方形的四个点的经纬度坐标
      */
@@ -61,7 +63,7 @@ class UtilHelper
      * 是否是用户名, 子用户比主用户多一个英文版本的 `:`
      * @url https://regex101.com/r/otDXQG/1/
      * @param string $username 用户名
-     * @param false $is_sub 是否是子用户
+     * @param false  $is_sub   是否是子用户
      * @return bool
      */
     public static function isUsername(string $username, bool $is_sub = false): bool
@@ -245,9 +247,9 @@ class UtilHelper
 
     /**
      * 格式化小数, 也可以用于货币的格式化
-     * @param string $input value
-     * @param bool $sprinft 是否格式化
-     * @param int $precision 保留小数
+     * @param string $input     value
+     * @param bool   $sprinft   是否格式化
+     * @param int    $precision 保留小数
      * @return float|string
      */
     public static function formatDecimal(string $input, $sprinft = true, $precision = 2)
@@ -306,9 +308,9 @@ class UtilHelper
     /**
      * 生成递归数列
      * @param array|object $items 条目
-     * @param string $id id键
-     * @param string $pid 父级元素
-     * @param string $son 子元素
+     * @param string       $id    id键
+     * @param string       $pid   父级元素
+     * @param string       $son   子元素
      * @return array        返回的排序好的数组
      */
     public static function genTree($items, $id = 'id', $pid = 'pid', $son = 'children', $reserve_pid = true)
@@ -364,9 +366,9 @@ class UtilHelper
 
     /**
      * 生成 提示信息
-     * @param string $type type
-     * @param string $message message
-     * @param string|array $append append
+     * @param string       $type    type
+     * @param string       $message message
+     * @param string|array $append  append
      * @return array
      */
     public static function genSplash($type = 'success', $message = '', $append = '')
@@ -426,17 +428,17 @@ class UtilHelper
     /**
      * 转换成小时
      * @param int $hour hour
-     * @param int $day day num
+     * @param int $day  day num
      * @return int
      */
-    public static function toHour(int $hour, $day = 0): int
+    public static function toHour(int $hour, int $day = 0): int
     {
-        return (int) $day * 24 + (int) $hour;
+        return $day * 24 + $hour;
     }
 
     /**
      * 格式化文件大小
-     * @param int $bytes 长度
+     * @param int $bytes     长度
      * @param int $precision 分数
      * @return string
      */
@@ -467,7 +469,7 @@ class UtilHelper
         $sum  = 1;
         for ($i = 0; $i < 4; $i++) {
             if (stripos($size, $base[$i][0]) || stripos($size, $base[$i][1])) {
-                return $sum * ((float) str_ireplace($base[$i], '', $size)) * 1024;
+                return (int) ($sum * ((float) str_ireplace($base[$i], '', $size)) * 1024);
             }
             $sum *= 1024;
         }
@@ -492,7 +494,7 @@ class UtilHelper
      * @param float|int $lat2 lat2
      * @return string
      */
-    public static function getDistance($lng1, $lat1, $lng2, $lat2): string
+    public static function getDistance(float $lng1, float $lat1, float $lng2, float $lat2): string
     {
         //将角度转为狐度
         $radLat1 = deg2rad($lat1);//deg2rad()函数将角度转换为弧度
@@ -512,12 +514,8 @@ class UtilHelper
      */
     public static function guid(): string
     {
-        if (function_exists('com_create_guid')) {
-            return com_create_guid();
-        }
-
-        mt_srand((float) microtime() * 10000); //optional for php 4.2.0 and up.
-        $charid = strtoupper(md5(uniqid(mt_rand(), true)));
+        mt_srand(); //optional for php 4.2.0 and up.
+        $charid = strtoupper(md5(uniqid((string) mt_rand(), true)));
         $hyphen = chr(45); // "-"
         $uuid   = chr(123) // "{"
             . substr($charid, 0, 8) . $hyphen
@@ -549,7 +547,9 @@ class UtilHelper
     public static function isDate(string $string): bool
     {
         [$year, $month, $day] = explode('-', $string);
-
+        $year  = (int) $year;
+        $month = (int) $month;
+        $day   = (int) $day;
         return checkdate($month, $day, $year);
     }
 
@@ -582,7 +582,7 @@ class UtilHelper
 
     /**
      * 移除树中的KEY
-     * @param array $tree
+     * @param array  $tree
      * @param string $child_key
      * @param string $pid_key
      * @return array
@@ -604,9 +604,9 @@ class UtilHelper
     /**
      * 计算身份证校验码，根据国家标准GB 11643-1999
      * @param string $id_base chid base
-     * @return string
+     * @return string|bool
      */
-    private static function chidVerify(string $id_base): string
+    private static function chidVerify(string $id_base)
     {
         if (!preg_match('/\d{17}/', $id_base)) {
             return false;
