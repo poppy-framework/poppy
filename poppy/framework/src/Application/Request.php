@@ -4,9 +4,13 @@ declare(strict_types = 1);
 
 namespace Poppy\Framework\Application;
 
+use Auth;
 use Closure;
+use Elasticsearch\Common\Exceptions\AuthenticationConfigException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
+use Poppy\System\Models\PamAccount;
 
 /**
  * Request
@@ -25,6 +29,11 @@ abstract class Request extends FormRequest
     protected bool $isValidate = true;
 
 
+    /**
+     * @var array
+     */
+    protected array $demo = [];
+
     public function authorize(): bool
     {
         return true;
@@ -32,6 +41,7 @@ abstract class Request extends FormRequest
 
     /**
      * @throws ValidationException
+     * @throws AuthorizationException
      */
     public function validateResolved()
     {
@@ -42,6 +52,7 @@ abstract class Request extends FormRequest
 
     /**
      * @throws ValidationException
+     * @throws AuthorizationException
      */
     public function validated(): array
     {
@@ -56,8 +67,10 @@ abstract class Request extends FormRequest
     public function validator($factory)
     {
         return $factory->make(
-            $this->validationData(), $this->assembleRules(),
-            $this->messages(), $this->attributes()
+            array_merge($this->demo, $this->validationData()),
+            $this->assembleRules(),
+            $this->messages(),
+            $this->attributes()
         );
     }
 
@@ -83,9 +96,16 @@ abstract class Request extends FormRequest
     /**
      * 手动进行验证
      * @throws ValidationException
+     * @throws AuthorizationException
      */
     protected function manualValidateResolved()
     {
+        $this->prepareForValidation();
+
+        if (!$this->passesAuthorization()) {
+            $this->failedAuthorization();
+        }
+
         $instance = $this->getValidatorInstance();
         if ($instance->fails()) {
             $this->failedValidation($instance);
@@ -132,5 +152,30 @@ abstract class Request extends FormRequest
         }
 
         return $rules;
+    }
+
+    /**
+     * 检测权限
+     */
+    protected function can($policy, $model): bool
+    {
+        /** @var PamAccount $pam */
+        $user = Auth::user();
+        if (is_null($user)) {
+            throw new AuthenticationConfigException('用户未登录, 无法操作');
+        }
+        if (is_object($model)) {
+            $class = get_class($model);
+        }
+        else {
+            $class = $model;
+        }
+        if (!$user->can($policy, $model)) {
+            $message = trans('poppy::resp.authorization_exception', [
+                'name' => policy_friendly($class, $policy),
+            ]);
+            throw new AuthorizationException($message);
+        }
+        return true;
     }
 }

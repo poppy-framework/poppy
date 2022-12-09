@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Collection;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
@@ -27,7 +26,6 @@ use Poppy\MgrPage\Classes\Grid\ListBase;
 use Poppy\MgrPage\Classes\Grid\Model;
 use Poppy\MgrPage\Classes\Grid\Row;
 use Poppy\MgrPage\Classes\Layout\Content;
-use Response;
 use Throwable;
 
 class Grid
@@ -116,7 +114,7 @@ class Grid
     protected $builder;
 
     /**
-     * Mark if the grid is builded.
+     * Mark if the grid is built.
      *
      * @var bool
      */
@@ -163,7 +161,7 @@ class Grid
      * Create a new grid instance.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @param Closure|null $builder
+     * @param Closure|null                        $builder
      */
     public function __construct($model, Closure $builder = null)
     {
@@ -230,7 +228,7 @@ class Grid
      * Get or set option for grid.
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return $this|mixed
      */
@@ -358,7 +356,7 @@ class Grid
      * Set a view to render.
      *
      * @param string $view
-     * @param array $variables
+     * @param array  $variables
      */
     public function setView(string $view, $variables = [])
     {
@@ -595,7 +593,7 @@ class Grid
     }
 
     /**
-     * Get all variables will used in grid view.
+     * Get all variables will be used in grid view.
      *
      * @return array
      */
@@ -638,7 +636,7 @@ class Grid
     /**
      * 查询并返回数据
      * @param int $pagesize
-     * @return array|JsonResponse|RedirectResponse|\Illuminate\Http\Response|Redirector|Resp|Response
+     * @return \Illuminate\Http\Response|JsonResponse|RedirectResponse
      */
     private function inquire($pagesize = 15)
     {

@@ -13,4 +13,10 @@ return [
             'pam_role'    => '用户角色',
         ],
     ],
+    'policy'  => [
+        'pam_role' => [
+            'create' => '用户角色创建',
+            'edit'   => '用户角色编辑',
+        ],
+    ],
 ];

@@ -161,7 +161,7 @@ if (!function_exists('jwt_token')) {
         if (is_null(app('tymon.jwt'))) {
             return '';
         }
-        return app('tymon.jwt')->setRequest(Request::instance())->getToken();
+        return (string) app('tymon.jwt')->setRequest(Request::instance())->getToken();
     }
 }
 
@@ -233,6 +233,33 @@ if (!function_exists('poppy_friendly')) {
             $path      = $snake->slice(1)->join('.');
         }
         return trans("{$namespace}::util.classes.{$path}");
+    }
+}
+
+
+if (!function_exists('policy_friendly')) {
+    /**
+     * 策略的友好提示
+     * @param string $model
+     * @param        $policy
+     * @return string
+     */
+    function policy_friendly(string $model, $policy): string
+    {
+        $snake = collect(explode('\\', trim($model, '\\')))->map(function ($path) {
+            return Str::snake(lcfirst($path));
+        })->filter();
+
+        $part1 = $snake->first();
+        $part2 = $snake->offsetGet(1);
+        $path  = $snake->last();
+        if ($part1 === 'poppy') {
+            $namespace = $part2 === 'framework' ? 'poppy' : 'py-' . $part2;
+        }
+        else {
+            $namespace = $part1;
+        }
+        return trans("{$namespace}::util.policy.{$path}.{$policy}");
     }
 }
 

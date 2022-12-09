@@ -131,6 +131,7 @@ trait RbacUserTrait
             // Return the value of $requireAll;
             return $require_all;
         }
+
         foreach ($this->cachedRoles() as $role) {
             // Validate against the Permission table
             foreach ($role->cachedPermissions() as $perm) {

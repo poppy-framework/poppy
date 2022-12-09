@@ -15,7 +15,7 @@
         "alibabacloud/push": "1.8.*"
     },
     "require-dev": {
-        "poppy/faker": "4.1.x-dev"
+        "poppy/faker": "4.2.x-dev"
     },
     "autoload": {
         "psr-4": {

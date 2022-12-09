@@ -6,6 +6,7 @@ namespace Poppy\Framework\Application;
 
 use Illuminate\Contracts\Console\Kernel;
 use Poppy\Faker\Generator;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Helper\UtilHelper;
 
 /**
@@ -62,7 +63,6 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         }
     }
 
-
     /**
      * 读取模块 Json 文件
      * @param $module
@@ -83,6 +83,9 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
     }
 
 
+    /**
+     * @throws ApplicationException
+     */
     protected function faker(): Generator
     {
         return py_faker();

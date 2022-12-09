@@ -6,13 +6,16 @@ namespace Poppy\System\Action;
 
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
 use Poppy\Core\Classes\Traits\CoreTrait;
 use Poppy\Core\Rbac\Permission\Permission;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Events\RolePermissionUpdatedEvent;
+use Poppy\System\Http\Validation\PamRoleRequest;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamPermission;
 use Poppy\System\Models\PamPermissionRole;
@@ -48,10 +51,45 @@ class Role
         $this->roleTable = (new PamRole())->getTable();
     }
 
+
+    /**
+     * 创建角色
+     * @param PamRoleRequest $request
+     * @return bool
+     * @throws ValidationException
+     * @throws AuthorizationException
+     */
+    public function establishRequest(PamRoleRequest $request):bool
+    {
+        $validate = $request->validated();
+        $id       = (int) $request->input('id');
+
+        $initDb = [
+            'title'       => (string) $validate['title'],
+            'type'        => (string) $validate['type'],
+            'description' => (string) ($validate['description'] ?? ''),
+        ];
+
+        if ($id) {
+            unset($initDb['type']);
+            $this->init($id);
+        }
+
+        if ($this->roleId) {
+            // 编辑时候类型和名称不允许编辑
+            $this->role->update($initDb);
+        }
+        else {
+            $this->role = PamRole::create($initDb);
+        }
+
+        return true;
+    }
+
     /**
      * 创建需求
-     * @param array $data 创建数据
-     * @param null|int $id 角色id
+     * @param array    $data 创建数据
+     * @param null|int $id   角色id
      * @return bool
      */
     public function establish(array $data, $id = null)
@@ -122,7 +160,7 @@ class Role
     /**
      * 保存权限
      * @param array $permission_ids 所有的权限列表
-     * @param int $role_id 角色ID
+     * @param int   $role_id        角色ID
      * @return bool
      */
     public function savePermission($role_id, $permission_ids)
@@ -144,10 +182,10 @@ class Role
             if (!$objPermissions->count()) {
                 return $this->setError(trans('py-system::action.role.permission_error'));
             }
-            $this->role->savePermissions($objPermissions);
+            $this->role->syncPermission($objPermissions);
         }
         else {
-            $this->role->savePermissions([]);
+            $this->role->syncPermission([]);
         }
 
         $this->role->flushPermissionRole();
@@ -163,14 +201,8 @@ class Role
      */
     public function init($id)
     {
-        try {
-            $this->role   = PamRole::findOrFail($id);
-            $this->roleId = $this->role->id;
-
-            return true;
-        } catch (Exception $e) {
-            return $this->setError(trans('py-system::action.role.role_not_exists'));
-        }
+        $this->role   = PamRole::findOrFail($id);
+        $this->roleId = $this->role->id;
     }
 
     /**
@@ -189,7 +221,7 @@ class Role
 
     /**
      * 获取所有权限以及默认值
-     * @param int $id 角色id
+     * @param int  $id      角色id
      * @param bool $has_key 是否有值
      * @return array|mixed|Permission
      */

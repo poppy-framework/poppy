@@ -142,6 +142,7 @@ class PermissionManager
      * Get default permission by group
      * @param string $group 获取分组
      * @return Collection
+     * @deprecated 4.2 未发现有什么作用
      */
     public function defaultPermissions(string $group): Collection
     {

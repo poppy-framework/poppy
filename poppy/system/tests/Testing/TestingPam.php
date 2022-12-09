@@ -13,6 +13,11 @@ use Poppy\System\Models\PamAccount;
 class TestingPam
 {
 
+    public static function backend()
+    {
+        return PamAccount::passport(env('TESTING_BACKEND'));
+    }
+
     /**
      * 获取随机用户名
      * @param bool $is_register 是否已经注册

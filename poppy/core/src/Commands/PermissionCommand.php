@@ -14,6 +14,7 @@ use Poppy\Core\Rbac\Permission\Permission;
 use Poppy\Core\Rbac\Permission\PermissionManager;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Classes\Traits\DbTrait;
+use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamPermission;
 use Poppy\System\Models\PamRole;
 
@@ -83,6 +84,11 @@ class PermissionCommand extends Command
                 break;
             case 'menus':
                 $this->checkMenus();
+                break;
+            case 'user':
+                $role     = $this->ask('Which <role> you want assign to ?');
+                $passport = $this->ask('Which <passport> you want to assign?');
+                $this->user($role, $passport);
                 break;
             case 'assign':
                 $name = $this->ask('Which role you want assign permission ?');
@@ -157,13 +163,34 @@ class PermissionCommand extends Command
 
         $permissions = $this->pamPermission::where('type', $type)->get();
         if (!$permissions) {
-            $this->error(
-                sys_gen_mk(self::class, 'Permission type [' . $type . '] has no permissions !')
-            );
+            $this->error(sys_gen_mk(self::class, 'Permission type [' . $type . '] has no permissions !'));
             return;
         }
         $role->syncPermission($permissions);
         $this->info(sys_gen_mk(self::class, "Save [{$type}] permission to role [{$name}] !"));
+    }
+
+
+    /**
+     * 将角色赋值给指定的用户
+     */
+    private function user($role, $passport)
+    {
+        /** @var PamRole $role */
+        $role = $this->pamRole::where('name', $role)->first();
+
+        if (!$role) {
+            $this->error(sys_gen_mk(self::class, 'Role [' . $role . '] not exists in table !'));
+            return;
+        }
+
+        $pam = PamAccount::passport($passport);
+        if (!$pam) {
+            $this->error(sys_gen_mk(self::class, 'No such pam account !'));
+            return;
+        }
+        $pam->attachRole($role);
+        $this->info(sys_gen_mk(self::class, "Save [{$role->id}, {$role->type}] role to account [{$passport}] !"));
     }
 
     /**

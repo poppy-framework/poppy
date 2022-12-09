@@ -65,4 +65,11 @@ class FunctionsTest extends TestCase
         ]);
         $this->assertEquals(['title-t', 'description-d'], $seo);
     }
+
+
+    public function testJwtToken()
+    {
+        // assert empty
+        $this->assertEquals('', jwt_token());
+    }
 }

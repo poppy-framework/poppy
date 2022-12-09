@@ -112,7 +112,7 @@ trait RbacRoleTrait
      */
     public function savePermissions($permissions)
     {
-        $this->perms()->sync($permissions);
+        $this->syncPermission($permissions);
     }
 
     /**

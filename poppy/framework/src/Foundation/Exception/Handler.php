@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\Framework\Foundation\Exception;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -51,7 +52,7 @@ class Handler extends ExceptionHandler
             return Resp::web(Resp::PARAM_ERROR, $e->validator->errors());
         }
 
-        if ($e instanceof BaseException) {
+        if ($e instanceof AuthorizationException || $e instanceof BaseException) {
             return Resp::error($e->getMessage());
         }
 

@@ -125,7 +125,7 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
         return [
             'user' => [
                 'type' => $this->type,
-                'salt' => md5(sha1($this->password_key) . $this->password),
+                'salt' => md5(sha1((string) $this->password_key) . $this->password),
             ],
         ];
     }

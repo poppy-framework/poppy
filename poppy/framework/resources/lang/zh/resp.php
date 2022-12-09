@@ -14,4 +14,5 @@ return [
     'token_mismatch_exception'  => '页面已过期, 请求 CSRF 凭证不可用, 请返回上一页或刷新后再行提交',
     'authentication_exception'  => '未授权的请求',
     'model_not_found_exception' => ':name 数据不存在',
+    'authorization_exception'   => '你无权操作 :name',
 ];

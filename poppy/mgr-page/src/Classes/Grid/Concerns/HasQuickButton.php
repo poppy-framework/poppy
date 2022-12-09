@@ -6,7 +6,11 @@ use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
 
 trait HasQuickButton
 {
-    protected $quickButtons = [];
+    /**
+     * 快捷操作
+     * @var array
+     */
+    protected array $quickButtons = [];
 
     /**
      * Get create url.
@@ -17,8 +21,11 @@ trait HasQuickButton
     public function appendQuickButton(array $buttons): array
     {
 
-        if (is_array($buttons) && count($buttons)) {
+        if (count($buttons)) {
             foreach ($buttons as $button) {
+                if (!($button instanceof BaseButton)) {
+                    continue;
+                }
                 $this->quickButtons[] = $button;
             }
         }
