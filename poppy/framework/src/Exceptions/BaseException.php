@@ -18,7 +18,7 @@ abstract class BaseException extends Exception
      * Exception Context
      * @var array
      */
-    protected array $context;
+    protected array $context = [];
 
     /**
      * BaseException constructor.
