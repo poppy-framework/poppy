@@ -81,15 +81,15 @@ class NotifyProJob extends Job implements ShouldQueue
         ];
         try {
             $resp = $curl->request($this->method, $this->url, array_merge($options, $this->options));
-            sys_info('py-system', self::class, $this->log($resp));
+            sys_info(self::class, $this->log($resp));
         } catch (GuzzleException $e) {
             if ($this->execNum < count($timeMap)) {
                 $delayDesc = 'next will exec at (' . Carbon::now()->addSeconds($timeMap[$this->execNum])->toDateTimeString() . ')(' . $timeMap[$this->execNum] . 's)';
-                sys_error('py-system', self::class, $this->log($e, $delayDesc));
+                sys_error(self::class, $this->log($e, $delayDesc));
                 dispatch((new self($this->url, $this->method, $this->options, $this->execNum + 1))->delay($timeMap[$this->execNum]));
             }
             else {
-                sys_error('py-system', self::class, $this->log($e));
+                sys_error(self::class, $this->log($e));
             }
         }
     }

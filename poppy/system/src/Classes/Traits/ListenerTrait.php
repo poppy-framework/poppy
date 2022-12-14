@@ -21,10 +21,10 @@ trait ListenerTrait
     public function listenSocket($event, $class, $result)
     {
         if (isset($result['error']) && $result['error']) {
-            sys_error($event, $class, 'listen Socket : ' . $result['error'] ?? '');
+            sys_error($class, 'listen Socket : ' . $result['error'] ?? '');
         }
         else {
-            sys_info($event, $class, $result['channels'] ?? []);
+            sys_info($class, $result['channels'] ?? []);
         }
     }
 
@@ -39,7 +39,7 @@ trait ListenerTrait
     public function listenAction($event, $class, $result, $item, $append = '')
     {
         if ($result) {
-            sys_info($event, $class, $append);
+            sys_info($class, $append);
         }
         else {
             if (is_callable([$item, 'getError'])) {
@@ -48,7 +48,7 @@ trait ListenerTrait
             else {
                 $error = 'Unknown error.';
             }
-            sys_error($event, $class, 'listen action : ' . $error . $append);
+            sys_error($class, 'listen action : ' . $error . $append);
         }
     }
 }
