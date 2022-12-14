@@ -16,6 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * 增强型的 Guzzle 调用
+ * @since 4.1 , 传参遵循 guzzle options 加强自定义
  */
 class NotifyProJob extends Job implements ShouldQueue
 {
