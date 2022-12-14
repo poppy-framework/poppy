@@ -8,10 +8,10 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
 use Poppy\Framework\Classes\Traits\AppTrait;
-use Poppy\Framework\Helper\EnvHelper;
 use Poppy\System\Events\PamSsoEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamToken;
+use Request;
 
 /**
  * 单点登录
@@ -124,7 +124,7 @@ class Sso
             'token_hash' => $tokenMd5,
             'device_id'  => $device_id,
             'expired_at' => $expiredAt->toDateTimeString(),
-            'login_ip'   => EnvHelper::ip(),
+            'login_ip'   => Request::ip(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);

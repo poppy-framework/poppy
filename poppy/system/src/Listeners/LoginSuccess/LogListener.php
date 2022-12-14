@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Listeners\LoginSuccess;
 
-use Poppy\Framework\Helper\EnvHelper;
 use Poppy\System\Events\LoginSuccessEvent;
 use Poppy\System\Models\PamLog;
+use Request;
 use Throwable;
 
 /**
@@ -21,7 +21,7 @@ class LogListener
 	{
 		$pam = $event->pam;
 
-		$ip = EnvHelper::ip();
+		$ip = Request::ip();
 
 		try {
 			$areaText = class_exists('Poppy\Extension\IpStore\Support\Facade')
