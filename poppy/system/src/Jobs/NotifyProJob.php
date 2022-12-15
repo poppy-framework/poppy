@@ -10,7 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Poppy\Framework\Application\Job;
-use Poppy\Framework\Helper\UtilHelper;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Classes\Traits\ListenerTrait;
 use Psr\Http\Message\ResponseInterface;
 
@@ -38,42 +38,64 @@ class NotifyProJob extends Job implements ShouldQueue
     private array $options;
 
     /**
-     * @var int 请求次数
+     * 延迟总次数
+     * @var int
      */
-    private int $execNum;
+    private int $delayTimes;
+
+    /**
+     * 默认的当前执行点位
+     * @var int
+     */
+    private int $execAt = 0;
+
+
+    /**
+     * 重发的延迟时间
+     * @var array|int[]
+     */
+    private array $delayMap = [
+        15, 45, 120, 300,
+    ];
+
+    /**
+     * 下一次执行点位
+     * @var int
+     */
+    private int $nextExecAt;
 
     /**
      * 统计用户计算数量
-     * @param string $url      请求的URL 地址
-     * @param string $method   请求的方法
-     * @param array  $options  请求的参数
-     * @param int    $exec_num 请求次数
+     * @param string $url         请求的URL 地址
+     * @param string $method      请求的方法
+     * @param array  $options     请求的参数
+     * @param int    $delay_times 请求次数
+     * @throws ApplicationException
      */
-    public function __construct(string $url, string $method, array $options = [], int $exec_num = 0)
+    public function __construct(string $url, string $method, array $options = [], int $delay_times = 0)
     {
-        $this->url     = $url;
-        $this->method  = strtoupper($method);
-        $this->options = $options;
-        $this->execNum = $exec_num;
+        $this->url        = $url;
+        $this->method     = strtoupper($method);
+        $this->options    = $options;
+        $this->delayTimes = $delay_times;
+
+        // 大于 1 次时候进行验证
+        if ($delay_times >= 1) {
+            if (!isset($this->delayMap[$delay_times - 1])) {
+                $times = count($this->delayMap);
+                throw new ApplicationException("延迟次数超出延迟定义, 当前最多允许执行 {$times} 次, 请重新设定延迟执行次数");
+            }
+        }
     }
 
     /**
      * 执行
+     * @throws ApplicationException
      */
     public function handle()
     {
         /* 重发次数
          -------------------------------------------- */
-        if ($time = sys_setting('py-system::callback.exam_time')) {
-            $timeMap = explode(',', $time);
-        }
-        else {
-            $timeMap = [
-                0 => 10,
-                1 => 30,
-                2 => 60,
-            ];
-        }
 
         $curl    = new Client();
         $options = [
@@ -83,41 +105,73 @@ class NotifyProJob extends Job implements ShouldQueue
             $resp = $curl->request($this->method, $this->url, array_merge($options, $this->options));
             sys_info(self::class, $this->log($resp));
         } catch (GuzzleException $e) {
-            if ($this->execNum < count($timeMap)) {
-                $delayDesc = 'next will exec at (' . Carbon::now()->addSeconds($timeMap[$this->execNum])->toDateTimeString() . ')(' . $timeMap[$this->execNum] . 's)';
-                sys_error(self::class, $this->log($e, $delayDesc));
-                dispatch((new self($this->url, $this->method, $this->options, $this->execNum + 1))->delay($timeMap[$this->execNum]));
+            if ($this->canDelay()) {
+                dispatch(
+                    (new self($this->url, $this->method, $this->options, $this->delayTimes))
+                        ->delay($this->delayMap[$this->execAt])
+                        ->setExecAt($this->nextExecAt)
+                );
             }
-            else {
-                sys_error(self::class, $this->log($e));
-            }
+            sys_error(self::class, $this->log($e));
         }
+    }
+
+    /**
+     * 设置执行次数
+     * @param $time
+     * @return self
+     */
+    public function setExecAt($time): self
+    {
+        $this->execAt = $time;
+        return $this;
+    }
+
+    /**
+     * 是否可以延迟执行
+     * @return void
+     */
+    private function canDelay(): bool
+    {
+        // 下次执行大于总可执行次数, 不可延迟
+        if (($this->execAt + 1) > $this->delayTimes) {
+            return false;
+        }
+
+        $this->nextExecAt = $this->execAt + 1;
+        return true;
     }
 
     /**
      * 生成记录日志
      * @param GuzzleException|ResponseInterface $result
-     * @param string                            $append
      * @return string
      */
-    private function log($result, string $append = ''): string
+    private function log($result): string
     {
         $resp = '';
         if ($result instanceof ResponseInterface) {
-            $content = $result->getBody()->getContents();
-            if (UtilHelper::isJson($content)) {
-                $result = json_decode($content, true);
-            }
-            $resp = $content;
+            $resp = $result->getBody()->getContents();
         }
         if ($result instanceof GuzzleException) {
             $resp = $result->getMessage();
         }
-        $kvParams = json_encode($this->options);
+        $options = json_encode($this->options);
 
-        return ($this->execNum + 1) . '\'s Request:' .
-            "url : {$this->url}, method : {$this->method}" .
-            ", options : {$kvParams}, result : {$resp} " .
-            ($append ? ", tip : {$append}" : '');
+        $tip = '';
+        if ($this->canDelay()) {
+            $delaySeconds   = $this->delayMap[$this->execAt];
+            $delaySecondsAt = Carbon::now()->addSeconds($this->delayMap[$this->execAt])->toDateTimeString();
+            $tip            = "Next request will exec at {$delaySeconds}s later, at {$delaySecondsAt}";
+        }
+
+        $mark  = md5($this->method . $this->url . $options);
+        $total = $this->delayTimes + 1;
+
+        return ($this->execAt === 0 ? "1/{$total} [{$mark}] Request: " : $this->execAt + 1 . "/{$total} [{$mark}] Request: ") . PHP_EOL .
+            "Url : [{$this->method}]{$this->url}" . PHP_EOL .
+            "Options : {$options}" . PHP_EOL .
+            "Result : {$resp} " .
+            ($tip ? PHP_EOL . "Tip : {$tip}" : '');
     }
 }
