@@ -103,7 +103,7 @@ class NotifyProJob extends Job implements ShouldQueue
         ];
         try {
             $resp = $curl->request($this->method, $this->url, array_merge($options, $this->options));
-            sys_info(self::class, $this->log($resp));
+            $this->log($resp, true);
         } catch (GuzzleException $e) {
             if ($this->canDelay()) {
                 dispatch(
@@ -112,7 +112,7 @@ class NotifyProJob extends Job implements ShouldQueue
                         ->setExecAt($this->nextExecAt)
                 );
             }
-            sys_error(self::class, $this->log($e));
+            $this->log($e, false);
         }
     }
 
@@ -147,7 +147,7 @@ class NotifyProJob extends Job implements ShouldQueue
      * @param GuzzleException|ResponseInterface $result
      * @return string
      */
-    private function log($result): string
+    private function log($result, $is_success = true): string
     {
         $resp = '';
         if ($result instanceof ResponseInterface) {
@@ -156,22 +156,28 @@ class NotifyProJob extends Job implements ShouldQueue
         if ($result instanceof GuzzleException) {
             $resp = $result->getMessage();
         }
-        $options = json_encode($this->options);
+        $options = json_encode($this->options, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         $tip = '';
-        if ($this->canDelay()) {
+        if (!$is_success && $this->canDelay()) {
             $delaySeconds   = $this->delayMap[$this->execAt];
             $delaySecondsAt = Carbon::now()->addSeconds($this->delayMap[$this->execAt])->toDateTimeString();
             $tip            = "Next request will exec at {$delaySeconds}s later, at {$delaySecondsAt}";
         }
 
         $mark  = md5($this->method . $this->url . $options);
-        $total = $this->delayTimes + 1;
+        $total = $is_success ? 1 : $this->delayTimes + 1;
 
-        return ($this->execAt === 0 ? "1/{$total} [{$mark}] Request: " : $this->execAt + 1 . "/{$total} [{$mark}] Request: ") . PHP_EOL .
-            "Url : [{$this->method}]{$this->url}" . PHP_EOL .
+        $msg = ($this->execAt === 0 ? "1/{$total} [{$mark}] Request: " : $this->execAt + 1 . "/{$total} [{$mark}] Request: ") . PHP_EOL .
+            "Url : [{$this->method}] {$this->url}" . PHP_EOL .
             "Options : {$options}" . PHP_EOL .
             "Result : {$resp} " .
             ($tip ? PHP_EOL . "Tip : {$tip}" : '');
+        if ($is_success) {
+            sys_info(self::class, $msg);
+        }
+        else {
+            sys_error(self::class, $msg);
+        }
     }
 }
