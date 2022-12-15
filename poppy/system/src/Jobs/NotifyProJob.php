@@ -103,7 +103,7 @@ class NotifyProJob extends Job implements ShouldQueue
         ];
         try {
             $resp = $curl->request($this->method, $this->url, array_merge($options, $this->options));
-            $this->log($resp, true);
+            $this->log($resp);
         } catch (GuzzleException $e) {
             if ($this->canDelay()) {
                 dispatch(
@@ -145,9 +145,10 @@ class NotifyProJob extends Job implements ShouldQueue
     /**
      * 生成记录日志
      * @param GuzzleException|ResponseInterface $result
-     * @return string
+     * @param bool                              $is_success
+     * @return void
      */
-    private function log($result, $is_success = true): string
+    private function log($result, bool $is_success = true): void
     {
         $resp = '';
         if ($result instanceof ResponseInterface) {
