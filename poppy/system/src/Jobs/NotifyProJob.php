@@ -11,7 +11,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Poppy\Framework\Application\Job;
 use Poppy\Framework\Exceptions\ApplicationException;
-use Poppy\System\Classes\Traits\ListenerTrait;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -20,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class NotifyProJob extends Job implements ShouldQueue
 {
-    use ListenerTrait, Queueable;
+    use Queueable;
 
     /**
      * @var string 请求网址

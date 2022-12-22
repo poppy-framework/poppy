@@ -17,10 +17,14 @@ class NotifyJobProTest extends TestCase
     public function testCallback()
     {
         // 这个队列会执行成功
-        dispatch(new NotifyProJob('https://www.baidu.com', 'get', []));
+        dispatch(new NotifyProJob('https://www.baidu.com', 'get', [
+            'query' => [
+                'job' => 1,
+            ],
+        ]));
 
         // 这个会执行失败, 失败后会进行下一次的延迟请求
-        dispatch(new NotifyProJob('https://www.baidu-error.com', 'get', [],4));
+        dispatch(new NotifyProJob('https://www.baidu-error.com', 'get', [], 4));
         $this->assertTrue(true);
     }
 }
