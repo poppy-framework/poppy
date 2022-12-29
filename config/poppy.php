@@ -150,6 +150,17 @@ return [
         ],
     ],
 
+    'category' => [
+        /* 分类类型
+        * ---------------------------------------- */
+        'types' => [
+            [
+                'type'  => 'steam-pubg',
+                'title' => 'STEAM(Pubg)',
+            ],
+        ],
+    ],
+
     'canal-es' => [
         'canal' => [
             'client_type'     => CanalClient::TYPE_SWOOLE,

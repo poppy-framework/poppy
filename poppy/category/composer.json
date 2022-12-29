@@ -1,0 +1,32 @@
+{
+    "name": "poppy/category",
+    "description": "An Multi Level Category Management.",
+    "license": "Apache-2.0",
+    "type": "poppy",
+    "authors": [
+        {
+            "name": "Mark Zhao",
+            "email": "zhaody901@126.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Poppy\\Category\\": "src/",
+            "Poppy\\Category\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Poppy\\Ad\\ServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "dev"
+}

@@ -1,0 +1,13 @@
+backend :
+  title : 分类管理
+  icon : 'fa fa-columns'
+  groups :
+    -
+      title : 分类管理
+      icon : 'fa fa-columns'
+      injection : 'poppy.mgr-page/backend||setting'
+      children :
+        -
+          title : 分类管理
+          route : py-category:backend.category.index
+          permission : backend:py-category.category.manage
