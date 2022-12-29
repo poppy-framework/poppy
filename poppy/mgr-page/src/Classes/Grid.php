@@ -5,6 +5,7 @@ namespace Poppy\MgrPage\Classes;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Poppy\Framework\Classes\Resp;
@@ -13,6 +14,7 @@ use Poppy\Framework\Http\Pagination\PageInfo;
 use Poppy\MgrPage\Classes\Grid\Column;
 use Poppy\MgrPage\Classes\Grid\Concerns\CanHidesColumns;
 use Poppy\MgrPage\Classes\Grid\Concerns\HasActions;
+use Poppy\MgrPage\Classes\Grid\Concerns\HasColumns;
 use Poppy\MgrPage\Classes\Grid\Concerns\HasElementNames;
 use Poppy\MgrPage\Classes\Grid\Concerns\HasExport;
 use Poppy\MgrPage\Classes\Grid\Concerns\HasFilter;
@@ -37,6 +39,7 @@ class Grid
         HasTotalRow,
         HasActions,
         HasSelector,
+        HasColumns,
         CanHidesColumns,
         LayDefines,
         HasQuickButton;
@@ -562,6 +565,8 @@ class Grid
 
         $this->applySelectorQuery();
 
+        $this->applyColumnOrderBy();
+
         return $this->applyFilter(false);
     }
 
@@ -636,9 +641,9 @@ class Grid
     /**
      * 查询并返回数据
      * @param int $pagesize
-     * @return \Illuminate\Http\Response|JsonResponse|RedirectResponse
+     * @return Response|JsonResponse|RedirectResponse
      */
-    private function inquire($pagesize = 15)
+    private function inquire(int $pagesize = 15)
     {
         $this->paginate($pagesize);
         /**

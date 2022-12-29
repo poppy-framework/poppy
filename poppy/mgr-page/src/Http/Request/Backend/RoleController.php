@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Http\Request\Backend;
 
+use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -63,12 +66,14 @@ class RoleController extends BackendController
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id 角色id
+     * @param string $id 角色id
      * @return JsonResponse|RedirectResponse|Response
+     * @throws Exception
      */
-    public function delete(int $id)
+    public function delete($id)
     {
         $role = $this->action();
+        $id   = (int) $id;
         if (!$role->delete($id)) {
             return Resp::error($role->getError());
         }

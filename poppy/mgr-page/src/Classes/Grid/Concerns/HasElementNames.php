@@ -16,7 +16,7 @@ trait HasElementNames
      *
      * @var array
      */
-    protected $elementNames = [
+    protected array $elementNames = [
         'grid_row'        => 'grid-row',
         'grid_select_all' => 'grid-select-all',
         'grid_per_page'   => 'grid-per-pager',
@@ -24,6 +24,16 @@ trait HasElementNames
         'export_selected' => 'export-selected',
         'selected_rows'   => 'selectedRows',
     ];
+
+    /**
+     * Get name of grid.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
     /**
      * Set name to grid.
@@ -41,16 +51,6 @@ trait HasElementNames
         $this->getFilter()->setName($name);
 
         return $this;
-    }
-
-    /**
-     * Get name of grid.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**

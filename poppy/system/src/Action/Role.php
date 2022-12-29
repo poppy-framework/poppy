@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Action;
 
-
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Arr;
@@ -18,7 +17,6 @@ use Poppy\System\Events\RolePermissionUpdatedEvent;
 use Poppy\System\Http\Validation\PamRoleRequest;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamPermission;
-use Poppy\System\Models\PamPermissionRole;
 use Poppy\System\Models\PamRole;
 use Poppy\System\Models\PamRoleAccount;
 use Validator;
@@ -59,7 +57,7 @@ class Role
      * @throws ValidationException
      * @throws AuthorizationException
      */
-    public function establishRequest(PamRoleRequest $request):bool
+    public function establishRequest(PamRoleRequest $request): bool
     {
         $validate = $request->validated();
         $id       = (int) $request->input('id');
@@ -197,12 +195,12 @@ class Role
 
     /**
      * @param int $id 角色id
-     * @return bool
      */
-    public function init($id)
+    public function init(int $id): bool
     {
         $this->role   = PamRole::findOrFail($id);
         $this->roleId = $this->role->id;
+        return true;
     }
 
     /**
@@ -310,8 +308,9 @@ class Role
      * 删除数据
      * @param int $id 角色id
      * @return bool
+     * @throws Exception
      */
-    public function delete($id)
+    public function delete(int $id): bool
     {
         if (!$this->checkPam()) {
             return false;
@@ -330,14 +329,9 @@ class Role
         }
 
         // 删除权限
-        try {
-            PamPermissionRole::where('role_id', $this->roleId)->delete();
-            // 删除角色
-            $this->role->delete();
-
-            return true;
-        } catch (Exception $e) {
-            return $this->setError($e->getMessage());
-        }
+        $this->role->syncPermission([]);
+        // 删除角色
+        $this->role->delete();
+        return true;
     }
 }

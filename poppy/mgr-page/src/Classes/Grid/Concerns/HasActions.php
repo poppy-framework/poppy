@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Concerns;
 
 use Closure;
@@ -25,7 +27,7 @@ trait HasActions
     /**
      * @var array
      */
-    protected $batchActions;
+    protected array $batchActions = [];
 
     /**
      * Set grid action callback.

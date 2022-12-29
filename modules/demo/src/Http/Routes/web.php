@@ -29,6 +29,8 @@ Route::group([
         ->name('demo:web.table.index');
     $router->any('table/demo/{type?}', 'TableController@demo')
         ->name('demo:web.table.grid_demo');
+    $router->any('table/no_file', 'TableController@noFile')
+        ->name('demo:web.table.no_file');
 
     // EnvHelper
     $router->any('helper/env', 'HelperController@env')

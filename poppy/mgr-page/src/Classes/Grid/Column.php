@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid;
 
 use Carbon\Carbon;
@@ -59,7 +61,7 @@ class Column
      *
      * @var array
      */
-    public static $displayers = [
+    public static array $displayers = [
         'switch'       => SwitchDisplay::class,
         'image'        => Image::class,
         'link'         => Link::class,
@@ -339,7 +341,7 @@ class Column
      * Display using display abstract.
      *
      * @param string $abstract
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return $this
      */
@@ -359,7 +361,7 @@ class Column
 
     /**
      * 替换输出, 并指定默认值, 可以用于状态值替换, 使用KV
-     * @param array $values
+     * @param array  $values
      * @param string $default
      * @return $this
      */
@@ -497,7 +499,7 @@ class Column
      * Display column as boolean , `✓` for true, and `✗` for false.
      *
      * @param array $map
-     * @param bool $default
+     * @param bool  $default
      *
      * @return $this
      */
@@ -540,7 +542,7 @@ class Column
     /**
      * Add a `dot` before column text.
      *
-     * @param array $options
+     * @param array  $options
      * @param string $default
      *
      * @return $this
@@ -594,7 +596,7 @@ class Column
      * Allow fluent calls on the Column object.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return $this
      */
@@ -636,7 +638,7 @@ class Column
      * Define a column globally.
      *
      * @param string $name
-     * @param mixed $definition
+     * @param mixed  $definition
      */
     public static function define($name, $definition)
     {
@@ -713,7 +715,7 @@ class Column
      * Call all of the "display" callbacks column.
      *
      * @param mixed $value
-     * @param int $key
+     * @param int   $key
      *
      * @return mixed
      */
@@ -740,7 +742,7 @@ class Column
      * Set original grid data to column.
      *
      * @param Closure $callback
-     * @param int $key
+     * @param int     $key
      *
      * @return Closure
      */
@@ -798,18 +800,17 @@ class Column
      * Convert characters to HTML entities recursively.
      *
      * @param array|string $item
-     *
-     * @return mixed
+     * @return array|string
      */
     protected function htmlEntityEncode($item)
     {
         if (is_array($item)) {
             array_walk_recursive($item, function (&$value) {
-                $value = htmlentities($value);
+                $value = htmlentities((string) $value);
             });
         }
         else {
-            $item = htmlentities($item);
+            $item = htmlentities((string) $item);
         }
 
         return $item;
@@ -819,7 +820,7 @@ class Column
      * Find a displayer to display column.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return $this
      */
@@ -835,7 +836,7 @@ class Column
      * Call Illuminate/Support displayer.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      * @return $this
      */
     protected function callSupportDisplayer(string $method, array $arguments): self
@@ -857,7 +858,7 @@ class Column
      * Call Builtin displayer.
      *
      * @param string $abstract
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return $this
      */

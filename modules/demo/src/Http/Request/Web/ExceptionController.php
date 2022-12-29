@@ -5,6 +5,7 @@ namespace Demo\Http\Request\Web;
 use Demo\Http\Validation\ExceptionAutoRequest;
 use Demo\Http\Validation\ExceptionRequest;
 use Demo\Http\Validation\ExceptionWhenRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Exceptions\PostTooLargeException;
 use Illuminate\Http\JsonResponse;
@@ -80,6 +81,7 @@ class ExceptionController extends WebController
 
     /**
      * @throws ValidationException
+     * @throws AuthorizationException
      */
     public function validationWhen(ExceptionWhenRequest $request)
     {
@@ -88,11 +90,11 @@ class ExceptionController extends WebController
     }
 
     /**
-     * @throws ValidationException
+     * @throws ValidationException|AuthorizationException
      */
     public function validation(ExceptionRequest $request)
     {
-       $input = $request->validated();
+        $input = $request->validated();
     }
 
     /**

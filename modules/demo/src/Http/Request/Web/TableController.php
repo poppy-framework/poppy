@@ -9,8 +9,12 @@ use Demo\Http\Lists\ListPoppyUser;
 use Demo\Models\DemoWebapp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
+use Poppy\MgrPage\Classes\Grid\Column;
+use Poppy\MgrPage\Classes\Grid\Displayer\Actions;
+use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
 use Poppy\MgrPage\Classes\Widgets\TableWidget;
 use Poppy\System\Http\Request\Web\WebController;
+use Poppy\System\Models\PamRole;
 use Throwable;
 
 /**
@@ -61,6 +65,32 @@ class TableController extends WebController
         if ($type === 'user') {
             $grid->setLists(ListPoppyUser::class);
         }
+        return $grid->render();
+    }
+
+
+    /**
+     * @throws Throwable
+     */
+    public function noFile()
+    {
+        $grid = new Grid(new PamRole());
+        $grid->setTitle('测试:无文件');
+        // 自定义样式
+        $grid->column('id', 'ID(排序)')->sortable()->width(100);
+        $grid->column('title', '角色');
+        $grid->addColumn(Column::NAME_ACTION, '操作')
+            ->displayUsing(Actions::class, [
+                function (Actions $actions) {
+                    $item = $actions->row;
+                    $actions->append([
+                        new BaseButton('<i class="fa fa-plus"></i> 新增', route('py-mgr-page:backend.role.establish'), [
+                            'class' => 'layui-btn layui-btn-sm J_iframe',
+                            'title' => '新增',
+                        ]),
+                    ]);
+                },
+            ]);
         return $grid->render();
     }
 }
