@@ -24,7 +24,9 @@ class CategoryController extends BackendController
     public function __construct()
     {
         parent::__construct();
-        self::$permission = SysCategoryPolicy::getPermissionMap();
+        self::$permission = [
+            'global' => 'backend:py-category.category.index',
+        ];
     }
 
     /**
