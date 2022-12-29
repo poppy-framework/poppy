@@ -379,10 +379,12 @@ class DefaultFileProvider implements FileContract
             $Image  = $this->imageManager()->make($img_stream);
             $width  = $Image->width();
             $height = $Image->height();
+            $min    = min($width, $height);
+            $type   = $min === $height ? 'horizontal' : 'vertical';
             try {
-                if ($width >= $this->resizeDistrict || $height >= $this->resizeDistrict) {
-                    $r_width  = ($width > $height) ? $this->resizeDistrict : null;
-                    $r_height = ($width > $height) ? null : $this->resizeDistrict;
+                if ($min >= $this->resizeDistrict) {
+                    $r_width  = $type === 'horizontal' ? null : $this->resizeDistrict;
+                    $r_height = $type === 'horizontal' ? $this->resizeDistrict : null;
                     return $this->resize($Image, $r_width, $r_height);
                 }
             } catch (Exception $e) {
