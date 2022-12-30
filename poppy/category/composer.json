@@ -21,7 +21,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Poppy\\Ad\\ServiceProvider"
+                "Poppy\\Category\\ServiceProvider"
             ]
         }
     },
