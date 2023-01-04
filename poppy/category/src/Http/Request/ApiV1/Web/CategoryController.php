@@ -20,10 +20,10 @@ class CategoryController extends JwtApiController
      * @apiVersion          1.0.0
      * @apiName             CategoryStsTempOss
      * @apiGroup            Poppy
-     * @apiParam  {int}     type         分类分组
-     * @apiParam  {int}     id           ID
-     * @apiParam  {string}  position     ID [前|后]于 目标 ID [before:前;after:后;inner:不排序]
-     * @apiParam  {string}  aim_id       目标ID
+     * @apiQuery   {int}     type         分类分组
+     * @apiQuery  {int}     id           ID
+     * @apiQuery  {string}  position     ID [前|后]于 目标 ID [before:前;after:后;inner:不排序]
+     * @apiQuery  {string}  aim_id       目标ID
      */
     public function sort()
     {
