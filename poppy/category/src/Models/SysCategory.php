@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Category\Models;
 
 use Carbon\Carbon;
@@ -15,7 +17,8 @@ use Poppy\System\Classes\Traits\FilterTrait;
  * @property int         $id         id
  * @property string      $title      标题
  * @property string      $parent_id  上级 ID
- * @property string      $type       标题
+ * @property string      $type       类型
+ * @property string      $list_order 排序
  * @property Carbon|null $created_at 创建时间
  * @property Carbon|null $updated_at 修改时间
  * @method static Builder|SysCategory filter($input = [], $filter = null)
@@ -32,6 +35,9 @@ class SysCategory extends Model
     use FilterTrait;
 
     const TYPE_DEFAULT = 'default';
+
+    const POSITION_BEFORE = 'before';
+    const POSITION_AFTER  = 'after';
 
     protected $table = 'sys_category';
 
@@ -58,7 +64,7 @@ class SysCategory extends Model
     /**
      * 树型
      * @param string $type          类型
-     * @param bool $replace_space 空格
+     * @param bool   $replace_space 空格
      * @return array
      */
     public static function tree(string $type, bool $replace_space = false): array
@@ -67,7 +73,7 @@ class SysCategory extends Model
             ->where('type', $type)
             ->get()->keyBy('id')->toArray();
 
-        $Tree        = new TreeHelper();
+        $Tree = new TreeHelper();
         if ($replace_space) {
             $Tree->replaceSpace();
         }

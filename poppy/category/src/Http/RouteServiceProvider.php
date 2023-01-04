@@ -25,5 +25,13 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
         ], function () {
             require_once __DIR__ . '/Routes/backend.php';
         });
+
+        // 排序
+        Route::group([
+            'middleware' => 'api-sign',
+            'prefix'     => 'api_v1/category',
+        ], function () {
+            require_once __DIR__ . '/Routes/api_v1.php';
+        });
     }
 }

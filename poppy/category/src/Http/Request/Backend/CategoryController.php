@@ -59,11 +59,11 @@ class CategoryController extends BackendController
      */
     public function delete(string $id)
     {
-        $Place = new Category();
-        if ($Place->delete($id)) {
+        $Category = new Category();
+        if ($Category->delete($id)) {
             return Resp::success('删除分类成功', '_reload|1');
         }
 
-        return Resp::error($Place->getError());
+        return Resp::error($Category->getError());
     }
 }
