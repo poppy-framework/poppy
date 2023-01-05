@@ -45,6 +45,7 @@ class SysCategory extends Model
         'id',
         'title',
         'type',
+        'list_order',
         'parent_id',
         'top_id',
     ];
@@ -71,6 +72,7 @@ class SysCategory extends Model
     {
         $categories = self::select(['id', 'title', 'parent_id'])
             ->where('type', $type)
+            ->orderBy('list_order', 'desc')
             ->get()->keyBy('id')->toArray();
 
         $Tree = new TreeHelper();

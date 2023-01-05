@@ -125,27 +125,29 @@ class Category
         }
 
         $aimListOrder = (int) SysCategory::whereKey($aim_id)->value('list_order');
-        // id before aim id , asc id list_order < aim id list_order
+        // id before aim id , desc,  id list_order > aim id list_order
         if ($position === SysCategory::POSITION_BEFORE) {
-            // aim order add 1
-            SysCategory::where('type', $type)->where('list_order', '>=', $aimListOrder)->increment('list_order');
+            // aim and less aim_order , decrement 1
+            SysCategory::where('type', $type)->where('list_order', '<', $aimListOrder)->decrement('list_order');
 
             // current id to aim order
             SysCategory::whereKey($id)->update(['list_order' => $aimListOrder]);
+
+            // 取 list_order 最小值 -1 存储, 如果最小值小于1 , 整体 +1
+            $min = (clone $Db)->min('list_order');
+            if ($min < 1) {
+                $diff = abs(1 - $min);
+                SysCategory::where('type', $type)->increment('list_order', $diff);
+            }
             return true;
         }
 
-        // id after aim id
-        SysCategory::where('type', $type)->where('list_order', '<=', $aimListOrder)->decrement('list_order');
+        if ($position === SysCategory::POSITION_AFTER) {
+            // id after aim id
+            SysCategory::where('type', $type)->where('list_order', '>', $aimListOrder)->increment('list_order');
 
-        // current id to aim order
-        SysCategory::whereKey($id)->update(['list_order' => $aimListOrder]);
-
-        // 取 list_order 最小值 -1 存储, 如果最小值小于1 , 整体 +1
-        $min = (clone $Db)->min('list_order');
-        if ($min < 1) {
-            $diff = abs(1 - $min);
-            SysCategory::where('type', $type)->increment('list_order', $diff);
+            // current id to aim order
+            SysCategory::whereKey($id)->update(['list_order' => $aimListOrder]);
         }
         return true;
 
