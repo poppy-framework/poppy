@@ -128,7 +128,7 @@ class Category
         // id before aim id , desc,  id list_order > aim id list_order
         if ($position === SysCategory::POSITION_BEFORE) {
             // aim and less aim_order , decrement 1
-            SysCategory::where('type', $type)->where('list_order', '<', $aimListOrder)->decrement('list_order');
+            SysCategory::where('type', $type)->where('list_order', '<=', $aimListOrder)->decrement('list_order');
 
             // current id to aim order
             SysCategory::whereKey($id)->update(['list_order' => $aimListOrder]);
@@ -144,7 +144,7 @@ class Category
 
         if ($position === SysCategory::POSITION_AFTER) {
             // id after aim id
-            SysCategory::where('type', $type)->where('list_order', '>', $aimListOrder)->increment('list_order');
+            SysCategory::where('type', $type)->where('list_order', '>=', $aimListOrder)->increment('list_order');
 
             // current id to aim order
             SysCategory::whereKey($id)->update(['list_order' => $aimListOrder]);
