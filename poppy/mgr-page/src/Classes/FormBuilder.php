@@ -966,10 +966,11 @@ HTML;
         $width       = $width ? 'w' . $width : '';
         $id          = 'select_' . Str::random(6);
         $direction   = $options['direction'] ?? 'down';                          //下拉方向
-        $paging      = $options['paging'] ?? false;                              //是否开启分页
-        $filter      = $options['filter'] ?? false;                              //是否开启搜索
+        $paging      = ($options['paging'] ?? false) ? 'true' : 'false';         //是否开启分页
+        $filter      = ($options['filter'] ?? false) ? 'true' : 'false';         //是否开启搜索
         $size        = $options['size'] ?? 8;                                    //分页数量
-        $disabled    = ($options['disabled'] ?? false) ? 'true' : 'false';//是否禁用
+        $disabled    = ($options['disabled'] ?? false) ? 'true' : 'false';       //是否禁用
+        $autoRow     = ($options['auto_row'] ?? true) ? 'true' : 'false';          //是否换行
 
         if (is_string($value)) {
             $value = explode(',', $value);
@@ -1031,8 +1032,8 @@ HTML;
 		direction : '{$direction}',
 		paging : '{$paging}',
 		pageSize : {$size},
-		autoRow : true,
-		filterable: '{$filter}',
+		autoRow : {$autoRow},
+		filterable: {$filter},
 		pageEmptyShow: false,
 		disabled: {$disabled},
 		data : []
