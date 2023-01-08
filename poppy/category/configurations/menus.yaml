@@ -10,4 +10,5 @@ backend :
         -
           title : 分类管理
           route : py-category:backend.category.index
+          param: _scope=default
           permission : backend:py-category.category.manage

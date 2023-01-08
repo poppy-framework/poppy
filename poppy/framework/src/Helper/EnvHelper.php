@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Poppy\Framework\Helper;
 
+use Request;
+
 /**
  * 环境获取
  */
@@ -12,8 +14,8 @@ class EnvHelper
     /**
      * 返回 IP 信息
      * @return string 返回IP
-     * @see \Request::ip()
-     * @deprecated
+     * @see        Request::ip
+     * @deprecated 4.1
      */
     public static function ip(): string
     {
@@ -147,10 +149,12 @@ class EnvHelper
     /**
      * 浏览器头部
      * @return string
+     * @see        Request::userAgent()
+     * @deprecated 4.1
      */
     public static function agent(): string
     {
-        return $_SERVER['HTTP_USER_AGENT'] ?? '';
+        return Request::userAgent();
     }
 
     /**
@@ -186,7 +190,7 @@ class EnvHelper
      */
     public static function os(): string
     {
-        $agent = self::agent();
+        $agent = Request::userAgent();
         if (false !== stripos($agent, 'win')) {
             $os = 'windows';
         }
