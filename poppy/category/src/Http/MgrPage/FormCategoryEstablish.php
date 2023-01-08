@@ -43,7 +43,7 @@ class FormCategoryEstablish extends FormWidget
     public function __construct($data = [])
     {
         parent::__construct($data);
-        $this->type     = input('type');
+        $this->type     = (string) input('type');
         $this->category = new Category();
         $id             = (int) Route::input('id');
         $id && $this->category->init($id);
