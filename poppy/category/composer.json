@@ -18,13 +18,6 @@
             "Poppy\\Category\\Tests\\": "tests/"
         }
     },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Poppy\\Category\\ServiceProvider"
-            ]
-        }
-    },
     "config": {
         "preferred-install": "dist"
     },
