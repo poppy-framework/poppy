@@ -59,7 +59,7 @@ class TimeHelper
         if (!empty($time)) {
             if (!is_numeric($time)) {
                 // strotime强制将代入进来的时间格式都转成Unix时间戳
-                $time = strtotime($time);
+                $time = strtotime((string) $time);
             }
         }
         else {
@@ -174,7 +174,7 @@ class TimeHelper
     public static function format($time = 0, $format = 'Y-m-d H:i')
     {
         //strtotime 强制将代入进来的时间格式都转成Unix时间戳
-        $timestamp = !empty($time) ? (is_numeric($time) ? $time : strtotime($time)) : EnvHelper::time();
+        $timestamp = !empty($time) ? (is_numeric($time) ? $time : strtotime((string) $time)) : EnvHelper::time();
 
         return date($format, (int) $timestamp);
     }
