@@ -7,7 +7,9 @@ namespace Poppy\System\Classes\File;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use ImagickException;
 use Intervention\Image\Constraint;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
@@ -17,6 +19,7 @@ use Poppy\Framework\Helper\FileHelper;
 use Poppy\Framework\Helper\UtilHelper;
 use Poppy\System\Classes\Contracts\FileContract;
 use Psr\Http\Message\StreamInterface;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -41,6 +44,12 @@ class DefaultFileProvider implements FileContract
      * @var bool
      */
     protected bool $watermark = false;
+
+    /**
+     * heic转jpg格式上传路径及文件名
+     * @var string
+     */
+    protected string $heic2jpgPathName = '';
 
     /**
      * @var string 文件夹
@@ -163,6 +172,43 @@ class DefaultFileProvider implements FileContract
         // 磁盘对象
         $Disk             = $this->storage();
         $extension        = $file->getClientOriginalExtension();
+
+        $this->setHeic2JpgPathName();
+        // 如果是heic转成jpg
+        if (strtolower($extension) === 'heic') {
+            if (!extension_loaded('imagick')) {
+                return $this->setError('暂不支持heic格式图片');
+            }
+            try {
+                $extension   = 'jpg';
+                $filename    = $file->getFilename() . '.' . $extension;
+                $heic2jpgDir = 'heic2jpg/';
+                if (!app('filesystem')->disk('storage')->has($heic2jpgDir)) {
+                    app('filesystem')->disk('storage')->makeDirectory($heic2jpgDir);
+                }
+                $pathName = $heic2jpgDir . $filename;
+                $this->setHeic2JpgPathName($pathName);
+                $fullPathName = storage_path($pathName);
+                $Imagick      = new \Imagick();
+                $Imagick->readImage($file->getPathname());
+                if ($Imagick->count() > 1) {
+                    throw new RuntimeException('不支持上传hiec实况图');
+                }
+                $Imagick->setImageFormat($extension);
+                $Imagick->writeImage($fullPathName);
+                $file = new UploadedFile($fullPathName, $filename);
+            } catch (ImagickException $e) {
+                Log::emergency('图片转换错误', [
+                    'file'    => $e->getFile(),
+                    'line'    => $e->getLine(),
+                    'message' => $e->getMessage(),
+                ]);
+                return $this->setError('图片转换错误');
+            } catch (Exception $e) {
+                return $this->setError($e->getMessage());
+            }
+        }
+
         $fileRelativePath = $this->genRelativePath($extension);
         $zipContent       = file_get_contents($file->getPathname());
 
@@ -190,7 +236,31 @@ class DefaultFileProvider implements FileContract
 
         $this->destination = $fileRelativePath;
 
+        if ($this->getHeic2JpgPathName()) {
+            // 删除heic转jpg的临时图片
+            app('filesystem')->disk('storage')->delete($this->getHeic2JpgPathName());
+        }
+
         return true;
+    }
+
+    /**
+     * 设置heic转jpg的路径加文件名（用于之后删除）
+     * @param string $heic2JpgPathName
+     * @return void
+     */
+    public function setHeic2JpgPathName(string $heic2JpgPathName = ''): void
+    {
+        $this->heic2JpgPathName = $heic2JpgPathName;
+    }
+
+    /**
+     * 获取heic转jpg的路径加文件名
+     * @return string
+     */
+    public function getHeic2JpgPathName(): string
+    {
+        return $this->heic2JpgPathName;
     }
 
     /**

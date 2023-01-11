@@ -74,7 +74,7 @@ class UploadController extends JwtApiController
 
         $urls = [];
         if ($type === 'form') {
-            $Image->setExtension(['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'mp4', 'rm', 'rmvb', 'wmv']);
+            $Image->setExtension(['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'heic', 'mp4', 'rm', 'rmvb', 'wmv']);
             $image = Request::file('image');
             if (!is_array($image)) {
                 $image = [$image];

@@ -2,7 +2,11 @@
 
 namespace Poppy\System\Tests\Action;
 
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Validator;
 use Poppy\Framework\Application\TestCase;
+use Poppy\Framework\Classes\Resp;
+use Poppy\System\Classes\Contracts\FileContract;
 use Poppy\System\Classes\File\DefaultFileProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Throwable;
@@ -73,6 +77,39 @@ class UploadTest extends TestCase
             }
             else {
                 $this->fail("Url {$url} 不可访问!");
+            }
+        } catch (Throwable $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    /**
+     * heic转jpg上传
+     * @return void
+     */
+    public function testHeic2Jpg(): void
+    {
+        try {
+            $file       = poppy_path('poppy.system', 'tests/files/single.heic');
+            $image      = new UploadedFile($file, 'single.heic', null, null, true);
+            $image_type = input('image_type', 'default');
+
+            /** @var DefaultFileProvider $Image */
+            $Image = app(FileContract::class);
+            $Image->setFolder($image_type);
+            $Image->setExtension(['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'heic', 'mp4', 'rm', 'rmvb', 'wmv']);
+            if ($Image->saveFile($image)) {
+                $url = $Image->getUrl();
+                if (file_get_contents($url)) {
+                    $this->assertTrue(true);
+                    $this->outputVariables($url);
+                }
+                else {
+                    $this->fail("Url {$url} 不可访问!");
+                }
+            }
+            else {
+                $this->fail($Image->getError());
             }
         } catch (Throwable $e) {
             $this->fail($e->getMessage());
