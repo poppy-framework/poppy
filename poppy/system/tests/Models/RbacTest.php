@@ -35,12 +35,6 @@ class RbacTest extends TestCase
             $this->fail($pam->getError()->getMessage());
         }
 
-        // 进行操作
-        $Role = new Role();
-        // todo 采用 Request 方法
-//        $Role->establish()
-
-
         $pam  = TestingPam::randBackend();
         $key  = 'tag:py-core-rbac:' . PyCoreDef::rbacCkUserRoles($pam->id);
         $role = TestingRole::randBackend();

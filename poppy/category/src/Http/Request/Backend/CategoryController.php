@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Category\Http\Request\Backend;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Redirector;
 use Poppy\Category\Action\Category;
 use Poppy\Category\Http\MgrPage\FormCategoryEstablish;
 use Poppy\Category\Http\MgrPage\ListSysCategory;
@@ -31,7 +32,7 @@ class CategoryController extends BackendController
 
     /**
      * 分类列表
-     * @return array|JsonResponse|Redirector|RedirectResponse|Resp|Response|\Response|string
+     * @return JsonResponse|RedirectResponse|Response|string
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -54,10 +55,10 @@ class CategoryController extends BackendController
 
     /**
      * 删除分类
-     * @param string $id 分类ID
+     * @param int $id 分类ID
      * @return JsonResponse|RedirectResponse|Response
      */
-    public function delete(string $id)
+    public function delete(int $id)
     {
         $Category = new Category();
         if ($Category->delete($id)) {

@@ -17,6 +17,7 @@ use Poppy\System\Classes\Traits\DbTrait;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamPermission;
 use Poppy\System\Models\PamRole;
+use Poppy\System\Tests\Testing\TestingPam;
 
 /**
  * Permission Command
@@ -128,6 +129,8 @@ class PermissionCommand extends Command
     public function init()
     {
         sys_tag('py-core')->del(PyCoreDef::ckModule('module'));
+
+        sys_tag('py-core-rbac')->clear();
 
         $this->permission->clearCachedPermissionNames();
 

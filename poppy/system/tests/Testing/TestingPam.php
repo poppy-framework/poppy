@@ -6,6 +6,8 @@ namespace Poppy\System\Tests\Testing;
 
 use Poppy\Framework\Helper\StrHelper;
 use Poppy\System\Models\PamAccount;
+use Poppy\System\Models\PamRole;
+use Poppy\System\Models\PamRoleAccount;
 
 /**
  * 随机获取数据
@@ -71,6 +73,19 @@ class TestingPam
     public static function randBackend(): PamAccount
     {
         $Db = PamAccount::where('type', PamAccount::TYPE_BACKEND)->inRandomOrder();
+        return $Db->first();
+    }
+
+    /**
+     * 随机后提用户
+     * @return PamAccount
+     */
+    public static function randRoot(): PamAccount
+    {
+        $role = PamRole::where('name', PamRole::BE_ROOT)->value('id');
+        $Db   = PamAccount::where('type', PamAccount::TYPE_BACKEND)
+            ->whereIn('id', PamRoleAccount::where('role_id', $role)->pluck('account_id'))
+            ->inRandomOrder();
         return $Db->first();
     }
 
