@@ -38,7 +38,7 @@ class FormVersionEstablish extends FormWidget
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = (int) $id;
         if ($id) {
             $this->item = SysAppVersion::find($id);
 
@@ -66,7 +66,7 @@ class FormVersionEstablish extends FormWidget
             if (input('is_cover')) {
                 $Version->allowCopy();
             }
-            if (!$Version->establish(input(), input('id'))) {
+            if (!$Version->establish(input(), (int) input('id'))) {
                 return Resp::error($Version->getError());
             }
             return Resp::success('操作成功', '_top_reload|1');

@@ -68,7 +68,7 @@ class BanController extends BackendController
     public function delete($id)
     {
         $Ban = new Ban();
-        if (!$Ban->delete($id)) {
+        if (!$Ban->delete((int) $id)) {
             return Resp::error($Ban->getError());
         }
         return Resp::success('删除成功', 'motion|grid:reload');

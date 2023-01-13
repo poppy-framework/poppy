@@ -66,7 +66,7 @@ class ContentController extends BackendController
     public function delete($id)
     {
         $Area = $this->action();
-        if ($Area->delete($id)) {
+        if ($Area->delete((int) $id)) {
             return Resp::success('删除成功', '_reload|1');
         }
 

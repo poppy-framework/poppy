@@ -38,7 +38,7 @@ class FormRuleDateEstablish extends FormWidget
 
     public function handle()
     {
-        $id   = input('id');
+        $id   = (int) input('id');
         $Area = new Area();
         if (is_post()) {
             if ($Area->establish(input(), $id)) {

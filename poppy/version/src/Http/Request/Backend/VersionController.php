@@ -72,7 +72,7 @@ class VersionController extends BackendController
     public function delete($id)
     {
         $Version = new Version();
-        if (!$Version->delete($id)) {
+        if (!$Version->delete((int) $id)) {
             return Resp::error('删除失败');
         }
         return Resp::success('删除成功', '_top_reload|1');
