@@ -1030,7 +1030,7 @@ HTML;
 		tips : '{$placeholder}',
 		height : '{$height}',
 		direction : '{$direction}',
-		paging : '{$paging}',
+		paging : {$paging},
 		pageSize : {$size},
 		autoRow : {$autoRow},
 		filterable: {$filter},
