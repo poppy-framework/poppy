@@ -8,11 +8,11 @@
 	</div>
 </div>
 {!! Form::close() !!}
-// todo
+Pjax 请求错误, 返回提示
 {!! Form::open(['class'=> 'layui-form', 'data-pjax', 'pjax-ctr'=> '#main','method'=>'get', 'url'=>route_url('',null, ['type'=>'pjax-error'])]) !!}
 <div class="layui-form-item">
 	<div class="layui-inline">
-		<button class="layui-btn layui-btn-sm">Pjax 请求错误, 返回提示</button>
+		<button class="layui-btn layui-btn-sm layui-btn-warm">Pjax 请求错误, 返回提示</button>
 	</div>
 </div>
 {!! Form::close() !!}
