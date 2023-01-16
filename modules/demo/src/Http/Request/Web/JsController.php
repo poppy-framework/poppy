@@ -8,10 +8,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Mail\Mailable;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Poppy\Framework\Classes\Resp;
+use Poppy\System\Classes\Traits\PjaxTrait;
 use Poppy\System\Http\Request\Web\WebController;
 
 /**
@@ -19,6 +19,9 @@ use Poppy\System\Http\Request\Web\WebController;
  */
 class JsController extends WebController
 {
+
+    use PjaxTrait;
+
     public function __construct()
     {
         parent::__construct();
@@ -63,7 +66,7 @@ class JsController extends WebController
 
     /**
      * 前台代码
-     * @return Factory|JsonResponse|RedirectResponse|Response|Redirector|View
+     * @return Factory|JsonResponse|RedirectResponse|Response|View
      */
     public function fe()
     {
@@ -73,6 +76,9 @@ class JsController extends WebController
                 return Resp::success('提交信息成功', '_top_reload|1');
             }
             return view('demo::js.fe-popup');
+        }
+        if ($type === 'pjax-error') {
+            return $this->pjaxError('Pjax 请求错误 : 提交的时间和日期不符');
         }
         if (is_post()) {
             if ($type === 'submit') {
