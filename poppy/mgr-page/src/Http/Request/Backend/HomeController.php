@@ -63,11 +63,15 @@ class HomeController extends BackendController
         $password = (string) input('password');
         if (is_post()) {
             $Pam = new Pam();
-            if ($Pam->loginCheck($username, $password, PamAccount::GUARD_BACKEND)) {
-                $auth->login($Pam->getPam(), true);
-                return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
+            try {
+                if ($Pam->loginCheck($username, $password, PamAccount::GUARD_BACKEND)) {
+                    $auth->login($Pam->getPam(), true);
+                    return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
+                }
+                return Resp::error($Pam->getError());
+            } catch (ApplicationException $e) {
+                return Resp::error($e->getMessage());
             }
-            return Resp::error($Pam->getError());
         }
 
         if ($auth->check()) {
