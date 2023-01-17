@@ -24,10 +24,10 @@ class Authenticate extends IlluminateAuthenticate
     {
         $location = '';
         // develop
-        if (in_array(PamAccount::GUARD_DEVELOP, $guards, true) && $devLogin = config('poppy.framework.prefix') . '/develop/login') {
+        if (in_array(PamAccount::GUARD_DEVELOP, $guards, true) && $devLogin = config('poppy.framework.prefix', 'mgr-page') . '/develop/login') {
             $location = $devLogin;
         }
-        if (in_array(PamAccount::GUARD_BACKEND, $guards, true) && $backendLogin = config('poppy.framework.prefix') . '/login') {
+        if (in_array(PamAccount::GUARD_BACKEND, $guards, true) && $backendLogin = config('poppy.framework.prefix', 'mgr-page') . '/login') {
             $location = $backendLogin;
         }
         if (in_array(PamAccount::GUARD_WEB, $guards, true) && $userLogin = config('poppy.system.user_location')) {
