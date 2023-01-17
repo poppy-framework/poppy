@@ -37,18 +37,18 @@ class Ban
 
         }
 
-        $status  = sys_setting('py-system::ban.status-' . $type, SysConfig::DISABLE);
+        $status  = sys_setting('py-system::ban.status-' . $type, SysConfig::STR_NO);
         $isBlack = sys_setting('py-system::ban.type-' . $type, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
 
         /* 未开启风险拦截
          * ---------------------------------------- */
-        if (!$status) {
+        if ($status !== SysConfig::STR_YES) {
             return $next($request);
         }
         // 是否是root用户 不进行拦截
         if ($type === PamAccount::TYPE_BACKEND && $user = app('auth')->guard()->user()) {
             /** @var PamAccount $user */
-            if ($user->roles->where('name', PamRole::BE_ROOT)->count()) {
+            if ($user->cachedRoles()->where('name', PamRole::BE_ROOT)->count()) {
                 return $next($request);
             }
         }

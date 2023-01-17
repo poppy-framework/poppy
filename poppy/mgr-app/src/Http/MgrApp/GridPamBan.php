@@ -48,7 +48,7 @@ class GridPamBan extends GridBase
         $type = input(Scope::QUERY_NAME, PamAccount::TYPE_USER);
 
         // 黑名单/白名单
-        $status  = sys_setting('py-system::ban.status-' . $type, SysConfig::DISABLE);
+        $status  = sys_setting('py-system::ban.status-' . $type, SysConfig::STR_NO);
         $isBlack = sys_setting('py-system::ban.type-' . $type, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
         if ($status) {
             $actions->request('已启用', route_url('py-mgr-app:api.ban.status'))->success()->icon('Open')

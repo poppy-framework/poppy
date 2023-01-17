@@ -73,12 +73,12 @@ class ListPamBan extends ListBase
         $type = input(Scope::QUERY_NAME, PamAccount::TYPE_USER);
 
         // 黑名单/白名单
-        $status  = sys_setting('py-system::ban.status-' . $type, SysConfig::DISABLE);
+        $status  = sys_setting('py-system::ban.status-' . $type, SysConfig::STR_NO);
         $isBlack = sys_setting('py-system::ban.type-' . $type, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
         return [
-            new BaseButton($status ? '<i class="fa fa-toggle-on"></i> 已启用' : '<i class="fa fa-toggle-off"></i> 已禁用',
+            new BaseButton($status === 'Y' ? '<i class="fa fa-toggle-on"></i> 已启用' : '<i class="fa fa-toggle-off"></i> 已禁用',
                 route_url('py-mgr-page:backend.ban.status', null, ['type' => $type,]), [
-                    'title' => $status ? '当前启用, 点击禁用' : '当前禁用, 点击启用',
+                    'title' => $status === 'Y' ? '当前启用, 点击禁用' : '当前禁用, 点击启用',
                     'class' => 'J_request layui-btn layui-btn-sm ' . ($status ? 'layui-btn-normal' : 'layui-btn-danger'),
                 ]),
             new BaseButton($isBlack ? '<i class="fa fa-ban"></i> 黑名单模式' : '<i class="fa fa-filter"></i> 白名单模式',

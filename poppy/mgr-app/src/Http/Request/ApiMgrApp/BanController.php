@@ -36,8 +36,8 @@ class BanController extends BackendController
     {
         $type   = input(Scope::QUERY_NAME);
         $key    = 'py-system::ban.status-' . $type;
-        $status = sys_setting($key, SysConfig::NO);
-        app('poppy.system.setting')->set($key, $status ? SysConfig::NO : SysConfig::YES);
+        $status = sys_setting($key, SysConfig::STR_NO);
+        app('poppy.system.setting')->set($key, $status === 'Y' ? SysConfig::STR_NO : SysConfig::STR_YES);
         return Resp::success('已切换', 'motion|grid:filter');
     }
 
