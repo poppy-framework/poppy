@@ -9,6 +9,7 @@ use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
 use Poppy\MgrPage\Http\MgrPage\FormBanEstablish;
+use Poppy\MgrPage\Http\MgrPage\FormBanSetting;
 use Poppy\MgrPage\Http\MgrPage\ListPamBan;
 use Poppy\System\Action\Ban;
 use Poppy\System\Models\PamAccount;
@@ -35,7 +36,7 @@ class BanController extends BackendController
     public function status()
     {
         $type   = input('type');
-        $key    = 'py-mgr-page::ban.status-' . $type;
+        $key    = 'py-system::ban.status-' . $type;
         $status = sys_setting($key, SysConfig::NO);
         app('poppy.system.setting')->set($key, $status ? SysConfig::NO : SysConfig::YES);
         return Resp::success('已切换', '_reload|1');
@@ -44,7 +45,7 @@ class BanController extends BackendController
     public function type()
     {
         $type    = input('type');
-        $key     = 'py-mgr-page::ban.type-' . $type;
+        $key     = 'py-system::ban.type-' . $type;
         $isBlank = sys_setting($key, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
         app('poppy.system.setting')->set($key, $isBlank ? PamBan::WB_TYPE_WHITE : PamBan::WB_TYPE_BLACK);
         return Resp::success('已切换封禁模式', '_reload|1');
@@ -65,9 +66,20 @@ class BanController extends BackendController
     }
 
     /**
+     * 创建/编辑
+     * @return array|JsonResponse|RedirectResponse|\Illuminate\Http\Response|Redirector|mixed|Resp|Response|string
+     */
+    public function setting()
+    {
+        $form = new FormBanSetting();
+        $form->setAccountType(input('type', PamAccount::TYPE_USER));
+        return $form->render();
+    }
+
+    /**
      * 删除
      * @param $id
-     * @return array|JsonResponse|RedirectResponse|\Illuminate\Http\Response|Redirector|Resp|Response
+     * @return \Illuminate\Http\Response|JsonResponse|RedirectResponse
      */
     public function delete($id)
     {

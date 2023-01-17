@@ -108,4 +108,16 @@ class PamBan extends Model
         }
         return $allow_ip && $allow_device;
     }
+
+    /**
+     * 设备 KEY
+     * @param string $type
+     * @return string
+     */
+    public static function banDeviceIsOpen(string $type): string
+    {
+        $key = 'py-system::ban.type-' . $type;
+        $bw  = sys_setting($key, PamBan::WB_TYPE_BLACK);
+        return sys_setting('py-system::ban.device_' . $bw . '_' . $type . '_is_open', 'Y');
+    }
 }

@@ -24,7 +24,7 @@ class Ban
     /**
      * @param         $request
      * @param Closure $next
-     * @param string $type 账号类型, 用于封禁
+     * @param string  $type 账号类型, 用于封禁
      * @return mixed
      */
     public function handle($request, Closure $next, string $type = 'user')
@@ -37,8 +37,8 @@ class Ban
 
         }
 
-        $status  = sys_setting('py-mgr-page::ban.status-' . $type, SysConfig::DISABLE);
-        $isBlack = sys_setting('py-mgr-page::ban.type-' . $type, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
+        $status  = sys_setting('py-system::ban.status-' . $type, SysConfig::DISABLE);
+        $isBlack = sys_setting('py-system::ban.type-' . $type, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
 
         /* 未开启风险拦截
          * ---------------------------------------- */
@@ -69,7 +69,7 @@ class Ban
 
 
         $deviceId = x_header('id') ?: input('device_id');
-        if ($deviceId) {
+        if ($deviceId && PamBan::banDeviceIsOpen($type) === 'Y') {
             $deviceIn = $Ban->checkIn($type, PamBan::TYPE_DEVICE, $deviceId);
             /* 黑名单策略, 设备In : 封禁
              * ---------------------------------------- */

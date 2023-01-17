@@ -5,7 +5,7 @@ namespace Poppy\MgrPage\Classes\Form;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Poppy\Core\Classes\Contracts\SettingContract;
 use Poppy\Framework\Classes\Resp;
@@ -15,7 +15,6 @@ use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Exceptions\FormException;
 use Poppy\System\Models\PamAccount;
-use Response;
 
 abstract class FormSettingBase extends FormWidget
 {
@@ -26,15 +25,18 @@ abstract class FormSettingBase extends FormWidget
      * @var bool
      */
     public $ajax = true;
+
     /**
      * 是否 Inbox
      * @var bool
      */
     public $inbox = false;
+
     /**
      * @var PamAccount
      */
     protected $user;
+
     /**
      * 是否显示标题
      * @var string
@@ -55,7 +57,7 @@ abstract class FormSettingBase extends FormWidget
 
     /**
      * @param Request $request
-     * @return array|\Illuminate\Http\Response|JsonResponse|Redirector|RedirectResponse|Resp|Response
+     * @return Response|JsonResponse|RedirectResponse
      * @throws FormException
      */
     public function handle(Request $request)

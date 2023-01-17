@@ -35,7 +35,7 @@ class BanController extends BackendController
     public function status(Request $request)
     {
         $type   = input(Scope::QUERY_NAME);
-        $key    = 'py-mgr-page::ban.status-' . $type;
+        $key    = 'py-system::ban.status-' . $type;
         $status = sys_setting($key, SysConfig::NO);
         app('poppy.system.setting')->set($key, $status ? SysConfig::NO : SysConfig::YES);
         return Resp::success('已切换', 'motion|grid:filter');
@@ -44,7 +44,7 @@ class BanController extends BackendController
     public function type()
     {
         $type    = input(Scope::QUERY_NAME);
-        $key     = 'py-mgr-page::ban.type-' . $type;
+        $key     = 'py-system::ban.type-' . $type;
         $isBlank = sys_setting($key, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
         app('poppy.system.setting')->set($key, $isBlank ? PamBan::WB_TYPE_WHITE : PamBan::WB_TYPE_BLACK);
         return Resp::success('已切换封禁模式', 'motion|grid:filter');
@@ -52,7 +52,7 @@ class BanController extends BackendController
 
     /**
      * 创建/编辑
-     * @return JsonResponse|RedirectResponse|Resp|Response
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function establish()
     {

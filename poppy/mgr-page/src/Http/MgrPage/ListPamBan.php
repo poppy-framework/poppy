@@ -7,6 +7,7 @@ use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid\Column;
 use Poppy\MgrPage\Classes\Grid\Displayer\Actions;
 use Poppy\MgrPage\Classes\Grid\Filter;
+use Poppy\MgrPage\Classes\Grid\Filter\Scope;
 use Poppy\MgrPage\Classes\Grid\ListBase;
 use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
 use Poppy\System\Models\PamAccount;
@@ -69,11 +70,11 @@ class ListPamBan extends ListBase
 
     public function quickButtons(): array
     {
-        $type = input(\Poppy\MgrPage\Classes\Grid\Filter\Scope::QUERY_NAME, PamAccount::TYPE_USER);
+        $type = input(Scope::QUERY_NAME, PamAccount::TYPE_USER);
 
         // 黑名单/白名单
-        $status  = sys_setting('py-mgr-page::ban.status-' . $type, SysConfig::DISABLE);
-        $isBlack = sys_setting('py-mgr-page::ban.type-' . $type, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
+        $status  = sys_setting('py-system::ban.status-' . $type, SysConfig::DISABLE);
+        $isBlack = sys_setting('py-system::ban.type-' . $type, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
         return [
             new BaseButton($status ? '<i class="fa fa-toggle-on"></i> 已启用' : '<i class="fa fa-toggle-off"></i> 已禁用',
                 route_url('py-mgr-page:backend.ban.status', null, ['type' => $type,]), [
@@ -89,6 +90,11 @@ class ListPamBan extends ListBase
             new BaseButton('<i class="fa fa-plus"></i> 新增',
                 route_url('py-mgr-page:backend.ban.establish', null, ['type' => $type,]), [
                     'title' => "新增",
+                    'class' => 'J_iframe layui-btn layui-btn-sm',
+                ]),
+            new BaseButton('<i class="fa fa-cog"></i> 设置',
+                route_url('py-mgr-page:backend.ban.setting', null, ['type' => $type,]), [
+                    'title' => "设置",
                     'class' => 'J_iframe layui-btn layui-btn-sm',
                 ]),
         ];
