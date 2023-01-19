@@ -30,6 +30,7 @@ class ListPamBan extends ListBase
             return PamBan::kvType($type);
         });
         $this->column('value', "限制值");
+        $this->column('note', "备注");
     }
 
 

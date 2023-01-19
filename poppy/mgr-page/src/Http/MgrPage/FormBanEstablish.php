@@ -94,5 +94,6 @@ class FormBanEstablish extends FormWidget
         $this->text('value', '限制值')->rules([
             Rule::nullable(),
         ])->help('如果是Ip支持如下几种格式 : <br> 固定IP(192.168.1.1) ; IP段 : (192.168.1.1-192.168.1.21); <br> IP 掩码(192.168.1.1/24); IP 通配符(192.168.1.*)');
+        $this->text('note', '备注');
     }
 }
