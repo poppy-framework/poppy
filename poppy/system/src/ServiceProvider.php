@@ -171,6 +171,7 @@ class ServiceProvider extends PoppyServiceProvider
             // system:module
             Commands\UserCommand::class,
             Commands\InstallCommand::class,
+            Commands\BanCommand::class,
         ]);
     }
 
