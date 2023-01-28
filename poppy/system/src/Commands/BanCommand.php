@@ -38,28 +38,29 @@ class BanCommand extends Command
             return;
         }
 
+        $Ban = new Ban();
+
+        $type = PamBan::TYPE_DEVICE;
+        if (preg_match('/^\d+\.\d+\.\d+\.[\d*]*/', $value)) {
+            if (!$Ban->parseIpRange($value)) {
+                $this->error($Ban->getError()->getMessage());
+                return;
+            }
+            $type = PamBan::TYPE_IP;
+        }
+
         $data = [
             'account_type' => $accountType,
-            'type'         => $this->calculateType($value),
+            'type'         => $type,
             'value'        => $value,
             'note'         => $note,
         ];
 
-        $Ban = new Ban();
         if (!$Ban->establish($data)) {
             $this->error($Ban->getError()->getMessage());
             return;
         }
 
         $this->info('添加成功');
-    }
-
-    private function calculateType(string $value): string
-    {
-        if (filter_var($value, FILTER_VALIDATE_IP)) {
-            return PamBan::TYPE_IP;
-        }
-
-        return PamBan::TYPE_DEVICE;
     }
 }

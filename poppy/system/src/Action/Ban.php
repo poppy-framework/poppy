@@ -269,7 +269,7 @@ class Ban
         $this->initRanges($account_type, $ranges);
     }
 
-    private function parseIpRange($value)
+    public function parseIpRange($value)
     {
         $isRange = false;
         // ip 范围 : 192.168.1.21-192.168.1.255
