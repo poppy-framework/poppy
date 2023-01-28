@@ -45,6 +45,10 @@ class Ban
         $value        = trim(data_get($input, 'value', ''));
         $note         = trim(data_get($input, 'note', ''));
 
+        if (!array_key_exists($account_type, PamAccount::kvType())) {
+            return $this->setError('请填写正确的账户类型');
+        }
+
         $DbBan = PamBan::where('account_type', $account_type);
         if (!array_key_exists($type, PamBan::kvType())) {
             return $this->setError('请选择正确的类型');
