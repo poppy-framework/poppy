@@ -12,7 +12,7 @@
     "require": {
         "php": ">=7.4",
         "aliyuncs/oss-sdk-php": "2.*",
-        "poppy/system": "4.2.x-dev"
+        "poppy/system": "4.2.*"
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.3"
