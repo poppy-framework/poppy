@@ -21,7 +21,7 @@
 @endsection
 @section('body-class', 'gray-bg backend--login')
 @section('body-main')
-    @include('py-mgr-page::backend.home._js_login')
+    @include('py-mgr-page::backend.home._js_track')
     @include('py-mgr-page::tpl._toastr')
     <div class="layui-container">
         <div class="layui-col-md6 layui-col-md-offset3">

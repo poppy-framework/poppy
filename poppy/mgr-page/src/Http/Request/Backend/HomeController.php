@@ -18,6 +18,7 @@ use Poppy\Framework\Helper\EnvHelper;
 use Poppy\Framework\Helper\StrHelper;
 use Poppy\MgrPage\Classes\Setting\SettingView;
 use Poppy\MgrPage\Http\MgrPage\FormPassword;
+use Poppy\System\Action\FpTrack;
 use Poppy\System\Action\Pam;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
@@ -53,6 +54,15 @@ class HomeController extends BackendController
     }
 
     /**
+     * 后台用户信息追踪
+     * @return void
+     */
+    public function track()
+    {
+        (new FpTrack())->track(Auth::user());
+    }
+
+    /**
      * 登录
      * @throws ApplicationException
      */
@@ -66,6 +76,7 @@ class HomeController extends BackendController
             try {
                 if ($Pam->loginCheck($username, $password, PamAccount::GUARD_BACKEND)) {
                     $auth->login($Pam->getPam(), true);
+                    $this->track();
                     return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
                 }
                 return Resp::error($Pam->getError());

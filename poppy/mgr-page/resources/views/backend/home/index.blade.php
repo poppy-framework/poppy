@@ -13,6 +13,7 @@
 @section('body-main')
     <div id="LAY_app">
         @include('py-mgr-page::tpl._toastr')
+        @include('py-mgr-page::backend.home._js_track')
         <div class="layui-layout layui-layout-admin">
         @include('py-mgr-page::backend.tpl._header')
         @include('py-mgr-page::backend.tpl._sidemenu')
