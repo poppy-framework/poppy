@@ -39,9 +39,10 @@ class FpTrack
     {
         $pam = Auth::guard(PamAccount::GUARD_BACKEND)->user();
         Log::info('backendTrack', [
-            'user' => $pam->username ?? '',
-            'ip'   => Request::ip(),
-            'fp'   => x_header('fp'),
+            'user'  => $pam->username ?? '',
+            'ip'    => Request::ip(),
+            'fp'    => x_header('fp'),
+            'agent' => Request::userAgent(),
         ]);
     }
 
