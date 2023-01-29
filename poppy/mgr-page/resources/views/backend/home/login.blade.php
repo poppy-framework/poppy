@@ -21,6 +21,7 @@
 @endsection
 @section('body-class', 'gray-bg backend--login')
 @section('body-main')
+    @include('py-mgr-page::backend.home._js_login')
     @include('py-mgr-page::tpl._toastr')
     <div class="layui-container">
         <div class="layui-col-md6 layui-col-md-offset3">
@@ -64,7 +65,7 @@
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             {!! Form::button('登录', [
-                            'class'=> 'layui-btn layui-btn-info J_submit',
+                            'class'=> 'layui-btn layui-btn-info login_submit',
                             'type' => 'submit'
                         ]) !!}
                         </div>

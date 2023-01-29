@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Listeners\LoginSuccess;
 
+use Log;
 use Poppy\System\Events\LoginSuccessEvent;
+use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamLog;
 use Request;
 use Throwable;
@@ -22,6 +24,15 @@ class LogListener
 		$pam = $event->pam;
 
 		$ip = Request::ip();
+
+        // 后台登录记录ip&fp信息
+        if ($pam->type === PamAccount::GUARD_BACKEND) {
+            Log::info('backendLogin', [
+                'user' => $pam->username,
+                'ip'   => $ip,
+                'fp'   => x_header('fp'),
+            ]);
+        }
 
 		try {
 			$areaText = class_exists('Poppy\Extension\IpStore\Support\Facade')
