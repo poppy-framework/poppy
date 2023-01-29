@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Action;
 
+use Auth;
 use Illuminate\Support\Arr;
 use Log;
+use Poppy\System\Models\PamAccount;
 use Request;
 
 /**
@@ -33,8 +35,9 @@ class FpTrack
      * 后台用户记录ip&fp信息
      * @return void
      */
-    public function track($pam = null): void
+    public function track(): void
     {
+        $pam = Auth::guard(PamAccount::GUARD_BACKEND)->user();
         Log::info('backendTrack', [
             'user' => $pam->username ?? '',
             'ip'   => Request::ip(),

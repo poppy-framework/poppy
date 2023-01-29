@@ -59,7 +59,7 @@ class HomeController extends BackendController
      */
     public function track()
     {
-        (new FpTrack())->track(Auth::user());
+        (new FpTrack())->track();
     }
 
     /**
