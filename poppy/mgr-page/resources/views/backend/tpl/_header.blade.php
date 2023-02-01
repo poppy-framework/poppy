@@ -40,8 +40,7 @@
             </a>
         </li>
         <li class="layui-nav-item layui-hide-xs" lay-unselect="">
-            <a ew-event="theme" class="J_ignore"
-                data-url="{!! route_url('py-mgr-page:backend.home.easy-web', ['theme'], ['host'=> $host]) !!}">
+            <a ew-event="theme" class="J_ignore" data-url="{!! route_url('py-mgr-page:backend.home.easy-web', ['theme'], ['host'=> $host]) !!}">
                 <i class="layui-icon layui-icon-theme"></i>
             </a>
         </li>
@@ -52,7 +51,7 @@
         </li>
         <li class="layui-nav-item" lay-unselect style="min-width: 100px;">
             <a href="#" class="J_ignore">
-                <cite>{{$_pam->username ?? ''}}</cite>
+                <cite>{{ Poppy\Framework\Helper\StrHelper::hideContact( $_pam->username, 2, -2, '***' ) ?? ''}}</cite>
                 <span class="layui-nav-more"></span>
             </a>
             <dl class="layui-nav-child">
