@@ -11,6 +11,7 @@
     "require": {
         "php": ">=7.4",
         "ext-bcmath": "*",
+        "ext-mbstring": "*",
         "ext-xml": "*",
         "symfony/yaml": "^5"
     },

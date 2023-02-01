@@ -67,7 +67,7 @@ class StrHelper
     /**
      * 获取文件名后缀名
      * @param string $string string
-     * @param string $split split
+     * @param string $split  split
      * @return string
      */
     public static function suffix(string $string, $split = '.')
@@ -88,7 +88,7 @@ class StrHelper
     /**
      * 获取文件名前缀
      * @param string $string string
-     * @param string $split string
+     * @param string $split  string
      * @return string
      */
     public static function prefix(string $string, $split = '.')
@@ -128,8 +128,8 @@ class StrHelper
 
     /**
      * 转义特殊字符
-     * @param mixed $input input
-     * @param bool $preserveAmpersand preserveAmpersand
+     * @param mixed $input             input
+     * @param bool  $preserveAmpersand preserveAmpersand
      * @return array|mixed|string
      */
     public static function htmlSpecialChars($input, $preserveAmpersand = true)
@@ -181,7 +181,7 @@ class StrHelper
     /**
      * 删除代码中的换行符
      * @param string $string string
-     * @param bool $js js
+     * @param bool   $js     js
      * @return mixed
      */
     public static function trimEOL(string $string, $js = false)
@@ -206,9 +206,9 @@ class StrHelper
     /**
      * 截取字符串
      * @param string $string 带截取的字符串
-     * @param int $length 长度
+     * @param int    $length 长度
      * @param string $suffix 后缀
-     * @param int $start 开始字符
+     * @param int    $start  开始字符
      * @param string $char_code
      * @return mixed|string 中文截断字符方法
      */
@@ -306,8 +306,8 @@ class StrHelper
 
     /**
      * 返回随机字串, 区分大小写
-     * @param int $length length
-     * @param string $chars chars
+     * @param int    $length length
+     * @param string $chars  chars
      * @return string
      */
     public static function randomCustom(int $length, $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz')
@@ -349,9 +349,9 @@ class StrHelper
 
     /**
      * 转换字符
-     * @param string $str str
+     * @param string $str         str
      * @param string $fromCharset fromCharset
-     * @param string $toCharset toCharset
+     * @param string $toCharset   toCharset
      * @return array|string
      */
     public static function convert(string $str, $fromCharset = 'utf-8', $toCharset = 'gbk')
@@ -397,9 +397,9 @@ class StrHelper
 
     /**
      * 批量转换
-     * @param mixed $str str
+     * @param mixed  $str         str
      * @param string $fromCharset fromCharset
-     * @param string $toCharset toCharset
+     * @param string $toCharset   toCharset
      * @return array
      */
     public static function batchConvert($str, $fromCharset = 'utf-8', $toCharset = 'gbk')
@@ -520,7 +520,7 @@ class StrHelper
 
     /**
      * 分割 separate, 去除空格
-     * @param string $str str
+     * @param string $str       str
      * @param string $separator separator
      * @return array
      */
@@ -590,7 +590,7 @@ class StrHelper
 
     /**
      * reverse for match
-     * @param mixed $ids ids
+     * @param mixed      $ids   ids
      * @param bool|false $array array
      * @return array|mixed
      */
@@ -611,13 +611,16 @@ class StrHelper
 
     /**
      * 隐藏联系方式
-     * @param string $input input
+     * @param string $input   输入内容
+     * @param int    $start   开始位数
+     * @param int    $end     结束位数
+     * @param string $replace 替换字串
      * @return string
      */
-    public static function hideContact(string $input): string
+    public static function hideContact(string $input, int $start = 3, int $end = -4, string $replace = '****'): string
     {
         if ($input) {
-            return str_replace(mb_substr($input, 3, -4), '****', $input);
+            return str_replace(mb_substr($input, $start, $end), $replace, $input);
         }
         return '';
     }
@@ -742,7 +745,7 @@ class StrHelper
     /**
      * 将内容截取到介绍中
      * @param string $content 有待截取的内容
-     * @param int $length 带截取的长度
+     * @param int    $length  带截取的长度
      * @return mixed|string 截取内容的一部分
      */
     public static function intro(string $content, $length = 0)
@@ -771,10 +774,10 @@ class StrHelper
 
     /**
      * 返回唯一的值
-     * @param string $current current
-     * @param string $str str
+     * @param string $current   current
+     * @param string $str       str
      * @param string $delimiter delimiter
-     * @param bool $remove remove
+     * @param bool   $remove    remove
      * @return mixed
      */
     public static function unique(string $current, string $str, $delimiter = ',', $remove = false)
