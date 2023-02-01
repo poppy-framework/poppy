@@ -228,7 +228,7 @@ class Pam
         }
 
         // 自动设置前缀
-        $prefix = strtoupper(strtolower(sys_setting('py-system::pam.prefix')));
+        $prefix = strtoupper(strtolower((string) sys_setting('py-system::pam.prefix', 'PF')));
         if ($type !== PamAccount::REG_TYPE_USERNAME) {
             $hasAccountName = false;
             // 检查是否设置了前缀

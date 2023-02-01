@@ -6,6 +6,7 @@ namespace Poppy\System\Setting\Repository;
 
 use Exception;
 use Illuminate\Support\Str;
+use PDOException;
 use Poppy\Core\Classes\Contracts\SettingContract;
 use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Classes\Traits\AppTrait;
@@ -26,6 +27,13 @@ class SettingRepository implements SettingContract
      * @var RdsDb
      */
     private static $rds;
+
+
+    /**
+     * 是否存在数据表
+     * @var bool
+     */
+    private static bool $existTable = true;
 
     public function __construct()
     {
@@ -71,7 +79,18 @@ class SettingRepository implements SettingContract
             return unserialize($val);
         }
 
-        $record = $this->findRecord($key);
+        /* 4.2 : fix skeleton migrate error
+         * ---------------------------------------- */
+        if (!self::$existTable) {
+            return $default;
+        }
+
+        try {
+            $record = $this->findRecord($key);
+        } catch (PDOException $e) {
+            self::$existTable = false;
+            return $default;
+        }
         if (!$record) {
             $this->set($key, $default);
             return $default;
