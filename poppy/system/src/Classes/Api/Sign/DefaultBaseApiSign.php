@@ -56,7 +56,7 @@ abstract class DefaultBaseApiSign implements ApiSignContract
             Log::error('sign-error', [
                 'params'  => $request->all(),
                 'headers' => [
-                    'ip'    => $request->ip,
+                    'ip'    => $request->ip(),
                     'os'    => x_header('os'),
                     'ver'   => x_header('ver'),
                     'token' => jwt_token(),
