@@ -148,6 +148,7 @@ class FormBuilder extends CollectiveFormBuilder
         ]);
         $value = (string) $this->getValueAttribute($name, $value);
         $value = str_replace([PHP_EOL, "\r", "\n", "\r\n"], '', $value);
+        $value = str_replace('\'', '\\\'', $value);
 
         return /** @lang text */
             <<<Editor
@@ -163,7 +164,6 @@ class FormBuilder extends CollectiveFormBuilder
            const {$contentId}EditorConfig = {
                 onChange: function (editor) {
                   const html = editor.getHtml();
-                  console.log(html)
                   $('#{$contentId}Input').val(html)
                 },
                 MENU_CONF: {
