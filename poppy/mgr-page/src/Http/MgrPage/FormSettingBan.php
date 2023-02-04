@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Http\MgrPage;
 
 use Illuminate\Http\Request;
@@ -11,7 +13,7 @@ use Poppy\System\Exceptions\FormException;
 use Poppy\System\Models\PamBan;
 use Poppy\System\Models\SysConfig;
 
-class FormBanSetting extends FormSettingBase
+class FormSettingBan extends FormSettingBase
 {
 
     public $inbox = false;

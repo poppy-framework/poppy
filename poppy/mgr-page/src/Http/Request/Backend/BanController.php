@@ -9,7 +9,7 @@ use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
 use Poppy\MgrPage\Http\MgrPage\FormBanEstablish;
-use Poppy\MgrPage\Http\MgrPage\FormBanSetting;
+use Poppy\MgrPage\Http\MgrPage\FormSettingBan;
 use Poppy\MgrPage\Http\MgrPage\ListPamBan;
 use Poppy\System\Action\Ban;
 use Poppy\System\Models\PamAccount;
@@ -71,7 +71,7 @@ class BanController extends BackendController
      */
     public function setting()
     {
-        $form = new FormBanSetting();
+        $form = new FormSettingBan();
         $form->setAccountType(input('type', PamAccount::TYPE_USER));
         return $form->render();
     }

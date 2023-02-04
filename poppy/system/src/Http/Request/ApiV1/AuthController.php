@@ -266,10 +266,12 @@ class AuthController extends JwtApiController
     }
 
     /**
-     * @api                   {post} /api_v1/system/auth/renew [Sys]续期
+     * @api                   {post} /api_v1/system/auth/renew [Sys]凭证续期
      * @apiVersion            1.0.0
      * @apiName               SysAuthRenew
      * @apiGroup              Poppy
+     * @apiQuery {string}     [device_id]   设备 ID, 参考 header x-id
+     * @apiQuery {string}     [device_type] 设备 类型, 参考 header x-os
      */
     public function renew()
     {
@@ -279,8 +281,8 @@ class AuthController extends JwtApiController
         }
 
         try {
-            $deviceId   = x_header('app-id') ?: input('device_id', '');
-            $deviceType = x_header('app-os') ?: input('device_type', '');
+            $deviceId   = x_header('id') ?: input('device_id', '');
+            $deviceType = x_header('os') ?: input('device_type', '');
             event(new LoginTokenPassedEvent($pam, $token, $deviceId, $deviceType));
         } catch (Throwable $e) {
             return Resp::error($e->getMessage());

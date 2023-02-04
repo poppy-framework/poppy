@@ -39,6 +39,8 @@ Route::group([
         ->name('py-mgr-page:backend.pam.enable');
     $router->any('pam/log', 'PamController@log')
         ->name('py-mgr-page:backend.pam.log');
+    $router->any('pam/setting_log', 'PamController@settingLog')
+        ->name('py-mgr-page:backend.pam.setting_log');
     $router->any('pam/token', 'PamController@token')
         ->name('py-mgr-page:backend.pam.token');
     $router->any('pam/ban/{id}/{type}', 'PamController@ban')

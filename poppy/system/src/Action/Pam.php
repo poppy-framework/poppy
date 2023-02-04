@@ -7,6 +7,7 @@ namespace Poppy\System\Action;
 use Auth;
 use Carbon\Carbon;
 use DB;
+use Exception;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -14,6 +15,7 @@ use Illuminate\Support\Str;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Validation\Rule;
+use Poppy\MgrPage\Http\MgrPage\FormSettingLog;
 use Poppy\System\Classes\Contracts\PasswordContract;
 use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Classes\Traits\UserSettingTrait;
@@ -563,11 +565,19 @@ class Pam
     /**
      * 清除登录日志
      * @return bool
+     * @throws Exception
      */
     public function clearLog(): bool
     {
-        // 删除 60 天以外的登录日志
-        PamLog::where('created_at', '<', Carbon::now()->subDays(60))->delete();
+        $days = sys_setting('py-system::log.days');
+        if ($days === FormSettingLog::DAYS_FOREVER) {
+            return true;
+        }
+        else {
+            $days = ((int) $days) ?: 180;
+        }
+        // 删除 xx 天以外的登录日志, 默认 180 天
+        PamLog::where('created_at', '<', Carbon::now()->subDays($days))->delete();
         return true;
     }
 

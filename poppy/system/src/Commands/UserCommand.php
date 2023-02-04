@@ -11,6 +11,7 @@ use Poppy\System\Action\Ban;
 use Poppy\System\Action\Pam;
 use Poppy\System\Classes\PySystemDef;
 use Poppy\System\Models\PamAccount;
+use Poppy\System\Models\PamPermission;
 use Poppy\System\Models\PamRole;
 use Poppy\System\Models\SysConfig;
 use Throwable;
@@ -28,6 +29,7 @@ class UserCommand extends Command
 		{do : actions}
 		{--account= : Account Name}
 		{--pwd= : Account password}
+		{--perm= : The perm need check}
 		';
 
     /**
@@ -139,6 +141,16 @@ class UserCommand extends Command
                 (new Pam())->autoEnable();
                 $this->info(sys_gen_mk(self::class, 'auto enable pam!'));
                 break;
+            case 'user':
+                $role     = $this->ask('Which <role> you want assign to ?');
+                $passport = $this->ask('Which <passport> you want to assign?');
+                $this->user($role, $passport);
+                break;
+            case 'assign':
+                $name = $this->ask('Which role you want assign permission ?');
+                $type = $this->ask('Which permission list <user type> you want to get ?');
+                $this->assign($name, $type);
+                break;
             case 'clear_log':
                 (new Pam())->clearLog();
                 $this->info(sys_gen_mk(self::class, 'auto clear log!'));
@@ -147,9 +159,80 @@ class UserCommand extends Command
                 (new Ban())->initAll();
                 $this->info(sys_gen_mk(self::class, 'Init Ban Cache!'));
                 break;
+            case 'check_perm':
+                $permission = $this->option('perm');
+                $this->checkPermission($permission);
+                break;
             default:
                 $this->error('Please type right action![reset_pwd, init_role, create_user, clear_expired, ban_init, auto_enable, clear_log, auto_fill]');
                 break;
+        }
+    }
+
+
+    /**
+     * 将权限赋值给指定的用户组
+     */
+    private function assign($name, $type)
+    {
+        /** @var PamRole $role */
+        $role = PamRole::where('name', $name)->first();
+
+        if (!$role) {
+            $this->error(
+                sys_gen_mk(self::class, 'Role [' . $name . '] not exists in table !')
+            );
+
+            return;
+        }
+
+        $permissions = (new PamPermission())::where('type', $type)->get();
+        if (!$permissions) {
+            $this->error(sys_gen_mk(self::class, 'Permission type [' . $type . '] has no permissions !'));
+            return;
+        }
+        $role->syncPermission($permissions);
+        $this->info(sys_gen_mk(self::class, "Save [{$type}] permission to role [{$name}] !"));
+    }
+
+
+    /**
+     * 将角色赋值给指定的用户
+     */
+    private function user($role, $passport)
+    {
+        /** @var PamRole $role */
+        $role = PamRole::where('name', $role)->first();
+
+        if (!$role) {
+            $this->error(sys_gen_mk(self::class, 'Role [' . $role . '] not exists in table !'));
+            return;
+        }
+
+        $pam = PamAccount::passport($passport);
+        if (!$pam) {
+            $this->error(sys_gen_mk(self::class, 'No such pam account !'));
+            return;
+        }
+        $pam->attachRole($role);
+        $this->info(sys_gen_mk(self::class, "Save [{$role->id}, {$role->type}] role to account [{$passport}] !"));
+    }
+
+
+    /**
+     * @param string $permission 需要检测的权限
+     */
+    private function checkPermission(string $permission)
+    {
+        if (PamPermission::where('name', $permission)->exists()) {
+            $this->info(
+                sys_gen_mk(self::class, 'Permission `' . $permission . '` in table ')
+            );
+        }
+        else {
+            $this->error(
+                sys_gen_mk(self::class, 'Permission `' . $permission . '` not in table')
+            );
         }
     }
 }

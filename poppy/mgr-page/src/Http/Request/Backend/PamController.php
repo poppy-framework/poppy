@@ -4,7 +4,7 @@ namespace Poppy\MgrPage\Http\Request\Backend;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
+use Illuminate\Http\Response;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
@@ -13,6 +13,7 @@ use Poppy\MgrPage\Http\MgrPage\FormPamDisable;
 use Poppy\MgrPage\Http\MgrPage\FormPamEnable;
 use Poppy\MgrPage\Http\MgrPage\FormPamEstablish;
 use Poppy\MgrPage\Http\MgrPage\FormPamPassword;
+use Poppy\MgrPage\Http\MgrPage\FormSettingLog;
 use Poppy\MgrPage\Http\MgrPage\ListPamAccount;
 use Poppy\MgrPage\Http\MgrPage\ListPamLog;
 use Poppy\MgrPage\Http\MgrPage\ListPamToken;
@@ -21,7 +22,6 @@ use Poppy\System\Events\PamTokenBanEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamLog;
 use Poppy\System\Models\PamToken;
-use Response;
 use Throwable;
 
 /**
@@ -105,7 +105,7 @@ class PamController extends BackendController
     }
 
     /**
-     * @return array|\Illuminate\Http\Response|JsonResponse|Redirector|RedirectResponse|Resp|Response
+     * @return Response|JsonResponse|RedirectResponse|string
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -116,8 +116,14 @@ class PamController extends BackendController
         return $grid->render();
     }
 
+    public function settingLog()
+    {
+        $form = new FormSettingLog();
+        return $form->render();
+    }
+
     /**
-     * @return array|\Illuminate\Http\Response|JsonResponse|Redirector|RedirectResponse|Resp|Response
+     * @return Response|JsonResponse|RedirectResponse|string
      * @throws ApplicationException
      * @throws Throwable
      */

@@ -9,6 +9,7 @@ use Poppy\Framework\Classes\Traits\AppTrait;
 /**
  * Listener Helpers
  * @deprecated 4.1
+ * @removed 5.0
  */
 trait ListenerTrait
 {
