@@ -12,23 +12,16 @@ use Poppy\Core\Classes\Traits\CoreTrait;
 use Poppy\Core\Events\PermissionInitEvent;
 use Poppy\Core\Rbac\Permission\Permission;
 use Poppy\Core\Rbac\Permission\PermissionManager;
-use Poppy\Framework\Exceptions\ApplicationException;
-use Poppy\System\Classes\Traits\DbTrait;
-use Poppy\System\Models\PamAccount;
-use Poppy\System\Models\PamPermission;
-use Poppy\System\Models\PamRole;
-use Poppy\System\Tests\Testing\TestingPam;
 
 /**
  * Permission Command
  */
 class PermissionCommand extends Command
 {
-    use CoreTrait, DbTrait;
+    use CoreTrait;
 
     protected $signature = 'py-core:permission
 		{do : The permission action to handle, allow <lists,init>}
-		{--permission= : The permission need to check}
 		';
 
     protected $description = 'Permission manage list.';
@@ -38,34 +31,11 @@ class PermissionCommand extends Command
      */
     private PermissionManager $permission;
 
-    /**
-     * @var PamRole
-     */
-    private PamRole $pamRole;
 
-    /**
-     * @var PamPermission
-     */
-    private PamPermission $pamPermission;
-
-
-    /**
-     * @throws ApplicationException
-     */
     public function __construct()
     {
         parent::__construct();
         $this->permission = $this->corePermission();
-
-        $mdlRole       = config('poppy.core.rbac.role');
-        $mdlPermission = config('poppy.core.rbac.permission');
-
-        if (!class_exists($mdlRole) || !class_exists($mdlPermission)) {
-            throw new ApplicationException('你需要配置 `poppy.core` 的 RBAC 配置');
-        }
-
-        $this->pamRole       = new $mdlRole();
-        $this->pamPermission = new $mdlPermission();
     }
 
     /**
@@ -86,20 +56,6 @@ class PermissionCommand extends Command
             case 'menus':
                 $this->checkMenus();
                 break;
-            case 'user':
-                $role     = $this->ask('Which <role> you want assign to ?');
-                $passport = $this->ask('Which <passport> you want to assign?');
-                $this->user($role, $passport);
-                break;
-            case 'assign':
-                $name = $this->ask('Which role you want assign permission ?');
-                $type = $this->ask('Which permission list <user type> you want to get ?');
-                $this->assign($name, $type);
-                break;
-            case 'check':
-                $permission = $this->option('permission');
-                $this->checkPermission($permission);
-                break;
             default:
                 $this->error(
                     sys_gen_mk(self::class, ' Command Not Exists!')
@@ -110,7 +66,8 @@ class PermissionCommand extends Command
         return true;
     }
 
-    public function lists()
+
+    private function lists()
     {
         $data = new Collection();
         $this->permission->permissions()->each(function (Permission $permission) use ($data) {
@@ -126,7 +83,7 @@ class PermissionCommand extends Command
         );
     }
 
-    public function init()
+    private function init()
     {
         sys_tag('py-core')->del(PyCoreDef::ckModule('module'));
 
@@ -148,70 +105,6 @@ class PermissionCommand extends Command
         $this->info(sys_gen_mk(self::class, "Init {$num} permission Success!"));
     }
 
-    /**
-     * 将权限赋值给指定的用户组
-     */
-    private function assign($name, $type)
-    {
-        /** @var PamRole $role */
-        $role = $this->pamRole::where('name', $name)->first();
-
-        if (!$role) {
-            $this->error(
-                sys_gen_mk(self::class, 'Role [' . $name . '] not exists in table !')
-            );
-
-            return;
-        }
-
-        $permissions = $this->pamPermission::where('type', $type)->get();
-        if (!$permissions) {
-            $this->error(sys_gen_mk(self::class, 'Permission type [' . $type . '] has no permissions !'));
-            return;
-        }
-        $role->syncPermission($permissions);
-        $this->info(sys_gen_mk(self::class, "Save [{$type}] permission to role [{$name}] !"));
-    }
-
-
-    /**
-     * 将角色赋值给指定的用户
-     */
-    private function user($role, $passport)
-    {
-        /** @var PamRole $role */
-        $role = $this->pamRole::where('name', $role)->first();
-
-        if (!$role) {
-            $this->error(sys_gen_mk(self::class, 'Role [' . $role . '] not exists in table !'));
-            return;
-        }
-
-        $pam = PamAccount::passport($passport);
-        if (!$pam) {
-            $this->error(sys_gen_mk(self::class, 'No such pam account !'));
-            return;
-        }
-        $pam->attachRole($role);
-        $this->info(sys_gen_mk(self::class, "Save [{$role->id}, {$role->type}] role to account [{$passport}] !"));
-    }
-
-    /**
-     * @param string $permission 需要检测的权限
-     */
-    private function checkPermission(string $permission)
-    {
-        if ($this->pamPermission::where('name', $permission)->exists()) {
-            $this->info(
-                sys_gen_mk(self::class, 'Permission `' . $permission . '` in table ')
-            );
-        }
-        else {
-            $this->error(
-                sys_gen_mk(self::class, 'Permission `' . $permission . '` not in table')
-            );
-        }
-    }
 
     /**
      * 检查菜单
