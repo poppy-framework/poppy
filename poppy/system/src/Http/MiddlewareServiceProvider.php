@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Poppy\System\Http;
 
@@ -24,6 +24,7 @@ class MiddlewareServiceProvider extends ServiceProvider
         $router->aliasMiddleware('sys-disabled_pam', Middlewares\DisabledPam::class);
         $router->aliasMiddleware('sys-site_open', Middlewares\SiteOpen::class);
         $router->aliasMiddleware('sys-app_sign', Middlewares\AppSign::class);
+        $router->aliasMiddleware('sys-html_purifier', Middlewares\HtmlPurifier::class);
 
         /*
         |--------------------------------------------------------------------------

@@ -27,7 +27,7 @@ Route::group([
 /* 可以对用户设备进行封禁
  * ---------------------------------------- */
 Route::group([
-    'middleware' => ['api-sign'],
+    'middleware' => ['api-sign', 'sys-html_purifier'],
     'namespace'  => 'Poppy\System\Http\Request\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
     $route->post('auth/login', 'AuthController@login')
@@ -45,7 +45,7 @@ Route::group([
 
 // Jwt 合法性验证
 Route::group([
-    'middleware' => ['sys-jwt'],
+    'middleware' => ['sys-jwt', 'sys-html_purifier'],
     'namespace'  => 'Poppy\System\Http\Request\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
     $route->post('upload/image', 'UploadController@image')
@@ -56,7 +56,7 @@ Route::group([
 
 // 单点登录
 Route::group([
-    'middleware' => ['api-sso'],
+    'middleware' => ['api-sso', 'sys-html_purifier'],
     'namespace'  => 'Poppy\System\Http\Request\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
     $route->post('auth/access', 'AuthController@access')
