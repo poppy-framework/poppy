@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\Im\Rpc;
+namespace Poppy\Im\Rpc\Service;
 
 use Poppy\Im\Rpc\Value\From;
 use Poppy\Im\Rpc\Value\Message;

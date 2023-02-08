@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\Im\Rpc;
+namespace Poppy\Im\Rpc\Service;
 
 /**
  * 敏感词检测
