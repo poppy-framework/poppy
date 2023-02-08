@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Poppy\\Im\\Rpc": "src/"
+            "Poppy\\Im\\Rpc\\": "src/"
         }
     },
     "config": {
