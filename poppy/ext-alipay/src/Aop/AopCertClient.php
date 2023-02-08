@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+// declare(strict_types = 1);
 
 namespace Poppy\Extension\Alipay\Aop;
 
@@ -822,7 +822,7 @@ class AopCertClient
      * 转换字符集编码
      * @param null|string $data
      * @param             $targetCharset
-     * @return string
+     * @return array|false|string|string[]|null
      */
     public function charset($data, $targetCharset)
     {
@@ -832,7 +832,7 @@ class AopCertClient
                 $data = mb_convert_encoding($data, $targetCharset, $fileType);
             }
         }
-        return (string) $data;
+        return $data;
     }
 
     /**
