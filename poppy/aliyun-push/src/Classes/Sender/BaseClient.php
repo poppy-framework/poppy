@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\AliyunPush\Classes\Sender;
 
 use AlibabaCloud\Client\AlibabaCloud;
+use AlibabaCloud\Client\Credentials\Providers\CredentialsProvider;
 use AlibabaCloud\Client\Exception\ClientException;
 use AlibabaCloud\Client\Request\RpcRequest;
 use Poppy\AliyunPush\Classes\Config\Config;
@@ -55,6 +56,11 @@ abstract class BaseClient
     protected string $androidActivity;
 
     /**
+     * @var string
+     */
+    protected string $clientName = '';
+
+    /**
      * 执行结果
      * @var mixed
      */
@@ -73,6 +79,7 @@ abstract class BaseClient
         $this->androidActivity = $config->getAndroidActivity();
         $this->accessKey       = $config->getAccessKey();
         $this->accessSecret    = $config->getAccessSecret();
+        $this->clientName      = $config->getClientName();
 
     }
 
@@ -98,6 +105,7 @@ abstract class BaseClient
     protected function rpc(): RpcRequest
     {
         return AlibabaCloud::rpc()
+            ->client($this->getClientName())
             ->product('Push')
             ->scheme('https')
             ->version('2016-08-01')
@@ -114,9 +122,18 @@ abstract class BaseClient
         try {
             AlibabaCloud::accessKeyClient($this->accessKey, $this->accessSecret)
                 ->regionId('cn-hangzhou')
-                ->asDefaultClient();
+                ->name($this->getClientName());
         } catch (Throwable $e) {
             throw new PushException($e->getMessage());
         }
+    }
+
+    /**
+     * @return array|false|string
+     * @throws ClientException
+     */
+    protected function getClientName()
+    {
+        return $this->clientName ?: CredentialsProvider::getDefaultName();
     }
 }

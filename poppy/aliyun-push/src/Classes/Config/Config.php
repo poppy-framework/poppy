@@ -41,7 +41,13 @@ class Config
      */
     protected string $androidActivity;
 
-    public function __construct($ak, $sk, $android_app_id, $android_channel = '', $android_activity = '', $ios_key = '')
+    /**
+     * 客户端name
+     * @var string
+     */
+    protected string $clientName;
+
+    public function __construct($ak, $sk, $android_app_id, $android_channel = '', $android_activity = '', $ios_key = '', $clientName = '')
     {
         $this->accessKey       = (string) $ak;
         $this->accessSecret    = (string) $sk;
@@ -49,6 +55,7 @@ class Config
         $this->androidChannel  = (string) $android_channel;
         $this->androidActivity = (string) $android_activity;
         $this->iosAppKey       = (string) $ios_key;
+        $this->clientName      = trim((string) $clientName);
     }
 
     /**
@@ -97,6 +104,14 @@ class Config
     public function getAccessSecret(): string
     {
         return $this->accessSecret;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientName(): string
+    {
+        return $this->clientName;
     }
 
     /**
