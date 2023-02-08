@@ -1,0 +1,7 @@
+{
+    "name": "IM-Rpc抽象",
+    "slug": "im-rpc",
+    "version": "1.0",
+    "order": 1020,
+    "description": "IM项目rpc service抽象"
+}
