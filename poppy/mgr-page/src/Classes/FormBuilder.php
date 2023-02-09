@@ -553,6 +553,8 @@ HAHA;
         <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="{$id}_select">选择文件</button>
         {$autoUpload}
         <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="{$id}_delete">删除选中图片</button>
+        <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="{$id}_select_all">全选</button>
+        <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="{$id}_unselect_all">取消全选</button>
     </div>
     <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
         <div class="layui-upload-list clearfix" id="{$id}_container"></div>
@@ -590,6 +592,18 @@ $(function(){
             $(this).addClass('multi-checked')
         }
         return false;
+    });
+    $('body').on('click', '#{$id}_select_all',  function () {
+        $('#{$id}_container>div').each(function(){
+            var isChecked = $(\$(this)).find("input[name=________mark]").prop("checked", true);
+            $(this).addClass('multi-checked')
+        })
+    });
+    $('body').on('click', '#{$id}_unselect_all',  function () {
+        $('#{$id}_container>div').each(function(){
+            var isChecked = $(\$(this)).find("input[name=________mark]").prop("checked", false);
+            $(this).removeClass('multi-checked')
+        })
     });
     var {$id}_uploader = layui.upload.render({
         elem:'#{$id}_select',   //开始
