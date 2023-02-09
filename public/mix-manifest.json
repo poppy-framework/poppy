@@ -1,7 +1,7 @@
 {
     "/assets/libs/boot/style.css": "/assets/libs/boot/style.css?id=58ebed59d0f86ee7193f957c3c8c7bdf",
-    "/assets/libs/boot/poppy.mgr.min.js": "/assets/libs/boot/poppy.mgr.min.js?id=7377747b09df941ac4fa2fcf19935db4",
-    "/assets/libs/boot/vendor.min.js": "/assets/libs/boot/vendor.min.js?id=95dda63b1376b3269766aa83019c7557",
+    "/assets/libs/boot/poppy.mgr.min.js": "/assets/libs/boot/poppy.mgr.min.js?id=ac49d1a4002a33ec4ef4a5c98d0f5615",
+    "/assets/libs/boot/vendor.min.js": "/assets/libs/boot/vendor.min.js?id=577f8f219eac2bbfe0b966f1984a799d",
     "/assets/font/fontawesome/fa-brands-400.eot": "/assets/font/fontawesome/fa-brands-400.eot?id=0868992b7c56298026b76b22c534eab9",
     "/assets/font/fontawesome/fa-brands-400.svg": "/assets/font/fontawesome/fa-brands-400.svg?id=1d5619cd804367cefe6da2d79289218a",
     "/assets/font/fontawesome/fa-brands-400.ttf": "/assets/font/fontawesome/fa-brands-400.ttf?id=9fefebd385ff8e0973f14d0ee1a28601",
@@ -53,6 +53,7 @@
     "/assets/libs/jquery/poshytip/jquery.poshytip.js": "/assets/libs/jquery/poshytip/jquery.poshytip.js?id=de078f3a35c22d5c976a388df01df83a",
     "/assets/libs/jquery/poshytip/tip-yellow/tip-yellow.css": "/assets/libs/jquery/poshytip/tip-yellow/tip-yellow.css?id=4b8f2e9781399d57ebaf5aa48e901ff0",
     "/assets/libs/jquery/poshytip/yellowsimple/tip-yellowsimple.css": "/assets/libs/jquery/poshytip/yellowsimple/tip-yellowsimple.css?id=26bf53366177d1b6d25bfff3400d3214",
+    "/assets/libs/jquery/sortable/jquery.sortable.js": "/assets/libs/jquery/sortable/jquery.sortable.js?id=7ff03231b0d56802f27c5a3a8d2c89fc",
     "/assets/libs/jquery/tokenize2/README.md": "/assets/libs/jquery/tokenize2/README.md?id=dea2eaa1bb389b6f7d7c65750279af9a",
     "/assets/libs/jquery/tokenize2/jquery.tokenize2.js": "/assets/libs/jquery/tokenize2/jquery.tokenize2.js?id=76c8e238609af650b56e1c7dc1df13be",
     "/assets/libs/jquery/tokenize2/tokenize2.css": "/assets/libs/jquery/tokenize2/tokenize2.css?id=850cae242913702414d0191efacae180",

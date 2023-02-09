@@ -512,6 +512,12 @@ CONTENT;
 
         $auto       = (bool) ($options['auto'] ?? false);
         $autoEnable = $auto ? 'true' : 'false';
+
+        $sortStr = <<<SORT
+     var el{$id} = document.getElementById('{$id}_container');
+     var sort{$id} = new Sortable(el{$id})
+SORT;
+
         $renderStr  = '';
         if (count($value)) {
             $data      = json_encode($value);
@@ -528,6 +534,8 @@ CONTENT;
                 }
                 layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
                     $('#{$id}_container').append(html);
+                    
+                    {$sortStr}
                 });
             }
 HAHA;
@@ -571,7 +579,7 @@ $(function(){
     var {$id}_files = [];
     
     {$renderStr}
-    
+   
      //绑定单击事件
     $('body').on('click', '#{$id}_container>div',  function () {
         var isChecked = $(this).find("input[name=________mark]").prop("checked");
@@ -626,6 +634,8 @@ $(function(){
                 //将预览 html 追加
                 layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
                     $('#{$id}_container').append(html);
+                    
+                    {$sortStr}
                 });
             });
          }, 

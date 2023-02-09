@@ -8,8 +8,8 @@ let mix = require('laravel-mix');
 mix
     .browserSync({
         // 这里替换地址
-        proxy : 'http://poppy.duoli.com/',
-        files : [
+        proxy: 'http://poppy-v4.duoli.com/',
+        files: [
             "public/assets/**/*.js",
             "public/assets/**/*.css",
             "modules/**/src/request/**/*.php",
@@ -18,7 +18,7 @@ mix
         ]
     })
     .options({
-        processCssUrls : false
+        processCssUrls: false
     })
     .disableNotifications()
     .version()
@@ -44,7 +44,8 @@ mix
             'poppy/mgr-page/resources/libs/jquery/validation/jquery.validation.js',
             'poppy/mgr-page/resources/libs/jquery/drag-arrange/drag-arrange.js',
             'poppy/mgr-page/resources/libs/jquery/tokenize2/jquery.tokenize2.js',
-            'poppy/mgr-page/resources/libs/clipboard/clipboard.min.js'
+            'poppy/mgr-page/resources/libs/clipboard/clipboard.min.js',
+            'poppy/mgr-page/resources/libs/sortable/sortable.js',
         ],
         'public/assets/libs/boot/vendor.min.js'
     )
