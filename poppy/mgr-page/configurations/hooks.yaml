@@ -2,3 +2,7 @@
   name: 'poppy.mgr-page.settings'
   hooks:
     - '\Poppy\MgrPage\Hooks\MgrPage\SettingSystem'
+-
+  name: 'poppy.mgr-page.html_js_vars'
+  hooks:
+    - '\Poppy\MgrPage\Hooks\MgrPage\HtmlJsVar'

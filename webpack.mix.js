@@ -46,6 +46,7 @@ mix
             'poppy/mgr-page/resources/libs/jquery/tokenize2/jquery.tokenize2.js',
             'poppy/mgr-page/resources/libs/clipboard/clipboard.min.js',
             'poppy/mgr-page/resources/libs/sortable/sortable.js',
+            'poppy/mgr-page/resources/libs/lodash/lodash.min.js',
         ],
         'public/assets/libs/boot/vendor.min.js'
     )

@@ -2,6 +2,10 @@ poppy.mgr-page.html_cp :
   title : 主页卡片
   type : html
   description : 主页卡片, 返回不同方式的Html数据
+poppy.mgr-page.html_js_vars :
+  title : Js 变量
+  type : html
+  description : 页面的 Js 嵌入变量
 poppy.mgr-page.html_top_nav :
   title : 顶部导航
   type : html

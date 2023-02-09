@@ -5,9 +5,11 @@ namespace Poppy\MgrPage\Http\Request\Backend;
 use Auth;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Poppy\Core\Classes\Traits\CoreTrait;
 use Poppy\Core\Exceptions\PermissionException;
@@ -64,7 +66,6 @@ class HomeController extends BackendController
 
     /**
      * 登录
-     * @throws ApplicationException
      */
     public function login()
     {
@@ -112,7 +113,7 @@ class HomeController extends BackendController
 
     /**
      * 登出
-     * @return RedirectResponse|Redirector
+     * @return JsonResponse|Response|RedirectResponse
      */
     public function logout()
     {

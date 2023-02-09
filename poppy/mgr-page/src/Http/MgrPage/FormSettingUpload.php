@@ -2,7 +2,6 @@
 
 namespace Poppy\MgrPage\Http\MgrPage;
 
-use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
@@ -19,7 +18,6 @@ class FormSettingUpload extends FormSettingBase
 
     /**
      * Build a form here.
-     * @throws ApplicationException
      */
     public function form()
     {
@@ -42,5 +40,9 @@ Link;
                 $this->html($link, $desc['title']);
             }
         }
+
+        $this->code('preview_rule', '预览规则')->rules([
+            Rule::string(),
+        ])->help('预览规则, 每行一个, 规则为 `aliyun|file.domain.com`, 将为列表, 多图加载进行示例的加载');
     }
 }

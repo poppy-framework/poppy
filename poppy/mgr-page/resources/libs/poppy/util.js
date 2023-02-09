@@ -629,15 +629,15 @@ if (typeof Util !== 'object') {
         if (Util.browser().msie) {
             img.onreadystatechange = function () {
                 if (this.readyState == "loaded" || this.readyState == "complete") {
-                    fCallback({width: img.width, height: img.height, url: sUrl});
+                    fCallback({ width: img.width, height: img.height, url: sUrl });
                 }
             };
         } else if (Util.browser().mozilla || Util.browser().safari || Util.browser().opera) {
             img.onload = function () {
-                fCallback({width: img.width, height: img.height, url: sUrl});
+                fCallback({ width: img.width, height: img.height, url: sUrl });
             };
         } else {
-            fCallback({width: img.width, height: img.height, url: sUrl});
+            fCallback({ width: img.width, height: img.height, url: sUrl });
         }
     };
 
@@ -800,6 +800,28 @@ if (typeof Util !== 'object') {
             "(\\#[-a-z\\d_]*)?$", 'i'); // fragment locater
         return pattern.test(str);
     };
+
+    /**
+     * 判定是否是图片地址
+     * @param url
+     * @returns {boolean}
+     */
+    Util.isImageUrl = function isImageUrl(url) {
+        const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"];
+        const extension = url.slice(url.lastIndexOf(".")).toLowerCase();
+        return imageExtensions.includes(extension);
+    }
+
+    /**
+     * 视频
+     * @param url
+     * @returns {boolean}
+     */
+    Util.isVideoUrl = function isImageUrl(url) {
+        const videoExtensions = [".mp4"];
+        const extension = url.slice(url.lastIndexOf(".")).toLowerCase();
+        return videoExtensions.includes(extension);
+    }
 
     /**
      * 判定是否是邮箱
@@ -1223,7 +1245,7 @@ if (typeof Util !== 'object') {
 
             byteArrays.push(byteArray);
         }
-        return new File(byteArrays, "pot", {type: contentType});
+        return new File(byteArrays, "pot", { type: contentType });
     }
 
     Util.readAndPreview = function (file, callback) {
@@ -1235,6 +1257,52 @@ if (typeof Util !== 'object') {
             }, false);
             reader.readAsDataURL(file);
         }
+    }
+
+    Util.mgrPagePreviewUrl = function (url, size) {
+        const urlParser = new URL(url);
+        let strRules = _.get(POPPY, 'MGRPAGE.picturePreviewRule', '');
+        let arrRules = strRules.split(';')
+
+        const appendUrl = function (url, type) {
+            if (!type) {
+                return url;
+            }
+            if (Util.isImageUrl(url)) {
+                switch (type) {
+                    case 'aliyun':
+                        if (!url.includes("?x-oss-process")) {
+                            url = `${url}?x-oss-process=image/resize,l_${size}`;
+                        }
+                        break;
+                    case 'qiniu':
+                        if (!url.includes("?imageView2")) {
+                            url = `${url}?imageView2/0/w/${size}`;
+                        }
+                        break;
+                    case 'tencent':
+                        if (!url.includes("?imageView2")) {
+                            url = `${url}?imageView2/0/w/${size}`;
+                        }
+                        break;
+                    case 'huawei':
+                        if (!url.includes("?x-image-process")) {
+                            url = `${url}?x-image-process=image/resize,l_${size}`;
+                        }
+                        break;
+                }
+            }
+            return url;
+        }
+        let type = '';
+        _.each(arrRules, function (rule) {
+            let splitRule = rule.split('|');
+            if (splitRule[1] && _.includes(urlParser.host, splitRule[1]) ) {
+                type = splitRule[0];
+            }
+        })
+
+        return appendUrl(url, type);
     }
 })();
 

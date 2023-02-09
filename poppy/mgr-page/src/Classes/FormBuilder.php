@@ -530,6 +530,7 @@ SORT;
                     name  : item,
                     type  : (values[item].indexOf('.mp4') !== -1) ? 'video' : 'image',
                     result : values[item],
+                    preview : Util.mgrPagePreviewUrl(values[item], 300),
                     classname : 'multi-uploaded',
                 }
                 layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
@@ -566,7 +567,7 @@ HAHA;
         <input type="checkbox" name="________mark" lay-ignore>
         <input type="checkbox" class="j_img_value" checked name="{$name}" style="display:none" value="{{  d.result }}" lay-ignore>
         {{#  if(d.type === 'image'){ }}
-        <img src="{{  d.result }}" alt="{{ d.name }}" class="layui-upload-img" data-width="{{ $pop_size }}px" data-height="{{ $pop_size }}px">
+        <img src="{{  d.preview }}" alt="{{ d.name }}" class="layui-upload-img" data-width="{{ $pop_size }}px" data-height="{{ $pop_size }}px">
         <i class="fa fa-search J_image_preview" data-src="{{  d.result }}" style="display:none;"></i>
         {{# } else { }}
         <video controls class="layui-upload-img">
