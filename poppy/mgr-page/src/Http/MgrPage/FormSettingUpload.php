@@ -43,6 +43,9 @@ Link;
 
         $this->code('preview_rule', '预览规则')->rules([
             Rule::string(),
-        ])->help('预览规则, 每行一个, 规则为 `aliyun|file.domain.com`, 将为列表, 多图加载进行示例的加载');
+        ])->help(
+            '预览规则,每行一个,规则为 `aliyun|file.domain.com`, 将为列表多图进行缩略图的加载, ' .
+            '支持的规则有`aliyun|huawei|tencent|qiniu`, 如 app 使用, 则可除外另行约定'
+        );
     }
 }
