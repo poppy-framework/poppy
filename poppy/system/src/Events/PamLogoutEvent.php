@@ -4,18 +4,22 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Events;
 
-use Poppy\System\Models\PamAccount;
+use Illuminate\Support\Collection;
 
 class PamLogoutEvent
 {
-    public PamAccount $pam;
+    public int $accountId;
+
+    public Collection $tokens;
 
     /**
-     * @param PamAccount $pam
+     * @param int        $accountId
+     * @param Collection $tokens
      */
-    public function __construct(PamAccount $pam)
+    public function __construct(int $accountId, Collection $tokens)
     {
-        $this->pam = $pam;
+        $this->accountId = $accountId;
+        $this->tokens    = $tokens;
     }
 
 }

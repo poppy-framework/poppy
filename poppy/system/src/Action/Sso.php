@@ -5,9 +5,11 @@ declare(strict_types = 1);
 namespace Poppy\System\Action;
 
 use Carbon\Carbon;
+use DB;
 use Exception;
 use Illuminate\Support\Arr;
 use Poppy\Framework\Classes\Traits\AppTrait;
+use Poppy\System\Events\PamLogoutEvent;
 use Poppy\System\Events\PamSsoEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamToken;
@@ -136,10 +138,21 @@ class Sso
      * @param $token
      * @return bool
      */
-    public function logout($token): bool
+    public function logout($id, $token): bool
     {
         $tokenHash = md5($token);
-        PamToken::where('token_hash', $tokenHash)->delete();
+        $tokens    = collect();
+
+        DB::transaction(function () use ($tokenHash, &$tokens) {
+            $tokens = PamToken::where('token_hash', $tokenHash)->pluck('push_id', 'id');
+
+            $ids = $tokens->keys()->toArray();
+
+            PamToken::whereIn('id', $ids)->delete();
+        });
+
+        event(new PamLogoutEvent((int) $id, $tokens));
+
         return true;
     }
 

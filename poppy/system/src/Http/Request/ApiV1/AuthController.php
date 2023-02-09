@@ -306,11 +306,9 @@ class AuthController extends JwtApiController
     {
         $token = jwt_token();
         $Sso   = new Sso();
-        if (!$Sso->logout($token)) {
+        if (!$Sso->logout($this->pam->id, $token)) {
             return Resp::error($Sso->getError());
         }
-
-        event(new PamLogoutEvent($this->pam));
 
         return Resp::success('已退出登录');
     }
