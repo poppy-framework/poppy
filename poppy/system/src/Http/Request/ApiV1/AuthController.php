@@ -15,6 +15,7 @@ use Poppy\System\Action\Pam;
 use Poppy\System\Action\Sso;
 use Poppy\System\Action\Verification;
 use Poppy\System\Events\LoginTokenPassedEvent;
+use Poppy\System\Events\PamLogoutEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\Resources\PamResource;
 use Throwable;
@@ -308,6 +309,9 @@ class AuthController extends JwtApiController
         if (!$Sso->logout($token)) {
             return Resp::error($Sso->getError());
         }
+
+        event(new PamLogoutEvent($this->pam));
+
         return Resp::success('已退出登录');
     }
 
