@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Classes\File;
 
+use Illuminate\Support\Str;
 use Poppy\System\Classes\Contracts\FileContract;
 
 /**
@@ -65,5 +66,29 @@ class FileManager
     public static function prefix(): string
     {
         return app(FileContract::class)->getReturnUrl();
+    }
+
+
+    /**
+     * 规则预览
+     * @return array
+     * @since 4.2
+     */
+    public static function previewRules(): array
+    {
+        $strRules = preg_replace('/\s+/', ';', sys_setting('py-system::picture.preview_rule'));
+        $arrRules = explode(';', $strRules);
+        $rules    = [];
+        if (count($arrRules)) {
+            foreach ($arrRules as $rule) {
+                if (Str::contains($rule, '|')) {
+                    $arrRule = explode('|', $rule);
+                    if (isset($arrRule[0], $arrRule[1])) {
+                        $rules[$arrRule[0]][] = $arrRule[1];
+                    }
+                }
+            }
+        }
+        return $rules;
     }
 }
