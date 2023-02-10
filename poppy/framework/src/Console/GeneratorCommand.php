@@ -18,7 +18,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
      * @param string $name name
      * @return string
      */
-    protected function parseName($name)
+    protected function parseName(string $name): string
     {
         $rootNamespace = '';
         if (Str::startsWith($name, $rootNamespace)) {
@@ -37,7 +37,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
      * @param string $name classname
      * @return string
      */
-    protected function qualifyClass($name)
+    protected function qualifyClass($name): string
     {
         $name = Str::studly(ltrim($name, '\\/'));
 
@@ -49,7 +49,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
     /**
      * @inheritDoc
      */
-    protected function getPath($name)
+    protected function getPath($name): string
     {
         $slug = $this->argument('slug');
 
@@ -107,7 +107,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
      * @param string $name name
      * @return $this
      */
-    protected function replaceNamespace(&$stub, $name)
+    protected function replaceNamespace(&$stub, $name): self
     {
         $stub = str_replace(
             ['DummyNamespace'],

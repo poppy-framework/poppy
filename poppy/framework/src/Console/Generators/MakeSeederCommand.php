@@ -17,7 +17,8 @@ class MakeSeederCommand extends GeneratorCommand
      */
     protected $signature = 'poppy:seeder
     	{slug : The slug of the module.}
-    	{name : The name of the seeder class.}';
+    	{name : The name of the seeder class.}
+    ';
 
     /**
      * The console command description.
@@ -35,7 +36,7 @@ class MakeSeederCommand extends GeneratorCommand
      * Get the stub file for the generator.
      * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/seeder.stub';
     }
@@ -45,7 +46,7 @@ class MakeSeederCommand extends GeneratorCommand
      * @param string $rootNamespace namespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         return poppy_class($this->argument('slug'), 'Seeds');
     }

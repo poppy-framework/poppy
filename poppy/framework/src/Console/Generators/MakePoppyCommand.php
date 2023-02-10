@@ -23,7 +23,8 @@ class MakePoppyCommand extends Command
      */
     protected $signature = 'poppy:make
         {slug : The slug of the module}
-        {--Q|quick : Skip the make:module wizard and use default values}';
+        {--Q|quick : Skip the make:module wizard and use default values}
+    ';
 
     /**
      * The console command description.
@@ -35,19 +36,19 @@ class MakePoppyCommand extends Command
      * The poppy instance.
      * @var Poppy
      */
-    protected $poppy;
+    protected Poppy $poppy;
 
     /**
      * The filesystem instance.
      * @var Filesystem
      */
-    protected $files;
+    protected Filesystem $files;
 
     /**
      * Array to store the configuration details.
      * @var array
      */
-    protected $container;
+    protected array $conf;
 
     /**
      * Create a new command instance.
@@ -76,22 +77,21 @@ class MakePoppyCommand extends Command
         }
 
 
-        $this->container['slug']        = Str::slug($this->argument('slug'));
-        $this->container['name']        = Str::snake($this->container['slug']);
-        $this->container['version']     = '1.0';
-        $this->container['description'] = 'This is the description for the poppy ' . $this->container['name'] . ' module.';
+        $this->conf['slug']        = Str::slug($this->argument('slug'));
+        $this->conf['name']        = Str::snake($this->conf['slug']);
+        $this->conf['version']     = '1.0';
+        $this->conf['description'] = 'This is the description for the poppy ' . $this->conf['name'] . ' module.';
 
         if ($this->option('quick')) {
-            $this->container['basename']  = Str::snake($this->container['slug']);
-            $this->container['namespace'] = Str::studly($this->container['basename']);
-
-            return $this->generate();
+            $this->conf['basename']  = Str::snake($this->conf['slug']);
+            $this->conf['namespace'] = Str::studly($this->conf['basename']);
+            $this->generate();
+            return;
         }
 
         $this->displayHeader('make_module_introduction');
 
         $this->stepOne();
-        return;
     }
 
     /**
@@ -103,18 +103,18 @@ class MakePoppyCommand extends Command
     {
         $this->displayHeader('make_module_step_1');
 
-        $this->container['name']        = $this->ask('Please enter the name of the module:', $this->container['name']);
-        $this->container['slug']        = $this->ask('Please enter the slug for the module:', $this->container['slug']);
-        $this->container['version']     = $this->ask('Please enter the module version:', $this->container['version']);
-        $this->container['description'] = $this->ask('Please enter the description of the module:', $this->container['description']);
-        $this->container['namespace']   = Str::studly($this->container['slug']);
+        $this->conf['name']        = $this->ask('Please enter the name of the module:', $this->conf['name']);
+        $this->conf['slug']        = $this->ask('Please enter the slug for the module:', $this->conf['slug']);
+        $this->conf['version']     = $this->ask('Please enter the module version:', $this->conf['version']);
+        $this->conf['description'] = $this->ask('Please enter the description of the module:', $this->conf['description']);
+        $this->conf['namespace']   = Str::studly($this->conf['slug']);
 
         $this->comment('You have provided the following manifest information:');
-        $this->comment('Name:                       ' . $this->container['name']);
-        $this->comment('Slug:                       ' . $this->container['slug']);
-        $this->comment('Version:                    ' . $this->container['version']);
-        $this->comment('Description:                ' . $this->container['description']);
-        $this->comment('Namespace (auto-generated): ' . $this->container['namespace']);
+        $this->comment('Name:                       ' . $this->conf['name']);
+        $this->comment('Slug:                       ' . $this->conf['slug']);
+        $this->comment('Version:                    ' . $this->conf['version']);
+        $this->comment('Description:                ' . $this->conf['description']);
+        $this->comment('Namespace (auto-generated): ' . $this->conf['namespace']);
 
         if ($this->confirm('If the provided information is correct, type "yes" to generate.')) {
             $this->comment('Thanks! That\'s all we need.');
@@ -152,7 +152,7 @@ class MakePoppyCommand extends Command
 
         $progress->finish();
 
-        event(new PoppyMake($this->container['slug']));
+        event(new PoppyMake($this->conf['slug']));
 
         $this->info("\nPoppy Module generated successfully.");
     }
@@ -166,7 +166,7 @@ class MakePoppyCommand extends Command
             $this->files->makeDirectory(poppy_path());
         }
 
-        $directory = poppy_path(null, $this->container['slug']);
+        $directory = poppy_path(null, $this->conf['slug']);
         $source    = __DIR__ . '/../../../resources/stubs/poppy';
 
         $this->files->makeDirectory($directory);
@@ -203,19 +203,18 @@ class MakePoppyCommand extends Command
      * @return mixed
      * @throws FileNotFoundException
      */
-    protected function displayHeader($file = '', $level = 'info')
+    protected function displayHeader(string $file = '', string $level = 'info')
     {
         $stub = $this->files->get(__DIR__ . '/../../../resources/stubs/console/' . $file . '.stub');
-
         return $this->$level($stub);
     }
 
     /**
      * Replace Placeholder
      * @param string $contents Replace Content
-     * @return mixed
+     * @return string
      */
-    protected function replacePlaceholders(string $contents)
+    protected function replacePlaceholders(string $contents): string
     {
         $find = [
             'DummyNamespace',
@@ -226,11 +225,11 @@ class MakePoppyCommand extends Command
         ];
 
         $replace = [
-            $this->container['namespace'],
-            $this->container['name'],
-            $this->container['slug'],
-            $this->container['version'],
-            $this->container['description'],
+            $this->conf['namespace'],
+            $this->conf['name'],
+            $this->conf['slug'],
+            $this->conf['version'],
+            $this->conf['description'],
         ];
 
         return str_replace($find, $replace, $contents);

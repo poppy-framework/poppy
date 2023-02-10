@@ -17,7 +17,8 @@ class MakeEventCommand extends GeneratorCommand
      */
     protected $signature = 'poppy:event
     	{slug : The slug of the module.}
-    	{name : The name of the model class.}';
+    	{name : The name of the model class.}
+    ';
 
     /**
      * The console command description.
@@ -36,7 +37,7 @@ class MakeEventCommand extends GeneratorCommand
      * Get the stub file for the generator.
      * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/event.stub';
     }
@@ -46,7 +47,7 @@ class MakeEventCommand extends GeneratorCommand
      * @param string $rootNamespace namespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         return poppy_class($this->argument('slug'), 'Events');
     }

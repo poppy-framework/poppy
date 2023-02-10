@@ -53,7 +53,7 @@ class PoppyEnableCommand extends Command
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['slug', InputArgument::REQUIRED, 'Module slug.'],

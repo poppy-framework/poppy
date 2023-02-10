@@ -72,7 +72,7 @@ class PoppyMigrateRefreshCommand extends Command
      * Determine if the developer has requested database seeding.
      * @return bool
      */
-    protected function needsSeeding()
+    protected function needsSeeding(): bool
     {
         return $this->option('seed');
     }
@@ -82,7 +82,7 @@ class PoppyMigrateRefreshCommand extends Command
      * @param string|null $slug     slug
      * @param string|null $database database
      */
-    protected function runSeeder($slug = null, $database = null)
+    protected function runSeeder(string $slug = null, string $database = null)
     {
         $this->call('poppy:seed', [
             'slug'       => $slug,
@@ -94,16 +94,18 @@ class PoppyMigrateRefreshCommand extends Command
      * Get the console command arguments.
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
-        return [['slug', InputArgument::OPTIONAL, 'Module slug.']];
+        return [
+            ['slug', InputArgument::OPTIONAL, 'Module slug.'],
+        ];
     }
 
     /**
      * Get the console command options.
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],

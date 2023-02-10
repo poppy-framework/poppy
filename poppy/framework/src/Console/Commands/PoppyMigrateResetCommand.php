@@ -37,17 +37,17 @@ class PoppyMigrateResetCommand extends Command
     /**
      * @var Poppy
      */
-    protected $poppy;
+    protected Poppy $poppy;
 
     /**
      * @var Migrator
      */
-    protected $migrator;
+    protected Migrator $migrator;
 
     /**
      * @var Filesystem
      */
-    protected $files;
+    protected Filesystem $files;
 
     /**
      * Create a new command instance.
@@ -134,7 +134,7 @@ class PoppyMigrateResetCommand extends Command
      * Generate a list of all migration paths, given the arguments/operations supplied.
      * @return array
      */
-    protected function getMigrationPaths()
+    protected function getMigrationPaths(): array
     {
         $migrationPaths = [];
 
@@ -169,7 +169,7 @@ class PoppyMigrateResetCommand extends Command
      * We will accept a slug as long as it is not empty and is enabled (or force is passed).
      * @return bool
      */
-    protected function validSlugProvided()
+    protected function validSlugProvided(): bool
     {
         if (empty($this->argument('slug'))) {
             return false;
@@ -191,7 +191,7 @@ class PoppyMigrateResetCommand extends Command
      * @param string $slug slug
      * @return array
      */
-    protected function getParameters(string $slug)
+    protected function getParameters(string $slug): array
     {
         $params = [];
 
@@ -216,16 +216,18 @@ class PoppyMigrateResetCommand extends Command
      * Get the console command arguments.
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
-        return [['slug', InputArgument::OPTIONAL, 'Module slug.']];
+        return [
+            ['slug', InputArgument::OPTIONAL, 'Module slug.'],
+        ];
     }
 
     /**
      * Get the console command options.
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],

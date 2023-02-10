@@ -35,12 +35,12 @@ class PoppyMigrateRollbackCommand extends Command
      * The migrator instance.
      * @var Migrator
      */
-    protected $migrator;
+    protected Migrator $migrator;
 
     /**
      * @var Poppy
      */
-    protected $poppy;
+    protected Poppy $poppy;
 
     /**
      * Create a new command instance.
@@ -82,16 +82,18 @@ class PoppyMigrateRollbackCommand extends Command
      * Get the console command arguments.
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
-        return [['slug', InputArgument::OPTIONAL, 'Module slug.']];
+        return [
+            ['slug', InputArgument::OPTIONAL, 'Module slug.'],
+        ];
     }
 
     /**
      * Get the console command options.
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],
@@ -102,10 +104,10 @@ class PoppyMigrateRollbackCommand extends Command
     }
 
     /**
-     * Get all of the migration paths.
+     * Get all the migration paths.
      * @return array
      */
-    protected function getMigrationPaths()
+    protected function getMigrationPaths(): array
     {
         $slug  = $this->argument('slug');
         $paths = [];

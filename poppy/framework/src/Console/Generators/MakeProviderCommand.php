@@ -17,7 +17,8 @@ class MakeProviderCommand extends GeneratorCommand
      */
     protected $signature = 'poppy:provider
     	{slug : The slug of the module.}
-    	{name : The name of the service provider class.}';
+    	{name : The name of the service provider class.}
+    ';
 
     /**
      * The console command description.
@@ -35,7 +36,7 @@ class MakeProviderCommand extends GeneratorCommand
      * Get the stub file for the generator.
      * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/provider.stub';
     }
@@ -45,7 +46,7 @@ class MakeProviderCommand extends GeneratorCommand
      * @param string $rootNamespace namespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         return poppy_class($this->argument('slug'), 'providers');
     }

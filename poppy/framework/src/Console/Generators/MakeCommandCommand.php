@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\Framework\Console\Generators;
 
+use Illuminate\Support\Str;
 use Poppy\Framework\Console\GeneratorCommand;
 
 /**
@@ -15,9 +16,10 @@ class MakeCommandCommand extends GeneratorCommand
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'poppy:command
-    	{slug : The slug of the module}
-    	{name : The name of the command name}';
+    protected $signature = 'poppy:command 
+        {slug : The fully slug name} 
+        {name : Base name of the command with studly case, suggest use `Command` suffix.}
+    ';
 
     /**
      * The console command description.
@@ -35,9 +37,26 @@ class MakeCommandCommand extends GeneratorCommand
      * Get the stub file for the generator.
      * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/command.stub';
+    }
+
+    /**
+     * 替换命令为自动生成
+     * @inheritDoc
+     */
+    protected function buildClass($name): string
+    {
+        $stub          = parent::buildClass($name);
+        $slugName      = Str::after($this->argument('slug'), '.');
+        $baseClassName = Str::afterLast($name, '\\');
+        if (Str::endsWith($baseClassName, 'Command') && strlen($baseClassName) !== strlen('Command')) {
+            $baseClassName = Str::replaceLast('Command', '', $baseClassName);
+        }
+        $command      = Str::slug(Str::snake($baseClassName));
+        $dummyCmdName = $slugName . ':' . $command;
+        return str_replace('dummy:command', $dummyCmdName, $stub);
     }
 
     /**
@@ -45,7 +64,7 @@ class MakeCommandCommand extends GeneratorCommand
      * @param string $rootNamespace namespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         return poppy_class($this->argument('slug'), 'Commands');
     }

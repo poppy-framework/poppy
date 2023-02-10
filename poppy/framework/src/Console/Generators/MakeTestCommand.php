@@ -17,7 +17,8 @@ class MakeTestCommand extends GeneratorCommand
      */
     protected $signature = 'poppy:test
     	{slug : The slug of the module}
-    	{name : The name of the test class}';
+    	{name : The name of the test class}
+    ';
 
     /**
      * The console command description.
@@ -35,7 +36,7 @@ class MakeTestCommand extends GeneratorCommand
      * Get the stub file for the generator.
      * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/test.stub';
     }
@@ -45,7 +46,7 @@ class MakeTestCommand extends GeneratorCommand
      * @param string $rootNamespace 命名空间
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         return poppy_class($this->argument('slug'), 'Tests');
     }

@@ -22,7 +22,7 @@ class MakeListenerCommand extends GeneratorCommand
     	{name : The name of the model class.}
     	{--E|event= : The event class being listened for}
     	{--Q|queued : Indicates the event listener should be queued}
-    	';
+    ';
 
     /**
      * The console command description.
@@ -41,7 +41,7 @@ class MakeListenerCommand extends GeneratorCommand
      * Get the stub file for the generator.
      * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         if ($this->option('queued')) {
             return $this->option('event')
@@ -62,7 +62,7 @@ class MakeListenerCommand extends GeneratorCommand
      * @return string
      * @throws FileNotFoundException
      */
-    protected function buildClass($name)
+    protected function buildClass($name): string
     {
         $event = $this->option('event');
 
@@ -91,7 +91,7 @@ class MakeListenerCommand extends GeneratorCommand
      * @param string $rootNamespace namespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         return poppy_class($this->argument('slug'), 'Listeners');
     }

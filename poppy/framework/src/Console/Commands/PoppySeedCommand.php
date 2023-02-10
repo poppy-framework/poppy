@@ -30,7 +30,7 @@ class PoppySeedCommand extends Command
     /**
      * @var Poppy
      */
-    protected $poppy;
+    protected Poppy $poppy;
 
     /**
      * @inheritDoc
@@ -117,7 +117,9 @@ class PoppySeedCommand extends Command
      */
     protected function getArguments(): array
     {
-        return [['slug', InputArgument::OPTIONAL, 'Module slug.']];
+        return [
+            ['slug', InputArgument::OPTIONAL, 'Module slug.'],
+        ];
     }
 
     /**

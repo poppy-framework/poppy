@@ -37,12 +37,12 @@ class PoppyMigrateCommand extends Command
     /**
      * @var Poppy
      */
-    protected $poppy;
+    protected Poppy $poppy;
 
     /**
      * @var Migrator
      */
-    protected $migrator;
+    protected Migrator $migrator;
 
     /**
      * Create a new command instance.
@@ -167,16 +167,18 @@ class PoppyMigrateCommand extends Command
      * Get the console command arguments.
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
-        return [['slug', InputArgument::OPTIONAL, 'Module slug.']];
+        return [
+            ['slug', InputArgument::OPTIONAL, 'Module slug.'],
+        ];
     }
 
     /**
      * Get the console command options.
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],

@@ -23,7 +23,8 @@ class MakeMigrationCommand extends Command
     	{slug : The slug of the module.}
     	{name : The name of the migration.}
     	{--create= : The table to be created.}
-        {--table= : The table to migrate.}';
+        {--table= : The table to migrate.}
+    ';
 
     /**
      * The console command description.

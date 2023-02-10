@@ -21,7 +21,6 @@ use Poppy\Framework\Console\Generators\MakeTestCommand;
 
 class GeneratorServiceProvider extends ServiceProvider
 {
-
     /**
      * Register the application services.
      */

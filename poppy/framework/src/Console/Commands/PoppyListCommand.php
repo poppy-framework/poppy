@@ -27,13 +27,13 @@ class PoppyListCommand extends Command
     /**
      * @var Poppy
      */
-    protected $poppy;
+    protected Poppy $poppy;
 
     /**
      * The table headers for the command.
      * @var array
      */
-    protected $headers = ['#', 'Name', 'Slug', 'Description', 'Status'];
+    protected array $headers = ['#', 'Name', 'Slug', 'Description', 'Status'];
 
     /**
      * Create a new command instance.
@@ -66,7 +66,7 @@ class PoppyListCommand extends Command
      * Get all modules.
      * @return array
      */
-    protected function getModules()
+    protected function getModules(): array
     {
         $modules = $this->poppy->all();
         $results = [];
@@ -83,7 +83,7 @@ class PoppyListCommand extends Command
      * @param array $module module
      * @return array
      */
-    protected function getModuleInformation(array $module)
+    protected function getModuleInformation(array $module): array
     {
         return [
             '#'           => $module['order'],

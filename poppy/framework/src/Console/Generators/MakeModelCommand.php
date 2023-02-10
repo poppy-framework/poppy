@@ -20,7 +20,8 @@ class MakeModelCommand extends GeneratorCommand
     protected $signature = 'poppy:model
     	{slug : The slug of the module.}
     	{name : The name of the model class.}
-        {--migration : Create a new migration file for the model.}';
+        {--migration : Create a new migration file for the model.}
+    ';
 
     /**
      * The console command description.
@@ -58,7 +59,7 @@ class MakeModelCommand extends GeneratorCommand
      * Get the stub file for the generator.
      * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/model.stub';
     }
@@ -68,7 +69,7 @@ class MakeModelCommand extends GeneratorCommand
      * @param string $rootNamespace namespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         return poppy_class($this->argument('slug'), 'Models');
     }

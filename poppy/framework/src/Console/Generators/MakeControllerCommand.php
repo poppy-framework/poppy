@@ -32,13 +32,13 @@ class MakeControllerCommand extends GeneratorCommand
      * String to store the command type.
      * @var string
      */
-    protected $type = 'Poppy Module controller';
+    protected $type = 'Poppy module controller';
 
     /**
      * Get the stub file for the generator.
      * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         if ($this->option('resource')) {
             return __DIR__ . '/stubs/controller.resource.stub';
@@ -52,7 +52,7 @@ class MakeControllerCommand extends GeneratorCommand
      * @param string $rootNamespace namespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         $type = $this->argument('type');
 

@@ -17,7 +17,8 @@ class MakePolicyCommand extends GeneratorCommand
      */
     protected $signature = 'poppy:policy
     	{slug : The slug of the module.}
-    	{name : The name of the policy class.}';
+    	{name : The name of the policy class.}
+    ';
 
     /**
      * The console command description.
@@ -35,7 +36,7 @@ class MakePolicyCommand extends GeneratorCommand
      * Get the stub file for the generator.
      * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return __DIR__ . '/stubs/policy.stub';
     }
@@ -45,7 +46,7 @@ class MakePolicyCommand extends GeneratorCommand
      * @param string $rootNamespace namespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         return poppy_class($this->argument('slug'), 'Models\Policies');
     }
