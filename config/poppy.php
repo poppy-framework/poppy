@@ -1,7 +1,5 @@
 <?php
 
-use xingwenge\canal_php\CanalClient;
-
 return [
 
     'system' => [
@@ -158,42 +156,6 @@ return [
                 'type'  => 'steam-pubg',
                 'title' => 'STEAM(Pubg)',
             ],
-        ],
-    ],
-
-    'canal-es' => [
-        'canal' => [
-            'client_type'     => CanalClient::TYPE_SWOOLE,
-            'host'            => env('CANAL_HOST', '127.0.0.1'),
-            'port'            => env('CANAL_PORT', 11111),
-            'client_id'       => env('CANAL_CLIENT_ID', 1001),
-            'connect_timeout' => env('CANAL_CONNECT_TIMEOUT', 10),
-            'message_size'    => 100,
-        ],
-
-
-        'elasticsearch' => [
-            'concurrency' => env('ELASTICSEARCH_CONCURRENCY', 100),
-
-            'hosts' => value(function () {
-                $settings = env('ELASTICSEARCH_HOSTS');
-                $hosts    = array_filter(explode(';', $settings));
-
-                return $hosts ? array_map(function ($url) {
-                    return array_merge(parse_url($url), [
-                        'user' => env('ELASTICSEARCH_USER', null),
-                        'pass' => env('ELASTICSEARCH_PASS', null),
-                    ]);
-                }, $hosts) : [
-                    [
-                        'host'   => '127.0.0.1',
-                        'port'   => '9200',
-                        'scheme' => 'http',
-                        'user'   => env('ELASTICSEARCH_USER', null),
-                        'pass'   => env('ELASTICSEARCH_PASS', null),
-                    ],
-                ];
-            }),
         ],
     ],
 ];

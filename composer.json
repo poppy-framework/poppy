@@ -38,7 +38,6 @@
         "alibabacloud/push": "^1.8",
         "alibabacloud/dysmsapi": "^1.8",
         "alibabacloud/sts": "^1.8",
-        "xingwenge/canal_php": "^1.0",
         "mlocati/ip-lib": "^1.16",
         "guzzlehttp/guzzle": "^7.3",
         "overtrue/pinyin": "^4.0",
@@ -47,7 +46,8 @@
         "mockery/mockery": "^1.5.1",
         "nikic/php-parser": "^4.15",
         "sentry/sentry-laravel": "3.*",
-        "ezyang/htmlpurifier": "^4.16"
+        "ezyang/htmlpurifier": "^4.16",
+        "psr/http-factory-implementation": "*"
     },
     "require-dev": {
         "itsgoingd/clockwork": "^5.1",
@@ -88,8 +88,6 @@
             "Poppy\\SensitiveWord\\Tests\\": "poppy/sensitive-word/tests",
             "Poppy\\AliyunOss\\": "poppy/aliyun-oss/src",
             "Poppy\\AliyunOss\\Tests\\": "poppy/aliyun-oss/tests",
-            "Poppy\\CanalEs\\": "poppy/canal-es/src/",
-            "Poppy\\CanalEs\\Tests\\": "poppy/canal-es/tests/",
             "Poppy\\CodeGenerator\\": "poppy/code-generator/src/",
             "Demo\\": "modules/demo/src/",
             "Demo\\Tests\\": "modules/demo/tests/"
@@ -125,22 +123,8 @@
             "git subtree push --prefix=poppy/ext-alipay  codeup-ext-alipay 4.2",
             "git subtree push --prefix=poppy/ext-ip_store  codeup-ext-ip_store 4.2",
             "git subtree push --prefix=poppy/ad  codeup-ad 4.2",
-            "git subtree push --prefix=poppy/canal-es  codeup-canal-es 4.2",
             "git subtree push --prefix=poppy/code-generator codeup-code-generator 4.2",
             "git subtree push --prefix=poppy/ext-phpstan codeup-ext-phpstan 4.2"
-        ],
-        "github": [
-            "git subtree push --prefix=poppy/system  gh-system 4.2",
-            "git subtree push --prefix=poppy/mgr-page  gh-mgr-page 4.2",
-            "git subtree push --prefix=poppy/mgr-app  gh-mgr-app 4.2",
-            "git subtree push --prefix=poppy/core  gh-core 4.2",
-            "git subtree push --prefix=poppy/framework  gh-framework 4.2",
-            "git subtree push --prefix=poppy/aliyun-oss  gh-aliyun-oss 4.2",
-            "git subtree push --prefix=poppy/aliyun-push  gh-aliyun-push 4.2",
-            "git subtree push --prefix=poppy/faker  gh-faker 4.2",
-            "git subtree push --prefix=poppy/sensitive-word  gh-sensitive-word 4.2",
-            "git subtree push --prefix=poppy/ext-ip_store  gh-ext-ip_store 4.2",
-            "git subtree push --prefix=poppy/ext-alipay  gh-ext-alipay 4.2"
         ],
         "post-install-cmd": [
             "php artisan clear-compiled",
@@ -164,7 +148,7 @@
     "config": {
         "preferred-install": "dist",
         "allow-plugins": {
-            "easywechat-composer/easywechat-composer": true
+            "php-http/discovery": false
         }
     }
 }
