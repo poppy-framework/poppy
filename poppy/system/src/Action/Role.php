@@ -90,7 +90,7 @@ class Role
      * @param null|int $id   角色id
      * @return bool
      */
-    public function establish(array $data, $id = null)
+    public function establish(array $data, int $id = null)
     {
         if (!$this->checkPam()) {
             return false;
@@ -234,7 +234,7 @@ class Role
 
         // 权限映射
         if ($map = config('poppy.system.role_type_map')) {
-            $type = isset($map[$type]) ? $map[$type] : $type;
+            $type = $map[$type] ?? $type;
         }
 
         $keys              = $permissions->keys();
