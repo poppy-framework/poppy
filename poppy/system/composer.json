@@ -18,6 +18,9 @@
         "mlocati/ip-lib": "1.*",
         "intervention/image": "2.*"
     },
+    "suggest": {
+        "ext-imagick": "Needed to support HEIC format image upload"
+    },
     "autoload": {
         "psr-4": {
             "Poppy\\System\\": "src/",

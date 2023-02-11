@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Imagick;
 use ImagickException;
 use Intervention\Image\Constraint;
 use Intervention\Image\Exception\NotReadableException;
@@ -130,36 +131,42 @@ class DefaultFileProvider implements FileContract
      * Set Extension
      * @param array $extension 支持的扩展
      */
-    public function setExtension(array $extension = [])
+    public function setExtension(array $extension = []): self
     {
         $this->allowedExtensions = $extension;
+        return $this;
     }
 
     /**
      * District Size.
      * @param int $resize 设置resize 的区域
      */
-    public function setResizeDistrict(int $resize)
+    public function setResizeDistrict(int $resize): self
     {
         $this->resizeDistrict = $resize;
+        return $this;
     }
 
     /**
      * 设置图片压缩质量
      * @param int $quality
+     * @return self
      */
-    public function setQuality(int $quality): void
+    public function setQuality(int $quality): self
     {
         $this->quality = $quality;
+        return $this;
     }
 
     /**
      * 设置图片mime类型
      * @param $mime_type
+     * @return DefaultFileProvider
      */
-    public function setMimeType($mime_type)
+    public function setMimeType($mime_type): self
     {
         $this->mimeType = $mime_type;
+        return $this;
     }
 
     /**
@@ -198,7 +205,7 @@ class DefaultFileProvider implements FileContract
                 $pathName = $heic2jpgDir . $filename;
                 $this->setHeic2JpgPathName($pathName);
                 $fullPathName = storage_path($pathName);
-                $Imagick      = new \Imagick();
+                $Imagick      = new Imagick();
                 $Imagick->readImage($file->getPathname());
                 if ($Imagick->count() > 1) {
                     throw new RuntimeException('不支持上传hiec实况图');
@@ -364,9 +371,10 @@ class DefaultFileProvider implements FileContract
     /**
      * @param string $destination 设置目标地址
      */
-    public function setDestination(string $destination)
+    public function setDestination(string $destination): self
     {
         $this->destination = $destination;
+        return $this;
     }
 
     /**
@@ -390,12 +398,13 @@ class DefaultFileProvider implements FileContract
      * 设置返回地址
      * @param string $url 地址
      */
-    public function setReturnUrl(string $url)
+    public function setReturnUrl(string $url): self
     {
         if (!Str::endsWith($url, '/')) {
             $url .= '/';
         }
         $this->returnUrl = $url;
+        return $this;
     }
 
     /**
