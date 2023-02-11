@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\AliyunOss\Classes\Provider;
 
 use Exception;
+use Illuminate\Support\Str;
 use OSS\OssClient;
 use Poppy\Framework\Exceptions\LoadConfigurationException;
 use Poppy\System\Classes\File\DefaultFileProvider;
@@ -129,6 +130,9 @@ class OssFileProvider extends DefaultFileProvider
         }
     }
 
+    /**
+     * @throws LoadConfigurationException
+     */
     private function reWatermark()
     {
         if (!$this->watermark) {
@@ -138,6 +142,10 @@ class OssFileProvider extends DefaultFileProvider
         $watermark = config('poppy.aliyun-oss.watermark');
         if (!$watermark) {
             return;
+        }
+
+        if (!Str::contains($watermark, $this->getReturnUrl())) {
+            throw new LoadConfigurationException(trans('py-aliyun-oss::classes.provider.watermark_not_match'));
         }
         $wmPath       = str_replace($this->getReturnUrl(), '', $watermark);
         $wmDef        = "$wmPath?x-oss-process=image/resize,P_80";
