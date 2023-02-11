@@ -21,9 +21,16 @@ class LoginSuccessEvent
      */
     public string $guard;
 
-    public function __construct(PamAccount $pam, $guard)
+    /**
+     * 来源
+     * @var string
+     */
+    public string $type;
+
+    public function __construct(PamAccount $pam, string $guard, string $type = '')
     {
         $this->pam   = $pam;
         $this->guard = $guard;
+        $this->type  = $type === '' ? 'login' : $type;
     }
 }

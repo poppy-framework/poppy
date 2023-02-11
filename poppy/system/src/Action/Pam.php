@@ -45,7 +45,7 @@ class Pam
     /**
      * @var int 父级ID
      */
-    private $parentId = 0;
+    private int $parentId = 0;
 
     /**
      * @var bool
@@ -245,7 +245,7 @@ class Pam
         }
 
         $initDb['username']  = $username;
-        $initDb['type']      = $role->first()->type;
+        $initDb['type']      = (string) $role->first()->type;
         $initDb['is_enable'] = SysConfig::ENABLE;
 
         // 处理数据库
@@ -264,7 +264,7 @@ class Pam
             }
 
             // 设置默认国际手机号, 后台自动生成(Backend 用户/Develop)
-            if (in_array($initDb['type'], [PamAccount::TYPE_BACKEND, PamAccount::TYPE_DEVELOP]) && !isset($initDb['mobile'])) {
+            if (!isset($initDb['mobile']) && in_array($initDb['type'], [PamAccount::TYPE_BACKEND, PamAccount::TYPE_DEVELOP], true)) {
                 $pam->mobile = PamAccount::dftMobile($pam->id);
             }
 
@@ -309,7 +309,7 @@ class Pam
                 Rule::required(),
             ],
             'password' => Rule::required(),
-        ], []);
+        ]);
         if ($validator->fails()) {
             return $this->setError($validator->errors());
         }
@@ -523,7 +523,7 @@ class Pam
      * @param string $reason 原因
      * @return bool
      */
-    public function enable($id, $reason = ''): bool
+    public function enable(int $id, string $reason = ''): bool
     {
         $pam = PamAccount::find($id);
         if (!$pam) {
@@ -573,9 +573,8 @@ class Pam
         if ($days === FormSettingLog::DAYS_FOREVER) {
             return true;
         }
-        else {
-            $days = ((int) $days) ?: 180;
-        }
+
+        $days = ((int) $days) ?: 180;
         // 删除 xx 天以外的登录日志, 默认 180 天
         PamLog::where('created_at', '<', Carbon::now()->subDays($days))->delete();
         return true;
@@ -587,7 +586,7 @@ class Pam
      * @param string $password     新密码
      * @return bool
      */
-    public function changePassword($old_password, $password): bool
+    public function changePassword(string $old_password, string $password): bool
     {
         if (!$this->checkPam()) {
             return false;

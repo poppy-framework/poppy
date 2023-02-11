@@ -45,12 +45,10 @@ class Sso extends BaseMiddleware
             if ($rdsHash === $md5Token) {
                 return $next($request);
             }
-            else {
-                return response('Unauthorized Jwt, Token Expired.', 401);
-            }
+
+            return response('Unauthorized Jwt, Token Expired.', 401);
         }
-        else {
-            return response('Unauthorized Jwt, Token unValid.', 401);
-        }
+
+        return response('Unauthorized Jwt, Token unValid.', 401);
     }
 }

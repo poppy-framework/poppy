@@ -19,7 +19,7 @@ class UpdatePasswordHashListener
     /**
      * @param LoginSuccessEvent $event 登录成功
      */
-    public function handle(LoginSuccessEvent $event)
+    public function handle(LoginSuccessEvent $event): void
     {
         $name = $event->guard;
         if ($name && !Str::contains($name, 'jwt')) {

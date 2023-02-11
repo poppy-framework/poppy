@@ -14,6 +14,7 @@ use Poppy\System\Events\PamSsoEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamToken;
 use Request;
+use Throwable;
 
 /**
  * 单点登录
@@ -29,7 +30,7 @@ class Sso
     public const SSO_DEVICE = 'device';
 
 
-    private static $groups = [
+    private static array $groups = [
         'app' => ['android', 'ios'],
         'web' => ['h5', 'webapp', 'mp'],
         'pc'  => ['mac', 'linux', 'win'],
@@ -58,7 +59,7 @@ class Sso
         }
 
         $devices = Arr::flatten(self::$groups);
-        if (!in_array($device_type, $devices)) {
+        if (!in_array($device_type, $devices, true)) {
             return $this->setError('设备类型必须是' . implode(',', $devices) . '中的一种');
         }
 
@@ -99,7 +100,7 @@ class Sso
                 // 同组内登录
                 $total = [];
                 foreach (self::$groups as $group) {
-                    if (in_array($device_type, $group)) {
+                    if (in_array($device_type, $group, true)) {
                         $total = $group;
                     }
                 }
@@ -135,10 +136,12 @@ class Sso
 
     /**
      * SSO 退出登录
-     * @param $token
+     * @param int    $id    用户 ID
+     * @param string $token JWT Token
      * @return bool
+     * @throws Throwable
      */
-    public function logout($id, $token): bool
+    public function logout(int $id, string $token): bool
     {
         $tokenHash = md5($token);
         $tokens    = collect();
@@ -151,7 +154,7 @@ class Sso
             PamToken::whereIn('id', $ids)->delete();
         });
 
-        event(new PamLogoutEvent((int) $id, $tokens));
+        event(new PamLogoutEvent($id, $tokens));
 
         return true;
     }
@@ -177,11 +180,11 @@ class Sso
     public static function kvType(string $key = null, bool $check_exists = false)
     {
         $desc = [
-            Sso::SSO_NONE   => '不启用',
-            Sso::SSO_SINGLE => '单点登录(Sso), 仅允许一端登录',
-            Sso::SSO_GROUP  => '同组内单点登录. 各组之间允许同时登录',
-            Sso::SSO_DEVICE => '单端登录, 同类型互踢, 其他类型可同时在线',
-            Sso::SSO_ALL    => '允许同时登录, 记录设备信息, 同时登录数量受{最大设备数量}限制',
+            self::SSO_NONE   => '不启用',
+            self::SSO_SINGLE => '单点登录(Sso), 仅允许一端登录',
+            self::SSO_GROUP  => '同组内单点登录. 各组之间允许同时登录',
+            self::SSO_DEVICE => '单端登录, 同类型互踢, 其他类型可同时在线',
+            self::SSO_ALL    => '允许同时登录, 记录设备信息, 同时登录数量受{最大设备数量}限制',
         ];
         return kv($desc, $key, $check_exists);
     }

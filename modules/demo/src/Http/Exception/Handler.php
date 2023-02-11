@@ -29,7 +29,7 @@ class Handler extends \Poppy\Framework\Foundation\Exception\Handler
 
     public function report(Exception $e)
     {
-        if (app()->bound('sentry') && $this->shouldReport($e)) {
+        if ($this->shouldReport($e) && app()->bound('sentry')) {
             if ($e instanceof BaseException) {
                 /** @var HubInterface $sentry */
                 $sentry = app('sentry');

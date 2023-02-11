@@ -154,6 +154,9 @@ class MakePoppyCommand extends Command
 
         event(new PoppyMake($this->conf['slug']));
 
+        // 移除 js 文件
+        $this->poppy->optimize();
+
         $this->info("\nPoppy Module generated successfully.");
     }
 

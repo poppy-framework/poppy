@@ -7,6 +7,8 @@ namespace Poppy\System\Http\Request\ApiV1;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Translation\Translator;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Helper\UtilHelper;
@@ -14,11 +16,12 @@ use Poppy\Framework\Validation\Rule;
 use Poppy\System\Action\Pam;
 use Poppy\System\Action\Sso;
 use Poppy\System\Action\Verification;
+use Poppy\System\Events\LoginSuccessEvent;
 use Poppy\System\Events\LoginTokenPassedEvent;
-use Poppy\System\Events\PamLogoutEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\Resources\PamResource;
 use Throwable;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Validator;
 
 /**
@@ -151,9 +154,7 @@ class AuthController extends JwtApiController
         $this->clearLoginAttempts(app('request'));
         $pam = $Pam->getPam();
 
-        if (!$token = app('tymon.jwt.auth')->fromUser($pam)) {
-            return Resp::error('获取 Token 失败, 请联系管理员');
-        }
+        $token = JWTAuth::fromUser($pam);
 
         /* 设备单一性登陆验证(基于 Redis + Db)
          * ---------------------------------------- */
@@ -276,10 +277,8 @@ class AuthController extends JwtApiController
      */
     public function renew()
     {
-        $pam = $this->pam;
-        if (!$token = app('tymon.jwt.auth')->fromUser($pam)) {
-            return Resp::error('获取 Token 失败, 请联系管理员');
-        }
+        $pam   = $this->pam;
+        $token = JWTAuth::fromUser($pam);
 
         try {
             $deviceId   = x_header('id') ?: input('device_id', '');
@@ -289,7 +288,9 @@ class AuthController extends JwtApiController
             return Resp::error($e->getMessage());
         }
 
-        return Resp::success('登录成功', [
+        event(new LoginSuccessEvent($this->pam, 'jwt', 'renew'));
+
+        return Resp::success('续期成功', [
             'token' => $token,
             'type'  => $pam->type,
         ]);
@@ -301,6 +302,11 @@ class AuthController extends JwtApiController
      * @apiVersion            1.0.0
      * @apiName               SysAuthLogout
      * @apiGroup              Poppy
+     */
+
+    /**
+     * @return JsonResponse|RedirectResponse|Response
+     * @throws Throwable
      */
     public function logout()
     {
