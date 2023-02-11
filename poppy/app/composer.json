@@ -1,0 +1,32 @@
+{
+    "name": "poppy/app",
+    "description": "An app management.",
+    "license": "Apache-2.0",
+    "type": "poppy",
+    "authors": [
+        {
+            "name": "Mark Zhao",
+            "email": "zhaody901@126.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Poppy\\App\\": "src/",
+            "Poppy\\App\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Poppy\\App\\ServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "dev"
+}

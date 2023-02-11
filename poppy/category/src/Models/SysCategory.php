@@ -42,7 +42,6 @@ class SysCategory extends Model
     protected $table = 'sys_category';
 
     protected $fillable = [
-        'id',
         'title',
         'type',
         'list_order',

@@ -1,0 +1,13 @@
+backend :
+  title : 应用管理
+  icon : 'fa fa-plug'
+  groups :
+    -
+      title : 应用管理
+      icon : 'fa fa-plug'
+      injection : 'poppy.mgr-page/backend||setting'
+      children :
+        -
+          title : 应用管理
+          route : py-app:backend.app.index
+          permission : backend:py-app.app.manage

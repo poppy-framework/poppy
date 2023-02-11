@@ -1,0 +1,7 @@
+{
+    "name": "应用管理",
+    "slug": "app",
+    "version": "1.0",
+    "order": 1009,
+    "description": "This is the description for the poppy app module."
+}

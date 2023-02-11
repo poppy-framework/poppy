@@ -1,0 +1,13 @@
+-
+  title : 应用
+  description : 管理应用
+  slug : backend:py-app
+  groups :
+    -
+      slug : app
+      title : 应用管理
+      description : 管理应用
+      permissions :
+        -
+          slug : manage
+          description : 管理广告位

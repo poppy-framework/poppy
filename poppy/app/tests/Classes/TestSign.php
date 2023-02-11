@@ -1,0 +1,56 @@
+<?php
+
+namespace Poppy\App\Tests\Classes;
+
+use Exception;
+use Poppy\App\Action\App;
+use Poppy\App\Classes\AppDef;
+use Poppy\App\Classes\Sign\DefaultAppSign;
+use Poppy\App\Models\SysApp;
+use Poppy\Core\Redis\RdsDb;
+use Poppy\Framework\Application\TestCase;
+use Poppy\Framework\Exceptions\ApplicationException;
+
+class TestSign extends TestCase
+{
+
+    /**
+     * @throws ApplicationException
+     * @throws Exception
+     */
+    public function testCheck()
+    {
+        $item = [
+            'title'  => 'Testing ' . py_faker()->words(2, true),
+            'secret' => md5(microtime()),
+            'note'   => '单元测试应用',
+        ];
+        $App  = new App();
+        if (!$App->establish($item)) {
+            $this->fail($App->getError()->getMessage());
+        }
+
+        $params = [
+            'id'      => 5,
+            'note'    => '单元测试应用',
+            'title'   => 'Testing ' . py_faker()->words(2, true),
+            'file'    => '不参与签名',
+            '_myname' => '不参与签名',
+            'images'  => [
+                'https://test-oss.iliexiang.com/_res/images/01.jpg',
+                'https://test-oss.iliexiang.com/_res/images/02.jpg',
+            ],
+        ];
+
+        $appid = $App->getItem()->id;;
+        $Sign       = new DefaultAppSign();
+        $calcParams = $Sign->sign($params, $appid, $App->getItem()->secret);
+        if (!$Sign->check($calcParams)) {
+            $this->fail('验签失败');
+        }
+        // 移除
+        RdsDb::instance()->del(AppDef::ckItem($App->getItem()->id));
+        SysApp::whereKey($appid)->delete();
+        $this->assertTrue(true);
+    }
+}
