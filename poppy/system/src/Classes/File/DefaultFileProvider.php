@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use ImagickException;
 use Intervention\Image\Constraint;
+use Intervention\Image\Exception\NotReadableException;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use Poppy\Framework\Classes\Traits\AppTrait;
@@ -81,6 +82,12 @@ class DefaultFileProvider implements FileContract
      * @var string 图片mime类型
      */
     private string $mimeType = '';
+
+    /**
+     * Heic 的转换中间路径
+     * @var string
+     */
+    private string $heic2JpgPathName;
 
     public function __construct()
     {
@@ -164,16 +171,18 @@ class DefaultFileProvider implements FileContract
         if (!$file->isValid()) {
             return $this->setError($file->getErrorMessage());
         }
-        // 存储
+
+        // 存储, 根据后缀来进行区分
         if ($file->getClientOriginalExtension() && !in_array(strtolower($file->getClientOriginalExtension()), $this->allowedExtensions, true)) {
             return $this->setError('你只允许上传 "' . implode(',', $this->allowedExtensions) . '" 格式');
         }
 
         // 磁盘对象
-        $Disk             = $this->storage();
-        $extension        = $file->getClientOriginalExtension();
+        $Disk      = $this->storage();
+        $extension = $file->getClientOriginalExtension();
 
         $this->setHeic2JpgPathName();
+
         // 如果是heic转成jpg
         if (strtolower($extension) === 'heic') {
             if (!extension_loaded('imagick')) {
@@ -219,8 +228,7 @@ class DefaultFileProvider implements FileContract
                 $extension = 'png';
             }
             // bmp 处理
-            $type = mime_content_type($file->getRealPath());
-            if ($type === 'image/x-ms-bmp') {
+            if ($file->getMimeType() === 'image/x-ms-bmp') {
                 $img = imagecreatefrombmp($file->getRealPath());
                 if ($img) {
                     ob_start();
@@ -229,7 +237,11 @@ class DefaultFileProvider implements FileContract
                     $zipContent = $imgContent;
                 }
             }
-            $zipContent = $this->resizeContent($extension, $zipContent);
+            try {
+                $zipContent = $this->resizeContent($extension, $zipContent);
+            } catch (NotReadableException $e) {
+                return $this->setError('图片源格式有误无法读取, 请转换图片格式再行上传');
+            }
         }
 
         $Disk->put($fileRelativePath, $zipContent);
@@ -245,6 +257,15 @@ class DefaultFileProvider implements FileContract
     }
 
     /**
+     * 获取heic转jpg的路径加文件名
+     * @return string
+     */
+    public function getHeic2JpgPathName(): string
+    {
+        return $this->heic2JpgPathName;
+    }
+
+    /**
      * 设置heic转jpg的路径加文件名（用于之后删除）
      * @param string $heic2JpgPathName
      * @return void
@@ -252,15 +273,6 @@ class DefaultFileProvider implements FileContract
     public function setHeic2JpgPathName(string $heic2JpgPathName = ''): void
     {
         $this->heic2JpgPathName = $heic2JpgPathName;
-    }
-
-    /**
-     * 获取heic转jpg的路径加文件名
-     * @return string
-     */
-    public function getHeic2JpgPathName(): string
-    {
-        return $this->heic2JpgPathName;
     }
 
     /**
@@ -451,14 +463,11 @@ class DefaultFileProvider implements FileContract
             $height = $Image->height();
             $min    = min($width, $height);
             $type   = $min === $height ? 'horizontal' : 'vertical';
-            try {
-                if ($min >= $this->resizeDistrict) {
-                    $r_width  = $type === 'horizontal' ? null : $this->resizeDistrict;
-                    $r_height = $type === 'horizontal' ? $this->resizeDistrict : null;
-                    return $this->resize($Image, $r_width, $r_height);
-                }
-            } catch (Exception $e) {
-                return $this->setError($e->getMessage());
+
+            if ($min >= $this->resizeDistrict) {
+                $r_width  = $type === 'horizontal' ? null : $this->resizeDistrict;
+                $r_height = $type === 'horizontal' ? $this->resizeDistrict : null;
+                return $this->resize($Image, $r_width, $r_height);
             }
         }
         else {

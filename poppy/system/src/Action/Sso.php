@@ -166,10 +166,7 @@ class Sso
     public static function isEnable(): bool
     {
         $ssoType = (string) sys_setting('py-system::pam.sso_type');
-        if ($ssoType === '' || $ssoType === self::SSO_NONE) {
-            return false;
-        }
-        return true;
+        return !($ssoType === '' || $ssoType === self::SSO_NONE);
     }
 
     /**
