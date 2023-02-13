@@ -13,8 +13,7 @@ use stdClass;
 
 /**
  * Aop = Ali Open Platform
- * 文档地址: https://docs.open.alipay.com/200
- * @see AopCertClient
+ * 文档地址: https://opendocs.alipay.com/common/02nk10
  */
 class AopClient
 {
@@ -28,7 +27,7 @@ class AopClient
     /**
      * @var string 应用ID
      */
-    private $appId;
+    public $appId;
 
     /**
      * @var string 私钥文件路径
@@ -39,7 +38,7 @@ class AopClient
      * @var string 私钥值
      * @url
      */
-    private $rsaPrivateKey;
+    public $rsaPrivateKey;
 
     /**
      * @var string 网关
@@ -74,7 +73,7 @@ class AopClient
     /**
      * @var string 使用读取字符串格式，请只传递该值
      */
-    private $alipayRsaPublicKeyString;
+    public $alipayRsaPublicKeyString;
 
     /**
      * @var bool 调试信息
@@ -100,7 +99,7 @@ class AopClient
     /**
      * @var string 签名类型
      */
-    private $signType = 'RSA2';
+    public $signType = 'RSA2';
 
     /**
      * @var string 加密密钥
