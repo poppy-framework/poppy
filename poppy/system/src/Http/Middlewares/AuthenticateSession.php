@@ -69,6 +69,27 @@ class AuthenticateSession extends BaseAuthenticateSession
     }
 
     /**
+     * Password hash key
+     * @param string $login_key login key
+     * @return string
+     */
+    public static function hashKey(string $login_key): string
+    {
+        $guard = self::guardName($login_key);
+        return 'password_hash' . ($guard ? '_' . $guard : '');
+    }
+
+    /**
+     * Guard 名称
+     * @param string $guard GuardName
+     * @return string
+     */
+    public static function hashGuard(string $guard): string
+    {
+        return "password_hash_{$guard}";
+    }
+
+    /**
      * @inheritDoc
      */
     protected function storePasswordHashInSession($request)
@@ -84,7 +105,6 @@ class AuthenticateSession extends BaseAuthenticateSession
         ]);
     }
 
-
     /**
      * @inheritDoc
      */
@@ -97,17 +117,6 @@ class AuthenticateSession extends BaseAuthenticateSession
         $loginSessionKey = $this->auth->guard()->getName();
         $guards          = [self::guardName($loginSessionKey)];
         throw new AuthenticationException('无权访问', $guards, Authenticate::detectLocation($guards));
-    }
-
-    /**
-     * Password hash key
-     * @param string $login_key login key
-     * @return string
-     */
-    public static function hashKey(string $login_key): string
-    {
-        $guard = self::guardName($login_key);
-        return 'password_hash' . ($guard ? '_' . $guard : '');
     }
 
     private static function guardName(string $login_key): string

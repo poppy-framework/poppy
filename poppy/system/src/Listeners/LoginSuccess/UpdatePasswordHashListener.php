@@ -23,7 +23,7 @@ class UpdatePasswordHashListener
     {
         $name = $event->guard;
         if ($name && !Str::contains($name, 'jwt')) {
-            $hashKey = AuthenticateSession::hashKey($name);
+            $hashKey = AuthenticateSession::hashGuard($name);
             $this->pySession()->put($hashKey, $event->pam->getAuthPassword());
         }
     }
