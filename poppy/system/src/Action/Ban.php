@@ -10,7 +10,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use IPLib\Factory;
 use Poppy\Core\Redis\RdsDb;
-use Poppy\Core\Redis\RdsNative;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Helper\UtilHelper;
 use Poppy\System\Classes\PySystemDef;
@@ -27,7 +26,7 @@ class Ban
 {
     use AppTrait;
 
-    private static RdsNative $rds;
+    private static RdsDb $rds;
 
     public function __construct()
     {
