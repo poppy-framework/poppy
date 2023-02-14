@@ -7,7 +7,7 @@ use Poppy\Framework\Validation\Rule;
 class Number extends Text
 {
 
-    protected $type = 'number';
+    protected string $type = 'number';
 
 
     public function __construct($column = '', $arguments = [])
