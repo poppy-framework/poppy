@@ -151,14 +151,10 @@ class RdsStore
             Cache::forever($key, $now + $seconds);
             return true;
         }
-        $key = 'py-core:rds-lock:' . $key;
         if (strtolower(config('cache.default')) === 'redis') {
             $client = RdsDb::instance();
-            $res    = $client->set($key, 'atomic-' . Carbon::now()->timestamp, 'EX', $seconds, 'NX');
-            if ($res === false) {
-                return true;
-            }
-            return false;
+            $res    = $client->set(PyCoreDef::ckTagRdsLock($key), 'atomic-' . Carbon::now()->timestamp, 'EX', $seconds, 'NX');
+            return $res === false;
         }
         return true;
     }

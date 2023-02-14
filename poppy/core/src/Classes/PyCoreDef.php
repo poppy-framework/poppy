@@ -93,4 +93,14 @@ class PyCoreDef
     {
         return 'rds-key-field-expired';
     }
+
+    /**
+     * 锁定 KEY
+     * @param $key
+     * @return string
+     */
+    public static function ckTagRdsLock($key): string
+    {
+        return 'tag:py-core:rds-lock:' . $key;
+    }
 }
