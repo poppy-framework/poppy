@@ -21,7 +21,6 @@ mix
         processCssUrls: false
     })
     .disableNotifications()
-    .version()
     /* 开发使用[便于文件加载]
      * ---------------------------------------- */
     // develop
@@ -43,7 +42,7 @@ mix
             'poppy/mgr-page/resources/libs/jquery/poshytip/jquery.poshytip.js',
             'poppy/mgr-page/resources/libs/jquery/validation/jquery.validation.js',
             'poppy/mgr-page/resources/libs/jquery/drag-arrange/drag-arrange.js',
-            'poppy/mgr-page/resources/libs/jquery/tokenize2/jquery.tokenize2.js',
+            'poppy/mgr-page/resources/libs/tom-select/tom-select.complete.min.js',
             'poppy/mgr-page/resources/libs/clipboard/clipboard.min.js',
             'poppy/mgr-page/resources/libs/sortable/sortable.js',
             'poppy/mgr-page/resources/libs/lodash/lodash.min.js',
@@ -55,5 +54,4 @@ mix
     .copyDirectory('poppy/mgr-page/resources/libs/jquery/', 'public/assets/libs/jquery/')
     .copyDirectory('poppy/mgr-page/resources/libs/easy-web/', 'public/assets/libs/easy-web')
     .copyDirectory('poppy/mgr-page/resources/libs/layui/', 'public/assets/libs/layui')
-    .copyDirectory('poppy/mgr-page/resources/libs/vue/', 'public/assets/libs/vue')
-    .copyDirectory('poppy/mgr-page/resources/libs/underscore/', 'public/assets/libs/underscore');
+    .copyDirectory('poppy/mgr-page/resources/libs/vue/', 'public/assets/libs/vue');

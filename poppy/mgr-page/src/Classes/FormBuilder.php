@@ -518,7 +518,7 @@ CONTENT;
      var sort{$id} = new Sortable(el{$id})
 SORT;
 
-        $renderStr  = '';
+        $renderStr = '';
         if (count($value)) {
             $data      = json_encode($value);
             $renderStr = <<<HAHA
@@ -947,26 +947,21 @@ HTML;
      */
     public function tags(string $name, $list = [], $value = [], $options = []): string
     {
-        $id          = 'tags_' . Str::random();
-        $select      = $this->select($name . '[]', $list, $value, $options + [
-                'multiple',
-                'id'         => $id,
-                'lay-ignore' => 'lay-ignore',
-                'class'      => 'tokenize',
-            ]);
-        $placeholder = $options['placeholder'] ?? '';
+        $id     = 'tags_' . Str::random();
+        $select = $this->select($name . '[]', $list, $value, array_merge($options, [
+            'multiple',
+            'id'         => $id,
+            'lay-ignore' => 'lay-ignore',
+        ]));
         return /** @lang text */
             <<<HTML
 {$select}
 <script>
 $(function() {
-    let {$id} = $('#{$id}');
-    {$id}.tokenize2({
-        placeholder : '{$placeholder}',
-        tokensMaxItems : 0
-    })
-    {$id}.on("tokenize:select", function() {
-        $('#{$id}').trigger('tokenize:search', "");
+    new TomSelect('#{!! $id !!}', {
+        plugins: ['remove_button'],
+        create: true,
+        maxItems: 50
     });
 })
 </script>
@@ -990,11 +985,11 @@ HTML;
         $width       = $options['width'] ?? '';
         $width       = $width ? 'w' . $width : '';
         $id          = 'select_' . Str::random(6);
-        $direction   = $options['direction'] ?? 'down';                          //下拉方向
-        $paging      = ($options['paging'] ?? false) ? 'true' : 'false';         //是否开启分页
-        $filter      = ($options['filter'] ?? false) ? 'true' : 'false';         //是否开启搜索
-        $size        = $options['size'] ?? 8;                                    //分页数量
-        $disabled    = ($options['disabled'] ?? false) ? 'true' : 'false';       //是否禁用
+        $direction   = $options['direction'] ?? 'down';                            //下拉方向
+        $paging      = ($options['paging'] ?? false) ? 'true' : 'false';           //是否开启分页
+        $filter      = ($options['filter'] ?? false) ? 'true' : 'false';           //是否开启搜索
+        $size        = $options['size'] ?? 8;                                      //分页数量
+        $disabled    = ($options['disabled'] ?? false) ? 'true' : 'false';         //是否禁用
         $autoRow     = ($options['auto_row'] ?? true) ? 'true' : 'false';          //是否换行
 
         if (is_string($value)) {

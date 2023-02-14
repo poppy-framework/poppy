@@ -224,9 +224,8 @@ class EnvHelper
         if ($format) {
             return UtilHelper::formatBytes($min);
         }
-        else {
-            return $min;
-        }
+
+        return $min;
     }
 
     /**

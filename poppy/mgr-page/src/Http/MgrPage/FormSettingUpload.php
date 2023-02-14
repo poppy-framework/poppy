@@ -2,6 +2,7 @@
 
 namespace Poppy\MgrPage\Http\MgrPage;
 
+use Poppy\Framework\Helper\EnvHelper;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
@@ -19,17 +20,18 @@ class FormSettingUpload extends FormSettingBase
     /**
      * Build a form here.
      */
-    public function form()
+    public function form(): void
     {
-        $uploadTypes = sys_hook('poppy.system.upload_type');
-        $types       = [];
+        $maxUploadSize = EnvHelper::maxUploadSize();
+        $uploadTypes   = sys_hook('poppy.system.upload_type');
+        $types         = [];
         foreach ($uploadTypes as $key => $desc) {
             $types[$key] = $desc['title'];
         }
         $this->radio('save_type', '存储位置')->options($types)->rules([
             Rule::string(),
             Rule::required(),
-        ])->default('default')->help('选择本地则文件存储在本地');
+        ])->default('default')->help('选择本地则文件存储在本地, 当前允许上传大小为 : ' . $maxUploadSize . ', 可根据需求联系管理员调整');
 
         foreach ($uploadTypes as $desc) {
             if (isset($desc['setting'])) {

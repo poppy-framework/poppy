@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 use Illuminate\Contracts\View\Factory;
@@ -12,29 +14,10 @@ class Text extends Field
     use PlainInput;
 
     /**
-     * @var string
-     */
-    protected $icon = 'fa-pencil';
-
-
-    /**
      * @var string 默认类型(Number 可覆盖)
      */
-    protected $type = 'text';
+    protected string $type = 'text';
 
-    /**
-     * Set custom fa-icon.
-     *
-     * @param string $icon
-     *
-     * @return $this
-     */
-    public function icon(string $icon)
-    {
-        $this->icon = $icon;
-
-        return $this;
-    }
 
     /**
      * Render this filed.
@@ -45,8 +28,7 @@ class Text extends Field
     {
         $this->initPlainInput();
 
-        $this->prepend('<i class="fa ' . $this->icon . ' fa-fw"></i>')
-            ->defaultAttribute('id', $this->id)
+        $this->defaultAttribute('id', $this->id)
             ->defaultAttribute('class', 'layui-input ' . $this->getElementClassString())
             ->defaultAttribute('placeholder', $this->getPlaceholder());
 

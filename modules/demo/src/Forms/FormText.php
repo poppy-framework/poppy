@@ -13,9 +13,6 @@ class FormText extends FormBaseWidget
      */
     protected $title = 'Text(文本)';
 
-    public $ajax = true;
-
-
     /**
      * Build a form here.
      */
@@ -27,14 +24,6 @@ class FormText extends FormBaseWidget
 \$this->text('text', '文本')->help('文本输入框');
 CODE;
         $this->code('text-code', 'Code@文本')->default($code);
-        $this->divider();
-
-        $this->text('text_icon', '图标')->icon('fa fa-gamepad')->help('设置前置展示图标');
-        // 添加 code 代码
-        $code = <<<CODE
-\$this->text('text_icon', ''图标)->icon('fa fa-gamepad')->help('设置前置展示图标');
-CODE;
-        $this->code('text_icon-code', 'Code@图标')->default($code);
         $this->divider();
 
         $this->text('text_focus', '聚焦')->autofocus()->help('输入框焦点显示');

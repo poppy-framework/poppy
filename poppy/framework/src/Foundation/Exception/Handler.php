@@ -68,7 +68,7 @@ class Handler extends ExceptionHandler
          * 错误码大于 1000 : 为项目自定义错误码
          * 200 - 50x 为 Http 错误码, 不进行转发
          * ---------------------------------------- */
-        if (!config('app.debug') && $statusCode < 100 || $statusCode > 1000) {
+        if ((($statusCode < 100) || ($statusCode > 1000)) && !config('app.debug')) {
             return Resp::web($statusCode, $e);
         }
 
@@ -101,7 +101,7 @@ class Handler extends ExceptionHandler
      * Get the default context variables for logging.
      * @return array
      */
-    protected function context()
+    protected function context(): array
     {
         return [];
     }

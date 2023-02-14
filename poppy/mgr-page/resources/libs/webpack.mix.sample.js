@@ -21,7 +21,6 @@ mix
         processCssUrls : false
     })
     .disableNotifications()
-    .version()
     /* 开发使用[便于文件加载]
      * ---------------------------------------- */
     // develop
@@ -43,7 +42,7 @@ mix
             'poppy/mgr-page/resources/libs/jquery/poshytip/jquery.poshytip.js',
             'poppy/mgr-page/resources/libs/jquery/validation/jquery.validation.js',
             'poppy/mgr-page/resources/libs/jquery/drag-arrange/drag-arrange.js',
-            'poppy/mgr-page/resources/libs/jquery/tokenize2/jquery.tokenize2.js',
+            'poppy/mgr-page/resources/libs/tom-select/tom-select.complete.min.js',
             'poppy/mgr-page/resources/libs/clipboard/clipboard.min.js'
         ],
         'public/assets/libs/boot/vendor.min.js'
