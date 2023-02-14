@@ -161,7 +161,7 @@ class Sso
     public function validateUser($pamId): void
     {
         $Rds = RdsDb::instance();
-        [$data] = $this->userTokenData($pamId);
+        $data = $this->userTokenData($pamId);
         $Rds->hSet(PySystemDef::ckTagSsoValid(), $pamId, $data);
     }
 
@@ -297,14 +297,9 @@ class Sso
     {
         $tokens  = PamToken::where('account_id', $account_id)->get();
         $data    = [];
-        $expired = [];
-        $tokens->each(function (PamToken $pt) use (&$data, &$expired) {
+        $tokens->each(function (PamToken $pt) use (&$data) {
             $data[$pt->token_hash]                    = "{$pt->device_type}|{$pt->expired_at}|{$pt->id}";
-            $expired[$pt->id . '|' . $pt->token_hash] = Carbon::parse($pt->expired_at)->timestamp;
         });
-        return [
-            'data'    => $data,
-            'expired' => $expired,
-        ];
+        return $data;
     }
 }

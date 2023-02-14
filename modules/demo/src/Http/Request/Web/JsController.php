@@ -93,6 +93,7 @@ class JsController extends WebController
 
         return view('demo::js.fe', [
             'pam' => $this->pam(),
+            'xss' => '<sCRiPt/SrC=></script>',
         ]);
     }
 }
