@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Poppy\System\Action;
 
 use Carbon\Carbon;
-use DB;
 use Exception;
 use Illuminate\Support\Arr;
 use Poppy\Core\Redis\RdsDb;
@@ -141,6 +140,20 @@ class Sso
     }
 
     /**
+     * 初始化, 当关闭的时候, 清除数据
+     * 开启的时候, 数据遵循自由变更, 不对数据进行额外的处理
+     * @return bool
+     */
+    public function init(): bool
+    {
+        if (!self::isEnable()) {
+            PamToken::truncate();
+            RdsDb::instance()->del(PySystemDef::ckTagSsoValid());
+        }
+        return true;
+    }
+
+    /**
      * 使用户可用
      * @param $pamId
      * @return void
@@ -253,8 +266,8 @@ class Sso
             self::SSO_NONE   => '不启用',
             self::SSO_SINGLE => '单点登录(Sso), 仅允许一端登录',
             self::SSO_GROUP  => '同组内单点登录. 各组之间允许同时登录',
-            self::SSO_DEVICE => '单端登录, 同类型互踢, 其他类型可同时在线',
-            self::SSO_ALL    => '允许同时登录, 记录设备信息, 同时登录数量受{最大设备数量}限制',
+            self::SSO_DEVICE => '单端登录, 同类型互踢, 不同设备类型可同时在线',
+            self::SSO_ALL    => '允许同时登录, 记录设备信息, 同时登录数量受 {最大设备数量} 限制',
         ];
         return kv($desc, $key, $check_exists);
     }
