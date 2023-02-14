@@ -16,7 +16,11 @@
         "hieu-le/active": "4.0.*",
         "poppy/core": "4.2.*",
         "mlocati/ip-lib": "1.*",
-        "intervention/image": "2.*"
+        "intervention/image": "2.*",
+        "ezyang/htmlpurifier": "^4.16"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
     },
     "suggest": {
         "ext-imagick": "Needed to support HEIC format image upload"

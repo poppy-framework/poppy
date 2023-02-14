@@ -7,20 +7,20 @@ namespace Poppy\System\Tests\Action;
 use Artisan;
 use Exception;
 use Poppy\Framework\Application\TestCase;
-use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Action\Ban;
 use Poppy\System\Models\PamBan;
 
+/**
+ * 禁用测试
+ */
 class BanTest extends TestCase
 {
 
     /**
-     * @throws ApplicationException
      */
-    public function testIpv4Command()
+    public function testIpv4Command(): void
     {
         $ips = $this->genIps();
-
         $this->clearIps($ips);
         foreach ($ips as $ip) {
             $code = Artisan::call('py-system:ban', [
@@ -96,9 +96,8 @@ class BanTest extends TestCase
     /**
      * 添加随机IP 范围
      * @return void
-     * @throws ApplicationException
      */
-    public function testCreate()
+    public function testCreate(): void
     {
 
         $ips = $this->genIps();
@@ -124,33 +123,19 @@ class BanTest extends TestCase
 
     /**
      * 获取 IP
-     * @throws ApplicationException
      */
     private function genIps(): array
     {
-        $ipv4         = $this->faker()->ipv4;
-        $localIpv4    = $this->faker()->localIpv4;
-        $ipRangeOri   = $this->faker()->localIpv4;
-        $ip           = explode('.', $ipRangeOri);
-        $ipEnd        = explode('.', $ipRangeOri);
-        $ipMask       = explode('.', $this->faker()->localIpv4);
-        $ipPattern    = explode('.', $this->faker()->localIpv4);
-        $ip[3]        = 1;
-        $ipEnd[3]     = 254;
-        $ipPattern[3] = '*';
-        $ipMask[3]    = '1/24';
-        $ipRange      = implode('.', $ip) . '-' . implode('.', $ipEnd);
-
         return [
-            $ipv4,
-            $ipRange,
-            implode('.', $ipPattern),
-            $localIpv4,
-            implode('.', $ipMask),
+            "30.92.252.134",
+            "192.168.20.1-192.168.20.254",
+            "10.66.191.*",
+            "192.168.45.147",
+            "10.243.162.1/24",
         ];
     }
 
-    private function clearIps($ips)
+    private function clearIps($ips): void
     {
         try {
             PamBan::where('account_type', 'user')->whereIn('value', $ips)->delete();
@@ -164,7 +149,7 @@ class BanTest extends TestCase
      * @param $ips
      * @return void
      */
-    private function removeIps($ips)
+    private function removeIps($ips): void
     {
         $Ban = new Ban();
         PamBan::where('type', PamBan::TYPE_IP)

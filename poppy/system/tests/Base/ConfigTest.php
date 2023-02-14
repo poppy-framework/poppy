@@ -3,8 +3,9 @@
 namespace Poppy\System\Tests\Base;
 
 use InvalidArgumentException;
+use Poppy\Framework\Application\TestCase;
 
-class ConfigTest extends SystemTestCase
+class ConfigTest extends TestCase
 {
     /**
      * 测试存在 Public Storage

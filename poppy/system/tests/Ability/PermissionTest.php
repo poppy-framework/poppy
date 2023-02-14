@@ -4,19 +4,14 @@ namespace Poppy\System\Tests\Ability;
 
 use Poppy\Core\Classes\Traits\CoreTrait;
 use Poppy\Core\Rbac\Permission\Permission;
+use Poppy\Framework\Application\TestCase;
 use Poppy\System\Models\PamPermission;
 use Poppy\System\Models\PamRole;
-use Poppy\System\Tests\Base\SystemTestCase;
+use Poppy\System\Tests\Testing\TestingPam;
 
-class PermissionTest extends SystemTestCase
+class PermissionTest extends TestCase
 {
     use CoreTrait;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->initPam();
-    }
 
     /**
      * 检测权限不为空
@@ -43,6 +38,7 @@ class PermissionTest extends SystemTestCase
      */
     public function testHasPermission(): void
     {
+        $pam = TestingPam::randUser();
         /** @var PamRole $role */
         $role = PamRole::where('name', 'user')->first();
 
@@ -60,7 +56,7 @@ class PermissionTest extends SystemTestCase
             }
             $role->attachPermission($dbPerm);
             $role->save();
-            if ($this->pam->capable($permission->key())) {
+            if ($pam->capable($permission->key())) {
                 $this->assertTrue(true);
             }
             else {

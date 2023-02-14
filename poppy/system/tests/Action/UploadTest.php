@@ -2,10 +2,7 @@
 
 namespace Poppy\System\Tests\Action;
 
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Validator;
 use Poppy\Framework\Application\TestCase;
-use Poppy\Framework\Classes\Resp;
 use Poppy\System\Classes\Contracts\FileContract;
 use Poppy\System\Classes\File\DefaultFileProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -20,7 +17,7 @@ class UploadTest extends TestCase
     /**
      * 进行上传
      */
-    public function testUpload()
+    public function testUpload(): void
     {
         try {
             $file   = poppy_path('poppy.system', 'tests/files/demo.jpg');
@@ -53,7 +50,7 @@ class UploadTest extends TestCase
     /**
      * 进行上传
      */
-    public function testDest()
+    public function testDest(): void
     {
         try {
             $file   = poppy_path('poppy.system', 'tests/files/demo.jpg');

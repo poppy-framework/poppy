@@ -2,11 +2,11 @@
 
 namespace Demo\Tests\Failed;
 
-use Poppy\System\Tests\Base\SystemTestCase;
+use Poppy\Framework\Application\TestCase;
 
-class AssertTest extends SystemTestCase
+class AssertTest extends TestCase
 {
-    public function testAssert()
+    public function testAssert(): void
     {
         $int = 1;
         $this->assertSame('1', $int, 'Int 1 not equal to String `1`');

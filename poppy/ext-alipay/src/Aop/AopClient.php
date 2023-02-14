@@ -1,6 +1,5 @@
 <?php
 
-declare(strict_types = 1);
 
 namespace Poppy\Extension\Alipay\Aop;
 
@@ -20,25 +19,35 @@ class AopClient
     use AppTrait;
 
     /**
-     * @var string sdk版本
-     */
-    protected $alipaySdkVersion = 'alipay-sdk-php-20161101';
-
-    /**
      * @var string 应用ID
      */
     public $appId;
-
-    /**
-     * @var string 私钥文件路径
-     */
-    private $rsaPrivateKeyFilePath;
 
     /**
      * @var string 私钥值
      * @url
      */
     public $rsaPrivateKey;
+
+    /**
+     * @var string 使用读取字符串格式，请只传递该值
+     */
+    public $alipayRsaPublicKeyString;
+
+    /**
+     * @var string 签名类型
+     */
+    public $signType = 'RSA2';
+
+    /**
+     * @var string sdk版本
+     */
+    protected $alipaySdkVersion = 'alipay-sdk-php-20161101';
+
+    /**
+     * @var string 私钥文件路径
+     */
+    private $rsaPrivateKeyFilePath;
 
     /**
      * @var string 网关
@@ -71,11 +80,6 @@ class AopClient
     private $alipayPublicKeyPath;
 
     /**
-     * @var string 使用读取字符串格式，请只传递该值
-     */
-    public $alipayRsaPublicKeyString;
-
-    /**
      * @var bool 调试信息
      */
     private $debugInfo = false;
@@ -95,11 +99,6 @@ class AopClient
      * @var string 加密XML节点名称
      */
     private $ENCRYPT_XML_NODE_NAME = 'response_encrypted';
-
-    /**
-     * @var string 签名类型
-     */
-    public $signType = 'RSA2';
 
     /**
      * @var string 加密密钥

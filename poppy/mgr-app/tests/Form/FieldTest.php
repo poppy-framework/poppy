@@ -2,18 +2,17 @@
 
 namespace Poppy\MgrApp\Tests\Form;
 
+use Poppy\Framework\Application\TestCase;
 use Poppy\MgrApp\Classes\Form\Field\Number;
 use Poppy\MgrApp\Classes\Form\Field\Text;
-use Poppy\MgrApp\Classes\Widgets\FormWidget;
-use Poppy\System\Tests\Base\SystemTestCase;
 
 /**
  * @property string $label 属性
  */
-class FieldTest extends SystemTestCase
+class FieldTest extends TestCase
 {
 
-    public function testAttr()
+    public function testAttr(): void
     {
         $field = new Number('', '');
         $this->assertEquals('number', $field->struct()['type']);

@@ -14,7 +14,7 @@ class NotifyJobProTest extends TestCase
      * 测试 oss 上传
      * @throws ApplicationException
      */
-    public function testCallback()
+    public function testCallback(): void
     {
         // 这个队列会执行成功
         dispatch(new NotifyProJob('https://www.baidu.com', 'get', [

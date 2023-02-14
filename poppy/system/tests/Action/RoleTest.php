@@ -3,6 +3,7 @@
 namespace Poppy\System\Tests\Action;
 
 use Auth;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -26,6 +27,7 @@ class RoleTest extends TestCase
      * @throws ApplicationException
      * @throws ValidationException
      * @throws AuthorizationException
+     * @throws Exception
      */
     public function testEstablish(): void
     {

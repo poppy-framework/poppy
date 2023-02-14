@@ -15,8 +15,9 @@ use Poppy\System\Models\PamAccount;
 use Throwable;
 
 /**
+ * @see        TestCase
+ * @removed    5.0
  * @deprecated 4.1
- * @see TestCase
  */
 class SystemTestCase extends TestCase
 {

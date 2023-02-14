@@ -43,13 +43,14 @@
         "overtrue/pinyin": "^4.0",
         "ovidigital/js-object-to-json": "^1.0",
         "hamcrest/hamcrest-php": "^2.0.1",
-        "mockery/mockery": "^1.5.1",
         "nikic/php-parser": "^4.15",
         "sentry/sentry-laravel": "3.*",
         "ezyang/htmlpurifier": "^4.16",
         "psr/http-factory-implementation": "*"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "mockery/mockery": "^1.5.1",
         "itsgoingd/clockwork": "^5.1",
         "barryvdh/laravel-ide-helper": "2.8.*",
         "doctrine/dbal": "^2.6",

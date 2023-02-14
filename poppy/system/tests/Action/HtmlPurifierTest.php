@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Poppy\System\Tests\Action;
 
@@ -18,25 +18,28 @@ class HtmlPurifierTest extends TestCase
      */
     public function testPurifier(): void
     {
-        $old ='
+        $old       = '
         <H1>我是一级标题</H1>
         <h2>我是二级标题</h2>
         <h3 style="color: red">我是红色的三级标题</h3>
-        <iframe src="http://baidu.com" frameborder="0"></iframe>
+        <iframe src="http://baidu.com"></iframe>
         <script>alert("alert")</script>
         <sCRiPt sRC=http://baidu.com></sCrIpT>
         <style>h1{color: red}</style>
         ';
-        $Storage = Storage::disk('storage');
+        $Storage   = Storage::disk('storage');
         $cachePath = $Storage->path('html_purifier/');
-        if (!File::exists($cachePath)){
+        if (!File::exists($cachePath)) {
             File::makeDirectory($cachePath);
         }
         $config = HTMLPurifier_Config::createDefault();
         $config->set('Cache.SerializerPath', $cachePath);
         $Purifier = new HTMLPurifier($config);
-        $new = $Purifier->purify($old);
-        print_r($old);
-        print_r($new);
+        $new      = $Purifier->purify($old);
+
+        $this->assertFalse(strpos($new, "<script"));
+        $this->assertFalse(strpos($new, "<sCRiPt"));
+        $this->assertFalse(strpos($new, "<style"));
+        $this->assertFalse(strpos($new, "<iframe"));
     }
 }

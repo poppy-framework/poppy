@@ -4,13 +4,13 @@ namespace Demo\Tests\Classes;
 
 
 use Demo\Classes\Stub;
-use Poppy\System\Tests\Base\SystemTestCase;
+use Poppy\Framework\Application\TestCase;
 
-class StubTest extends SystemTestCase
+class StubTest extends TestCase
 {
 
 
-    public function testDoSomething()
+    public function testDoSomething(): void
     {
         $stub = $this->createStub(Stub::class);
         $stub->method('doSomeThing')

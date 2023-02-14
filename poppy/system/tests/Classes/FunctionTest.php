@@ -2,9 +2,9 @@
 
 namespace Poppy\System\Tests\Classes;
 
-use Poppy\System\Tests\Base\SystemTestCase;
+use Poppy\Framework\Application\TestCase;
 
-class FunctionTest extends SystemTestCase
+class FunctionTest extends TestCase
 {
     public function testOrderMatch(): void
     {

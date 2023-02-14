@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
  * 回调执行
  * @see        NotifyProJob
  * @deprecated 4.1 使用增强型替代, 对传参可以自定义
+ * @removed    5.0
  */
 class NotifyJob extends Job implements ShouldQueue
 {

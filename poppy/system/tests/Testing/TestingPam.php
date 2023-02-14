@@ -62,8 +62,7 @@ class TestingPam
      */
     public static function randUser(): PamAccount
     {
-        $Db = PamAccount::where('type', PamAccount::TYPE_USER)->inRandomOrder();
-        return $Db->first();
+        return PamAccount::where('type', PamAccount::TYPE_USER)->inRandomOrder()->first();
     }
 
     /**
@@ -72,8 +71,7 @@ class TestingPam
      */
     public static function randBackend(): PamAccount
     {
-        $Db = PamAccount::where('type', PamAccount::TYPE_BACKEND)->inRandomOrder();
-        return $Db->first();
+        return PamAccount::where('type', PamAccount::TYPE_BACKEND)->inRandomOrder()->first();
     }
 
     /**

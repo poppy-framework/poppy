@@ -82,11 +82,11 @@ class Sso
                 // 保留最多 10 个设备, 允许同时登录, 记录设备信息, 同时登录数量受{最大设备数量}限制
                 // 这里需要配上用户的设备管理, 自动
                 $num = PamToken::where('account_id', $pamId)->count();
-                if ($maxDeviceNum > $num) {
+                if ($num >= $maxDeviceNum) {
                     // 根据设备时间/数量倒排删除
                     $logoutUsers = PamToken::where('account_id', $pamId)
-                        ->orderBy('expired_at')
-                        ->limit($maxDeviceNum - $num)
+                        ->orderBy('id')
+                        ->limit(($num - $maxDeviceNum) + 1)
                         ->get();
                 }
                 break;
@@ -96,9 +96,8 @@ class Sso
                     ->where('device_type', $device_type)->get();
                 break;
             case self::SSO_SINGLE:
-                // 单点登录(Sso), 移除其他端所有设备
-                $logoutUsers = PamToken::where('account_id', $pam->id)
-                    ->where('device_type', '!=', $device_type)->get();
+                // 单点登录(Sso), 仅保留一台设备
+                $logoutUsers = PamToken::where('account_id', $pam->id)->get();
                 break;
             case self::SSO_GROUP:
                 // 同组内登录
@@ -110,8 +109,7 @@ class Sso
                 }
                 // 删除同组内其他设备
                 $logoutUsers = PamToken::where('account_id', $pam->id)
-                    ->whereIn('device_type', $total)
-                    ->where('device_type', '!=', $device_type)->get();
+                    ->whereIn('device_type', $total)->get();
                 break;
         }
 
@@ -123,16 +121,13 @@ class Sso
 
         // 创建/更新用户的设备类型
         /** @var PamToken $current */
-        PamToken::updateOrInsert([
+        PamToken::create([
             'account_id'  => $pamId,
+            'device_id'   => $device_id,
             'device_type' => $device_type,
-        ], [
-            'token_hash' => $tokenMd5,
-            'device_id'  => $device_id,
-            'expired_at' => $expiredAt->toDateTimeString(),
-            'login_ip'   => Request::ip(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'login_ip'    => Request::ip(),
+            'token_hash'  => $tokenMd5,
+            'expired_at'  => $expiredAt->toDateTimeString(),
         ]);
 
         $this->validateUser($pamId);
@@ -160,7 +155,7 @@ class Sso
      */
     public function validateUser($pamId): void
     {
-        $Rds = RdsDb::instance();
+        $Rds  = RdsDb::instance();
         $data = $this->userTokenData($pamId);
         $Rds->hSet(PySystemDef::ckTagSsoValid(), $pamId, $data);
     }
@@ -169,10 +164,12 @@ class Sso
      * 禁用用户和 token
      * @param int $pamId
      * @return void
+     * @throws Exception
      */
     public function banUser(int $pamId): void
     {
         $Rds = RdsDb::instance();
+        PamToken::where('account_id', $pamId)->delete();
         // delete from key
         $Rds->hDel(PySystemDef::ckTagSsoValid(), $pamId);
     }
@@ -295,10 +292,10 @@ class Sso
      */
     private function userTokenData($account_id): array
     {
-        $tokens  = PamToken::where('account_id', $account_id)->get();
-        $data    = [];
+        $tokens = PamToken::where('account_id', $account_id)->get();
+        $data   = [];
         $tokens->each(function (PamToken $pt) use (&$data) {
-            $data[$pt->token_hash]                    = "{$pt->device_type}|{$pt->expired_at}|{$pt->id}";
+            $data[$pt->token_hash] = "{$pt->device_type}|{$pt->expired_at}|{$pt->id}";
         });
         return $data;
     }

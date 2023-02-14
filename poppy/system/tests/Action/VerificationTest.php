@@ -2,13 +2,17 @@
 
 namespace Poppy\System\Tests\Action;
 
+use Poppy\Framework\Application\TestCase;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Action\Verification;
-use Poppy\System\Tests\Base\SystemTestCase;
 
-class VerificationTest extends SystemTestCase
+class VerificationTest extends TestCase
 {
 
-    public function testCaptcha()
+    /**
+     * @throws ApplicationException
+     */
+    public function testCaptcha(): void
     {
         $Verification = new Verification();
         $mobile       = $this->faker()->phoneNumber;
@@ -35,7 +39,7 @@ class VerificationTest extends SystemTestCase
     /**
      * 验证一次验证码
      */
-    public function testOnceCode()
+    public function testOnceCode(): void
     {
         $Verification = new Verification();
         $hidden       = 'once-code';
@@ -53,7 +57,7 @@ class VerificationTest extends SystemTestCase
     /**
      * 验证存储的值
      */
-    public function testWord()
+    public function testWord(): void
     {
         $Verification = new Verification();
         $str          = 'once-code';

@@ -2,13 +2,17 @@
 
 namespace Poppy\System\Tests\Models;
 
+use Poppy\Framework\Application\TestCase;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\SysConfig;
-use Poppy\System\Tests\Base\SystemTestCase;
 
-class SysConfigTest extends SystemTestCase
+class SysConfigTest extends TestCase
 {
-    public function testTableExist()
+    /**
+     * @throws ApplicationException
+     */
+    public function testTableExist(): void
     {
         $exist = SysConfig::tableExists((new PamAccount())->getTable());
         $this->assertTrue($exist);

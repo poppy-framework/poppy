@@ -5,20 +5,16 @@ declare(strict_types = 1);
 namespace Poppy\System\Tests\Ability;
 
 use Carbon\Carbon;
+use Poppy\Framework\Application\TestCase;
 use Poppy\System\Events\PamDisableEvent;
-use Poppy\System\Tests\Base\SystemTestCase;
+use Poppy\System\Tests\Testing\TestingPam;
 
-class EventTest extends SystemTestCase
+class EventTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->initPam();
-    }
-
     public function testPamDisable(): void
     {
-        event(new PamDisableEvent($this->pam, $this->pam, 'Testing Event dispatched @ ' . Carbon::now()));
+        $pam = TestingPam::randUser();
+        event(new PamDisableEvent($pam, $pam, 'Testing Event dispatched @ ' . Carbon::now()));
         $this->assertTrue(true);
     }
 }

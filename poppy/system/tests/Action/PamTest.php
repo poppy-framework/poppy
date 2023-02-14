@@ -16,6 +16,7 @@ class PamTest extends TestCase
 
     /**
      * 验证码注册
+     * @throws ApplicationException
      */
     public function testCaptchaLogin(): void
     {
@@ -44,6 +45,7 @@ class PamTest extends TestCase
 
     /**
      * 空密码注册
+     * @throws ApplicationException
      */
     public function testRegisterWithEmptyPassword(): void
     {
@@ -63,7 +65,10 @@ class PamTest extends TestCase
         }
     }
 
-    public function testRegisterWithUsername()
+    /**
+     * @throws ApplicationException
+     */
+    public function testRegisterWithUsername(): void
     {
         $passport = $this->faker()->lexify('testing_username_????????');
         $password = $this->faker()->lexify('????????');
@@ -80,7 +85,10 @@ class PamTest extends TestCase
         }
     }
 
-    public function testRegisterDevelop()
+    /**
+     * @throws ApplicationException
+     */
+    public function testRegisterDevelop(): void
     {
         $passport = $this->faker()->lexify('testing_dev_????????');
         $Pam      = new Pam();
@@ -133,7 +141,10 @@ class PamTest extends TestCase
     }
 
 
-    public function testRebind()
+    /**
+     * @throws ApplicationException
+     */
+    public function testRebind(): void
     {
         $pam    = TestingPam::randUser();
         $mobile = $this->faker()->phoneNumber;
@@ -148,6 +159,7 @@ class PamTest extends TestCase
 
     /**
      * 设置密码
+     * @throws ApplicationException
      */
     public function testSetPassword(): void
     {
