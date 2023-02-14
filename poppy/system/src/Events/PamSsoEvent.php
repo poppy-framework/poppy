@@ -16,12 +16,12 @@ class PamSsoEvent
     /**
      * @var PamAccount
      */
-    public $pam;
+    public PamAccount $pam;
 
     /**
-     * @var string 单点登录被踢下去的用户的数据
+     * @var Collection 单点登录被踢下去的用户的数据
      */
-    public $tokens;
+    public Collection $tokens;
 
 
     /**

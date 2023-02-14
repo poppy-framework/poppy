@@ -44,6 +44,7 @@ class ServiceProvider extends PoppyServiceProvider
         ],
         PoppyOptimized::class           => [
             Listeners\PoppyOptimized\ClearCacheListener::class,
+            Listeners\PoppyOptimized\SystemInitListener::class,
         ],
         LoginTokenPassedEvent::class    => [
             Listeners\LoginTokenPassed\SsoListener::class,
@@ -67,7 +68,7 @@ class ServiceProvider extends PoppyServiceProvider
      * @return void
      * @throws ModuleNotFoundException
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot('poppy.system');
 
@@ -78,7 +79,7 @@ class ServiceProvider extends PoppyServiceProvider
      * Register the module services.
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         // 配置文件
         $this->mergeConfigFrom(dirname(__DIR__) . '/resources/config/system.php', 'poppy.system');
@@ -96,12 +97,7 @@ class ServiceProvider extends PoppyServiceProvider
         $this->registerContracts();
     }
 
-    public function provides(): array
-    {
-        return [];
-    }
-
-    private function registerSchedule()
+    private function registerSchedule(): void
     {
         app('events')->listen('console.schedule', function (Schedule $schedule) {
             $schedule->command('py-system:user', ['auto_enable'])
@@ -117,7 +113,7 @@ class ServiceProvider extends PoppyServiceProvider
     /**
      * register rbac and alias
      */
-    private function registerContracts()
+    private function registerContracts(): void
     {
         $this->app->bind('poppy.system.api_sign', function () {
             /** @var ApiSignContract $signProvider */
@@ -164,7 +160,7 @@ class ServiceProvider extends PoppyServiceProvider
 
     }
 
-    private function registerConsole()
+    private function registerConsole(): void
     {
         // system
         $this->commands([
@@ -175,7 +171,7 @@ class ServiceProvider extends PoppyServiceProvider
         ]);
     }
 
-    private function registerAuth()
+    private function registerAuth(): void
     {
         app('auth')->provider('pam.web', function () {
             return new WebProvider(PamAccount::class);
@@ -191,7 +187,7 @@ class ServiceProvider extends PoppyServiceProvider
         });
     }
 
-    private function bootConfigs()
+    private function bootConfigs(): void
     {
         config([
             'mail.driver'       => sys_setting('py-system::mail.driver') ?: config('mail.driver'),

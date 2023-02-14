@@ -15,6 +15,7 @@ use Poppy\MgrApp\Http\MgrApp\GridPamAccount;
 use Poppy\MgrApp\Http\MgrApp\GridPamLog;
 use Poppy\MgrApp\Http\MgrApp\GridPamToken;
 use Poppy\System\Action\Ban;
+use Poppy\System\Action\Sso;
 use Poppy\System\Events\PamTokenBanEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamLog;
@@ -120,9 +121,7 @@ class PamController extends BackendController
         $item = PamToken::find($id);
 
         // 踢下线(当前用户不可访问)
-        $Ban = new Ban();
-        $Ban->forbidden($item->account_id);
-        $item->delete();
+        (new Sso())->banToken($item);
 
         event(new PamTokenBanEvent($item, 'token'));
         return Resp::success('删除用户成功, 用户已无法访问(需重新登录)', 'motion|grid:reload');

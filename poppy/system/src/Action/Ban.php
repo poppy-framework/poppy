@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use IPLib\Factory;
 use Poppy\Core\Redis\RdsDb;
+use Poppy\Core\Redis\RdsNative;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Helper\UtilHelper;
 use Poppy\System\Classes\PySystemDef;
@@ -26,7 +27,7 @@ class Ban
 {
     use AppTrait;
 
-    static $rds;
+    private static RdsNative $rds;
 
     public function __construct()
     {
@@ -78,10 +79,8 @@ class Ban
                 return $this->setError('此 IP 和 ' . $first->value . ' 存在IP段重复, 请检查后再添加');
             }
         }
-        else {
-            if ((clone $DbBan)->where('type', PamBan::TYPE_DEVICE)->where('value', $value)->exists()) {
-                return $this->setError('封禁设备已存在!');
-            }
+        else if ((clone $DbBan)->where('type', PamBan::TYPE_DEVICE)->where('value', $value)->exists()) {
+            return $this->setError('封禁设备已存在!');
         }
 
         $item = PamBan::create([
@@ -145,7 +144,7 @@ class Ban
         $oneKey    = PySystemDef::ckTagBanOne($account_type);
         $rangesKey = PySystemDef::ckTagBanIpRange($account_type);
         if (!self::$rds->exists($oneKey) || !self::$rds->exists($rangesKey)) {
-            $this->init($account_type);
+            $this->initAccountType($account_type);
         }
 
         // 存在固定的设备类型或者是固定的IP
@@ -187,7 +186,7 @@ class Ban
     {
         /** @var PamToken $item */
         $item = PamToken::find($id);
-        if (!in_array($type, array_keys(PamBan::kvType()))) {
+        if (!array_key_exists($type, PamBan::kvType())) {
             return $this->setError('封禁类型错误');
         }
 
@@ -209,68 +208,13 @@ class Ban
     }
 
     /**
-     * 记录可用Token/记录过期时间
-     * @param int    $account_id
-     * @param string $md5Token
-     * @param Carbon $expired_at
-     */
-    public function allow(int $account_id, string $md5Token, Carbon $expired_at)
-    {
-        // 记录可用Token/记录过期时间
-        $Rds = RdsDb::instance();
-        $Rds->hSet(PySystemDef::ckTagSso('valid'), $account_id, $md5Token . '|' . $expired_at->toDateTimeString());
-        $Rds->zAdd(PySystemDef::ckTagSso('expired'), [
-            $account_id => $expired_at->timestamp,
-        ]);
-    }
-
-    /**
-     * 取消用户 Token 的访问权限
-     * @param int $account_id
-     */
-    public function forbidden(int $account_id)
-    {
-        $Rds = RdsDb::instance();
-        $Rds->hDel(PySystemDef::ckTagSso('valid'), $account_id);
-        $Rds->zRem(PySystemDef::ckTagSso('expired'), [
-            $account_id,
-        ]);
-    }
-
-    /**
      * 初始化所有
      */
-    public function initAll()
+    public function initCache(): void
     {
         foreach (PamAccount::kvType() as $key => $value) {
-            $this->init($key);
+            $this->initAccountType($key);
         }
-    }
-
-    /**
-     * 数据重新初始化到缓存中
-     */
-    public function init($account_type)
-    {
-        $items  = PamBan::where('account_type', $account_type)->get();
-        $ones   = collect();
-        $ranges = collect();
-        collect($items)->each(function ($item) use ($ones, $ranges) {
-            if (
-                // 单IP
-                ($item->type === PamBan::TYPE_IP && UtilHelper::isIp($item->value))
-                ||
-                // 单设备
-                $item->type === PamBan::TYPE_DEVICE
-            ) {
-                $ones->push($item);
-            }
-            else {
-                $ranges->push($item);
-            }
-        });
-        $this->initOne($account_type, $ones);
-        $this->initRanges($account_type, $ranges);
     }
 
     public function parseIpRange($value)
@@ -309,11 +253,38 @@ class Ban
     }
 
     /**
+     * 数据重新初始化到缓存中
+     * @param string $account_type 账号类型
+     */
+    private function initAccountType(string $account_type): void
+    {
+        $items  = PamBan::where('account_type', $account_type)->get();
+        $ones   = collect();
+        $ranges = collect();
+        collect($items)->each(function ($item) use ($ones, $ranges) {
+            if (
+                // 单设备
+                $item->type === PamBan::TYPE_DEVICE
+                ||
+                // 单IP
+                ($item->type === PamBan::TYPE_IP && UtilHelper::isIp($item->value))
+            ) {
+                $ones->push($item);
+            }
+            else {
+                $ranges->push($item);
+            }
+        });
+        $this->initOne($account_type, $ones);
+        $this->initRanges($account_type, $ranges);
+    }
+
+    /**
      * 初始化Ip/设备
      * @param string     $account_type
      * @param Collection $items
      */
-    private function initOne(string $account_type, Collection $items)
+    private function initOne(string $account_type, Collection $items): void
     {
         $key = PySystemDef::ckTagBanOne($account_type);
         self::$rds->del($key);
@@ -328,7 +299,7 @@ class Ban
      * @param string     $account_type 账号类型
      * @param Collection $items
      */
-    private function initRanges(string $account_type, Collection $items)
+    private function initRanges(string $account_type, Collection $items): void
     {
         $key = PySystemDef::ckTagBanIpRange($account_type);
         self::$rds->del($key);
@@ -374,10 +345,8 @@ class Ban
     {
         $ranges = collect();
         collect($items)->each(function ($item) use ($ranges) {
-            $value   = $item->value;
-            $passed  = $this->parseIpRange($value);
-            $startIp = $passed[1];
-            $endIp   = $passed[2];
+            $value = $item->value;
+            [, $startIp, $endIp] = $this->parseIpRange($value);
             $ranges->push("range-{$item->id}|{$startIp}-{$endIp}");
         });
         return $ranges;

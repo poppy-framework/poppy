@@ -7,7 +7,6 @@ namespace Poppy\System\Http\Middlewares;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Poppy\Core\Redis\RdsDb;
 use Poppy\System\Classes\PySystemDef;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
@@ -38,17 +37,15 @@ class Sso extends BaseMiddleware
         // sso check
         $md5Token = md5($token);
         $pamId    = data_get($payload, 'sub');
-        $Rds      = RdsDb::instance();
-        $hash     = $Rds->hGet(PySystemDef::ckTagSso('valid'), $pamId);
-        if (Str::contains($hash, '|')) {
-            $rdsHash = Str::before($hash, '|');
-            if ($rdsHash === $md5Token) {
-                return $next($request);
-            }
 
-            return response('Unauthorized Jwt, Token Expired.', 401);
+        $Rds     = RdsDb::instance();
+        $devices = $Rds->hGet(PySystemDef::ckTagSsoValid(), $pamId);
+        if (!$devices) {
+            return response('Unauthorized Jwt, No valid device.', 401);
         }
-
+        if (array_key_exists($md5Token, $devices)) {
+            return $next($request);
+        }
         return response('Unauthorized Jwt, Token unValid.', 401);
     }
 }

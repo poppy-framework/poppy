@@ -63,12 +63,11 @@ class PySystemDef
 
     /**
      * 单点登录的Hash(允许访问的)
-     * @param string $type 类型
      * @return string
      */
-    public static function ckTagSso(string $type): string
+    public static function ckTagSsoValid(): string
     {
-        return 'tag:py-system:sso-' . $type;
+        return 'tag:py-system:sso-valid';
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Http\MgrPage;
 
 use Poppy\Framework\Validation\Rule;
@@ -13,8 +15,9 @@ class FormSettingPam extends FormSettingBase
 
     protected $group = 'py-system::pam';
 
-    public function form()
+    public function form(): void
     {
+        $groups = (new Sso())->getGroups(true);
         $this->text('prefix', '账号前缀')->rules([
             Rule::required(),
         ])->placeholder('请输入账号前缀, 用于账号注册默认用户名生成');
@@ -24,7 +27,7 @@ class FormSettingPam extends FormSettingBase
         $this->divider('单点登录设定');
         $this->radio('sso_type', '单点登录类型')->options(Sso::kvType())->stacked()->rules([
             Rule::required(),
-        ])->help('单点设备登录均会影响到线上用户, 请慎重处理. 设备组设定为 app(android/ios), web(h5/webapp/mp[小程序]), pc(mac/linux/win)');
+        ])->help('单点设备登录均会影响到线上用户, 请慎重处理. 设备组设定为 ' . $groups);
         $this->text('sso_device_num', '最大设备数量')->help('启用多端登录时候允许的最大设备数量, 没有配置则默认最大数量为10')->rules([
             Rule::max(10), Rule::required(), Rule::numeric(),
         ]);

@@ -9,6 +9,7 @@ use Illuminate\Console\Command;
 use Poppy\Core\Redis\RdsDb;
 use Poppy\System\Action\Ban;
 use Poppy\System\Action\Pam;
+use Poppy\System\Action\Sso;
 use Poppy\System\Classes\PySystemDef;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamPermission;
@@ -94,15 +95,8 @@ class UserCommand extends Command
                 $this->info(sys_gen_mk(self::class, 'Fill Mobile Over'));
                 break;
             case 'clear_expired':
-                // 移除过期的 Jwt Token
-                $Rds    = RdsDb::instance();
-                $endTtl = Carbon::now()->timestamp;
-                $items  = $Rds->zRangeByScore(PySystemDef::ckTagSso('expired'), 0, $endTtl);
-                $num    = 0;
-                if (is_array($items) && $num = count($items)) {
-                    $Rds->hDel(PySystemDef::ckTagSso('valid'), $items);
-                    $Rds->zRemRangeByScore(PySystemDef::ckTagSso('expired'), 0, $endTtl);
-                }
+                // 清理已经过期的数据
+                $num = (new Sso())->clearExpired();
                 $this->info(sys_gen_mk(self::class, 'Delete Expired Token, Num : ' . $num));
                 break;
             case 'init_role':
@@ -156,7 +150,7 @@ class UserCommand extends Command
                 $this->info(sys_gen_mk(self::class, 'auto clear log!'));
                 break;
             case 'ban_init':
-                (new Ban())->initAll();
+                (new Ban())->initCache();
                 $this->info(sys_gen_mk(self::class, 'Init Ban Cache!'));
                 break;
             case 'check_perm':

@@ -8,7 +8,9 @@ use Carbon\Carbon;
 use DB;
 use Exception;
 use Illuminate\Support\Arr;
+use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Classes\Traits\AppTrait;
+use Poppy\System\Classes\PySystemDef;
 use Poppy\System\Events\PamLogoutEvent;
 use Poppy\System\Events\PamSsoEvent;
 use Poppy\System\Models\PamAccount;
@@ -30,24 +32,32 @@ class Sso
     public const SSO_DEVICE = 'device';
 
 
-    private static array $groups = [
+    private array $groups = [
         'app' => ['android', 'ios'],
         'web' => ['h5', 'webapp', 'mp'],
         'pc'  => ['mac', 'linux', 'win'],
     ];
 
+    public function __construct()
+    {
+        // 自定义的分组覆盖系统默认分组
+        if (config('poppy.system.sso_group')) {
+            $this->groups = config('poppy.system.sso_group');
+        }
+    }
+
     /**
      * @param PamAccount $pam
-     * @param            $device_id
-     * @param            $device_type
-     * @param            $token
+     * @param string     $device_id   设备 ID
+     * @param string     $device_type 设备类型
+     * @param string     $token       token
      * @return bool
      * @throws Exception
      */
-    public function handle(PamAccount $pam, $device_id, $device_type, $token): bool
+    public function handle(PamAccount $pam, string $device_id, string $device_type, string $token): bool
     {
         $ssoType      = (string) sys_setting('py-system::pam.sso_type');
-        $maxDeviceNum = (int) sys_setting('py-system::pam.sso_device_num') ?: 10;
+        $maxDeviceNum = (int) (sys_setting('py-system::pam.sso_device_num') ?: 10);
         // 不启用
         if (!self::isEnable()) {
             return true;
@@ -58,7 +68,7 @@ class Sso
             return $this->setError('开启单一登录必须传递设备ID/设备类型');
         }
 
-        $devices = Arr::flatten(self::$groups);
+        $devices = Arr::flatten($this->groups);
         if (!in_array($device_type, $devices, true)) {
             return $this->setError('设备类型必须是' . implode(',', $devices) . '中的一种');
         }
@@ -67,52 +77,46 @@ class Sso
         $pamId     = $pam->id;
         $expiredAt = Carbon::now()->addMinutes(config('jwt.ttl'));
 
-        // 允许同时登录, 记录设备信息, 同时登录数量受{最大设备数量}限制
-        if ($ssoType === self::SSO_ALL) {
-            // 检查同时登录设备量
-            // 这里需要配上用户的设备管理, 否则会出问题的
-            $num = PamToken::where('account_id', $pamId)->where('device_id', '!=', $device_id)->count();
-            if ($maxDeviceNum >= $num) {
-                return $this->setError('已经超过当前登录设备最大限制, 无法继续登录');
-            }
-        }
-
-        // 放行当前设备
-        $Ban = new Ban();
-        $Ban->allow($pam->id, $tokenMd5, $expiredAt);
-
+        $logoutUsers = collect();
         switch ($ssoType) {
             case self::SSO_ALL:
-                return true;
+                // 保留最多 10 个设备, 允许同时登录, 记录设备信息, 同时登录数量受{最大设备数量}限制
+                // 这里需要配上用户的设备管理, 自动
+                $num = PamToken::where('account_id', $pamId)->count();
+                if ($maxDeviceNum > $num) {
+                    // 根据设备时间/数量倒排删除
+                    $logoutUsers = PamToken::where('account_id', $pamId)
+                        ->orderBy('expired_at')
+                        ->limit($maxDeviceNum - $num)
+                        ->get();
+                }
+                break;
             case self::SSO_DEVICE:
                 // 单端登录, 只移除当前类型设备[去除当前设备]
-                $logoutUsers = PamToken::where('account_id', $pam->id)->where('device_type', $device_type)
-                    ->where('device_id', '!=', $device_id)
-                    ->get();
+                $logoutUsers = PamToken::where('account_id', $pam->id)
+                    ->where('device_type', $device_type)->get();
                 break;
             case self::SSO_SINGLE:
                 // 单点登录(Sso), 移除其他端所有设备
                 $logoutUsers = PamToken::where('account_id', $pam->id)
-                    ->where('device_id', '!=', $device_id)
-                    ->get();
+                    ->where('device_type', '!=', $device_type)->get();
                 break;
             case self::SSO_GROUP:
                 // 同组内登录
                 $total = [];
-                foreach (self::$groups as $group) {
+                foreach ($this->groups as $group) {
                     if (in_array($device_type, $group, true)) {
                         $total = $group;
                     }
                 }
+                // 删除同组内其他设备
                 $logoutUsers = PamToken::where('account_id', $pam->id)
                     ->whereIn('device_type', $total)
-                    ->where('device_id', '!=', $device_id)
-                    ->get();
-                break;
-            default:
-                $logoutUsers = collect();
+                    ->where('device_type', '!=', $device_type)->get();
                 break;
         }
+
+        // 触发数据的删除和事件, 事件用于通知用户下线
         if ($logoutUsers->count()) {
             PamToken::whereIn('id', $logoutUsers->pluck('id')->toArray())->delete();
             event(new PamSsoEvent($pam, $logoutUsers));
@@ -131,7 +135,80 @@ class Sso
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+
+        $this->validateUser($pamId);
         return true;
+    }
+
+    /**
+     * 使用户可用
+     * @param $pamId
+     * @return void
+     */
+    public function validateUser($pamId): void
+    {
+        $Rds = RdsDb::instance();
+        [$data] = $this->userTokenData($pamId);
+        $Rds->hSet(PySystemDef::ckTagSsoValid(), $pamId, $data);
+    }
+
+    /**
+     * 禁用用户和 token
+     * @param int $pamId
+     * @return void
+     */
+    public function banUser(int $pamId): void
+    {
+        $Rds = RdsDb::instance();
+        // delete from key
+        $Rds->hDel(PySystemDef::ckTagSsoValid(), $pamId);
+    }
+
+
+    /**
+     * 根据 Token 禁用并移除 Token
+     * @param PamToken $pt
+     * @param bool     $delete
+     * @return void
+     * @throws Exception
+     */
+    public function banToken(PamToken $pt, bool $delete = true): void
+    {
+        $Rds = RdsDb::instance();
+        // delete from key
+        $tokens = $Rds->hGet(PySystemDef::ckTagSsoValid(), $pt->account_id);
+        if (is_array($tokens) && count($tokens) && isset($tokens[$pt->token_hash])) {
+            unset($tokens[$pt->token_hash]);
+            if (count($tokens)) {
+                $Rds->hSet(PySystemDef::ckTagSsoValid(), $pt->account_id, $tokens);
+            }
+            else {
+                $Rds->hDel(PySystemDef::ckTagSsoValid(), $pt->account_id);
+            }
+        }
+
+        if ($delete) {
+            $pt->delete();
+        }
+    }
+
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function clearExpired(): int
+    {
+        $tokens = PamToken::where('expired_at', '<', Carbon::now()->toDateTimeString())->get();
+
+        $tokens->each(function (PamToken $pt) {
+            $this->banToken($pt, false);
+        });
+
+        // 批量删除
+        PamToken::where('expired_at', '<', Carbon::now()->toDateTimeString())->delete();
+
+        return $tokens->count();
     }
 
     /**
@@ -144,18 +221,14 @@ class Sso
     public function logout(int $id, string $token): bool
     {
         $tokenHash = md5($token);
-        $tokens    = collect();
 
-        DB::transaction(function () use ($tokenHash, &$tokens) {
-            $tokens = PamToken::where('token_hash', $tokenHash)->pluck('push_id', 'id');
+        $pt = PamToken::where('token_hash', $tokenHash)->first();
 
-            $ids = $tokens->keys()->toArray();
+        if ($pt) {
+            $this->banToken($pt);
 
-            PamToken::whereIn('id', $ids)->delete();
-        });
-
-        event(new PamLogoutEvent($id, $tokens));
-
+            event(new PamLogoutEvent($id, $pt));
+        }
         return true;
     }
 
@@ -184,5 +257,41 @@ class Sso
             self::SSO_ALL    => '允许同时登录, 记录设备信息, 同时登录数量受{最大设备数量}限制',
         ];
         return kv($desc, $key, $check_exists);
+    }
+
+    /**
+     * 返回组说明
+     * @return array|string
+     */
+    public function getGroups($str = false)
+    {
+        $groups = [];
+        if ($str) {
+            foreach ($this->groups as $gk => $group) {
+                $deviceTypes = implode(',', $group);
+                $groups[]    = "{$gk}({$deviceTypes})";
+            }
+            return implode(', ', $groups);
+        }
+        return $this->groups;
+    }
+
+    /**
+     * @param $account_id
+     * @return array{data: array, expired:array}
+     */
+    private function userTokenData($account_id): array
+    {
+        $tokens  = PamToken::where('account_id', $account_id)->get();
+        $data    = [];
+        $expired = [];
+        $tokens->each(function (PamToken $pt) use (&$data, &$expired) {
+            $data[$pt->token_hash]                    = "{$pt->device_type}|{$pt->expired_at}|{$pt->id}";
+            $expired[$pt->id . '|' . $pt->token_hash] = Carbon::parse($pt->expired_at)->timestamp;
+        });
+        return [
+            'data'    => $data,
+            'expired' => $expired,
+        ];
     }
 }

@@ -18,6 +18,7 @@ use Poppy\MgrPage\Http\MgrPage\ListPamAccount;
 use Poppy\MgrPage\Http\MgrPage\ListPamLog;
 use Poppy\MgrPage\Http\MgrPage\ListPamToken;
 use Poppy\System\Action\Ban;
+use Poppy\System\Action\Sso;
 use Poppy\System\Events\PamTokenBanEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamLog;
@@ -143,14 +144,18 @@ class PamController extends BackendController
         return Resp::success('禁用成功', '_top_reload|1');
     }
 
+    /**
+     * 删除用户的指定 Token
+     * @param $id
+     * @return JsonResponse|RedirectResponse|Response
+     * @throws \Exception
+     */
     public function deleteToken($id)
     {
         $item = PamToken::find($id);
 
         // 踢下线(当前用户不可访问)
-        $Ban = new Ban();
-        $Ban->forbidden($item->account_id);
-        $item->delete();
+        (new Sso())->banToken($item);
 
         event(new PamTokenBanEvent($item, 'token'));
         return Resp::error('删除用户成功, 用户已无法访问(需重新登录)', '_top_reload|1');
