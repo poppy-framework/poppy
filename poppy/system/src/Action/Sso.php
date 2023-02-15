@@ -85,6 +85,7 @@ class Sso
                 if ($num >= $maxDeviceNum) {
                     // 根据设备时间/数量倒排删除
                     $logoutUsers = PamToken::where('account_id', $pamId)
+                        ->where('device_id', '!=', $device_id)
                         ->orderBy('id')
                         ->limit(($num - $maxDeviceNum) + 1)
                         ->get();
@@ -93,11 +94,14 @@ class Sso
             case self::SSO_DEVICE:
                 // 单端登录, 只移除当前类型设备[去除当前设备]
                 $logoutUsers = PamToken::where('account_id', $pam->id)
+                    ->where('device_id', '!=', $device_id)
                     ->where('device_type', $device_type)->get();
                 break;
             case self::SSO_SINGLE:
                 // 单点登录(Sso), 仅保留一台设备
-                $logoutUsers = PamToken::where('account_id', $pam->id)->get();
+                $logoutUsers = PamToken::where('account_id', $pam->id)
+                    ->where('device_id', '!=', $device_id)
+                    ->get();
                 break;
             case self::SSO_GROUP:
                 // 同组内登录
@@ -109,6 +113,7 @@ class Sso
                 }
                 // 删除同组内其他设备
                 $logoutUsers = PamToken::where('account_id', $pam->id)
+                    ->where('device_id', '!=', $device_id)
                     ->whereIn('device_type', $total)->get();
                 break;
         }
@@ -121,13 +126,16 @@ class Sso
 
         // 创建/更新用户的设备类型
         /** @var PamToken $current */
-        PamToken::create([
-            'account_id'  => $pamId,
-            'device_id'   => $device_id,
-            'device_type' => $device_type,
-            'login_ip'    => Request::ip(),
+        PamToken::updateOrInsert([
+            'account_id' => $pamId,
+            'device_id'  => $device_id,
+        ], [
             'token_hash'  => $tokenMd5,
+            'device_type' => $device_type,
             'expired_at'  => $expiredAt->toDateTimeString(),
+            'login_ip'    => Request::ip(),
+            'created_at'  => Carbon::now(),
+            'updated_at'  => Carbon::now(),
         ]);
 
         $this->validateUser($pamId);

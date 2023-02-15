@@ -70,7 +70,7 @@ CODE;
         $this->code('default-code', 'Code@default')->default($code);
         $this->divider();
 
-        $this->date('icon', '无icon')->prepend('')->help('无图标显示');
+        $this->date('icon', '无icon')->help('无图标显示');
         // 添加 code 代码
         $code = <<<CODE
 \$this->date('icon', '无icon')->prepend('')->help('无图标显示');

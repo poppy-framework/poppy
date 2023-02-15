@@ -46,7 +46,8 @@
         "nikic/php-parser": "^4.15",
         "sentry/sentry-laravel": "3.*",
         "ezyang/htmlpurifier": "^4.16",
-        "psr/http-factory-implementation": "*"
+        "psr/http-factory-implementation": "*",
+        "mews/captcha": "3.2.*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

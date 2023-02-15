@@ -77,13 +77,11 @@ CODE;
         $this->divider();
 
         $this->text('text_no_icon', '文本(无Icon)')
-            ->prepend('')
-            ->append('xxx')->help('文本(无图标显示)');
+            ->help('文本(无图标显示)');
         // 添加 code 代码
         $code = <<<CODE
 \$this->text('text_no_icon', '文本(无Icon)')
-    ->prepend('')
-    ->append('xxx')->help('文本(无图标显示)');
+    ->help('文本(无图标显示)');
 CODE;
         $this->code('text_no_icon-code', 'Code@文本(无Icon)')->default($code);
         $this->divider();
@@ -98,22 +96,6 @@ CODE;
 ])->help('文本内容必须填写');
 CODE;
         $this->code('text_required-code', 'Code@必填文本')->default($code);
-        $this->divider();
-
-        $this->text('text_with_datalist', '有 Data List 的输入框')->rules([
-            Rule::required(),
-        ])->datalist([
-            'Db1', 'Db2', 'Db3',
-        ])->placeholder('有 Data List 的输入框')->help('有 Data List 的输入框');
-        // 添加 code 代码
-        $code = <<<CODE
-\$this->text('text_with_datalist', '有 Data List 的输入框')->rules([
-    Rule::required(),
-])->datalist([
-    'Db1', 'Db2', 'Db3',
-])->placeholder('有 Data List 的输入框')->help('有 Data List 的输入框');
-CODE;
-        $this->code('text_with_datalist-code', 'Code@有 Data List 的输入框')->default($code);
         $this->divider();
 
         $this->text('alpha', '字母')->rules([

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Demo\Forms;
 
 use Illuminate\Http\JsonResponse;

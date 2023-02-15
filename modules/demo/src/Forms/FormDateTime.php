@@ -34,7 +34,7 @@ CODE;
         $this->code('disable-code', 'Code@Disable')->default($code);
         $this->divider();
 
-        $this->datetime('icon', '无icon')->prepend('')->help('无图标输入框');
+        $this->datetime('icon', '无icon')->help('无图标输入框');
         // 添加 code 代码
         $code = <<<CODE
 \$this->datetime('icon', '无icon')->prepend('')->help('无图标输入框');
