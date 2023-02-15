@@ -35,10 +35,6 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
             $router->any('login', 'Poppy\MgrPage\Http\Request\Backend\HomeController@login')
                 ->middleware('web')
                 ->name('py-mgr-page:backend.home.login');
-            $router->any('/track', 'Poppy\MgrPage\Http\Request\Backend\HomeController@track')
-                ->middleware('web')
-                ->name('py-mgr-page:backend.home.track');
-
 
             $router->any('captcha/send', '\Poppy\MgrPage\Http\Request\Backend\CaptchaController@send')
                 ->middleware('web')

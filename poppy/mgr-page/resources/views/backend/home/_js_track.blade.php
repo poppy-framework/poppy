@@ -1,27 +1,5 @@
 <script>
 	let $body = $('body');
-	let fp = '';
-
-	let fpUrl = '{!! (new \Poppy\System\Action\FpTrack())->getUrl(); !!}'
-	if (fpUrl) {
-		const fpPromise = import(fpUrl)
-			.then(FingerprintJS => FingerprintJS.load());
-
-		fpPromise
-			.then(fp => fp.get())
-			.then(result => {
-				fp = result.visitorId;
-				if (fp.length > 0) {
-					$.ajax({
-						type: 'post',
-						url: '{!! route_url('py-mgr-page:backend.home.track') !!}',
-						headers: {
-							'X-FP': fp
-						}
-					})
-				}
-			});
-	}
 
 	$body.on('click', '.login_submit', function(e) {
 		let request_url = $(this).attr('data-url');
@@ -64,7 +42,6 @@
 			let $btn = $(this);
 			Util.buttonInteraction($btn, 5);
 			$form.ajaxSubmit({
-				headers: {'X-FP': fp},
 				success : function(data) {
 					layer.close(index);
 					Util.splash(data);

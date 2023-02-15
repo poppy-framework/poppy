@@ -28,7 +28,7 @@ class BanCommand extends Command
         if (!in_array($accountType, [
             PamAccount::TYPE_USER,
             PamAccount::TYPE_BACKEND,
-        ])) {
+        ], true)) {
             $this->error('Account Type 类型错误');
             return 1;
         }
@@ -45,7 +45,6 @@ class BanCommand extends Command
             $type = PamBan::TYPE_IP;
         }
 
-
         $data = [
             'account_type' => $accountType,
             'type'         => $type,
@@ -57,9 +56,8 @@ class BanCommand extends Command
             $this->error($Ban->getError()->getMessage());
             return 1;
         }
-        else {
-            $this->info('添加成功');
-            return 0;
-        }
+
+        $this->info('添加成功');
+        return 0;
     }
 }

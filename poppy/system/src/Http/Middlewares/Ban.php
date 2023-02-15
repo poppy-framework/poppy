@@ -45,13 +45,7 @@ class Ban
         if ($status !== SysConfig::STR_YES) {
             return $next($request);
         }
-        // 是否是root用户 不进行拦截
-        if ($type === PamAccount::TYPE_BACKEND && $user = app('auth')->guard()->user()) {
-            /** @var PamAccount $user */
-            if ($user->cachedRoles()->where('name', PamRole::BE_ROOT)->count()) {
-                return $next($request);
-            }
-        }
+
         $Ban  = new ActBan();
         $ipIn = $Ban->checkIn($type, PamBan::TYPE_IP, $ip);
 
