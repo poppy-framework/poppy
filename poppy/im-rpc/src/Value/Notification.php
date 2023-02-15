@@ -11,15 +11,18 @@ class Notification extends BaseValue
 {
     protected string $operation = 'chat';
 
-    protected string $tid       = '';
+    protected string $tid = '';
 
-    protected string $msgId     = '';
+    protected string $msgId = '';
 
     protected Team $team;
 
     protected string $title = '';
 
     protected string $content = '';
+
+    // 显示图标
+    protected string $icon = '';
 
     public function __construct()
     {
@@ -113,6 +116,17 @@ class Notification extends BaseValue
     public function setTeam(Team $team): Notification
     {
         $this->team = $team;
+        return $this;
+    }
+
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $icon): Notification
+    {
+        $this->icon = $icon;
         return $this;
     }
 }
