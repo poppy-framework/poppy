@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 use Poppy\MgrPage\Classes\Form\Field;
@@ -22,9 +24,7 @@ class Date extends Field
     public function render()
     {
 
-        $this->prepend('<i class="fa fa-calendar fa-fw"></i>');
         $this->addVariables([
-            'prepend' => $this->prepend,
             'options' => $this->options,
         ]);
         return parent::render();

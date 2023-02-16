@@ -33,31 +33,9 @@ class Text extends Field
             ->defaultAttribute('placeholder', $this->getPlaceholder());
 
         $this->addVariables([
-            'prepend' => $this->prepend,
-            'append'  => $this->append,
-            'type'    => $this->type,
+            'type' => $this->type,
         ]);
 
         return parent::render();
-    }
-
-    /**
-     * Add datalist element to Text input.
-     *
-     * @param array $entries
-     *
-     * @return $this
-     */
-    public function datalist($entries = [])
-    {
-        $this->defaultAttribute('list', "list-{$this->id}");
-
-        $datalist = "<datalist id=\"list-{$this->id}\">";
-        foreach ($entries as $k => $v) {
-            $datalist .= "<option value=\"{$k}\">{$v}</option>";
-        }
-        $datalist .= '</datalist>';
-
-        return $this->append($datalist);
     }
 }

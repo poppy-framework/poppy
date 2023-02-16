@@ -119,6 +119,22 @@ class FormBuilder extends CollectiveFormBuilder
     }
 
     /**
+     * 代码编辑器
+     * @param string $name 名字
+     * @param string $type 类型
+     * @return string
+     */
+    public function captcha(string $name, string $type = 'default'): string
+    {
+        $src = captcha_src($type);
+        return $this->image(captcha_src($type), $name, [
+            'onclick' => "this.src='" . $src . "'+Math.random()",
+            'class'   => "J_captcha",
+            'style'   => "cursor: pointer;",
+        ]);
+    }
+
+    /**
      * 编辑器
      * @param string $name    名字
      * @param string $value   值
@@ -882,7 +898,7 @@ HTML;
      * @param array  $options 选项
      * @return string
      */
-    public function colorPicker(string $name, $value = '', $options = []): string
+    public function colorPicker(string $name, string $value = '', array $options = []): string
     {
         $options['id']    = $this->getIdAttribute($name, $options) ?: 'color_picker_' . Str::random(5);
         $value            = (string) $this->getValueAttribute($name, $value);
@@ -917,7 +933,7 @@ HTML;
      * @param string $selected
      * @return string
      */
-    public function scopes(array $scopes, $selected = ''): string
+    public function scopes(array $scopes, string $selected = ''): string
     {
         $content = '';
         foreach ($scopes as $key => $scope) {
@@ -945,7 +961,7 @@ HTML;
      * @param array  $options
      * @return string
      */
-    public function tags(string $name, $list = [], $value = [], $options = []): string
+    public function tags(string $name, array $list = [], $value = [], array $options = []): string
     {
         $id     = 'tags_' . Str::random();
         $select = $this->select($name . '[]', $list, $value, array_merge($options, [
@@ -977,7 +993,7 @@ HTML;
      * @param array  $options
      * @return string
      */
-    public function multiSelect(string $name, $lists = [], $value = null, $options = []): string
+    public function multiSelect(string $name, array $lists = [], $value = null, array $options = []): string
     {
         static $loaded;
         $placeholder = $options['placeholder'] ?? '请选择';
@@ -1068,8 +1084,8 @@ HTML;
 
     /**
      * 可以拖拽的关键词
-     * @param string $name
-     * @param array  $value
+     * @param string       $name
+     * @param array|string $value
      * @return string
      */
     public function keyword(string $name, $value = []): string

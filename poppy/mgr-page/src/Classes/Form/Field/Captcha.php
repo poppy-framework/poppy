@@ -6,6 +6,7 @@ namespace Poppy\MgrPage\Classes\Form\Field;
 
 use Poppy\MgrPage\Classes\Form\Field;
 
-class Editor extends Field
+class Captcha extends Field
 {
+    protected $view = 'py-mgr-page::tpl.form.captcha';
 }

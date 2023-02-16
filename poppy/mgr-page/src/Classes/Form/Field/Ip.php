@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 class Ip extends Text
 {
     protected $rules = [
-        'nullable', 'ip'
+        'nullable', 'ip',
     ];
 
     /**
@@ -19,8 +21,7 @@ class Ip extends Text
 
     public function render()
     {
-        $this->prepend('<i class="fa fa-laptop fa-fw"></i>')
-            ->defaultAttribute('style', 'width: 130px');
+        $this->defaultAttribute('style', 'width: 130px');
 
         return parent::render();
     }

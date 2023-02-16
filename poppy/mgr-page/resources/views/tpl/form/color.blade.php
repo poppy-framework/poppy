@@ -8,7 +8,7 @@
 	<div class="{{$viewClass['field']}} layui-form-color-label">
 		<div class="layui-form-auto-field">
             <div class="layui-inline ml8 mr6">
-                {!! $prepend !!}
+				<i class="fa fa-palette"></i>
             </div>
 			<div class="layui-inline">
 				{!! app('poppy.mgr-page.form')->colorPicker($name, $value, $attributes) !!}

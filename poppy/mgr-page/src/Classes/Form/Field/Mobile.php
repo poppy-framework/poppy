@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 use Poppy\Framework\Validation\Rule;
 
 class Mobile extends Text
 {
-
 
     public function __construct($column = '', $arguments = [])
     {
@@ -19,8 +20,7 @@ class Mobile extends Text
 
     public function render()
     {
-        $this->prepend('<i class="fa fa-mobile fa-fw"></i>')
-            ->defaultAttribute('style', 'width: 150px');
+        $this->defaultAttribute('style', 'width: 150px');
 
         return parent::render();
     }

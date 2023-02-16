@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 class Url extends Text
@@ -10,8 +12,7 @@ class Url extends Text
 
     public function render()
     {
-        $this->prepend('<i class="fa fa-internet-explorer fa-fw"></i>')
-            ->defaultAttribute('type', 'url');
+        $this->defaultAttribute('type', 'url');
 
         return parent::render();
     }

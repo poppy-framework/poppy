@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 use Exception;
@@ -18,7 +20,7 @@ class MultipleSelect extends Select
     /**
      * @inheritDoc
      */
-    public function fill($data)
+    public function fill($data): void
     {
         $relations = Arr::get($data, $this->column);
 

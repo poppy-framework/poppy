@@ -34,6 +34,11 @@ class Sso extends BaseMiddleware
             return $next($request);
         }
 
+        // 组无限, 对于指定的组 KEY 进行不设限标识
+        if ((new \Poppy\System\Action\Sso())->groupType(x_header('os')) === \Poppy\System\Action\Sso::GROUP_UNLIMITED) {
+            return $next($request);
+        }
+
         // sso check
         $md5Token = md5($token);
         $pamId    = data_get($payload, 'sub');

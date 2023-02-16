@@ -7,6 +7,7 @@ namespace Poppy\System\Action;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\System\Classes\PySystemDef;
@@ -14,6 +15,7 @@ use Poppy\System\Events\PamLogoutEvent;
 use Poppy\System\Events\PamSsoEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamToken;
+use Poppy\System\Models\SysConfig;
 use Request;
 use Throwable;
 
@@ -24,17 +26,16 @@ class Sso
 {
     use AppTrait;
 
-    public const SSO_NONE   = 'none';
-    public const SSO_ALL    = 'all';
-    public const SSO_SINGLE = 'single';
-    public const SSO_GROUP  = 'group';
-    public const SSO_DEVICE = 'device';
+    public const SSO_NONE       = 'none';
+    public const SSO_GROUP      = 'group';
+    public const SSO_DEVICE_NUM = 'device_num';
 
+    public const GROUP_UNLIMITED = 'unlimited';
+    public const GROUP_KICKED    = 'kicked';
 
     private array $groups = [
-        'app' => ['android', 'ios'],
-        'web' => ['h5', 'webapp', 'mp'],
-        'pc'  => ['mac', 'linux', 'win'],
+        'app:' . self::GROUP_KICKED    => ['android', 'ios'],
+        'web:' . self::GROUP_UNLIMITED => ['h5', 'webapp'],
     ];
 
     public function __construct()
@@ -62,15 +63,29 @@ class Sso
             return true;
         }
 
-        // 启用
+        // 不对空 os 进行拦截
+        $emptyHold = (string) sys_setting('py-system::pam.sso_os_empty_hold') ?: SysConfig::STR_NO;
+        if (!$device_type && $emptyHold === SysConfig::STR_NO) {
+            return true;
+        }
+
+        // 设备数据限制
         if (!$device_id || !$device_type) {
             return $this->setError('开启单一登录必须传递设备ID/设备类型');
         }
 
+        // 设备标识限制
         $devices = Arr::flatten($this->groups);
         if (!in_array($device_type, $devices, true)) {
             return $this->setError('设备类型必须是' . implode(',', $devices) . '中的一种');
         }
+
+        // 分组不设限
+        $groupType = $this->groupType($device_type);
+        if ($groupType === self::GROUP_UNLIMITED) {
+            return true;
+        }
+
 
         $tokenMd5  = md5($token);
         $pamId     = $pam->id;
@@ -78,9 +93,8 @@ class Sso
 
         $logoutUsers = collect();
         switch ($ssoType) {
-            case self::SSO_ALL:
-                // 保留最多 10 个设备, 允许同时登录, 记录设备信息, 同时登录数量受{最大设备数量}限制
-                // 这里需要配上用户的设备管理, 自动
+            // 保留最多 10 个设备, 允许同时登录, 记录设备信息, 同时登录数量受{最大设备数量}限制
+            case self::SSO_DEVICE_NUM:
                 $num = PamToken::where('account_id', $pamId)->count();
                 if ($num >= $maxDeviceNum) {
                     // 根据设备时间/数量倒排删除
@@ -91,30 +105,21 @@ class Sso
                         ->get();
                 }
                 break;
-            case self::SSO_DEVICE:
-                // 单端登录, 只移除当前类型设备[去除当前设备]
-                $logoutUsers = PamToken::where('account_id', $pam->id)
-                    ->where('device_id', '!=', $device_id)
-                    ->where('device_type', $device_type)->get();
-                break;
-            case self::SSO_SINGLE:
-                // 单点登录(Sso), 仅保留一台设备
-                $logoutUsers = PamToken::where('account_id', $pam->id)
-                    ->where('device_id', '!=', $device_id)
-                    ->get();
-                break;
             case self::SSO_GROUP:
-                // 同组内登录
-                $total = [];
-                foreach ($this->groups as $group) {
-                    if (in_array($device_type, $group, true)) {
-                        $total = $group;
+                // 同组内进行互踢
+                if ($groupType === self::GROUP_KICKED) {
+                    // 查询同组的设备类型
+                    $total = [];
+                    foreach ($this->groups as $group) {
+                        if (in_array($device_type, $group, true)) {
+                            $total = $group;
+                        }
                     }
+                    // 删除同组内其他设备
+                    $logoutUsers = PamToken::where('account_id', $pam->id)
+                        ->where('device_id', '!=', $device_id)
+                        ->whereIn('device_type', $total)->get();
                 }
-                // 删除同组内其他设备
-                $logoutUsers = PamToken::where('account_id', $pam->id)
-                    ->where('device_id', '!=', $device_id)
-                    ->whereIn('device_type', $total)->get();
                 break;
         }
 
@@ -267,11 +272,9 @@ class Sso
     public static function kvType(string $key = null, bool $check_exists = false)
     {
         $desc = [
-            self::SSO_NONE   => '不启用',
-            self::SSO_SINGLE => '单点登录(Sso), 仅允许一端登录',
-            self::SSO_GROUP  => '同组内单点登录. 各组之间允许同时登录',
-            self::SSO_DEVICE => '单端登录, 同类型互踢, 不同设备类型可同时在线',
-            self::SSO_ALL    => '允许同时登录, 记录设备信息, 同时登录数量受 {最大设备数量} 限制',
+            self::SSO_NONE       => '不启用',
+            self::SSO_DEVICE_NUM => '数量限制模式',
+            self::SSO_GROUP      => '分组模式',
         ];
         return kv($desc, $key, $check_exists);
     }
@@ -280,7 +283,7 @@ class Sso
      * 返回组说明
      * @return array|string
      */
-    public function getGroups($str = false)
+    public function groupDesc($str = false)
     {
         $groups = [];
         if ($str) {
@@ -291,6 +294,28 @@ class Sso
             return implode(', ', $groups);
         }
         return $this->groups;
+    }
+
+    /**
+     * 是否 OS 不设限
+     * @param string $os
+     * @return string
+     */
+    public function groupType(string $os): string
+    {
+        $name = '';
+        foreach ($this->groups as $gk => $group) {
+            if (in_array($os, $group, true)) {
+                $name = $gk;
+            }
+        }
+        if (Str::contains($name, self::GROUP_UNLIMITED)) {
+            return self::GROUP_UNLIMITED;
+        }
+        if (Str::contains($name, self::GROUP_KICKED)) {
+            return self::GROUP_KICKED;
+        }
+        return '';
     }
 
     /**

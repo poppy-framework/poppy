@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 class Email extends Text
@@ -10,8 +12,7 @@ class Email extends Text
 
     public function render()
     {
-        $this->prepend('<i class="fa fa-envelope fa-fw"></i>')
-            ->defaultAttribute('type', 'email');
+        $this->defaultAttribute('type', 'email');
 
         return parent::render();
     }

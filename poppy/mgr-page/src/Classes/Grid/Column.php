@@ -27,6 +27,7 @@ use Poppy\MgrPage\Classes\Grid\Displayer\ProgressBar;
 use Poppy\MgrPage\Classes\Grid\Displayer\QRCode;
 use Poppy\MgrPage\Classes\Grid\Displayer\Suffix;
 use Poppy\MgrPage\Classes\Grid\Displayer\SwitchDisplay;
+use RuntimeException;
 
 /**
  * Class Column.
@@ -53,8 +54,8 @@ class Column
 {
     use HasHeader;
 
-    const NAME_SELECTOR = '_selector_';
-    const NAME_ACTION   = '_actions_';
+    public const NAME_SELECTOR = '_selector_';
+    public const NAME_ACTION   = '_actions_';
 
     /**
      * Displayer for grid column.
@@ -78,7 +79,7 @@ class Column
      *
      * @var array
      */
-    public static $defined = [];
+    public static array $defined = [];
 
     /**
      * Original grid data.
@@ -90,12 +91,12 @@ class Column
     /**
      * @var array
      */
-    protected static $htmlAttributes = [];
+    protected static array $htmlAttributes = [];
 
     /**
      * @var array
      */
-    protected static $rowAttributes = [];
+    protected static array $rowAttributes = [];
 
     /**
      * @var Model
@@ -112,14 +113,14 @@ class Column
      *
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * Label of column.
      *
      * @var string
      */
-    protected $label;
+    protected string $label;
 
     /**
      * Original value of column.
@@ -133,12 +134,12 @@ class Column
      *
      * @var array
      */
-    protected $attributes = [];
+    protected array $attributes = [];
 
     /**
      * Relation name.
      *
-     * @var bool
+     * @var bool|string
      */
     protected $relation = false;
 
@@ -506,7 +507,7 @@ class Column
     public function bool(array $map = [], $default = false): self
     {
         return $this->display(function ($value) use ($map, $default) {
-            $bool = empty($map) ? boolval($value) : Arr::get($map, $value, $default);
+            $bool = empty($map) ? (bool) $value : Arr::get($map, $value, $default);
 
             return $bool ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-close text-danger"></i>';
         });
@@ -676,16 +677,6 @@ class Column
     }
 
     /**
-     * If this column is relation column.
-     *
-     * @return bool
-     */
-    protected function isRelation()
-    {
-        return (bool) $this->relation;
-    }
-
-    /**
      * Set relation.
      *
      * @param string $relation
@@ -699,6 +690,16 @@ class Column
         $this->relationColumn = $relationColumn;
 
         return $this;
+    }
+
+    /**
+     * If this column is relation column.
+     *
+     * @return bool
+     */
+    protected function isRelation()
+    {
+        return (bool) $this->relation;
     }
 
     /**
@@ -782,7 +783,7 @@ class Column
         }
 
         if (!class_exists($class) || !is_subclass_of($class, AbstractDisplayer::class)) {
-            throw new Exception("Invalid column definition [$class]");
+            throw new RuntimeException("Invalid column definition [$class]");
         }
 
         $grid   = $this->grid;

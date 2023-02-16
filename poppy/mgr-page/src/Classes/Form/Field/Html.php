@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
+use Closure;
 use Illuminate\Support\Arr;
 use Poppy\MgrPage\Classes\Form\Field;
 
@@ -10,19 +13,14 @@ class Html extends Field
     /**
      * Htmlable.
      *
-     * @var string|\Closure
+     * @var string|Closure
      */
     protected $html = '';
 
     /**
-     * @var string
-     */
-    protected $label = '';
-
-    /**
      * @var bool
      */
-    protected $plain = false;
+    protected bool $plain = false;
 
     /**
      * Create a new Html instance.
@@ -32,18 +30,17 @@ class Html extends Field
      */
     public function __construct($html, $arguments)
     {
-        $this->html = $html;
-
+        parent::__construct();
+        $this->html  = $html;
         $this->label = Arr::get($arguments, 0);
     }
 
     /**
      * @return $this
      */
-    public function plain()
+    public function plain(): self
     {
         $this->plain = true;
-
         return $this;
     }
 
@@ -54,7 +51,7 @@ class Html extends Field
      */
     public function render()
     {
-        if ($this->html instanceof \Closure) {
+        if ($this->html instanceof Closure) {
             $this->html = $this->html->call($this->form->model(), $this->form);
         }
 

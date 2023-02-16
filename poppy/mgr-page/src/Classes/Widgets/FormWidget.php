@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Validator;
+use JsonException;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Classes\Traits\PoppyTrait;
 use Poppy\Framework\Helper\ArrayHelper;
@@ -16,61 +17,49 @@ use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form as BaseForm;
 use Poppy\MgrPage\Classes\Form\Field;
 use Poppy\MgrPage\Classes\Form\Field\Checkbox;
-use Poppy\MgrPage\Classes\Form\Field\Color;
-use Poppy\MgrPage\Classes\Form\Field\Currency;
-use Poppy\MgrPage\Classes\Form\Field\Display;
-use Poppy\MgrPage\Classes\Form\Field\Editor;
-use Poppy\MgrPage\Classes\Form\Field\Email;
-use Poppy\MgrPage\Classes\Form\Field\Hidden;
-use Poppy\MgrPage\Classes\Form\Field\Ip;
-use Poppy\MgrPage\Classes\Form\Field\Link;
-use Poppy\MgrPage\Classes\Form\Field\Month;
-use Poppy\MgrPage\Classes\Form\Field\MultiImage;
-use Poppy\MgrPage\Classes\Form\Field\Password;
-use Poppy\MgrPage\Classes\Form\Field\Text;
-use Poppy\MgrPage\Classes\Form\Field\Timezone;
 use Poppy\MgrPage\Classes\Layout\Content;
 
 /**
  * Class Form.
  *
  * @method Field\Code           code($name, $label = '')
- * @method Text                 text($name, $label = '')
- * @method Link                 link($label = '')
- * @method Password             password($name, $label = '')
- * @method Checkbox             checkbox($name, $label = '')
+ * @method Field\Text           text($name, $label = '')
+ * @method Field\Link           link($label = '')
+ * @method Field\Password       password($name, $label = '')
+ * @method Field\Checkbox       checkbox($name, $label = '')
  * @method Field\Radio          radio($name, $label = '')
  * @method Field\Select         select($name, $label = '')
  * @method Field\MultipleSelect multipleSelect($name, $label = '')
  * @method Field\Textarea       textarea($name, $label = '')
- * @method Hidden               hidden($name, $label = '')
+ * @method Field\Hidden         hidden($name, $label = '')
  * @method Field\Id             id($name, $label = '')
- * @method Ip                   ip($name, $label = '')
+ * @method Field\Ip             ip($name, $label = '')
  * @method Field\Url            url($name, $label = '')
- * @method Color                color($name, $label = '')
- * @method Email                email($name, $label = '')
+ * @method Field\Color          color($name, $label = '')
+ * @method Field\Captcha        captcha($name, $label = '')
+ * @method Field\Email          email($name, $label = '')
  * @method Field\Mobile         mobile($name, $label = '')
  * @method Field\File           file($name, $label = '')
  * @method Field\Image          image($name, $label = '')
- * @method MultiImage           multiImage($name, $label = '')
+ * @method Field\MultiImage     multiImage($name, $label = '')
  * @method Field\Date           date($name, $label = '')
  * @method Field\Datetime       datetime($name, $label = '')
  * @method Field\Time           time($name, $label = '')
  * @method Field\Year           year($column, $label = '')
- * @method Month                month($column, $label = '')
+ * @method Field\Month          month($column, $label = '')
  * @method Field\DateRange      dateRange($start, $end, $label = '')
  * @method Field\DateTimeRange  dateTimeRange($start, $end, $label = '')
  * @method Field\TimeRange      timeRange($start, $end, $label = '')
  * @method Field\Number         number($name, $label = '')
- * @method Currency             currency($name, $label = '')
+ * @method Field\Currency       currency($name, $label = '')
  * @method Field\SwitchField    switch ($name, $label = '')
- * @method Display              display($name, $label = '')
+ * @method Field\Display        display($name, $label = '')
  * @method Field\Divider        divider($title = '')
- * @method Editor               editor($name, $label = '')
+ * @method Field\Editor         editor($name, $label = '')
  * @method Field\Decimal        decimal($column, $label = '')
  * @method Field\Html           html($html, $arguments)
  * @method Field\Tags           tags($column, $label = '')
- * @method Timezone             timezone($column, $label = '')
+ * @method Field\Timezone       timezone($column, $label = '')
  * @method Field\Keyword        keyWord($column, $label = '')
  * @method Field\Hook           hook($column, $label = '')
  * @method mixed                handle(Request $request)
@@ -202,7 +191,7 @@ class FormWidget implements Renderable
      * Add form attributes.
      *
      * @param string|array $attr
-     * @param string $value
+     * @param string       $value
      *
      * @return $this
      */
@@ -442,22 +431,14 @@ class FormWidget implements Renderable
             $this->action(app('url')->current());
         }
 
-        if (input('_skeleton')) {
-            if ($this->plainSkeleton) {
-                return $this->fetchSkeleton();
-            }
-            return Resp::success('Success', $this->fetchSkeleton());
-        }
-
         if (is_post()) {
             $request = $this->pyRequest();
             if ($errors = $this->validate($request)) {
                 if ($this->ajax) {
                     return Resp::error($errors);
                 }
-                else {
-                    return back()->withInput()->withErrors($errors);
-                }
+
+                return back()->withInput()->withErrors($errors);
             }
             return $this->sanitize()->handle($request);
         }
@@ -485,7 +466,7 @@ class FormWidget implements Renderable
      * Generate a Field object and add to form builder if Field exists.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return Field|$this
      */
@@ -513,51 +494,6 @@ class FormWidget implements Renderable
     public function title(): string
     {
         return $this->title;
-    }
-
-    public function fetchSkeleton(): array
-    {
-        collect($this->fields())->each->fill($this->data());
-
-        $fields = [];
-        foreach ($this->fields() as $field) {
-            $variable = $field->variables();
-            $opts     = [
-                'name'        => $variable['name'],
-                'type'        => $field->getType(),
-                'value'       => $variable['value'],
-                'label'       => $variable['label'],
-                'placeholder' => $variable['placeholder'],
-                'rules'       => $variable['rules'],
-                'help'        => $variable['help']['text'] ?? '',
-            ];
-
-            // options
-            $options = (array) $variable['options'];
-            if (count($options)) {
-                $newOption = [];
-                foreach ($options as $key => $option) {
-                    $newOption[] = [
-                        'key'   => $key,
-                        'value' => $option,
-                    ];
-                }
-                $options = $newOption;
-                $opts    = array_merge($opts, [
-                    'options' => $options,
-                ]);
-            }
-            $fields[] = array_merge($opts, $field->skeleton());
-
-        }
-        return [
-            'type'    => 'form',
-            'title'   => $this->title,
-            'fields'  => $fields,
-            'action'  => $this->attributes['action'],
-            'method'  => $this->attributes['method'],
-            'buttons' => $this->buttons,
-        ];
     }
 
     /**
@@ -618,6 +554,7 @@ class FormWidget implements Renderable
     /**
      * 获取 Jquery Validation
      * @return false|string
+     * @throws JsonException
      */
     private function getJqValidation()
     {
@@ -708,6 +645,6 @@ class FormWidget implements Renderable
             'rules'    => $rules,
             'messages' => $messages,
         ];
-        return json_encode($jqValidation, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        return json_encode($jqValidation, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 use Illuminate\Contracts\Support\Arrayable;
@@ -11,12 +13,11 @@ class Checkbox extends MultipleSelect
      * 是否行内显示
      * @var bool
      */
-    protected $inline = true;
+    protected bool $inline = true;
 
 
     /**
-     * 默认值
-     * @var array
+     * @inheritdoc
      */
     protected $default = [];
 
@@ -24,12 +25,12 @@ class Checkbox extends MultipleSelect
      * 是否可以全选
      * @var bool
      */
-    protected $canCheckAll = false;
+    protected bool $canCheckAll = false;
 
     /**
      * @inheritDoc
      */
-    public function fill($data)
+    public function fill($data): void
     {
         $value       = Arr::get($data, $this->column);
         $this->value = is_null($value) ? $this->default : $value;
@@ -43,7 +44,7 @@ class Checkbox extends MultipleSelect
      *
      * @return $this
      */
-    public function options($options = [])
+    public function options($options = []): self
     {
         if ($options instanceof Arrayable) {
             $options = $options->toArray();
@@ -64,7 +65,7 @@ class Checkbox extends MultipleSelect
      * @param array|callable|string $default
      * @return $this
      */
-    public function default($default)
+    public function default($default): self
     {
         $this->default = (array) $default;
         return $this;
@@ -82,23 +83,14 @@ class Checkbox extends MultipleSelect
         return parent::render();
     }
 
-    public function skeleton(): array
-    {
-        return [
-            'display'   => $this->inline ? 'inline' : 'stack',
-            'check_all' => $this->canCheckAll ? 'Y' : 'N',
-        ];
-    }
-
     /**
      * Add a checkbox above this component, so you can select all checkboxes by click on it.
      *
      * @return $this
      */
-    public function canCheckAll()
+    public function canCheckAll(): self
     {
         $this->canCheckAll = true;
-
         return $this;
     }
 
@@ -107,10 +99,9 @@ class Checkbox extends MultipleSelect
      *
      * @return $this
      */
-    public function inline()
+    public function inline(): self
     {
         $this->inline = true;
-
         return $this;
     }
 
@@ -119,10 +110,9 @@ class Checkbox extends MultipleSelect
      *
      * @return $this
      */
-    public function stacked()
+    public function stacked(): self
     {
         $this->inline = false;
-
         return $this;
     }
 }

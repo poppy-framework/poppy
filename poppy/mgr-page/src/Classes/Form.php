@@ -20,20 +20,6 @@ use Illuminate\Validation\Validator;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrPage\Classes\Form\Builder;
 use Poppy\MgrPage\Classes\Form\Field;
-use Poppy\MgrPage\Classes\Form\Field\Checkbox;
-use Poppy\MgrPage\Classes\Form\Field\Color;
-use Poppy\MgrPage\Classes\Form\Field\Currency;
-use Poppy\MgrPage\Classes\Form\Field\Display;
-use Poppy\MgrPage\Classes\Form\Field\Editor;
-use Poppy\MgrPage\Classes\Form\Field\Email;
-use Poppy\MgrPage\Classes\Form\Field\Hidden;
-use Poppy\MgrPage\Classes\Form\Field\Ip;
-use Poppy\MgrPage\Classes\Form\Field\Link;
-use Poppy\MgrPage\Classes\Form\Field\Month;
-use Poppy\MgrPage\Classes\Form\Field\MultiImage;
-use Poppy\MgrPage\Classes\Form\Field\Password;
-use Poppy\MgrPage\Classes\Form\Field\Text;
-use Poppy\MgrPage\Classes\Form\Field\Timezone;
 use Poppy\MgrPage\Classes\Form\HasHooks;
 use Poppy\MgrPage\Classes\Form\Layout\Layout;
 use Poppy\MgrPage\Classes\Form\Row;
@@ -44,19 +30,20 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class Form.
  *
+ * @method Field\Captcha        captcha($column, $label = '')
  * @method Field\Code           code($column, $label = '')
- * @method Text           text($column, $label = '')
- * @method Checkbox       checkbox($column, $label = '')
+ * @method Field\Text           text($column, $label = '')
+ * @method Field\Checkbox       checkbox($column, $label = '')
  * @method Field\Radio          radio($column, $label = '')
  * @method Field\Select         select($column, $label = '')
  * @method Field\MultipleSelect multipleSelect($column, $label = '')
  * @method Field\Textarea       textarea($column, $label = '')
- * @method Hidden         hidden($column, $label = '')
+ * @method Field\Hidden         hidden($column, $label = '')
  * @method Field\Id             id($column, $label = '')
- * @method Ip             ip($column, $label = '')
+ * @method Field\Ip             ip($column, $label = '')
  * @method Field\Url            url($column, $label = '')
- * @method Color          color($column, $label = '')
- * @method Email          email($column, $label = '')
+ * @method Field\Color          color($column, $label = '')
+ * @method Field\Email          email($column, $label = '')
  * @method Field\Mobile         mobile($column, $label = '')
  * @method Field\File           file($column, $label = '')
  * @method Field\Image          image($column, $label = '')
@@ -64,21 +51,21 @@ use Symfony\Component\HttpFoundation\Response;
  * @method Field\Datetime       datetime($column, $label = '')
  * @method Field\Time           time($column, $label = '')
  * @method Field\Year           year($column, $label = '')
- * @method Month          month($column, $label = '')
+ * @method Field\Month          month($column, $label = '')
  * @method Field\DateRange      dateRange($start, $end, $label = '')
  * @method Field\DateTimeRange  datetimeRange($start, $end, $label = '')
  * @method Field\TimeRange      timeRange($start, $end, $label = '')
  * @method Field\Number         number($column, $label = '')
- * @method Currency       currency($column, $label = '')
+ * @method Field\Currency       currency($column, $label = '')
  * @method Field\SwitchField    switch ($column, $label = '')
- * @method Display        display($column, $label = '')
+ * @method Field\Display        display($column, $label = '')
  * @method Field\Divider        divider($title = '')
- * @method Password       password($column, $label = '')
+ * @method Field\Password       password($column, $label = '')
  * @method Field\Decimal        decimal($column, $label = '')
  * @method Field\Html           html($html, $label = '')
  * @method Field\Tags           tags($column, $label = '')
- * @method MultiImage     multipleImage($column, $label = '')
- * @method Timezone       timezone($column, $label = '')
+ * @method Field\MultiImage     multipleImage($column, $label = '')
+ * @method Field\Timezone       timezone($column, $label = '')
  * @method Field\Keyword        keyWord($column, $label = '')
  */
 class Form implements Renderable
@@ -96,36 +83,37 @@ class Form implements Renderable
      * @var array
      */
     public static $availableFields = [
-        'link'           => Link::class,
+        'link'           => Field\Link::class,
         'code'           => Field\Code::class,
-        'checkbox'       => Checkbox::class,
-        'color'          => Color::class,
-        'currency'       => Currency::class,
+        'captcha'        => Field\Captcha::class,
+        'checkbox'       => Field\Checkbox::class,
+        'color'          => Field\Color::class,
+        'currency'       => Field\Currency::class,
         'date'           => Field\Date::class,
         'dateRange'      => Field\DateRange::class,
         'datetime'       => Field\Datetime::class,
         'dateTimeRange'  => Field\DatetimeRange::class,
         'datetimeRange'  => Field\DatetimeRange::class,
         'decimal'        => Field\Decimal::class,
-        'display'        => Display::class,
+        'display'        => Field\Display::class,
         'divider'        => Field\Divider::class,
-        'email'          => Email::class,
-        'editor'         => Editor::class,
+        'email'          => Field\Email::class,
+        'editor'         => Field\Editor::class,
         'file'           => Field\File::class,
-        'hidden'         => Hidden::class,
+        'hidden'         => Field\Hidden::class,
         'id'             => Field\Id::class,
         'image'          => Field\Image::class,
-        'multiImage'     => MultiImage::class,
-        'ip'             => Ip::class,
+        'multiImage'     => Field\MultiImage::class,
+        'ip'             => Field\Ip::class,
         'mobile'         => Field\Mobile::class,
-        'month'          => Month::class,
+        'month'          => Field\Month::class,
         'multipleSelect' => Field\MultipleSelect::class,
         'number'         => Field\Number::class,
-        'password'       => Password::class,
+        'password'       => Field\Password::class,
         'radio'          => Field\Radio::class,
         'select'         => Field\Select::class,
         'switch'         => Field\SwitchField::class,
-        'text'           => Text::class,
+        'text'           => Field\Text::class,
         'textarea'       => Field\Textarea::class,
         'time'           => Field\Time::class,
         'timeRange'      => Field\TimeRange::class,
@@ -133,7 +121,7 @@ class Form implements Renderable
         'year'           => Field\Year::class,
         'html'           => Field\Html::class,
         'tags'           => Field\Tags::class,
-        'timezone'       => Timezone::class,
+        'timezone'       => Field\Timezone::class,
         'keyword'        => Field\Keyword::class,
     ];
 

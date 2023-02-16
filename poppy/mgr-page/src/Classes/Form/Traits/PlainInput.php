@@ -1,44 +1,25 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Traits;
 
 trait PlainInput
 {
-	protected $prepend;
 
-	protected $append;
+    protected function initPlainInput(): void
+    {
+        if (empty($this->view)) {
+            $this->view = 'py-mgr-page::tpl.form.input';
+        }
+    }
 
-	public function prepend($string)
-	{
-		if (is_null($this->prepend)) {
-			$this->prepend = $string;
-		}
+    protected function defaultAttribute($attribute, $value): self
+    {
+        if (!array_key_exists($attribute, $this->attributes)) {
+            $this->attribute($attribute, $value);
+        }
 
-		return $this;
-	}
-
-	public function append($string)
-	{
-		if (is_null($this->append)) {
-			$this->append = $string;
-		}
-
-		return $this;
-	}
-
-	protected function initPlainInput()
-	{
-		if (empty($this->view)) {
-			$this->view = 'py-mgr-page::tpl.form.input';
-		}
-	}
-
-	protected function defaultAttribute($attribute, $value)
-	{
-		if (!array_key_exists($attribute, $this->attributes)) {
-			$this->attribute($attribute, $value);
-		}
-
-		return $this;
-	}
+        return $this;
+    }
 }

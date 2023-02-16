@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 use Illuminate\Contracts\View\Factory;
@@ -17,8 +19,7 @@ class Color extends Text
      */
     public function render()
     {
-        $this->prepend('<i class="fa fa-palette"></i>')
-            ->defaultAttribute('style', 'width: 140px');
+        $this->defaultAttribute('style', 'width: 140px');
 
         return parent::render();
     }

@@ -64,7 +64,7 @@ class Filter extends FilterButton
     /**
      * @var array
      */
-    protected static $supports = [
+    protected static array $supports = [
         'equal'       => Equal::class,
         'notEqual'    => NotEqual::class,
         'like'        => Like::class,

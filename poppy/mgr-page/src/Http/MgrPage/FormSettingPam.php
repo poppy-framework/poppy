@@ -7,6 +7,7 @@ namespace Poppy\MgrPage\Http\MgrPage;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
 use Poppy\System\Action\Sso;
+use Poppy\System\Models\SysConfig;
 
 class FormSettingPam extends FormSettingBase
 {
@@ -17,7 +18,7 @@ class FormSettingPam extends FormSettingBase
 
     public function form(): void
     {
-        $groups = (new Sso())->getGroups(true);
+        $groups = (new Sso())->groupDesc(true);
         $this->text('prefix', '账号前缀')->rules([
             Rule::required(),
         ])->placeholder('请输入账号前缀, 用于账号注册默认用户名生成');
@@ -27,8 +28,11 @@ class FormSettingPam extends FormSettingBase
         $this->divider('单点登录设定');
         $this->radio('sso_type', '单点登录类型')->options(Sso::kvType())->stacked()->rules([
             Rule::required(),
-        ])->help('单点设备登录均会影响到线上用户, 请慎重处理. 设备组设定为 ' . $groups);
-        $this->text('sso_device_num', '最大设备数量')->help('启用多端登录时候允许的最大设备数量, 没有配置则默认最大数量为10')->rules([
+        ])->help('分组模式支持互踢(' . Sso::GROUP_KICKED . '), 不限(' . Sso::GROUP_UNLIMITED . '). 当前分组模式互踢规则为 :' . $groups);
+        $this->radio('sso_os_empty_hold', '拦截空 OS')->options(SysConfig::kvStrYn())->rules([
+            Rule::required(),
+        ])->help('如果获取 x-os 为空情况下是否对用户进行拦截, 默认(否)');
+        $this->text('sso_device_num', '最大设备数量')->help('启用数量限制模式时, 非无限模式下的数量限制, 默认最大数量为10')->rules([
             Rule::max(10), Rule::required(), Rule::numeric(),
         ]);
         $this->divider('账号验证码');

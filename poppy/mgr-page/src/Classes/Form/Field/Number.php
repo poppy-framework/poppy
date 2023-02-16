@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 use Poppy\Framework\Validation\Rule;
@@ -21,7 +23,7 @@ class Number extends Text
     {
         $this->default($this->default);
 
-        $this->prepend('')->defaultAttribute('style', 'width: 100px');
+        $this->defaultAttribute('style', 'width: 100px');
 
         return parent::render();
     }

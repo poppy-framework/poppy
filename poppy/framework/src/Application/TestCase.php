@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\Framework\Application;
 
 use Illuminate\Contracts\Console\Kernel;
+use JsonException;
 use Poppy\Faker\Generator;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Helper\UtilHelper;
@@ -49,14 +50,15 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
      * 输出变量/使用 STD 标准输出, 不会出现测试错误
      * @param array|string $vars 需要输出的内容
      * @param string       $description
+     * @throws JsonException
      */
-    protected function outputVariables($vars, string $description = '')
+    protected function outputVariables($vars, string $description = ''): void
     {
         if ($description) {
             fwrite(STDOUT, print_r($description . ':' . PHP_EOL, true));
         }
         if (is_array($vars)) {
-            fwrite(STDOUT, print_r(json_encode($vars, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL, true));
+            fwrite(STDOUT, print_r(json_encode($vars, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL, true));
         }
         else {
             fwrite(STDOUT, print_r($vars . PHP_EOL, true));
@@ -68,6 +70,7 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
      * @param $module
      * @param $path
      * @return array
+     * @throws JsonException
      */
     protected function readJson($module, $path): array
     {
@@ -75,7 +78,7 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         if (file_exists($filePath)) {
             $config = file_get_contents($filePath);
             if (UtilHelper::isJson($config)) {
-                return json_decode($config, true);
+                return json_decode($config, true, 512, JSON_THROW_ON_ERROR);
             }
             return [];
         }

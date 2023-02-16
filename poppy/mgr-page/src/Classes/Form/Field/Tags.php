@@ -36,7 +36,7 @@ class Tags extends Field
     /**
      * @inheritDoc
      */
-    public function fill($data)
+    public function fill($data): void
     {
         $this->value = Arr::get($data, $this->column);
 
@@ -74,7 +74,7 @@ class Tags extends Field
     {
         $value = array_filter($value, 'strlen');
 
-        if (is_array($value) && !Arr::isAssoc($value)) {
+        if (!Arr::isAssoc($value)) {
             $value = implode(',', $value);
         }
 

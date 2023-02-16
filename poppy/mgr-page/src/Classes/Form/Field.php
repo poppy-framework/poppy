@@ -71,12 +71,14 @@ class Field implements Renderable
      * @var mixed
      */
     protected $default;
+
     /**
      * Element label.
      *
      * @var string
      */
-    protected $label = '';
+    protected string $label = '';
+
     /**
      * Column name.
      *
@@ -251,7 +253,7 @@ class Field implements Renderable
      *
      * @return void
      */
-    public function fill($data)
+    public function fill($data):void
     {
         $this->data = $data;
 
