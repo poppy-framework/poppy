@@ -116,15 +116,10 @@ class Sso
                         }
                     }
 
-                    $otherTypes = array_filter($totalGroups, function ($type) use ($device_type) {
-                        return $type !== $device_type;
-                    });
-
                     // 删除同组内其他设备
-                    if ($otherTypes) {
-                        $logoutUsers = PamToken::where('account_id', $pam->id)
-                            ->whereIn('device_type', $otherTypes)->get();
-                    }
+                    $logoutUsers = PamToken::where('account_id', $pam->id)
+                        ->where('device_id', '!=', $device_id)
+                        ->whereIn('device_type', $totalGroups)->get();
 
                 }
                 break;
