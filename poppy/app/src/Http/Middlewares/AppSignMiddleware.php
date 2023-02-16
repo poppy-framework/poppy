@@ -26,7 +26,7 @@ class AppSignMiddleware
     {
         // 未启用加密, 直接过滤掉
         $Sign = new DefaultAppSign();
-        if ($request->input('sign') !== $Sign->check($request->all())) {
+        if (!$Sign->check($request->all())) {
             return Resp::error($Sign->getError());
         }
         return $next($request);

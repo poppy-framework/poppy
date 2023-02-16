@@ -50,14 +50,14 @@ class App
      */
     public function establish(array $data, int $id = null): bool
     {
-        $initDb = [
+        $initDb    = [
             'title'        => (string) sys_get($data, 'title'),
             'secret'       => (string) sys_get($data, 'secret'),
             'account_type' => (string) sys_get($data, 'account_type'),
             'account_id'   => (int) sys_get($data, 'account_id'),
+            'name'         => (string) sys_get($data, 'name'),
             'note'         => (string) sys_get($data, 'note'),
         ];
-
         $validator = Validator::make($initDb, [
             'title'        => [
                 Rule::required(),
@@ -68,6 +68,16 @@ class App
                 Rule::required(),
                 Rule::string(),
             ],
+            'name'         => [
+                Rule::string(),
+                Rule::between(5, 16),
+                Rule::regex('/^[a-z][a-z0-9_]{4,15}$/'),
+                Rule::unique((new SysApp())->getTable(), 'name')->where(function ($query) use ($id) {
+                    if ($id) {
+                        $query->where('id', '!=', $id);
+                    }
+                }),
+            ],
             'account_type' => [
                 Rule::in(array_keys(PamAccount::kvType())),
             ],
@@ -77,6 +87,7 @@ class App
         ], [], [
             'title'        => '标题',
             'secret'       => '密钥',
+            'name'         => '标识',
             'account_type' => '用户类型',
             'account_id'   => '用户ID',
             'note'         => '备注',
@@ -93,6 +104,7 @@ class App
 
         if ($id) {
             $this->item->update($initDb);
+            RdsDb::instance()->del(AppDef::ckItem($this->item->id));
         }
         else {
             /** @var SysApp $item */

@@ -63,13 +63,17 @@ class FormAppEstablish extends FormWidget
     public function data(): array
     {
         return $this->item ? [
-            'title'  => $this->item->title,
-            'secret' => $this->item->secret,
+            'title'        => $this->item->title,
+            'name'         => $this->item->name,
+            'secret'       => $this->item->secret,
+            'account_type' => $this->item->account_type,
+            'account_id'   => $this->item->account_id,
+            'note'         => $this->item->note,
         ] : [
         ];
     }
 
-    public function form()
+    public function form(): void
     {
         $this->text('title', '应用名称')->rules([
             Rule::required(),
@@ -78,6 +82,9 @@ class FormAppEstablish extends FormWidget
             Rule::string(),
             Rule::size(32),
             Rule::required(),
+        ]);
+        $this->text('name', '应用标识')->rules([
+            Rule::string(),
         ]);
         $this->select('account_type', '应用账户类型')->rules([
             Rule::nullable(),

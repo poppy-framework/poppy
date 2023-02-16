@@ -67,10 +67,11 @@ if (!function_exists('sys_cacher')) {
 if (!function_exists('sys_db')) {
     /**
      * 模型缓存
-     * @param string $key 需要支持的缓存
+     * todo 根据是否存在来定义模型信息
+     * @param string|array $key 需要支持的缓存
      * @return string
      */
-    function sys_db(string $key): string
+    function sys_db($key): string
     {
         static $cache;
         if (!$cache) {

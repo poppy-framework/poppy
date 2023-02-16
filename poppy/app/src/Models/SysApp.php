@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Poppy\App\Classes\AppDef;
+use Poppy\App\Exceptions\AppNotExistsException;
 use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Http\Pagination\PageInfo;
 use Poppy\System\Classes\Traits\FilterTrait;
@@ -19,6 +20,7 @@ use Poppy\System\Models\SysConfig;
  *
  * @property int         $id           应用 ID
  * @property string      $title        应用名称
+ * @property string      $name         应用标识
  * @property string      $secret       应用密钥
  * @property int         $account_id   账号 ID
  * @property string      $account_type 账号用户类型
@@ -46,16 +48,27 @@ class SysApp extends Model
 
     protected $fillable = [
         'title',
-        'type',
+        'name',
         'account_id',
         'account_type',
         'secret',
+        'note',
     ];
 
-    public static function item($appid)
+    /**
+     * 获取缓存的信息
+     * @param int $appid
+     * @return mixed|string
+     * @throws AppNotExistsException
+     */
+    public static function item(int $appid)
     {
         return RdsDb::instance()->remember(AppDef::ckItem($appid), SysConfig::MIN_ONE_MONTH, function () use ($appid) {
-            return self::find($appid)->toArray();
+            $app = self::find($appid);
+            if (!$app) {
+                throw new AppNotExistsException("应用 {$appid} 不存在!");
+            }
+            return $app->toArray();
         });
     }
 }

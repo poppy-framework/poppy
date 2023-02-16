@@ -9,6 +9,7 @@ use Poppy\Framework\Foundation\Exception\Handler as ExceptionHandler;
 /**
  * @see        ExceptionHandler
  * @deprecated 4.1
+ * @removed    5.0
  */
 class Handler extends ExceptionHandler
 {

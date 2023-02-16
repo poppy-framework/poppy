@@ -9,7 +9,6 @@ use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid\Column;
 use Poppy\MgrPage\Classes\Grid\Displayer\Actions;
 use Poppy\MgrPage\Classes\Grid\Filter;
-use Poppy\MgrPage\Classes\Grid\Filter\Scope;
 use Poppy\MgrPage\Classes\Grid\ListBase;
 use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
 use Poppy\System\Models\PamAccount;
@@ -28,7 +27,7 @@ class ListSysApp extends ListBase
     {
         $this->column('id', "应用ID")->sortable()->width(100);
         $this->column('title', "标题");
-        $this->column('account_type', "用户类型")->display(function ($type) {
+        $this->column('account_type', "类型")->display(function ($type) {
             if ($type) {
                 return PamAccount::kvType($type);
             }
