@@ -109,16 +109,23 @@ class Sso
                 // 同组内进行互踢
                 if ($groupType === self::GROUP_KICKED) {
                     // 查询同组的设备类型
-                    $total = [];
+                    $totalGroups = [];
                     foreach ($this->groups as $group) {
                         if (in_array($device_type, $group, true)) {
-                            $total = $group;
+                            $totalGroups = $group;
                         }
                     }
+
+                    $otherTypes = array_filter($totalGroups, function ($type) use ($device_type) {
+                        return $type !== $device_type;
+                    });
+
                     // 删除同组内其他设备
-                    $logoutUsers = PamToken::where('account_id', $pam->id)
-                        ->where('device_id', '!=', $device_id)
-                        ->whereIn('device_type', $total)->get();
+                    if ($otherTypes) {
+                        $logoutUsers = PamToken::where('account_id', $pam->id)
+                            ->whereIn('device_type', $otherTypes)->get();
+                    }
+
                 }
                 break;
         }
