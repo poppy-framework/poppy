@@ -155,19 +155,6 @@ class Sso
     }
 
     /**
-     * 初始化, 当关闭的时候, 清除数据
-     * 开启的时候, 数据遵循自由变更, 不对数据进行额外的处理
-     * @throws Exception
-     */
-    public function init(): void
-    {
-        if (!self::isEnable()) {
-            PamToken::whereKeyNot(0)->delete();
-            RdsDb::instance()->del(PySystemDef::ckTagSsoValid());
-        }
-    }
-
-    /**
      * 使用户可用
      * @param $pamId
      * @return void
