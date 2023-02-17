@@ -8,7 +8,6 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
-use JsonException;
 use JWTAuth;
 use Poppy\Framework\Application\TestCase;
 use Poppy\System\Action\Sso;
@@ -24,8 +23,8 @@ class SsoTest extends TestCase
     {
         parent::setUp();
         config('poppy.system.sso_group', [
-            'app' . Sso::GROUP_KICKED    => ['android', 'ios'],
-            'web' . Sso::GROUP_UNLIMITED => ['h5', 'webapp'],
+            'app:' . Sso::GROUP_KICKED    => ['android', 'ios'],
+            'web:' . Sso::GROUP_UNLIMITED => ['h5', 'webapp'],
         ]);
     }
 
@@ -156,7 +155,6 @@ class SsoTest extends TestCase
 
     /**
      * @throws GuzzleException
-     * @throws JsonException
      */
     private function runAuth(string $jwt, string $os): void
     {
@@ -191,7 +189,6 @@ class SsoTest extends TestCase
     }
 
     /**
-     * @throws JsonException
      */
     private function runSuccess($success): void
     {
