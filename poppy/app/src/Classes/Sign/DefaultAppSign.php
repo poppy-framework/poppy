@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Log;
+use Poppy\App\Exceptions\AppNotExistsException;
 use Poppy\App\Models\SysApp;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Classes\Traits\AppTrait;
@@ -45,7 +46,11 @@ class DefaultAppSign
             return $this->setError(new Resp(Resp::PARAM_ERROR, '请传入 Appid'));
         }
 
-        $item = SysApp::item($appid);
+        try {
+            $item = SysApp::item($appid);
+        } catch (AppNotExistsException $e) {
+            return $this->setError('应用不存在');
+        }
         if (!$item) {
             return $this->setError('错误的 appid');
         }
@@ -77,17 +82,13 @@ class DefaultAppSign
      */
     public function sign(array $params, int $appid, string $secret): array
     {
-        sys_info('origin-params', $params);
-        $params = array_merge($params, [
+        $params         = array_merge($params, [
             'appid'     => $appid,
             'timestamp' => Carbon::now()->timestamp,
         ]);
-        sys_info('append-params', $params);
-        sys_info('app-secret', $secret);
         $sign           = $this->calcSign($params, $secret);
         $params['sign'] = $sign;
 
-        sys_info('fully-params', $params);
         return $params;
     }
 
@@ -100,11 +101,8 @@ class DefaultAppSign
     protected function calcSign(array $params, string $secret): string
     {
         $params = $this->except($params);
-        sys_info('cleared-params', $params);
         ksort($params);
-        sys_info('sorted-params', $params);
         $kvStr = ArrayHelper::toKvStr($params);
-        sys_info('kv-params', $kvStr);
         return md5(md5($kvStr) . $secret);
     }
 

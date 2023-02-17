@@ -1,0 +1,28 @@
+{
+    "name": "poppy/ext-app",
+    "description": "Ip convert to area name",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mark Zhao",
+            "email": "zhaody901@126.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Poppy\\Extension\\App\\": "src/",
+            "Poppy\\Extension\\App\\Tests\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Poppy\\Extension\\App\\ExtensionServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}
