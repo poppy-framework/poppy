@@ -55,8 +55,9 @@ abstract class DefaultBaseApiSign implements ApiSignContract
         if ($sign !== $this->sign($request->all(), $type)) {
             Log::error('sign-error', [
                 'params'  => $request->all(),
+                'ip'      => $request->ip(),
+                'uri'     => $request->getPathInfo(),
                 'headers' => [
-                    'ip'    => $request->ip(),
                     'os'    => x_header('os'),
                     'ver'   => x_header('ver'),
                     'token' => jwt_token(),
