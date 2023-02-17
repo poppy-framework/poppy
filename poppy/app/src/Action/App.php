@@ -15,7 +15,7 @@ use Throwable;
 use Validator;
 
 /**
- * 分类管理
+ * 应用管理
  */
 class App
 {
@@ -43,7 +43,7 @@ class App
      * 编辑/创建分类
      * @param array    $data 传入数据  <br>
      *                       {string}  title       名称 <br>
-     *                       {int}     parent_id   父级 ID <br>
+     *                       {int}     secret      密钥 <br>
      *                       {string}  type        类型
      * @param null|int $id   ID
      * @return bool

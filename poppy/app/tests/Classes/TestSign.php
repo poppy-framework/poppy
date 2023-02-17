@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\App\Tests\Classes;
 
 use Exception;
@@ -18,7 +20,7 @@ class TestSign extends TestCase
      * @throws ApplicationException
      * @throws Exception
      */
-    public function testCheck()
+    public function testCheck(): void
     {
         $item = [
             'title'  => 'Testing ' . py_faker()->words(2, true),

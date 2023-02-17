@@ -6,7 +6,7 @@ namespace Poppy\Extension\App;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
-use Poppy\Extension\App\Classes\Client;
+use Poppy\Extension\App\Classes\AppClient;
 
 
 /**
@@ -27,7 +27,7 @@ class ExtensionServiceProvider extends ServiceProvider implements DeferrableProv
     private function registerApp(): void
     {
         $this->app->singleton('poppy.ext.app', function () {
-            return new Client();
+            return new AppClient();
         });
     }
 }

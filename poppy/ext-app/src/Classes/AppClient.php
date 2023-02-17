@@ -6,10 +6,11 @@ namespace Poppy\Extension\App\Classes;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Utils;
 use JsonException;
 use Poppy\Extension\App\Classes\Sign\DefaultAppSign;
 
-class Client
+class AppClient
 {
 
     private const ERR_JSON = 901;
@@ -65,6 +66,42 @@ class Client
         }
     }
 
+    public function file(string $url, $params, $filepath)
+    {
+        $form_params = DefaultAppSign::sign($params, $this->appid, $this->secret);
+        $multipart   = [];
+        foreach ($form_params as $key => $param) {
+            $multipart[] = [
+                'name'     => $key,
+                'contents' => $param,
+            ];
+        }
+
+        $multipart[] = [
+            'name'     => 'file',
+            'contents' => Utils::tryFopen($filepath, 'r'),
+            'filename' => basename($filepath),
+        ];
+
+        try {
+            $resp    = $this->client->post($url, [
+                'multipart' => $multipart,
+            ]);
+            $content = $resp->getBody()->getContents();
+            return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+        } catch (GuzzleException $e) {
+            return [
+                'status'  => $e->getCode(),
+                'message' => $e->getMessage(),
+            ];
+        } catch (JsonException $e) {
+            return [
+                'status'  => self::ERR_JSON,
+                'message' => $e->getMessage(),
+            ];
+        }
+    }
+
     /**
      * 发送应用 POST 请求
      * @param string $url
@@ -96,9 +133,9 @@ class Client
 
     /**
      * @param int $appid
-     * @return Client
+     * @return AppClient
      */
-    public function setAppid(int $appid): Client
+    public function setAppid(int $appid): AppClient
     {
         $this->appid = $appid;
         return $this;
@@ -106,9 +143,9 @@ class Client
 
     /**
      * @param string $secret
-     * @return Client
+     * @return AppClient
      */
-    public function setSecret(string $secret): Client
+    public function setSecret(string $secret): AppClient
     {
         $this->secret = $secret;
         return $this;
