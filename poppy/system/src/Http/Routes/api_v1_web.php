@@ -12,7 +12,6 @@ Route::group([
     'namespace' => 'Poppy\System\Http\Request\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
     $route->post('core/doc', 'CoreController@doc');
-    $route->post('core/cw', 'CoreController@cw');
 });
 
 /* 核心信息无需禁用, 仅需要加密鉴权即可
@@ -23,6 +22,7 @@ Route::group([
 ], function (Illuminate\Routing\Router $route) {
     $route->post('core/info', 'CoreController@info');
     $route->post('core/translate', 'CoreController@translate');
+    $route->post('core/cw', 'CoreController@cw');
 });
 
 /* 可以对用户设备进行封禁

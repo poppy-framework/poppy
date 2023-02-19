@@ -17,9 +17,9 @@ class AppClient
 
     /**
      * 应用 ID
-     * @var int
+     * @var int |string
      */
-    private int $appid;
+    private $appid;
 
     /**
      * 密钥
@@ -132,10 +132,10 @@ class AppClient
     }
 
     /**
-     * @param int $appid
+     * @param int|string $appid
      * @return AppClient
      */
-    public function setAppid(int $appid): AppClient
+    public function setAppid($appid): AppClient
     {
         $this->appid = $appid;
         return $this;

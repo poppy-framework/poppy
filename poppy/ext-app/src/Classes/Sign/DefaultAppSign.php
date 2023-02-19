@@ -17,12 +17,12 @@ class DefaultAppSign
 
     /**
      * 计算验签
-     * @param array  $params 参数
-     * @param int    $appid  应用 ID
-     * @param string $secret 密钥
+     * @param array      $params 参数
+     * @param int|string $appid  应用 ID
+     * @param string     $secret 密钥
      * @return array
      */
-    public static function sign(array $params, int $appid, string $secret): array
+    public static function sign(array $params, $appid, string $secret): array
     {
         $params         = array_merge($params, [
             'appid'     => $appid,

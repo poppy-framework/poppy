@@ -5,11 +5,9 @@ declare(strict_types = 1);
 namespace Poppy\System\Http\Request\ApiV1;
 
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Http\UploadedFile;
-use JsonException;
+use Poppy\Extension\App\Classes\AppClient;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Action\Apidoc;
-use Request;
 
 /**
  * 系统信息控制
@@ -76,39 +74,28 @@ class CoreController extends JwtApiController
      */
     public function cw()
     {
-        $testing = input('testing');
-        /** @var UploadedFile $file */
-        $file = Request::file('file');
-        if (!$file) {
-            return Resp::error('无性能文件');
-        }
-        $name = $file->getClientOriginalName();
-        $file->move(storage_path('clockwork/'), ($testing ? '-' : '') . $name);
-        $storePath = storage_path('clockwork/') . ($testing ? '-' : '') . $name;
+        $id     = input('id');
+        $cwUrl  = env('CP_URL') . '/api_v1/op/app/clockwork/capture';
+        $appid  = env('CP_APPID');
+        $secret = env('CP_SECRET');
 
-        $index   = storage_path('clockwork/index');
-        $content = app('files')->get($storePath);
-        try {
-            $json = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
-        } catch (JsonException $e) {
-            return Resp::error('错误的 clockwork 格式');
+        $file = storage_path('clockwork/' . $id . '.json');
+        if (!app('files')->exists($file)) {
+            return Resp::error('文件不存在');
         }
-        if (!file_exists($index)) {
-            touch($index);
+        $resp = (new AppClient())
+            ->setAppid($appid)
+            ->setSecret($secret)
+            ->file($cwUrl, [], $file);
+
+        $status  = data_get($resp, 'status');
+        $message = data_get($resp, 'message');
+        if ($status === 0) {
+            app('files')->delete($file);
+            return Resp::success('上报成功', [
+                'url' => env('CP_URL') . '/clockwork',
+            ]);
         }
-        app('files')->append($index, implode(',', [
-            $json['id'],
-            $json['time'],
-            $json['method'],
-            ($testing ? '-' : '') . $json['uri'],
-            '"' . $json['controller'] . '"',
-            $json['responseStatus'],
-            $json['responseDuration'],
-            'request',
-            PHP_EOL,
-        ]));
-        return Resp::success('上报成功', [
-            'url' => config('app.url') . '/clockwork',
-        ]);
+        return Resp::web($status, $message);
     }
 }
