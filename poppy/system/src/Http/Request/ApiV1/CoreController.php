@@ -70,10 +70,29 @@ class CoreController extends JwtApiController
      * @apiVersion            1.0.0
      * @apiName               SysCoreCw
      * @apiGroup              Poppy
-     * @apiQuery {string}     id     Clockwork ID
+     * @apiQuery {string}     [id]     Clockwork ID
+     * @apiQuery {string}     type     list|report
      */
     public function cw()
     {
+        $type = input('type');
+        if ($type === 'list') {
+            $indexFile = storage_path('clockwork/index');
+            if (!file_exists($indexFile)) {
+                return Resp::success('无可汇报的数据');
+            }
+            $fileLines = file($indexFile);
+            $profiles  = collect($fileLines)->reverse()->splice(0, 40)->map(function ($line) {
+                $lines = explode(',', $line);
+                return [
+                    'id'       => $lines[0],
+                    'duration' => $lines[1],
+                    'method'   => $lines[2],
+                    'url'      => $lines[3],
+                ];
+            });
+            return Resp::success('可汇报的数据', $profiles->values()->toArray());
+        }
         $id     = input('id');
         $cwUrl  = env('CP_URL') . '/api_v1/op/app/clockwork/capture';
         $appid  = env('CP_APPID');
