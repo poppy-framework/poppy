@@ -22,7 +22,8 @@ class OpCommand extends Command
             case 'gen-secret':
                 $Console = new Console();
                 if ($Console->generateSecret()) {
-                    $this->info(sys_gen_mk('system.op', '生成并汇报成功'));
+                    $this->writeNewEnvironmentFileWith($Console->secret());
+                    $this->info(sys_gen_mk('system.op', '生成替换并汇报成功'));
                 }
                 else {
                     $this->warn(sys_gen_mk('system.op', $Console->getError()));
@@ -37,5 +38,32 @@ class OpCommand extends Command
                 break;
         }
         return 0;
+    }
+
+
+    /**
+     * Write a new environment file with the given key.
+     *
+     * @param string $key
+     * @return void
+     */
+    protected function writeNewEnvironmentFileWith(string $key): void
+    {
+        file_put_contents($this->laravel->environmentFilePath(), preg_replace(
+            $this->keyReplacementPattern(),
+            'PY_SECRET=' . $key,
+            file_get_contents($this->laravel->environmentFilePath())
+        ));
+    }
+
+    /**
+     * Get a regex pattern that will match env APP_KEY with any random key.
+     *
+     * @return string
+     */
+    protected function keyReplacementPattern(): string
+    {
+        $escaped = preg_quote('=' . $this->laravel['config']['poppy.system.secret'], '/');
+        return "/^PY_SECRET{$escaped}/m";
     }
 }

@@ -119,7 +119,7 @@ class Console
      */
     public function secret()
     {
-        return env('PY_SECRET') ?: sys_setting('py-system::_.secret');
+        return sys_setting('py-system::_.secret');
     }
 
     /**

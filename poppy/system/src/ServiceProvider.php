@@ -190,13 +190,6 @@ class ServiceProvider extends PoppyServiceProvider
 
     private function bootConfigs(): void
     {
-        // 如果是设定, 则使用设定, 否则使用生成的数据
-        $secret = env('PY_SECRET') ?: sys_setting('py-system::_.secret', '');
-        if ($secret) {
-            config(['poppy.system.secret' => $secret]);
-            config(['clockwork.requests.on_demand' => $secret]);
-        }
-
         config([
             'mail.driver'       => sys_setting('py-system::mail.driver') ?: config('mail.driver'),
             'mail.encryption'   => sys_setting('py-system::mail.encryption') ?: config('mail.encryption'),
