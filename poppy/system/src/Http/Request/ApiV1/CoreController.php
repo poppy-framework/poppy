@@ -86,9 +86,11 @@ class CoreController extends JwtApiController
                 $lines = explode(',', $line);
                 return [
                     'id'       => $lines[0],
-                    'duration' => $lines[1],
+                    'at'       => $lines[1],
                     'method'   => $lines[2],
                     'url'      => $lines[3],
+                    'code'     => $lines[5],
+                    'duration' => $lines[6],
                 ];
             });
             return Resp::success('可汇报的数据', $profiles->values()->toArray());

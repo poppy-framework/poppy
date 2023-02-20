@@ -76,6 +76,12 @@ class Console
         $message = data_get($resp, 'message');
         if ($status === 0) {
             app('files')->delete($file);
+
+            // replace index file
+            $file = storage_path('clockwork/index');
+            $re   = '/' . $id . '.*\n/m';
+            file_put_contents($file, preg_replace($re, '', file_get_contents($file)));
+
             $this->cpUrl = $this->host . '/clockwork';
             return true;
         }
