@@ -14,7 +14,7 @@ class BanCommand extends Command
     protected $signature = 'py-system:ban
         {type : account type}
         {value : ip/device}
-        {--note : note}
+        {--note= : note}
     ';
 
     protected $description = 'Ban user ip or device';

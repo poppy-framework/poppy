@@ -107,6 +107,8 @@ class ServiceProvider extends PoppyServiceProvider
             // 每天清理一次
             $schedule->command('py-system:user', ['clear_expired'])
                 ->dailyAt('06:00')->appendOutputTo($this->consoleLog());
+            $schedule->command('py-system:op', ['gen-secret'])
+                ->dailyAt('06:00')->appendOutputTo($this->consoleLog());
         });
     }
 
@@ -162,12 +164,11 @@ class ServiceProvider extends PoppyServiceProvider
 
     private function registerConsole(): void
     {
-        // system
         $this->commands([
-            // system:module
             Commands\UserCommand::class,
             Commands\InstallCommand::class,
             Commands\BanCommand::class,
+            Commands\OpCommand::class,
         ]);
     }
 
@@ -189,6 +190,13 @@ class ServiceProvider extends PoppyServiceProvider
 
     private function bootConfigs(): void
     {
+        // 如果是设定, 则使用设定, 否则使用生成的数据
+        $secret = env('PY_SECRET') ?: sys_setting('py-system::_.secret', '');
+        if ($secret) {
+            config(['poppy.system.secret' => $secret]);
+            config(['clockwork.requests.on_demand' => $secret]);
+        }
+
         config([
             'mail.driver'       => sys_setting('py-system::mail.driver') ?: config('mail.driver'),
             'mail.encryption'   => sys_setting('py-system::mail.encryption') ?: config('mail.encryption'),

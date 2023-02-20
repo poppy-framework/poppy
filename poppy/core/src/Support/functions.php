@@ -137,13 +137,16 @@ if (!function_exists('sys_gen_mk')) {
         if (is_array($info)) {
             return $append(json_encode($info, $jsonMark));
         }
-        else if (is_string($info)) {
+
+        if (is_string($info)) {
             return $append($info);
         }
-        else if ($info instanceof Resp) {
+
+        if ($info instanceof Resp) {
             return $append(implode(', code:', [$info->getMessage(), $info->getCode()]));
         }
-        else if ($info instanceof Throwable) {
+
+        if ($info instanceof Throwable) {
             $content = [
                 'type'  => get_class($info),
                 'info'  => ['message:' . $info->getMessage(), 'code' . $info->getCode()],
