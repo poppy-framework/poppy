@@ -70,6 +70,9 @@ develop:
       title: 系统信息
       children:
         -
+          title: Clockwork
+          route: py-mgr-page:develop.clockwork.index
+        -
           title: 系统日志
           route: py-mgr-page:develop.log.index
         -

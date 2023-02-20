@@ -23,6 +23,13 @@ Route::group([
     $router->any('log', 'LogController@index')
         ->name('py-mgr-page:develop.log.index');
 
+    /* clockwork
+     * ---------------------------------------- */
+    $router->any('clockwork', 'ClockworkController@index')
+        ->name('py-mgr-page:develop.clockwork.index');
+    $router->any('clockwork/report', 'ClockworkController@report')
+        ->name('py-mgr-page:develop.clockwork.report');
+
     /* ApiDoc
      * ---------------------------------------- */
     $router->any('api/field/{type}/{field}', 'ApiController@field')
