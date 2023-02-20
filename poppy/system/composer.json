@@ -15,6 +15,7 @@
         "tymon/jwt-auth": "1.0.*",
         "hieu-le/active": "4.0.*",
         "poppy/core": "4.2.*",
+        "poppy/ext-app": "4.2.*",
         "mlocati/ip-lib": "1.*",
         "intervention/image": "2.*",
         "ezyang/htmlpurifier": "4.16.*",
