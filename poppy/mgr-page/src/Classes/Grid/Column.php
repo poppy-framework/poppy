@@ -32,7 +32,7 @@ use RuntimeException;
 /**
  * Class Column.
  * @method $this switch ($states = [])
- * @method $this image($server = '', $width = 200, $height = 200)
+ * @method $this image($width = 20, $height = 20)
  * @method $this link($href = '', $target = '_blank')
  * @method $this progress($style = 'primary', $size = 'sm', $max = 100)
  * @method $this downloadable($server = '')
@@ -418,7 +418,7 @@ class Column
     }
 
     /**
-     * Convert file size to a human readable format like `100mb`.
+     * Convert file size to a human-readable format like `100mb`.
      *
      * @return $this
      */
@@ -434,7 +434,7 @@ class Column
      * @param int $size
      * @return $this
      */
-    public function gravatar($size = 25): self
+    public function gravatar(int $size = 25): self
     {
         return $this->display(function ($value) use ($size) {
             $src = sprintf(
@@ -457,7 +457,7 @@ class Column
     public function loading($values = [], $others = [])
     {
         return $this->display(function ($value) use ($values, $others) {
-            if (in_array($value, $values)) {
+            if (in_array($value, $values, true)) {
                 return '<i class="fa fa-refresh fa-spin text-info"></i>';
             }
             return Arr::get($others, $value, $value);
@@ -504,7 +504,7 @@ class Column
      *
      * @return $this
      */
-    public function bool(array $map = [], $default = false): self
+    public function bool(array $map = [], bool $default = false): self
     {
         return $this->display(function ($value) use ($map, $default) {
             $bool = empty($map) ? (bool) $value : Arr::get($map, $value, $default);

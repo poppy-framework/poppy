@@ -14,7 +14,7 @@
     <div id="LAY_app">
         <div class="layui-layout layui-layout-admin">
             <div class="layui-header">
-                <div class="layui-logo" lay-href="{!! route('demo:web.demo.index') !!}">
+                <div class="layui-logo" lay-href="{!! url('demo') !!}">
                     Poppy Demos
                 </div>
                 <ul class="layui-nav layui-layout-left">

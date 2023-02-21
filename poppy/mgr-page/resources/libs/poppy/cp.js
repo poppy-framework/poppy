@@ -145,9 +145,9 @@
         // 图片预览
         $body.on('click', '.J_image_preview', function (e) {
             //loading层
-            let _src = $(this).attr('src');
+            let _src = $(this).attr('data-src');
             if (!_src) {
-                _src = $(this).attr('data-src');
+                _src = $(this).attr('src');
             }
             if (!_src) {
                 Util.splash({
@@ -294,7 +294,7 @@
         $body.on('click', '.J_delay', function (e) {
             let $this = $(this);
             let tag = $this.prop("tagName").toLowerCase();
-            if (tag == 'a' && !$this.data('delay')) {
+            if (tag === 'a' && !$this.data('delay')) {
                 let _href = $(this).attr('href');
                 $this.attr('href', 'javascript:void(0)').addClass('disabled').attr('data-delay', 'ing');
                 setTimeout(function () {
@@ -302,9 +302,9 @@
                 }, 3000);
                 e.preventDefault();
             }
-            if (tag == 'button' && !$this.data('delay')) {
+            if (tag === 'button' && !$this.data('delay')) {
                 $this.addClass('disabled');
-                if ($(this).parents('form') && $this.prop('type') == 'submit') {
+                if ($(this).parents('form') && $this.prop('type') === 'submit') {
                     $(this).parents('form').submit(function () {
                         $this.prop('disabled', true);
                     });

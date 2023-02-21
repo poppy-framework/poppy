@@ -14,19 +14,10 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
     protected $namespace = 'Demo\Http\Request';
 
     /**
-     * Define your route model bindings, pattern filters, etc.
-     * @return void
-     */
-    public function boot()
-    {
-        parent::boot();
-    }
-
-    /**
      * Define the routes for the module.
      * @return void
      */
-    public function map()
+    public function map(): void
     {
         $this->mapWebRoutes();
 
@@ -38,7 +29,7 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
      * These routes all receive session state, CSRF protection, etc.
      * @return void
      */
-    protected function mapWebRoutes()
+    protected function mapWebRoutes(): void
     {
         Route::group([
             'prefix' => 'demo',

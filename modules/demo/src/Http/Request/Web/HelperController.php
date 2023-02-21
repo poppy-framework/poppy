@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Demo\Http\Request\Web;
 
 use Demo\Forms\FormEntrance;
@@ -35,12 +37,12 @@ class HelperController extends WebController
     }
 
 
-    public function imgStr()
+    public function imgStr(): void
     {
         ImgHelper::buildStr('Qianqian Li');
     }
 
-    public function imgBmp()
+    public function imgBmp(): void
     {
         $gd = imagecreatefrombmp(poppy_path('demo', 'tests/files/bear.bmp'));
         header("Content-type:image/jpg");

@@ -9,7 +9,7 @@ use Poppy\Framework\Classes\Resp;
 use Poppy\System\Http\Request\ApiV1\JwtApiController;
 
 /**
- * 内容生成器
+ * Token
  */
 class TokenController extends JwtApiController
 {

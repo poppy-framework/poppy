@@ -3,13 +3,13 @@
 	<div class="layui-container">
 		<div class="layui-row layui-col-space15 mt15">
 			<div class="layui-col-xs3" style="line-height: 2;">
-				@include('demo::js._side')
+				@include('demo::web.js._side')
 			</div>
 			<div class="layui-col-xs9">
 				@if(if_query('type', ''))
-					@include('demo::js.fe-index')
+					@include('demo::web.js.fe-index')
 				@else
-					@include('demo::js.fe-'.input('type'))
+					@include('demo::web.js.fe-'.input('type'))
 				@endif
 			</div>
 		</div>

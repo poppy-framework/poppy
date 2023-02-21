@@ -91,4 +91,43 @@ class FileManager
         }
         return $rules;
     }
+
+    public static function previewImage($url, $size = 40)
+    {
+        $strRules = preg_replace('/\s+/', ';', sys_setting('py-system::picture.preview_rule'));
+        $arrRules = explode(';', $strRules);
+        $platform     = '';
+        if (count($arrRules)) {
+            foreach ($arrRules as $rule) {
+                if ($platform) {
+                    continue;
+                }
+                if (Str::contains($rule, '|')) {
+                    $arrRule = explode('|', $rule);
+                    if (isset($arrRule[0], $arrRule[1]) && Str::contains($url, $arrRule[1])) {
+                        $platform = $arrRule[0];
+                    }
+                }
+            }
+        }
+        switch ($platform) {
+            case 'aliyun':
+                if (!Str::contains($url, "?x-oss-process")) {
+                    $url = "{$url}?x-oss-process=image/resize,l_{$size}";
+                }
+                break;
+            case 'tencent':
+            case 'qiniu':
+                if (!Str::contains($url, "?imageView2")) {
+                    $url = "{$url}?imageView2/0/w/{$size}";
+                }
+                break;
+            case 'huawei':
+                if (!Str::contains($url, '?x-image-process')) {
+                    $url = "{$url}?x-image-process=image/resize,l_{$size}";
+                }
+                break;
+        }
+        return $url;
+    }
 }

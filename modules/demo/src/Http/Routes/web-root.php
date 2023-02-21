@@ -6,4 +6,5 @@ Route::group([
     'namespace' => 'Demo\Http\Request\Web',
 ], function (Router $router) {
     $router->any('/', 'HomeController@index');
+    $router->any('demo', 'HomeController@demo');
 });

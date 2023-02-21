@@ -131,7 +131,7 @@
 							<tr>
 								<td width="250" bgcolor="#e4e4e4" class="logocell">
 									<img border="0"
-										src="https://oss.wulicode.com/static/images/poppy/spacer.gif"
+										src="{{url('/assets/images/default/spacer.gif')}}"
 										width="1" height="20" class="hide">
 									<br class="hide">
 									@if (isset($logo))
@@ -142,17 +142,17 @@
 									@endif
 									<br>
 									<img border="0"
-										src="https://oss.wulicode.com/static/images/poppy/spacer.gif"
+										src="{{url('/assets/images/default/spacer.gif')}}"
 										width="1" height="10" class="hide"><br class="hide"></td>
 								<td align="right" width="350" class="hide"
 									style="color:#a6a6a6;font-size:12px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;text-shadow: 0 1px 0 #ffffff;"
 									valign="top" bgcolor="#e4e4e4"><img border="0"
-										src="https://oss.wulicode.com/static/images/poppy/spacer.gif"
+										src="{{url('/assets/images/default/spacer.gif')}}"
 										width="1" height="63"><br></td>
 							</tr>
 						</table>
 
-						<img border="0" src="https://oss.wulicode.com/static/images/poppy/spacer.gif"
+						<img border="0" src="{{url('/assets/images/default/spacer.gif')}}"
 							width="1" height="15" class="divider"><br>
 
 						@yield('mail-main')
@@ -160,14 +160,14 @@
 				</tr>
 			</table>
 
-			<img border="0" src="https://oss.wulicode.com/static/images/poppy/spacer.gif" width="1"
+			<img border="0" src="{{url('/assets/images/default/spacer.gif')}}" width="1"
 				height="25" class="divider"><br>
 
 			<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f2f2f2">
 				<tr>
 					<td>
 
-						<img border="0" src="https://oss.wulicode.com/static/images/poppy/spacer.gif" alt="{!! $title ?? '' !!}"
+						<img border="0" src="{{url('/assets/images/default/spacer.gif')}}" alt="{!! $title ?? '' !!}"
 							width="1" height="30"><br>
 
 						<table width="600" cellpadding="0" cellspacing="0" border="0" align="center" class="table">
@@ -179,7 +179,7 @@
 											<td width="380" valign="top" class="footershow">
 
 												<img border="0"
-													src="https://oss.wulicode.com/static/images/poppy/spacer.gif"
+													src="{{url('/assets/images/default/spacer.gif')}}"
 													width="1" height="8"><br>
 
 												@if (isset($reminder))
@@ -212,7 +212,7 @@
 												</table>
 
 												<img border="0"
-													src="https://oss.wulicode.com/static/images/poppy/spacer.gif"
+													src="{{url('/assets/images/default/spacer.gif')}}"
 													width="1" height="10"><br>
 												<p style="color:#b3b3b3;font-size:11px;line-height:15px;font-family:Helvetica,Arial,sans-serif;margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;font-weight:bold;">{{ $title ?? '' }}</p>
 
@@ -230,7 +230,7 @@
 							</tr>
 						</table>
 
-						<img alt="spacer" border="0" src="https://oss.wulicode.com/static/images/poppy/spacer.gif"
+						<img alt="spacer" border="0" src="{{url('/assets/images/default/spacer.gif')}}"
 							width="1" height="25"><br>
 
 					</td>

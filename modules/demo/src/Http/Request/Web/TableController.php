@@ -3,6 +3,7 @@
 namespace Demo\Http\Request\Web;
 
 use Demo\Http\Lists\ListPoppyDemo;
+use Demo\Http\Lists\ListPoppyDisplayer;
 use Demo\Http\Lists\ListPoppyEditable;
 use Demo\Http\Lists\ListPoppyIndex;
 use Demo\Http\Lists\ListPoppyUser;
@@ -24,10 +25,10 @@ class TableController extends WebController
 {
 
     /**
-     * 主页
+     * 简易表格
      * @throws Throwable
      */
-    public function index()
+    public function easy()
     {
         // table 1
         $headers = ['Id', 'Email', 'Name', 'Company'];
@@ -39,16 +40,14 @@ class TableController extends WebController
             [5, 'ipsa.aut@gmail.com', 'Ms. Antonietta Kozey Jr.', 'woso'],
         ];
 
-        $table = new TableWidget($headers, $rows);
-
-        return $table->render();
+        return (new TableWidget($headers, $rows))->render();
     }
 
     /**
      * @throws Throwable
      * @throws ApplicationException
      */
-    public function demo($type)
+    public function grid($type)
     {
         // 第一列显示id字段，并将这一列设置为可排序列
         $grid = new Grid(new DemoWebapp());
@@ -64,6 +63,9 @@ class TableController extends WebController
         }
         if ($type === 'user') {
             $grid->setLists(ListPoppyUser::class);
+        }
+        if ($type === 'displayer') {
+            $grid->setLists(ListPoppyDisplayer::class);
         }
         return $grid->render();
     }

@@ -2,13 +2,10 @@
 
 namespace Demo\Http\Request\Web;
 
-use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Mail\Mailable;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Classes\Traits\PjaxTrait;
@@ -31,44 +28,10 @@ class JsController extends WebController
     }
 
     /**
-     * @param string $page 需要引入的页面地址
-     * @return Factory|JsonResponse|RedirectResponse|Response|View
-     */
-    public function index($page = '')
-    {
-        if (!$page) {
-            $page = 'index';
-        }
-        try {
-            return view($page);
-        } catch (Exception $e) {
-            return Resp::error('文件 `' . $page . '.blade.php` 在 `~/resources/views/` 目录下不存在!');
-        }
-    }
-
-    /**
-     * 邮件样式预览
-     * @param string $slug 模块
-     * @param string $page 页面
-     * @return JsonResponse|RedirectResponse|Response|string
-     */
-    public function mail($slug = 'system', $page = 'test')
-    {
-        try {
-            /** @var Mailable $class */
-            $class = poppy_class('system', 'Mail\\' . Str::studly($page) . 'Mail');
-
-            return (new $class())->render();
-        } catch (Exception $e) {
-            return Resp::error('文件 `' . $page . '.blade.php` 在 `~/modules/' . $slug . '/resources/views/email/` 目录下不存在!');
-        }
-    }
-
-    /**
      * 前台代码
      * @return Factory|JsonResponse|RedirectResponse|Response|View
      */
-    public function fe()
+    public function index()
     {
         $type = input('type');
         if ($type === 'popup') {
@@ -91,7 +54,7 @@ class JsController extends WebController
             return Resp::success('J_request 请求测试');
         }
 
-        return view('demo::js.fe', [
+        return view('demo::web.js.index', [
             'pam' => $this->pam(),
             'xss' => '<sCRiPt/SrC=></script>',
         ]);

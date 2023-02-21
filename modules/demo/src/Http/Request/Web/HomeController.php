@@ -2,6 +2,7 @@
 
 namespace Demo\Http\Request\Web;
 
+use Demo\Classes\Layout\Demo;
 use Poppy\System\Http\Request\Web\WebController;
 
 /**
@@ -15,5 +16,15 @@ class HomeController extends WebController
     public function index()
     {
         return view('demo::web.home.index');
+    }
+
+    /**
+     * Demo
+     */
+    public function demo(): Demo
+    {
+        return (new Demo())
+            ->title('标题')
+            ->description('描述');
     }
 }
