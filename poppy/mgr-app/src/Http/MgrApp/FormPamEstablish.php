@@ -83,9 +83,9 @@ class FormPamEstablish extends FormWidget
             $Pam = new Pam();
             if ($Pam->register($passport, $password, $role_id)) {
                 return Resp::success('用户添加成功', 'motion|grid:reload');
-            } else {
-                return Resp::error($Pam->getError());
             }
+
+            return Resp::error($Pam->getError());
         }
 
         return Resp::error('错误的数据输入');

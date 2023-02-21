@@ -164,6 +164,7 @@ class Pam
             $type          => $passport,
             'password'     => $password,
             'reg_platform' => x_header('os'),
+            'reg_ip'       => \Request::ip(),
             'parent_id'    => $this->parentId,
         ];
 

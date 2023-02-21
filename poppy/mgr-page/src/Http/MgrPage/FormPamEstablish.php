@@ -63,10 +63,8 @@ class FormPamEstablish extends FormWidget
         }
         if ($this->item) {
             $Pam = new Pam();
-            if ($password) {
-                if (!$Pam->setPassword($this->item, $password)) {
-                    return Resp::error($Pam->getError());
-                }
+            if ($password && !$Pam->setPassword($this->item, $password)) {
+                return Resp::error($Pam->getError());
             }
             $Pam->setRoles($this->item, $role_id);
             return Resp::success('用户修改成功', [
