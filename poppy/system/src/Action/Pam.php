@@ -394,6 +394,19 @@ class Pam
         return true;
     }
 
+
+    /**
+     * 设置备注
+     * @param PamAccount $pam
+     * @param string     $note
+     * @return void
+     */
+    public function setNote(PamAccount $pam, string $note)
+    {
+        $pam->note = $note;
+        $pam->save();
+    }
+
     /**
      * 设置角色
      * @param PamAccount|mixed $pam   账号数据

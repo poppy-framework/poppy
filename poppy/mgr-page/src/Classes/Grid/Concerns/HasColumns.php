@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -144,14 +143,14 @@ trait HasColumns
     /**
      * Prepend column to grid.
      *
-     * @param string $column
+     * @param string $name
      * @param string $label
      *
      * @return Column
      */
-    protected function prependColumn($column = '', $label = '')
+    protected function prependColumn($name = '', $label = '')
     {
-        $column = new Column($column, $label);
+        $column = new Column($name, $label);
         $column->setGrid($this);
 
         return tap($column, function ($value) {
@@ -162,14 +161,14 @@ trait HasColumns
     /**
      * Add column to grid.
      *
-     * @param string $column
+     * @param string $name
      * @param string $label
      *
      * @return Column
      */
-    protected function addColumn($column = '', $label = '')
+    protected function addColumn($name = '', $label = '')
     {
-        $column = new Column($column, $label);
+        $column = new Column($name, $label);
         $column->setGrid($this);
 
         return tap($column, function ($value) {
@@ -224,7 +223,6 @@ trait HasColumns
 
         if ($relation instanceof HasMany
             || $relation instanceof BelongsToMany
-            || $relation instanceof MorphToMany
             || $relation instanceof HasManyThrough
         ) {
             $this->model()->with($method);

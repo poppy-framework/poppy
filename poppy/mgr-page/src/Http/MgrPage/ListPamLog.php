@@ -6,7 +6,7 @@ use Closure;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid\Filter;
 use Poppy\MgrPage\Classes\Grid\ListBase;
-use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
+use Poppy\MgrPage\Classes\Operations;
 
 /**
  * 列表 PamLog
@@ -45,13 +45,10 @@ class ListPamLog extends ListBase
         };
     }
 
-    public function quickButtons(): array
+    public function quickButtons(): Closure
     {
-        return [
-            new BaseButton('<i class="fa fa-cog"></i> 日志配置', route_url('py-mgr-page:backend.pam.setting_log'), [
-                'title' => "日志配置",
-                'class' => 'layui-btn layui-btn-sm J_iframe',
-            ]),
-        ];
+        return function (Operations $operations) {
+            $operations->iframe('日志配置', route_url('py-mgr-page:backend.pam.setting_log'))->icon('lay:set')->sm();
+        };
     }
 }

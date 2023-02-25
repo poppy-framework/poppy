@@ -2,7 +2,9 @@
 
 namespace Poppy\MgrPage\Classes\Grid\Concerns;
 
-use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
+use Closure;
+use Illuminate\Contracts\Support\Renderable;
+use Poppy\MgrPage\Classes\Operations;
 
 trait HasQuickButton
 {
@@ -12,22 +14,29 @@ trait HasQuickButton
      */
     protected array $quickButtons = [];
 
+    protected ?Operations $operations = null;
+
     /**
      * Get create url.
      *
-     * @param BaseButton[]|BaseButton $buttons
+     * @param array|Closure $buttons
      * @return array
      */
-    public function appendQuickButton(array $buttons): array
+    public function appendQuickButton($buttons): array
     {
-
-        if (count($buttons)) {
+        if (is_array($buttons) && count($buttons)) {
             foreach ($buttons as $button) {
-                if (!($button instanceof BaseButton)) {
+                if (!($button instanceof Renderable)) {
                     continue;
                 }
                 $this->quickButtons[] = $button;
             }
+        }
+
+        if ($buttons instanceof Closure) {
+            $operations = new Operations();
+            $buttons($operations);
+            $this->operations = $operations;
         }
         return $this->quickButtons;
     }
@@ -39,19 +48,16 @@ trait HasQuickButton
      */
     public function renderQuickButton(): string
     {
-        $append = '';
-        foreach ($this->quickButtons as $quickButton) {
-            $append .= $quickButton->render();
+        if (count($this->quickButtons)) {
+            $append = '';
+            foreach ($this->quickButtons as $quickButton) {
+                $append .= $quickButton->render();
+            }
+            return $append;
         }
-        return $append;
-    }
-
-    public function skeletonQuickButton(): array
-    {
-        $append = [];
-        foreach ($this->quickButtons as $quickButton) {
-            $append[] = $quickButton->renderSkeleton();
+        if ($this->operations instanceof Operations) {
+            return $this->operations->render();
         }
-        return $append;
+        return '';
     }
 }

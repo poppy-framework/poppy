@@ -2,20 +2,8 @@
 
 namespace Demo\Http\Request\Web;
 
-use Demo\Http\Lists\ListPoppyDemo;
-use Demo\Http\Lists\ListPoppyDisplayer;
-use Demo\Http\Lists\ListPoppyEditable;
-use Demo\Http\Lists\ListPoppyIndex;
-use Demo\Http\Lists\ListPoppyUser;
-use Demo\Models\DemoWebapp;
-use Poppy\Framework\Exceptions\ApplicationException;
-use Poppy\MgrPage\Classes\Grid;
-use Poppy\MgrPage\Classes\Grid\Column;
-use Poppy\MgrPage\Classes\Grid\Displayer\Actions;
-use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
 use Poppy\MgrPage\Classes\Widgets\TableWidget;
 use Poppy\System\Http\Request\Web\WebController;
-use Poppy\System\Models\PamRole;
 use Throwable;
 
 /**
@@ -41,58 +29,5 @@ class TableController extends WebController
         ];
 
         return (new TableWidget($headers, $rows))->render();
-    }
-
-    /**
-     * @throws Throwable
-     * @throws ApplicationException
-     */
-    public function grid($type)
-    {
-        // 第一列显示id字段，并将这一列设置为可排序列
-        $grid = new Grid(new DemoWebapp());
-        $grid->setTitle('Title');
-        if ($type === 'demo') {
-            $grid->setLists(ListPoppyDemo::class);
-        }
-        if ($type === 'edit') {
-            $grid->setLists(ListPoppyEditable::class);
-        }
-        if ($type === 'index') {
-            $grid->setLists(ListPoppyIndex::class);
-        }
-        if ($type === 'user') {
-            $grid->setLists(ListPoppyUser::class);
-        }
-        if ($type === 'displayer') {
-            $grid->setLists(ListPoppyDisplayer::class);
-        }
-        return $grid->render();
-    }
-
-
-    /**
-     * @throws Throwable
-     */
-    public function noFile()
-    {
-        $grid = new Grid(new PamRole());
-        $grid->setTitle('测试:无文件');
-        // 自定义样式
-        $grid->column('id', 'ID(排序)')->sortable()->width(100);
-        $grid->column('title', '角色');
-        $grid->addColumn(Column::NAME_ACTION, '操作')
-            ->displayUsing(Actions::class, [
-                function (Actions $actions) {
-                    $item = $actions->row;
-                    $actions->append([
-                        new BaseButton('<i class="fa fa-plus"></i> 新增', route('py-mgr-page:backend.role.establish'), [
-                            'class' => 'layui-btn layui-btn-sm J_iframe',
-                            'title' => '新增',
-                        ]),
-                    ]);
-                },
-            ]);
-        return $grid->render();
     }
 }

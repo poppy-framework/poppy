@@ -3,11 +3,14 @@
 namespace Demo\Http\Lists;
 
 use Closure;
+use Poppy\Area\Classes\Grid\Filter\Presenter\Area;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Helper\StrHelper;
 use Poppy\MgrPage\Classes\Grid\Filter;
+use Poppy\MgrPage\Classes\Grid\Filter\Group;
+use Poppy\MgrPage\Classes\Grid\Filter\Scope;
 use Poppy\MgrPage\Classes\Grid\ListBase;
-use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
+use Poppy\MgrPage\Classes\Operations;
 
 class ListPoppyDemo extends ListBase
 {
@@ -77,7 +80,7 @@ class ListPoppyDemo extends ListBase
                 $filter->like('username', 'username');
                 $filter->where(function ($query) {
                     // this custom query
-                }, 'area_id', 'username')->setPresenter(new \Poppy\Area\Classes\Grid\Filter\Presenter\Area());
+                }, 'area_id', 'username')->setPresenter(new Area());
             });
             $filter->column(1 / 12, function (Filter $filter) {
                 $filter->equal('status')->integer();
@@ -104,7 +107,7 @@ class ListPoppyDemo extends ListBase
                 $filter->month('month');
             });
             $filter->column(1 / 12, function (Filter $filter) {
-                $filter->group('group', 'Group', function (\Poppy\MgrPage\Classes\Grid\Filter\Group $group) {
+                $filter->group('group', 'Group', function (Group $group) {
                     // 等于
                     $group->equal('=');
 
@@ -154,52 +157,11 @@ class ListPoppyDemo extends ListBase
     }
 
 
-    public function quickButtons(): array
+    public function quickButtons()
     {
-        return [
-            $this->create(input(\Poppy\MgrPage\Classes\Grid\Filter\Scope::QUERY_NAME)),
-        ];
+        return function (Operations $operations) {
+            $type = input(Scope::QUERY_NAME);
+            $operations->create(route_url('py-mgr-page:backend.pam.establish', null, ['type' => $type]));
+        };
     }
-
-
-    /**
-     * 创建
-     * @param $type
-     * @return BaseButton
-     */
-    public function create($type): BaseButton
-    {
-        $url = route_url('py-mgr-page:backend.pam.establish', null, ['type' => $type]);
-        return new BaseButton('新增', $url, [
-            'class' => 'J_iframe layui-btn layui-btn-sm layui-btn-normal',
-        ]);
-    }
-
-    /**
-     * 修改密码
-     * @param $item
-     * @return BaseButton
-     */
-    public function password($item): BaseButton
-    {
-        $url = route('py-mgr-page:backend.pam.password', [$item->id]);
-        return new BaseButton('修改密码', $url, [
-            'class' => 'J_iframe J_tooltip',
-        ]);
-    }
-
-
-    /**
-     * 编辑
-     * @param $item
-     * @return BaseButton
-     */
-    public function edit($item): BaseButton
-    {
-        $url = route('py-mgr-page:backend.pam.establish', [$item->id]);
-        return new BaseButton("编辑[{$item->username}]", $url, [
-            'class' => 'J_iframe J_tooltip',
-        ]);
-    }
-
 }

@@ -22,15 +22,14 @@ Route::group([
     $router->any('form/{type}', 'FormController@index')
         ->name('demo:web.form.index');
 
-
     $router->any('table/easy', 'TableController@easy')
         ->name('demo:web.table.easy');
 
     /* Grid
      * ---------------------------------------- */
-    $router->any('grid/more/{type?}', 'TableController@grid')
-        ->name('demo:web.grid.type');
-    $router->any('grid/no_file', 'TableController@noFile')
+    $router->any('grid/more/{type?}', 'GridController@index')
+        ->name('demo:web.grid.index');
+    $router->any('grid/no_file', 'GridController@noFile')
         ->name('demo:web.grid.no_file');
 
     /* Helper 示例
@@ -55,7 +54,6 @@ Route::group([
      * ---------------------------------------- */
     $router->any('js', 'JsController@index')
         ->name('demo:web.js.index');
-
 
     /* Exception
      * ---------------------------------------- */

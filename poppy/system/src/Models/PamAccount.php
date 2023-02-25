@@ -32,6 +32,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property int                       $parent_id          父ID
  * @property int                       $is_enable          是否启用
  * @property string|null               $type               类型
+ * @property string|null               $note               用户备注
  * @property string|null               $email              邮箱
  * @property string|null               $reg_platform       注册平台
  * @property string                    $disable_reason     禁用原因

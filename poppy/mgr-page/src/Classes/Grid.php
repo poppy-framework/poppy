@@ -23,7 +23,6 @@ use Poppy\MgrPage\Classes\Grid\Concerns\HasSelector;
 use Poppy\MgrPage\Classes\Grid\Concerns\HasTools;
 use Poppy\MgrPage\Classes\Grid\Concerns\HasTotalRow;
 use Poppy\MgrPage\Classes\Grid\Concerns\LayDefines;
-use Poppy\MgrPage\Classes\Grid\Filter\Scope;
 use Poppy\MgrPage\Classes\Grid\ListBase;
 use Poppy\MgrPage\Classes\Grid\Model;
 use Poppy\MgrPage\Classes\Grid\Row;
@@ -209,11 +208,9 @@ class Grid
         $List->columns();
         $List->actions();
         $this->columns = $List->getColumns();
-        if (is_callable([$this->model(), 'orderBy'])
+        if ($order && is_callable([$this->model(), 'orderBy'])
             &&
             (($pk = $this->model()->getOriginalModel()->getKeyName()) || $field)
-            &&
-            $order
         ) {
             $order = input('_order') ?: $order;
             $this->model()->orderBy(
@@ -423,10 +420,6 @@ class Grid
 
         $variables = $this->variables();
 
-        if (input('_skeleton')) {
-            return $this->skeleton();
-        }
-
         $content = view($this->view, $variables)->render();
         return (new Content())->body($content);
     }
@@ -434,46 +427,6 @@ class Grid
     public function getPerPage(): int
     {
         return $this->perPage;
-    }
-
-    public function skeleton()
-    {
-        $columns = [];
-        collect($this->visibleColumns())->each(function (Column $column) use (&$columns) {
-            $defines = [
-                'field' => $column->name,
-                'title' => $column->label,
-                'sort'  => $column->sortable,
-                'style' => $column->style,
-            ];
-
-            if ($width = $column->width) {
-                $defines += ['width' => $width];
-            }
-            if ($fixed = $column->fixed) {
-                $defines += ['fixed' => $fixed];
-            }
-            if ($column->editable) {
-                $defines += ['edit' => 'text'];
-            }
-            $columns[] = $defines;
-        });
-        $columns = array_merge($this->layCols[0], $columns);
-        $scopes  = $this->getFilter()->getScopes()->map(function (Scope $scope) {
-            return [
-                'key'   => $scope->key,
-                'label' => $scope->getLabel(),
-            ];
-        });
-        return Resp::success('Grid Skeleton', [
-            'type'    => 'grid',
-            'title'   => $this->variables['title'],
-            'actions' => $this->skeletonQuickButton(),
-            'filter'  => $this->getFilter()->renderSkeleton(),
-            'scopes'  => $scopes,
-            'fields'  => $columns,
-            'pk'      => $this->variables['model_pk'],
-        ]);
     }
 
     /**
@@ -489,9 +442,9 @@ class Grid
     /**
      * Initialize.
      */
-    protected function initialize()
+    protected function initialize(): void
     {
-        $this->tableId = uniqid('grid-table');
+        $this->tableId = str_replace('.', '-', uniqid('grid-table', true));
 
         $this->columns = Collection::make();
         $this->rows    = Collection::make();

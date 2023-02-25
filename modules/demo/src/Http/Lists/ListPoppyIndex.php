@@ -4,11 +4,8 @@ namespace Demo\Http\Lists;
 
 use Closure;
 use Poppy\Framework\Exceptions\ApplicationException;
-use Poppy\MgrPage\Classes\Grid\Column;
-use Poppy\MgrPage\Classes\Grid\Displayer\Actions;
 use Poppy\MgrPage\Classes\Grid\Filter;
 use Poppy\MgrPage\Classes\Grid\ListBase;
-use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
 
 class ListPoppyIndex extends ListBase
 {
@@ -142,71 +139,4 @@ class ListPoppyIndex extends ListBase
             });
         };
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function actions()
-    {
-        $Action = $this;
-        $this->addColumn(Column::NAME_ACTION, '操作')
-            ->displayUsing(Actions::class, [
-                function (Actions $actions) use ($Action) {
-                    $item = $actions->row;
-                    $actions->append([
-                        $Action->password($item),
-                        $Action->edit($item),
-                    ]);
-                },
-            ])->fixed();
-    }
-
-    public function quickButtons(): array
-    {
-        return [
-            $this->create(input(\Poppy\MgrPage\Classes\Grid\Filter\Scope::QUERY_NAME)),
-        ];
-    }
-
-
-    /**
-     * 创建
-     * @param $type
-     * @return BaseButton
-     */
-    public function create($type): BaseButton
-    {
-        $url = route_url('py-mgr-page:backend.pam.establish', null, ['type' => $type]);
-        return new BaseButton('新增', $url, [
-            'class' => 'J_iframe layui-btn layui-btn-sm layui-btn-normal',
-        ]);
-    }
-
-    /**
-     * 修改密码
-     * @param $item
-     * @return BaseButton
-     */
-    public function password($item): BaseButton
-    {
-        $url = route('py-mgr-page:backend.pam.password', [$item->id]);
-        return new BaseButton('修改密码', $url, [
-            'class' => 'J_iframe J_tooltip',
-        ]);
-    }
-
-
-    /**
-     * 编辑
-     * @param $item
-     * @return BaseButton
-     */
-    public function edit($item): BaseButton
-    {
-        $url = route('py-mgr-page:backend.pam.establish', [$item->id]);
-        return new BaseButton("编辑[{$item->username}]", $url, [
-            'class' => 'J_iframe J_tooltip',
-        ]);
-    }
-
 }

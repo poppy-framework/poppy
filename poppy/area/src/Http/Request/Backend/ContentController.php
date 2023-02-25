@@ -10,7 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Poppy\Area\Action\Area;
 use Poppy\Area\Http\MgrPage\FormAreaEstablish;
-use Poppy\Area\Http\MgrPage\ListArea;
+use Poppy\Area\Http\MgrPage\ListSysArea;
 use Poppy\Area\Models\SysArea;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
@@ -42,7 +42,7 @@ class ContentController extends BackendController
     public function index()
     {
         $grid = new Grid(new SysArea());
-        $grid->setLists(ListArea::class);
+        $grid->setLists(ListSysArea::class);
         return $grid->render();
     }
 

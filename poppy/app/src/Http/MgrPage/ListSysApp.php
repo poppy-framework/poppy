@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Poppy\App\Http\MgrPage;
@@ -10,7 +11,7 @@ use Poppy\MgrPage\Classes\Grid\Column;
 use Poppy\MgrPage\Classes\Grid\Displayer\Actions;
 use Poppy\MgrPage\Classes\Grid\Filter;
 use Poppy\MgrPage\Classes\Grid\ListBase;
-use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
+use Poppy\MgrPage\Classes\Operations;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\SysConfig;
 
@@ -33,6 +34,17 @@ class ListSysApp extends ListBase
             }
             return '';
         });
+        $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
+            /** @var SysApp $item */
+            $item = $actions->row;
+            $actions->edit(route('py-app:backend.app.establish', [$item->id]));
+            if ($item->is_enable) {
+                $actions->disable(route('py-app:backend.app.status', [$item->id, SysConfig::NO]), $item->title);
+            }
+            else {
+                $actions->enable(route('py-app:backend.app.status', [$item->id, SysConfig::YES]), $item->title);
+            }
+        },])->fixed()->width(160);
     }
 
     /**
@@ -57,50 +69,11 @@ class ListSysApp extends ListBase
         };
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function actions()
+
+    public function quickButtons(): Closure
     {
-        $this->addColumn(Column::NAME_ACTION, '操作')
-            ->displayUsing(Actions::class, [
-                function (Actions $actions) {
-                    /** @var SysApp $item */
-                    $item    = $actions->row;
-                    $buttons = [
-                        new BaseButton('<i class="fa fa-edit"></i>', route('py-app:backend.app.establish', [$item->id]), [
-                            'title' => "编辑 [{$item->title}]",
-                            'class' => 'J_iframe',
-                        ]),
-                    ];
-                    if ($item->is_enable) {
-                        $buttons[] = new BaseButton('<i class="fa fa-check-circle text-success"></i>', route('py-app:backend.app.status', [$item->id, SysConfig::NO]), [
-                            'title'        => "禁用应用[{$item->title}]",
-                            'data-confirm' => "确定要禁用 [{$item->title}]",
-                            'class'        => 'J_request',
-                        ]);
-                    }
-                    else {
-                        $buttons[] = new BaseButton('<i class="fa fa-ban text-danger"></i>', route('py-app:backend.app.status', [$item->id, SysConfig::YES]), [
-                            'title'        => "启用应用[{$item->title}]",
-                            'data-confirm' => "确定要启用 [{$item->title}]",
-                            'class'        => 'J_request',
-                        ]);
-                    }
-
-                    $actions->append($buttons);
-                },
-            ]);
-    }
-
-
-    public function quickButtons(): array
-    {
-        return [
-            new BaseButton('<i class="fa fa-plus"></i> 新增', route_url('py-app:backend.app.establish'), [
-                'title' => "新建应用",
-                'class' => 'J_iframe layui-btn layui-btn-sm',
-            ]),
-        ];
+        return function (Operations $operations) {
+            $operations->create(route_url('py-app:backend.app.establish', '新建应用'));
+        };
     }
 }

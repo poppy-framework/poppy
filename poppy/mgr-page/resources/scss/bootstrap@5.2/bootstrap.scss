@@ -1,0 +1,51 @@
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/mixins/banner";
+@include bsBanner("");
+
+
+// scss-docs-start import-stack
+// Configuration
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/functions";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/variables";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/maps";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/mixins";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/utilities";
+
+// Layout & components
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/root";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/reboot";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/type";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/images";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/containers";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/grid";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/tables";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/forms";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/buttons";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/transitions";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/dropdown";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/button-group";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/nav";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/navbar";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/card";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/accordion";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/breadcrumb";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/pagination";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/badge";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/alert";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/progress";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/list-group";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/close";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/toasts";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/modal";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/tooltip";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/popover";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/carousel";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/spinners";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/offcanvas";
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/placeholders";
+
+// Helpers
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/helpers";
+
+// Utilities
+@import "poppy/mgr-page/resources/scss/bootstrap@5.2/utilities/api";
+// scss-docs-end import-stack

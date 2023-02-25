@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 
 /**
  * 创建按钮
+ * @deprecated 4.2
+ * @removed    5.0
  */
 class ActionButton
 {

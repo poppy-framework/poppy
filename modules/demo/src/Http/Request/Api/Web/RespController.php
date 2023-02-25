@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Demo\Http\Request\Api\Web;
 
 use Poppy\Framework\Application\Controller;
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Validation\Rule;
+use Validator;
 
 class RespController extends Controller
 {
@@ -23,7 +27,11 @@ class RespController extends Controller
     public function success()
     {
         $location = input('location');
+        $reload   = input('reload');
         $append   = [];
+        if ($reload) {
+            $append['_reload'] = 1;
+        }
         if ($location) {
             // 使用 meta 方式立即跳转, 返回状态码是 200
             $append['_location'] = $location;
@@ -61,14 +69,14 @@ class RespController extends Controller
     {
         $validator = Validator::make([
             'user' => '',
-            'my' => ''
+            'my'   => '',
         ], [
             'user' => [
-                Rule::required()
+                Rule::required(),
             ],
-            'my' => [
-                Rule::required()
-            ]
+            'my'   => [
+                Rule::required(),
+            ],
         ]);
         if ($validator->fails()) {
             return Resp::error($validator->messages());

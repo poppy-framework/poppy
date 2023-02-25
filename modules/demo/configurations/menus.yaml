@@ -44,29 +44,29 @@ demo :
           route : demo:web.content.index
         -
           title : Grid Demo
-          route : demo:web.grid.type
+          route : demo:web.grid.index
           route_param :
             - demo
         -
           title : Grid Edit
-          route : demo:web.grid.type
+          route : demo:web.grid.index
           route_param :
             - edit
         -
           title : Grid Index
-          route : demo:web.grid.type
+          route : demo:web.grid.index
           route_param :
             - index
         -
           title : Grid User
-          route : demo:web.grid.type
+          route : demo:web.grid.index
           route_param :
             - user
         -
-          title : Grid Displayer
-          route : demo:web.grid.type
+          title : Grid Operation
+          route : demo:web.grid.index
           route_param :
-            - displayer
+            - operation
         -
           title : Grid No File
           route : demo:web.grid.no_file

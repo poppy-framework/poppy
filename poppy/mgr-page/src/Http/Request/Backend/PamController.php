@@ -12,6 +12,7 @@ use Poppy\MgrPage\Classes\Layout\Content;
 use Poppy\MgrPage\Http\MgrPage\FormPamDisable;
 use Poppy\MgrPage\Http\MgrPage\FormPamEnable;
 use Poppy\MgrPage\Http\MgrPage\FormPamEstablish;
+use Poppy\MgrPage\Http\MgrPage\FormPamNote;
 use Poppy\MgrPage\Http\MgrPage\FormPamPassword;
 use Poppy\MgrPage\Http\MgrPage\FormSettingLog;
 use Poppy\MgrPage\Http\MgrPage\ListPamAccount;
@@ -83,26 +84,29 @@ class PamController extends BackendController
     }
 
     /**
-     * 禁用用户
-     * @param int $id 用户ID
+     * 设置备注
+     * @throws Throwable
      */
-    public function disable($id)
+    public function note()
     {
-        $form = new FormPamDisable();
-        $form->setId($id);
-        return $form->render();
+        return (new FormPamNote())->render();
+    }
+
+    /**
+     * 禁用用户
+     */
+    public function disable()
+    {
+        return (new FormPamDisable())->render();
     }
 
     /**
      * 启用用户
-     * @param int $id 用户ID
      * @return Content
      */
-    public function enable($id)
+    public function enable()
     {
-        $form = new FormPamEnable();
-        $form->setId($id);
-        return $form->render();
+        return (new FormPamEnable())->render();
     }
 
     /**

@@ -19,21 +19,23 @@ interface ListContract
     public function filter(): Closure;
 
     /**
-     * 添加操作项目
+     * 添加操作项目, 合并到列处理¶
      * @return mixed
+     * @see        columns()
+     * @deprecated 4.2
      */
     public function actions();
 
     /**
      * 批量操作
-     * @return array
+     * @return array|Closure
      */
-    public function batchAction(): array;
+    public function batchAction();
 
 
     /**
      * 定义右上角的快捷操作栏
-     * @return array
+     * @return array|Closure
      */
-    public function quickButtons(): array;
+    public function quickButtons();
 }

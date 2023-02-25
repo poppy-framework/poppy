@@ -27,14 +27,14 @@
                         <td>{{ \Poppy\Sms\Action\Sms::kvType($item['type'])}}</td>
                         <td>{{$item['code']}}</td>
                         <td>
-                            <a class="J_iframe" title="编辑"
-                                href="{{route_url('py-sms:backend.sms.establish', [$item['scope'].':'.$item['type']])}}">
-                                <i class="fa fa-edit text-info"></i>
+                            <a class="J_iframe layui-btn layui-btn-xs" title="编辑"
+                                    href="{{route_url('py-sms:backend.sms.establish', [$item['scope'].':'.$item['type']])}}">
+                                <i class="layui-icon layui-icon-edit "></i> 编辑
                             </a>
-                            <a title="删除" class="J_request"
-                                data-confirm="确认删除 ?"
-                                href="{{route('py-sms:backend.sms.destroy', [$item['scope'].':'.$item['type']])}}">
-                                <i class="fa fa-times text-danger"></i>
+                            <a title="删除" class="J_request layui-btn layui-btn-xs layui-btn-danger"
+                                    data-confirm="确认删除 ?"
+                                    href="{{route('py-sms:backend.sms.destroy', [$item['scope'].':'.$item['type']])}}">
+                                <i class="layui-icon layui-icon-close "></i> 删除
                             </a>
                         </td>
                     </tr>

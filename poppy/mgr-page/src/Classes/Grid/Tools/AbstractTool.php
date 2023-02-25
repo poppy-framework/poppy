@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Tools;
 
 use Illuminate\Contracts\Support\Renderable;
@@ -10,12 +12,12 @@ abstract class AbstractTool implements Renderable
     /**
      * @var Grid
      */
-    protected $grid;
+    protected Grid $grid;
 
     /**
      * @var bool
      */
-    protected $disabled = false;
+    protected bool $disabled = false;
 
     /**
      * Toggle this button.
@@ -24,7 +26,7 @@ abstract class AbstractTool implements Renderable
      *
      * @return $this
      */
-    public function disable(bool $disable = true)
+    public function disable(bool $disable = true): self
     {
         $this->disabled = $disable;
 
@@ -34,9 +36,17 @@ abstract class AbstractTool implements Renderable
     /**
      * If the tool is allowed.
      */
-    public function allowed()
+    public function allowed(): bool
     {
         return !$this->disabled;
+    }
+
+    /**
+     * @return Grid
+     */
+    public function getGrid(): Grid
+    {
+        return $this->grid;
     }
 
     /**
@@ -46,25 +56,11 @@ abstract class AbstractTool implements Renderable
      *
      * @return $this
      */
-    public function setGrid(Grid $grid)
+    public function setGrid(Grid $grid): self
     {
         $this->grid = $grid;
-
         return $this;
     }
-
-    /**
-     * @return Grid
-     */
-    public function getGrid()
-    {
-        return $this->grid;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    abstract public function render();
 
     /**
      * @return string

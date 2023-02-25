@@ -7,11 +7,6 @@ use Poppy\MgrPage\Classes\Grid;
 class ExportButton extends AbstractTool
 {
     /**
-     * @var Grid
-     */
-    protected $grid;
-
-    /**
      * Create a new Export button instance.
      *
      * @param Grid $grid

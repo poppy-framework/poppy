@@ -1,4 +1,6 @@
 {
+    "/assets/libs/boot/style-less.css": "/assets/libs/boot/style-less.css",
+    "/assets/libs/boot/style-scss.css": "/assets/libs/boot/style-scss.css",
     "/assets/libs/boot/style.css": "/assets/libs/boot/style.css",
     "/assets/libs/boot/poppy.mgr.min.js": "/assets/libs/boot/poppy.mgr.min.js",
     "/assets/libs/boot/vendor.min.js": "/assets/libs/boot/vendor.min.js",

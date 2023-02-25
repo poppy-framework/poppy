@@ -12,9 +12,8 @@ mix
         files: [
             "public/assets/**/*.js",
             "public/assets/**/*.css",
-            "modules/**/src/request/**/*.php",
             "modules/**/resources/views/**/*.blade.php",
-            "modules/**/resources/js/**/*.js"
+            "poppy/**/resources/views/**/*.blade.php",
         ]
     })
     .options({
@@ -26,8 +25,16 @@ mix
     // develop
     .less(
         'poppy/mgr-page/resources/less/mgr-page.less',
-        'public/assets/libs/boot/style.css'
+        'public/assets/libs/boot/style-less.css'
     )
+    .sass(
+        'poppy/mgr-page/resources/scss/mgr-page.scss',
+        'public/assets/libs/boot/style-scss.css'
+    )
+    .styles([
+        'public/assets/libs/boot/style-less.css',
+        'public/assets/libs/boot/style-scss.css'
+    ], 'public/assets/libs/boot/style.css')
     .scripts([
             'poppy/mgr-page/resources/libs/poppy/util.js',
             'poppy/mgr-page/resources/libs/poppy/cp.js',
@@ -46,6 +53,8 @@ mix
             'poppy/mgr-page/resources/libs/clipboard/clipboard.min.js',
             'poppy/mgr-page/resources/libs/sortable/sortable.js',
             'poppy/mgr-page/resources/libs/lodash/lodash.min.js',
+            // bootstrap
+            'poppy/mgr-page/resources/libs/bootstrap@5.2/bootstrap.bundle.min.js',
         ],
         'public/assets/libs/boot/vendor.min.js'
     )

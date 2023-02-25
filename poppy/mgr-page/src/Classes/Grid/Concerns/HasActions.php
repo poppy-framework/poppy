@@ -5,7 +5,9 @@ declare(strict_types = 1);
 namespace Poppy\MgrPage\Classes\Grid\Concerns;
 
 use Closure;
+use Illuminate\Contracts\Support\Renderable;
 use Poppy\MgrPage\Classes\Grid;
+use Poppy\MgrPage\Classes\Operations;
 
 trait HasActions
 {
@@ -28,6 +30,8 @@ trait HasActions
      * @var array
      */
     protected array $batchActions = [];
+
+    protected ?Operations $batchOperations = null;
 
     /**
      * Set grid action callback.
@@ -79,9 +83,22 @@ trait HasActions
      *
      * @return $this
      */
-    public function batchActions(array $array): self
+    public function batchActions($buttons): self
     {
-        $this->batchActions = $array;
+        if (is_array($buttons) && count($buttons)) {
+            foreach ($buttons as $button) {
+                if (!($button instanceof Renderable)) {
+                    continue;
+                }
+                $this->batchActions[] = $button;
+            }
+        }
+
+        if ($buttons instanceof Closure) {
+            $operations = new Operations();
+            $buttons($operations);
+            $this->batchOperations = $operations;
+        }
         return $this;
     }
 
@@ -106,8 +123,13 @@ trait HasActions
     public function renderBatchActions(): string
     {
         $append = '';
-        foreach ($this->batchActions as $button) {
-            $append .= $button->render();
+        if (count($this->batchActions)) {
+            foreach ($this->batchActions as $button) {
+                $append .= $button->render();
+            }
+        }
+        if ($this->batchOperations) {
+            $append .= $this->batchOperations->render();
         }
         return $append;
     }

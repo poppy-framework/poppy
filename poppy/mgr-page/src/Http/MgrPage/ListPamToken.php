@@ -6,7 +6,7 @@ use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid\Column;
 use Poppy\MgrPage\Classes\Grid\Displayer\Actions;
 use Poppy\MgrPage\Classes\Grid\ListBase;
-use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
+use Poppy\System\Models\PamToken;
 
 class ListPamToken extends ListBase
 {
@@ -25,57 +25,15 @@ class ListPamToken extends ListBase
         $this->column('device_id', "设备ID");
         $this->column('login_ip', "登录IP");
         $this->column('expired_at', "过期时间");
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function actions()
-    {
-        $Action = $this;
-        $this->addColumn(Column::NAME_ACTION, '操作')
-            ->displayUsing(Actions::class, [
-                function (Actions $actions) use ($Action) {
-                    $item = $actions->row;
-                    $actions->append([
-                        $Action->ban($item, 'ip'),
-                        $Action->ban($item, 'device'),
-                        $Action->delete($item),
-                    ]);
-                },
-            ]);
-    }
-
-
-    /**
-     * 修改密码
-     * @param $item
-     * @param $type
-     * @return BaseButton
-     */
-    public function ban($item, $type): ?BaseButton
-    {
-        $desc = $type === 'ip' ? 'IP' : '设备';
-        $icon = $type === 'ip' ? 'fa-unlink' : 'fa-mobile-alt';
-        return new BaseButton('<i class="fa ' . $icon . '"></i>', route('py-mgr-page:backend.pam.ban', [$item->id, $type]), [
-            'class' => 'J_request ',
-            'title' => "禁用{$desc}",
-        ]);
-    }
-
-
-    /**
-     * 编辑
-     * @param $item
-     * @return BaseButton
-     */
-    public function delete($item): ?BaseButton
-    {
-        return new BaseButton('<i class="fa fa-close"></i>', route('py-mgr-page:backend.pam.delete_token', [$item->id]), [
-            'title'        => "下线用户",
-            'data-confirm' => "确认下线用户{$item->account_id} , 用户重新登录仍可访问? ",
-            'class'        => "J_request",
-        ]);
+        $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
+            /** @var PamToken $item */
+            $item = $actions->row;
+            $actions->request('下线用户', route('py-mgr-page:backend.pam.delete_token', [$item->id]))->icon('lay:close')
+                ->confirm('使用户下线, 用户可重新登录')->primary();
+            $actions->request('禁用设备', route('py-mgr-page:backend.pam.ban', [$item->id, 'device']))->icon('lay:cellphone')
+                ->confirm('禁用此设备, 此设备无法再继续访问, 如需开启在黑名单中移除即可')->primary();
+            $actions->request('禁用IP', route('py-mgr-page:backend.pam.ban', [$item->id, 'ip']))->icon('lay:wifi')
+                ->confirm('禁用此IP, 此IP无法再继续访问, 如需开启在黑名单中移除即可')->primary();
+        },])->fixed()->width(260);
     }
 }

@@ -11,7 +11,7 @@ use Poppy\MgrPage\Classes\Grid\Displayer\Actions;
 use Poppy\MgrPage\Classes\Grid\Filter;
 use Poppy\MgrPage\Classes\Grid\Filter\Scope;
 use Poppy\MgrPage\Classes\Grid\ListBase;
-use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
+use Poppy\MgrPage\Classes\Operations;
 
 class ListSysCategory extends ListBase
 {
@@ -26,6 +26,12 @@ class ListSysCategory extends ListBase
     {
         $this->column('id', "ID")->sortable()->width(80);
         $this->column('title', "标题");
+        $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
+            /** @var SysCategory $item */
+            $item = $actions->row;
+            $actions->edit(route('py-category:backend.category.establish', [$item->id]));
+            $actions->delete(route('py-category:backend.category.delete', [$item->id]), $item->title);
+        },])->width(170);
     }
 
     /**
@@ -51,40 +57,11 @@ class ListSysCategory extends ListBase
         };
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function actions()
-    {
-        $this->addColumn(Column::NAME_ACTION, '操作')
-            ->displayUsing(Actions::class, [
-                function (Actions $actions) {
-                    /** @var SysCategory $item */
-                    $item = $actions->row;
-                    $actions->append([
-                        new BaseButton('<i class="fa fa-edit"></i>', route('py-category:backend.category.establish', [$item->id]), [
-                            'title' => "编辑 [{$item->title}]",
-                            'class' => 'J_iframe',
-                        ]),
-                        new BaseButton('<i class="fa fa-trash-alt text-danger"></i>', route('py-category:backend.category.delete', [$item->id]), [
-                            'title'        => "删除 [{$item->title}]",
-                            'data-confirm' => "确定要删除 [{$item->title}]",
-                            'class'        => 'J_request',
-                        ]),
-                    ]);
-                },
-            ]);
-    }
-
-
-    public function quickButtons(): array
+    public function quickButtons(): Closure
     {
         $scope = input(Scope::QUERY_NAME);
-        return [
-            new BaseButton('<i class="fa fa-plus"></i> 新增', route_url('py-category:backend.category.establish', null, ['type' => $scope]), [
-                'title' => "新增类别",
-                'class' => 'J_iframe layui-btn layui-btn-sm',
-            ]),
-        ];
+        return function (Operations $operations) use ($scope) {
+            $operations->create(route_url('py-category:backend.category.establish', null, ['type' => $scope]), '新建类别');
+        };
     }
 }

@@ -5,52 +5,52 @@ declare(strict_types = 1);
 namespace Poppy\MgrPage\Classes\Grid\Displayer;
 
 use Closure;
-use Poppy\MgrPage\Classes\Grid\Tools\BaseButton;
+use Illuminate\Contracts\Support\Renderable;
+use Poppy\MgrPage\Classes\Traits\UseInteraction;
+use Poppy\MgrPage\Classes\Traits\UseItems;
 
 class Actions extends AbstractDisplayer
 {
-    /**
-     * @var array
-     */
-    protected $appends = [];
+
+    use UseItems, UseInteraction;
 
     /**
-     * @var array
-     */
-    protected $prepends = [];
-
-    /**
-     * Default actions.
-     *
-     * @var array
-     */
-    protected $actions = [];
-
-    /**
-     * @var string
-     */
-    protected $resource;
-
-    /**
-     * Append a action.
+     * Append an action.
      *
      * @param array|string $action
-     *
      * @return $this
+     * @see        add()
+     * @deprecated 4.2
      */
     public function append($action): self
     {
-        if (is_array($action)) {
-            foreach ($action as $act) {
-                $this->append($act);
-            }
-        }
-        else {
-            array_push($this->appends, $action);
-        }
-        return $this;
+        return $this->add($action);
     }
 
+    public function edit($url): void
+    {
+        $this->iframe('编辑', $url)->icon('lay:edit')->primary();
+    }
+
+    public function delete($url, $title): void
+    {
+        $this->request('删除', $url)->icon('lay:close')->danger()
+            ->confirm("确认删除 [{$title}]?");
+    }
+
+
+    public function disable($url, $title): void
+    {
+        $this->request('已启用', $url)->icon('lay:ok-circle')
+            ->confirm("确定要禁用 [{$title}]")->tooltip("当前启用, 点击禁用 [{$title}]");
+    }
+
+
+    public function enable($url, $title): void
+    {
+        $this->request('已禁用', $url)->icon('lay:pause')
+            ->confirm("确定启用 [{$title}]")->tooltip("当前禁用, 点击启用 [{$title}]")->danger();
+    }
 
     /**
      * @inheritDoc
@@ -62,8 +62,8 @@ class Actions extends AbstractDisplayer
         }
 
         $actions = [];
-        foreach ($this->appends as $append) {
-            if ($append instanceof BaseButton) {
+        foreach ($this->items as $append) {
+            if ($append instanceof Renderable) {
                 $actions[] = $append->render();
             }
         }

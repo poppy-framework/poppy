@@ -49,12 +49,11 @@ class GridController extends WebApiController
         if ($type === 'error') {
             return Resp::error('请求错误');
         }
-        else {
-            if ($type === 'batch') {
-                Log::debug(input('batch'));
-            }
-            return Resp::success('请求成功', input());
+
+        if ($type === 'batch') {
+            Log::debug(input('batch'));
         }
+        return Resp::success('请求成功', input());
     }
 
     /**

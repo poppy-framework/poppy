@@ -13,7 +13,7 @@ use Poppy\MgrPage\Classes\Grid;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 use Poppy\SensitiveWord\Action\Word;
 use Poppy\SensitiveWord\Http\MgrPage\FormSensWordEstablish;
-use Poppy\SensitiveWord\Http\MgrPage\ListSensitiveWord;
+use Poppy\SensitiveWord\Http\MgrPage\ListSysSensitiveWord;
 use Poppy\SensitiveWord\Models\SysSensitiveWord;
 use Response;
 use Throwable;
@@ -32,7 +32,7 @@ class WordController extends BackendController
     public function index()
     {
         $grid = new Grid(new SysSensitiveWord());
-        $grid->setLists(ListSensitiveWord::class);
+        $grid->setLists(ListSysSensitiveWord::class);
         return $grid->render();
     }
 

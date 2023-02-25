@@ -14,7 +14,7 @@ use Poppy\MgrPage\Http\Request\Backend\BackendController;
 use Poppy\Version\Action\Version;
 use Poppy\Version\Http\MgrPage\FormSettingVersion;
 use Poppy\Version\Http\MgrPage\FormVersionEstablish;
-use Poppy\Version\Http\MgrPage\ListAppVersion;
+use Poppy\Version\Http\MgrPage\ListSysAppVersion;
 use Poppy\Version\Models\SysAppVersion;
 use Throwable;
 
@@ -38,7 +38,7 @@ class VersionController extends BackendController
     public function index()
     {
         $grid = new Grid(new SysAppVersion());
-        $grid->setLists(ListAppVersion::class);
+        $grid->setLists(ListSysAppVersion::class);
         return $grid->render();
     }
 

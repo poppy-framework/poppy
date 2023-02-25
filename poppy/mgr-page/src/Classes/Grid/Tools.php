@@ -11,14 +11,8 @@ use Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter;
 use Poppy\MgrPage\Classes\Grid\Tools\AbstractTool;
 use Poppy\MgrPage\Classes\Grid\Tools\FilterButton;
 
-class Tools extends AbstractFilter implements Renderable
+class Tools extends AbstractFilter
 {
-    /**
-     * Parent grid.
-     *
-     * @var Grid
-     */
-    protected $grid;
 
     /**
      * Collection of tools.

@@ -3,52 +3,38 @@
 namespace Poppy\MgrPage\Http\MgrPage;
 
 use Poppy\Framework\Classes\Resp;
-use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Pam;
 use Poppy\System\Models\PamAccount;
+use Route;
 
 class FormPamDisable extends FormWidget
 {
     public $ajax = true;
-
-    private $id;
 
     /**
      * @var PamAccount
      */
     private $pam;
 
-    /**
-     * @param $id
-     * @return $this
-     * @throws ApplicationException
-     */
-    public function setId($id)
+    public function __construct($data = [])
     {
-        $this->id = $id;
-        if ($id) {
-            $this->pam = PamAccount::find($this->id);
-
-            if (!$this->pam) {
-                throw  new ApplicationException('无用户数据');
-            }
-
-        }
-        return $this;
+        parent::__construct($data);
+        $id        = Route::input('id');
+        $this->pam = PamAccount::findOrFail($id);
     }
 
     public function handle()
     {
-        if (!$this->id) {
+        if (!$this->pam) {
             return Resp::error('您尚未选择用户!');
         }
 
         $date   = input('datetime', '');
         $reason = input('reason', '');
         $Pam    = (new Pam())->setPam(request()->user());
-        if (!$Pam->disable($this->id, $date, $reason)) {
+        if (!$Pam->disable($this->pam->id, $date, $reason)) {
             return Resp::error($Pam->getError());
         }
 
@@ -58,22 +44,18 @@ class FormPamDisable extends FormWidget
 
     public function data(): array
     {
-        if ($this->id) {
-            return [
-                'id' => $this->pam->id,
-            ];
-        }
-        return [];
+        return [
+            'id'       => $this->pam->id,
+            'datetime' => $this->pam->disable_end_at,
+            'reason'   => $this->pam->disable_reason,
+        ];
     }
 
     /**
      * Build a form here.
      */
-    public function form()
+    public function form(): void
     {
-        if ($this->id) {
-            $this->hidden('id', 'ID');
-        }
         $this->datetime('datetime', '解禁时间')->rules([
             Rule::required(),
         ])->placeholder('选择解禁时间');

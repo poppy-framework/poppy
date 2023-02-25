@@ -33,6 +33,8 @@ Route::group([
         ->name('py-mgr-page:backend.pam.establish');
     $router->any('pam/password/{id}', 'PamController@password')
         ->name('py-mgr-page:backend.pam.password');
+    $router->any('pam/note/{id}', 'PamController@note')
+        ->name('py-mgr-page:backend.pam.note');
     $router->any('pam/disable/{id}', 'PamController@disable')
         ->name('py-mgr-page:backend.pam.disable');
     $router->any('pam/enable/{id}', 'PamController@enable')

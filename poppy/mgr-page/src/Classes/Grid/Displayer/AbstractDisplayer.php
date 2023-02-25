@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Displayer;
 
 use Illuminate\Database\Eloquent\Model;

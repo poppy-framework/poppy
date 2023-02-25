@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -126,12 +125,12 @@ abstract class ListBase implements ListContract
 
     }
 
-    public function quickButtons(): array
+    public function quickButtons()
     {
         return [];
     }
 
-    public function batchAction(): array
+    public function batchAction()
     {
         return [];
     }
@@ -182,14 +181,14 @@ abstract class ListBase implements ListContract
     /**
      * Prepend column to grid.
      *
-     * @param string $column
+     * @param string $name
      * @param string $label
      *
      * @return Column
      */
-    protected function prependColumn($column = '', $label = '')
+    protected function prependColumn(string $name = '', string $label = ''): Column
     {
-        $column = new Column($column, $label);
+        $column = new Column($name, $label);
         $column->setGrid($this->grid);
 
         return tap($column, function ($value) {
@@ -200,16 +199,15 @@ abstract class ListBase implements ListContract
     /**
      * Add column to grid.
      *
-     * @param string $column
+     * @param string $name
      * @param string $label
      *
      * @return Column
      */
-    protected function addColumn($column = '', $label = '')
+    protected function addColumn(string $name = '', string $label = ''): Column
     {
-        $column = new Column($column, $label);
+        $column = new Column($name, $label);
         $column->setGrid($this->grid);
-
         return tap($column, function ($value) {
             $this->columns->push($value);
         });
@@ -262,7 +260,6 @@ abstract class ListBase implements ListContract
 
         if ($relation instanceof HasMany
             || $relation instanceof BelongsToMany
-            || $relation instanceof MorphToMany
             || $relation instanceof HasManyThrough
         ) {
             $this->model()->with($method);

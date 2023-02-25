@@ -373,7 +373,7 @@ class Filter extends FilterButton
      * Add a new layout column.
      *
      * @param int|float $width
-     * @param Closure $closure
+     * @param Closure   $closure
      *
      * @return $this
      */
@@ -408,7 +408,7 @@ class Filter extends FilterButton
 
     /**
      * @param callable $callback
-     * @param int $count
+     * @param int      $count
      *
      * @return bool
      */
@@ -437,24 +437,6 @@ class Filter extends FilterButton
             'layout'    => $this->layout,
             'filter_id' => $this->filterId,
         ])->render();
-    }
-
-
-    public function renderSkeleton(): array
-    {
-        $layout  = $this->layout;
-        $columns = [];
-        foreach ($layout->columns() as $column) {
-            $colDef = [
-                'width' => $column->width(),
-            ];
-            foreach ($column->filters() as $filter) {
-                $colDef = array_merge($colDef, $filter->renderSkeleton());
-            }
-
-            $columns[] = $colDef;
-        }
-        return $columns;
     }
 
     /**
@@ -498,7 +480,7 @@ class Filter extends FilterButton
 
     /**
      * @param string $abstract
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return AbstractFilter
      * @throws ApplicationException
@@ -515,7 +497,7 @@ class Filter extends FilterButton
      * Generate a filter object and add to grid.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return AbstractFilter|$this
      * @throws ApplicationException

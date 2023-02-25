@@ -122,6 +122,12 @@ class Column
      */
     protected string $label;
 
+
+    /**
+     * @var string
+     */
+    protected string $template = '';
+
     /**
      * Original value of column.
      *
@@ -188,6 +194,12 @@ class Column
     private $fixed = '';
 
     /**
+     * 是否是最小宽度
+     * @var bool
+     */
+    private bool $minWidth;
+
+    /**
      * @param string $name
      * @param string $label
      */
@@ -240,17 +252,44 @@ class Column
         return $this;
     }
 
+    public function template(string $tmpl = ''): self
+    {
+        $this->template = $tmpl;
+        return $this;
+    }
+
     /**
      * Set the width of column.
      *
      * @param string|int $width
-     *
      * @return $this
      */
-    public function width($width): self
+    public function width($width, bool $min = false): self
     {
-        $this->width = $width;
+        $this->width    = $width;
+        $this->minWidth = $min;
         return $this;
+    }
+
+
+    public function widthAsId(): self
+    {
+        return $this->width(86);
+    }
+
+    public function widthAsIp(): self
+    {
+        return $this->width(120);
+    }
+
+    public function widthAsDatetime(): self
+    {
+        return $this->width(170);
+    }
+
+    public function widthAsNote(): self
+    {
+        return $this->width(150);
     }
 
     /**
@@ -268,7 +307,7 @@ class Column
      * @param string $position
      * @return Column
      */
-    public function fixed($position = 'right'): self
+    public function fixed(string $position = 'right'): self
     {
         $this->fixed = $position;
         return $this;
@@ -560,6 +599,35 @@ class Column
 
             return "<span class=\"label-{$style}\" style='width: 8px;height: 8px;padding: 0;border-radius: 50%;display: inline-block;'></span>";
         }, '&nbsp;&nbsp;');
+    }
+
+    public function lay(): array
+    {
+        $defines = [
+            'field' => $this->name,
+            'title' => $this->label,
+            'sort'  => $this->sortable,
+            'style' => $this->style,
+        ];
+
+        if ($width = $this->width) {
+            if ($this->minWidth) {
+                $defines['minWidth'] = $width;
+            }
+            else {
+                $defines['width'] = $width;
+            }
+        }
+        if ($this->fixed) {
+            $defines['fixed'] = $this->fixed;
+        }
+        if ($this->editable) {
+            $defines['edit'] = 'text';
+        }
+        if ($this->template) {
+            $defines['templet'] = $this->template;
+        }
+        return $defines;
     }
 
     /**

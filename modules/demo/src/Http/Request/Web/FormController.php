@@ -2,6 +2,7 @@
 
 namespace Demo\Http\Request\Web;
 
+use Demo\Forms\FormBaseWidget;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Http\Request\Web\WebController;
@@ -12,26 +13,27 @@ use Poppy\System\Models\PamAccount;
  */
 class FormController extends WebController
 {
-    private $form;
 
     public function index($type)
     {
         try {
-            $this->factory($type);
+            $form = $this->factory($type);
         } catch (ApplicationException $e) {
             return Resp::error($e);
         }
-        if (method_exists($this->form, 'setPam')){
-            $this->form->setPam(PamAccount::first());
+        if (method_exists($form, 'setPam')) {
+            $form->setPam(PamAccount::first());
         }
-        return $this->form->render();
+        $inbox       = (bool) input('inbox', 1);
+        $form->inbox = $inbox;
+        return $form->render();
     }
 
 
     /**
      * @throws ApplicationException
      */
-    private function factory($type)
+    private function factory($type): FormBaseWidget
     {
         static $factories;
         if (!isset($factories[$type])) {
@@ -42,6 +44,6 @@ class FormController extends WebController
             $factories[$type] = new $className;
 
         }
-        $this->form = $factories[$type];
+        return $factories[$type];
     }
 }

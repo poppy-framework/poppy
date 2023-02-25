@@ -288,7 +288,7 @@ class ModulesMenu extends Repository
         }
         $route     = $group['route'] ?? '';
         $routeHide = (array) config('poppy.core.route_hide');
-        if (in_array($route, $routeHide)) {
+        if (in_array($route, $routeHide, true)) {
             return null;
         }
         // 值补足
