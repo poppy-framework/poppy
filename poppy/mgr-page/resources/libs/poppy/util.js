@@ -690,7 +690,7 @@ if (typeof Util !== 'object') {
      */
     Util.validateConfig = function (rules) {
         let config = {
-            ignore: '.ignore,[contenteditable=\'true\']',
+            ignore: '.ignore,[contenteditable=\'true\'],.layui-upload-file',
             // debug : true,
             submitHandler: function (form) {
                 layer.load(3, {
@@ -730,6 +730,14 @@ if (typeof Util !== 'object') {
                 let elem = $(element);
                 if (elem.prop('type') === 'file' || elem.prop('type') === 'textarea') {
                     elem = $(element).parents('.layui-form-auto-field');
+                    if (!elem) {
+                        alert(error);
+                        return;
+                    }
+                }
+                console.log(elem.attr('class'));
+                if (elem.attr('class') === 'form_thumb-url') {
+                    elem = $(element).parents('.layui-form-thumb');
                     if (!elem) {
                         alert(error);
                         return;

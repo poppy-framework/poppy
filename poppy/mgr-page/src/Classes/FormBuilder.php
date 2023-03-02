@@ -334,7 +334,7 @@ CONTENT;
         <i class="fa fa-upload"></i>
     </button>
     <div class="form_thumb-ctr" id="{$id}_ctr">
-        <input type="hidden" name="{$name}" value="{$value}" id="{$id}_url"/>
+        <input type="text" class="form_thumb-url" name="{$name}" value="{$value}" id="{$id}_url"/>
         <img id="{$id}_preview" class="J_image_preview J_tooltip" title="点击预览" src="{$value}"/>
         {$iconStr}
     </div>
@@ -360,7 +360,7 @@ layui.upload.render({
             Util.splash(obj_resp);
         } else {
             $('#{$id}_wrap').addClass('form_thumb-success');
-            $('#{$id}_url').val(obj_resp.data.url[0]);
+            $('#{$id}_url').attr('value', obj_resp.data.url[0]);
             $('#{$id}_preview').attr('src', obj_resp.data.url[0]);
         }
     },
@@ -370,7 +370,7 @@ layui.upload.render({
 });
     $("#{$id}_del").click(function () {
         $("#{$id}_wrap").removeClass('form_thumb-success');
-        $("input[name={$name}]").val('');
+        $("#{$id}_url").attr('value', '');
     });
 </script>
 CONTENT;
