@@ -13,6 +13,13 @@ class FormUpload extends FormBaseWidget
     protected $title = '文件上传';
 
 
+    public function data(): array
+    {
+        return [
+            'image' => py_faker()->imageUrl(480),
+        ];
+    }
+
     /**
      * Build a form here.
      */

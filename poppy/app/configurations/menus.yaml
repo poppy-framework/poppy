@@ -1,10 +1,9 @@
 backend :
   title : 应用管理
-  icon : 'fa fa-plug'
   groups :
     -
       title : 应用管理
-      icon : 'fa fa-plug'
+      icon : 'layui-icon layui-icon-template-1'
       injection : 'poppy.mgr-page/backend||setting'
       children :
         -

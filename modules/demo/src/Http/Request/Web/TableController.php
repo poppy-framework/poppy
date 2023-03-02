@@ -2,6 +2,7 @@
 
 namespace Demo\Http\Request\Web;
 
+use Demo\Models\DemoWebapp;
 use Poppy\MgrPage\Classes\Widgets\TableWidget;
 use Poppy\System\Http\Request\Web\WebController;
 use Throwable;
@@ -11,6 +12,16 @@ use Throwable;
  */
 class TableController extends WebController
 {
+
+    public function index()
+    {
+        $input = input();
+        $items = DemoWebapp::paginate($this->pagesize)
+            ->appends($input);
+        return view('demo::web.table.index', [
+            'items' => $items,
+        ]);
+    }
 
     /**
      * 简易表格

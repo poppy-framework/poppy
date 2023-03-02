@@ -244,16 +244,16 @@ Editor;
         $value = $value ?: ($input['_order'] ?? '');
         switch ($value) {
             case $name . '_desc':
-                $con  = $name . '_asc';
-                $icon = '<i class="fa fa-sort-down"></i>';
+                $con     = $name . '_asc';
+                $laysort = 'lay-sort="desc"';
                 break;
             case $name . '_asc':
-                $con  = $name . '_desc';
-                $icon = '<i class="fa fa-sort-up"></i>';
+                $con     = $name . '_desc';
+                $laysort = 'lay-sort="asc"';
                 break;
             default:
-                $icon = '<i class="fa fa-sort"></i>';
-                $con  = $name . '_asc';
+                $laysort = '';
+                $con     = $name . '_asc';
         }
         $input['_order'] = $con;
         if ($route_name) {
@@ -262,7 +262,13 @@ Editor;
         else {
             $link = '?' . http_build_query($input);
         }
-        $dp = $pjax ? 'data-pjax' : '';
+        $dp   = $pjax ? 'data-pjax' : '';
+        $icon = <<<HTML
+<span class="layui-table-sort layui-inline" {$laysort}>
+    <i class="layui-edge layui-table-sort-asc" title="升序"></i>
+    <i class="layui-edge layui-table-sort-desc" title="降序"></i>
+</span>
+HTML;
 
         return '
             <a href="' . $link . '" ' . $dp . '>' . $icon . '</a>
@@ -277,11 +283,11 @@ Editor;
      */
     public function tip(string $description, $name = null): string
     {
-        if ($name === null) {
-            $icon = '<i class="fa fa-question-circle">&nbsp;</i>';
+        if (!$name) {
+            $icon = '<i class="layui-icon layui-icon-about">&nbsp;</i>';
         }
         else {
-            $icon = '<i class="fa ' . $name . '">&nbsp;</i>';
+            $icon = '<i class="layui-icon ' . $name . '">&nbsp;</i>';
         }
         $trim_description = strip_tags($description);
 
@@ -325,13 +331,13 @@ TIP;
             'timestamp' => $timestamp,
         ]);
         $iconStr = $readonly ? '' : <<<CONTENT
- <i id="{$id}_del" class="fa fa-times-circle"></i>
+ <i id="{$id}_del" class="layui-icon layui-icon-close-fill"></i>
 CONTENT;
         return /** @lang text */
             <<<CONTENT
 <div class="layui-form-thumb {$display_str} {$sizeClass}" id="{$id}_wrap">
     <button id="{$id}" class="layui-btn form_thumb-upload" type="button">
-        <i class="fa fa-upload"></i>
+        <i class="layui-icon layui-icon-upload-drag"></i>
     </button>
     <div class="form_thumb-ctr" id="{$id}_ctr">
         <input type="text" class="form_thumb-url" name="{$name}" value="{$value}" id="{$id}_url"/>
@@ -415,13 +421,13 @@ CONTENT;
             case 'video':
                 $template = '<!--视频-->
                     <a href="___VALUE___" target="_blank">
-                        <i class="fa fa-video"></i>
+                        <i class="layui-icon layui-icon-video"></i>
                     </a>';
                 break;
             case 'file':
                 $template = '<!--文件-->
                     <a target="_blank" href="___VALUE___">
-                        <i class="fa fa-file"></i>
+                        <i class="layui-icon layui-icon-file"></i>
                     </a>';
                 break;
         }
@@ -441,7 +447,7 @@ CONTENT;
             <span id="{$id}_content">
                 {$content}
             </span>
-            <span id="{$id}_del" class="fa fa-times"></span>
+            <span id="{$id}_del" class="layui-icon layui-icon-close-fill"></span>
         </span>
     </div>
 </div>
@@ -574,17 +580,17 @@ HAHA;
         <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="{$id}_unselect_all">取消全选</button>
     </div>
     <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
-        <div class="layui-upload-list clearfix" id="{$id}_container"></div>
+        <div class="layui-upload-list clearfix j_multi-img" id="{$id}_container"></div>
     </blockquote>
 </div>
 <script id="{$id}_template" type="text/html">
     <div class="multi-img {{ d.classname }}" filename="{{ d.index }}">
-        <i class="fa fa-check" style="display:none;"></i>
+        <i class="layui-icon layui-icon-ok-circle" style="display:none;"></i>
         <input type="checkbox" name="________mark" lay-ignore>
         <input type="checkbox" class="j_img_value" checked name="{$name}" style="display:none" value="{{  d.result }}" lay-ignore>
         {{#  if(d.type === 'image'){ }}
         <img src="{{  d.preview }}" alt="{{ d.name }}" class="layui-upload-img" data-width="{{ $pop_size }}px" data-height="{{ $pop_size }}px">
-        <i class="fa fa-search J_image_preview" data-src="{{  d.result }}" style="display:none;"></i>
+        <i class="layui-icon layui-icon-search J_image_preview" data-parents=".j_multi-img" data-src="{{  d.result }}" style="display:none;"></i>
         {{# } else { }}
         <video controls class="layui-upload-img">
             <source src="{{  d.result }}" type="video/mp4">
@@ -691,7 +697,7 @@ $(function(){
             
             ctr.find('img').attr('src', res.data.url[0]);
             ctr.find('.j_img_value').attr('value', res.data.url[0]);
-            ctr.find('.fa-search').attr('data-src', res.data.url[0]);
+            ctr.find('.layui-icon-search').attr('data-src', res.data.url[0]);
             ctr.addClass('multi-uploaded');
             layer.closeAll('loading'); //关闭loading
             top.layer.msg("上传成功！");

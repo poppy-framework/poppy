@@ -8905,6 +8905,9 @@
   color: #3B74FF;
   border: 1px solid #e6e6e6;
 }
+.layui-form-thumb .layui-icon-upload-drag {
+  font-size: 16px !important;
+}
 .layui-form-thumb.form_thumb-small {
   width: 60px;
   height: 60px;
@@ -8923,6 +8926,9 @@
 .layui-form-thumb.form_thumb-normal {
   width: 85px;
   height: 85px;
+}
+.layui-form-thumb.form_thumb-normal .layui-icon-upload-drag {
+  font-size: 22px !important;
 }
 .layui-form-thumb.form_thumb-normal .form_thumb-upload {
   font-size: 28px;
@@ -8983,6 +8989,14 @@
   border: 1px solid #fff;
   cursor: pointer;
   border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  line-height: 20px;
+  text-align: center;
+  font-size: 19px !important;
+}
+.layui-form-thumb .form_thumb-ctr i:hover {
+  color: red;
 }
 .layui-form-thumb.form_thumb-success .form_thumb-upload {
   opacity: 0;
@@ -8994,12 +9008,12 @@
   display: inline-block;
   font-size: 18px;
 }
-.layui-form-upload .form_thumb-ctr .fa {
+.layui-form-upload .form_thumb-ctr .layui-icon {
   cursor: pointer;
   position: relative;
   top: 3px;
 }
-.layui-form-upload .form_thumb-ctr .fa-times {
+.layui-form-upload .form_thumb-ctr .layui-icon-close-fill {
   color: #ff5722;
   margin-left: 5px;
 }
@@ -9078,29 +9092,33 @@ label.validation:before {
   align-items: center;
   position: relative;
 }
-.layui-upload.upload--multi .multi-img.multi-uploaded .fa {
+.layui-upload.upload--multi .multi-img.multi-uploaded .layui-icon {
   position: absolute;
   color: #009688;
 }
-.layui-upload.upload--multi .multi-img.multi-uploaded .fa-check {
+.layui-upload.upload--multi .multi-img.multi-uploaded .layui-icon-ok-circle {
   position: absolute;
   right: 5px;
   top: 5px;
   display: block !important;
-  border: 1px solid #009688;
-  border-radius: 10px;
-  padding: 3px;
+  font-size: 20px !important;
+  border-radius: 50%;
   background: #ffffff;
+  height: 20px;
+  line-height: 20px;
 }
-.layui-upload.upload--multi .multi-img.multi-uploaded:hover .fa-search {
+.layui-upload.upload--multi .multi-img.multi-uploaded:hover .layui-icon-search {
   position: absolute;
   right: 5px;
   bottom: 5px;
   display: block !important;
-  border: 1px solid #009688;
-  border-radius: 10px;
-  padding: 3px;
-  background: #ffffff;
+  font-size: 42px !important;
+  font-weight: bold;
+  color: #afafaf;
+  opacity: 0.8;
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
 }
 .layui-upload.upload--multi .multi-img input[type=checkbox] {
   position: absolute;
@@ -9196,8 +9214,8 @@ div.layui-input.layui-input-inline {
   position: relative;
 }
 .layui-form .layui-field-checkbox + .layui-field-checkbox-label:before {
-  content: "\f14a";
-  font-family: "Font Awesome 5 Free";
+  content: "\1005";
+  font-family: "layui-icon";
   display: inline-block;
   vertical-align: middle;
   width: 18px;
@@ -9234,8 +9252,8 @@ div.layui-input.layui-input-inline {
   position: relative;
 }
 .layui-form .layui-field-radio + .layui-field-radio-label:before {
-  content: "\F058";
-  font-family: "Font Awesome 5 Free";
+  content: "\e643";
+  font-family: "layui-icon";
   display: inline-block;
   vertical-align: top;
   width: 18px;
@@ -9402,6 +9420,8 @@ div.layui-input.layui-input-inline {
   height: 34px;
   line-height: 34px;
 }
+/* 表格的最小高度, 目的是为了对下拉框进行展示
+ * ---------------------------------------- */
 .layui-table-view .layui-table-main {
   min-height: 136px;
 }

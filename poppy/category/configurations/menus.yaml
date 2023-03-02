@@ -1,10 +1,9 @@
 backend :
   title : 分类管理
-  icon : 'fa fa-columns'
   groups :
     -
       title : 分类管理
-      icon : 'fa fa-columns'
+      icon : 'layui-icon layui-icon-templeate-1'
       injection : 'poppy.mgr-page/backend||setting'
       children :
         -

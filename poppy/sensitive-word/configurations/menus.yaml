@@ -1,10 +1,9 @@
 backend:
   title: 敏感词管理
-  icon: 'fa fa-file-word'
   groups:
     -
       title: 敏感词管理
-      icon: 'fa fa-file-word'
+      icon: 'layui-icon layui-icon-fonts-del'
       injection: 'poppy.mgr-page/backend||setting'
       children:
         -

@@ -14,7 +14,6 @@ class FormFile extends FormBaseWidget
      */
     protected $title = 'File';
 
-
     /**
      * Build a form here.
      */
@@ -30,6 +29,5 @@ class FormFile extends FormBaseWidget
 ])->help('文件上传');
 CODE;
         $this->code('file-code', 'Code@File')->default($code);
-
     }
 }

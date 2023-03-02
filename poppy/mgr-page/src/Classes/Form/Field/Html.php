@@ -32,7 +32,7 @@ class Html extends Field
     {
         parent::__construct();
         $this->html  = $html;
-        $this->label = Arr::get($arguments, 0);
+        $this->label = (string) Arr::get($arguments, 0);
     }
 
     /**

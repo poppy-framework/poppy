@@ -258,6 +258,11 @@ demo :
               route_param :
                 - TimeRange
             -
+              title : Tips
+              route : demo:web.form.index
+              route_param :
+                - Tips
+            -
               title : Url
               route : demo:web.form.index
               route_param :

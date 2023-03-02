@@ -1,10 +1,9 @@
 backend :
   title : 广告管理
-  icon : 'fa fa-audio-description'
   groups :
     -
       title : 广告管理
-      icon : 'fa fa-audio-description'
+      icon : 'layui-icon layui-icon-flag'
       injection : 'poppy.mgr-page/backend||setting'
       children :
         -

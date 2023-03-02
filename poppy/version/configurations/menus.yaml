@@ -1,10 +1,9 @@
 backend:
   title: App版本
-  icon: 'fa fa-map'
   groups:
     -
       title: App版本
-      icon: 'fab fa-google-play'
+      icon: 'layui-icon layui-icon-cellphone'
       injection: 'poppy.mgr-page/backend||setting'
       children:
         -

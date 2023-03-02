@@ -25,46 +25,54 @@ class Field implements Renderable
 
     const FILE_DELETE_FLAG = '_file_del_';
     const FILE_SORT_FLAG   = '_file_sort_';
+
     /**
      * The validation rules for creation.
      *
      * @var array|Closure
      */
     public $creationRules = [];
+
     /**
      * The validation rules for updates.
      *
      * @var array|Closure
      */
     public $updateRules = [];
+
     /**
      * @var bool
      */
     public $isJsonType = false;
+
     /**
      * Element id.
      *
      * @var array|string
      */
     protected $id;
+
     /**
      * Element value.
      *
      * @var mixed
      */
     protected $value;
+
     /**
      * Data of all original columns of value.
      *
      * @var mixed
      */
     protected $data;
+
     /**
      * Field original value.
      *
      * @var mixed
      */
     protected $original;
+
     /**
      * Field default value.
      *
@@ -85,46 +93,54 @@ class Field implements Renderable
      * @var string|array
      */
     protected $column = '';
+
     /**
      * Form element name.
      *
      * @var string
      */
     protected $elementName = [];
+
     /**
      * Form element classes.
      *
      * @var array
      */
     protected $elementClass = [];
+
     /**
      * Variables of elements.
      *
      * @var array
      */
     protected $variables = [];
+
     /**
      * Options for specify elements.
      *
      * @var array
      */
     protected $options = [];
+
     /**
      * Checked for specify elements.
      *
      * @var array
      */
     protected $checked = [];
+
     /**
      * Validation rules.
      *
      * @var array|Closure
      */
     protected $rules = [];
+
     /**
      * @var Closure
      */
     protected $validator;
+
     /**
      * Validation messages.
      *
@@ -138,30 +154,35 @@ class Field implements Renderable
      * @var array
      */
     protected $attributes = [];
+
     /**
      * Parent form.
      *
      * @var Form
      */
     protected $form = null;
+
     /**
      * View for field to render.
      *
      * @var string
      */
     protected $view = '';
+
     /**
      * Help block.
      *
      * @var array
      */
     protected $help = [];
+
     /**
      * Key for errors.
      *
      * @var mixed
      */
     protected $errorKey;
+
     /**
      * Placeholder for this field.
      *
@@ -184,12 +205,14 @@ class Field implements Renderable
         'label' => 2,
         'field' => 6,
     ];
+
     /**
      * If the form horizontal layout.
      *
      * @var bool
      */
     protected $horizontal = true;
+
     /**
      * column data format.
      *
@@ -253,7 +276,7 @@ class Field implements Renderable
      *
      * @return void
      */
-    public function fill($data):void
+    public function fill($data): void
     {
         $this->data = $data;
 
@@ -561,13 +584,13 @@ class Field implements Renderable
      *
      * @param string $text
      * @param string $icon
-     *
+     * @param bool   $show_help
      * @return $this
      */
-    public function help($text = '', $icon = 'fa-info-circle')
+    public function help(string $text = '', string $icon = 'layui-icon-about', bool $show_help = true): self
     {
-        $this->help = compact('text', 'icon');
-
+        $this->help     = compact('text', 'icon');
+        $this->showHelp = $show_help;
         return $this;
     }
 

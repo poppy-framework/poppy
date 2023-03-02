@@ -30,9 +30,8 @@ abstract class FormBaseWidget extends FormWidget
                 '_append' => '提交信息 : <pre>' . var_export($request->all(), true) . '</pre>',
             ]);
         }
-        else {
-            dump('提交信息', $request->all());
-        }
+
+        dump('提交信息', $request->all());
 
         // todo 进行返回跳转[暂时隐藏]
         // back();

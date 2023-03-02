@@ -22,6 +22,8 @@ Route::group([
     $router->any('form/{type}', 'FormController@index')
         ->name('demo:web.form.index');
 
+    $router->any('table', 'TableController@index')
+        ->name('demo:web.table.index');
     $router->any('table/easy', 'TableController@easy')
         ->name('demo:web.table.easy');
 
