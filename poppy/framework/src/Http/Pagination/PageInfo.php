@@ -57,8 +57,8 @@ class PageInfo
     public static function pagesize(): int
     {
         // pagesize
-        $size        = config('poppy.framework.page_size', 15);
-        $maxPagesize = config('poppy.framework.page_max');
+        $size        = (int) config('poppy.framework.page_size', 15);
+        $maxPagesize = (int) config('poppy.framework.page_max');
         if (input('pagesize')) {
             $pagesize = abs((int) input('pagesize'));
             $pagesize = ($pagesize <= $maxPagesize) ? $pagesize : $maxPagesize;
@@ -66,6 +66,6 @@ class PageInfo
                 $size = $pagesize;
             }
         }
-        return $size;
+        return (int) $size;
     }
 }
