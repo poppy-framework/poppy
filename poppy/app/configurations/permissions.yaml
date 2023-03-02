@@ -10,4 +10,4 @@
       permissions :
         -
           slug : manage
-          description : 管理广告位
+          description : 管理应用

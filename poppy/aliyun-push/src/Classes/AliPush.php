@@ -83,7 +83,7 @@ class AliPush
         $this->target    = strtoupper($params['target'] ?? '');
         $this->title     = $params['title'];
         $this->body      = $params['body'] ?? '';
-        $this->extras    = json_encode($params['extra'] ?? [], JSON_FORCE_OBJECT | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        $this->extras    = json_encode($params['extra'] ?? [], JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         $this->query     = $params['query'] ?? ['base' => [], 'android' => [], 'ios' => [],];
 
         $devices = StrHelper::parseKey(strtolower($params['device_type'] ?? 'android|notice;ios|notice'));
@@ -96,17 +96,16 @@ class AliPush
         $iosPushType = strtoupper($devices['ios'] ?? '');
         $iosIds      = $registrationIds['ios'] ?? [];
         $broadcasts  = [];
-        if ($iosPushType && config('poppy.aliyun-push.ios_is_open') && $iosIds) {
+        if ($iosIds && $iosPushType && config('poppy.aliyun-push.ios_is_open')) {
             $broadcasts = array_merge($broadcasts, $this->toBatches($iosPushType, $iosIds, PushMessage::DEVICE_TYPE_IOS));
         }
 
         // send android
         $androidPushType = strtoupper($devices['android'] ?? '');
         $androidIds      = $registrationIds['android'] ?? [];
-        if ($androidPushType && config('poppy.aliyun-push.android_is_open') && $androidIds) {
+        if ($androidIds && $androidPushType && config('poppy.aliyun-push.android_is_open')) {
             $broadcasts = array_merge($broadcasts, $this->toBatches($androidPushType, $androidIds, PushMessage::DEVICE_TYPE_ANDROID));
         }
-
 
         // 发送消息
         collect($broadcasts)->each(function ($message) {
