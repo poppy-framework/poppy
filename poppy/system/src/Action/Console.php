@@ -5,9 +5,11 @@ declare(strict_types = 1);
 namespace Poppy\System\Action;
 
 use Illuminate\Support\Str;
+use JsonException;
 use Poppy\Extension\App\Classes\AppClient;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Exceptions\LoadConfigurationException;
+use Poppy\Framework\Helper\UtilHelper;
 
 /**
  * 对接 Console 中台
@@ -46,8 +48,8 @@ class Console
     public function __construct()
     {
         $this->appid = (string) env('CP_APPID');
-        $secret      = env('CP_SECRET');
-        $this->host  = env('CP_URL');
+        $secret      = (string) env('CP_SECRET');
+        $this->host  = (string) env('CP_URL');
         if (!$this->appid || !$secret) {
             throw new LoadConfigurationException('Cp 控制台密钥未设置');
         }
@@ -86,6 +88,46 @@ class Console
             return true;
         }
         return $this->setError($message);
+    }
+
+    /**
+     * 获取本地的文件上传
+     * @param $type
+     * @return bool
+     */
+    public function apidocCapture($type): bool
+    {
+        if (!$this->checkAppId()) {
+            return false;
+        }
+        $cwUrl = $this->host . '/api_v1/op/app/apidoc/capture';
+        $file  = public_path('docs/' . $type . '/assets/main.bundle.js');
+        if (!app('files')->exists($file)) {
+            return $this->setError('文件不存在');
+        }
+
+        $config = file_get_contents(basename('composer.json'));
+        if (UtilHelper::isJson($config)) {
+            try {
+                $compDefs = json_decode($config, true, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException $e) {
+                return $this->setError('错误的 composer.json 格式');
+            }
+        }
+        $version = $compDefs['version'] ?? 'latest';
+
+        $resp = $this->client->file($cwUrl, [
+            'name'    => env('APP_NAME'),
+            'version' => $type . '-' . $version,
+        ], $file);
+
+        $status  = data_get($resp, 'status');
+        $message = data_get($resp, 'message');
+        if ($status !== 0) {
+            return $this->setError($message);
+
+        }
+        return true;
     }
 
 

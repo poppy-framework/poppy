@@ -1,5 +1,6 @@
 {
     "name": "wulicode/poppy",
+    "version": "4.2",
     "description": "The Laravel Framework.",
     "keywords": [
         "framework",
