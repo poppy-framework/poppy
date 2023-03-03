@@ -32,8 +32,7 @@ class ServiceProvider extends PoppyServiceProvider
         ], 'poppy');
         $this->publishes([
             // 需要从项目中反向复制的页面
-            __DIR__ . '/../resources/libs/boot/vendor.min.js'     => public_path('assets/libs/boot/vendor.min.js'),
-            __DIR__ . '/../resources/libs/boot/poppy.mgr.min.js'  => public_path('assets/libs/boot/poppy.mgr.min.js'),
+            __DIR__ . '/../resources/libs/boot/app.min.js'        => public_path('assets/libs/boot/app.min.js'),
             __DIR__ . '/../resources/libs/boot/style.css'         => public_path('assets/libs/boot/style.css'),
             // editor
             __DIR__ . '/../resources/libs/boot/wangeditor@5.1.js' => public_path('assets/libs/boot/wangeditor@5.1.js'),
