@@ -11,8 +11,7 @@ $_type = $_type ?? [];
 @if (true)
     {!! Html::style('assets/libs/boot/style.css?v=2023-03-02') !!}
     {{--js--}}
-    {!! Html::script('assets/libs/boot/vendor.min.js?v=2023-03-02') !!}
-    {!! Html::script('assets/libs/boot/poppy.mgr.min.js?v=2023-03-02') !!}
+    {!! Html::script('assets/libs/boot/app.min.js?v=2023-03-02') !!}
     {!! Html::script('assets/libs/vue/vue.js') !!}
 @endif
 {{-- 加载 layui / layui.all[用于页面的模块化加载] --}}

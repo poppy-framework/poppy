@@ -19,7 +19,7 @@
 @section('develop-main')
     @include('py-mgr-page::develop.inc.header')
     <fieldset class="layui-elem-field layui-field-title">
-        <legend><i class="fa fa-calendar"></i> 日志查看器</legend>
+        <legend><i class="bi bi-body-text"></i> 日志查看器</legend>
     </fieldset>
     <div class="layui-row">
         <div class="layui-col-md2">
@@ -55,17 +55,17 @@
                         <tr>
                             <td class="text-{{$log['level_class']}}"><span
                                         class="
-                                        fa
-                                        {{$log['level'] === 'error' ? 'fa-times-circle' : ''}}
-                                        {{$log['level'] === 'debug' ? 'fa-bug' : ''}}
-                                        {{$log['level'] === 'info' ? 'fa-info-circle' : ''}}
+                                        bi
+                                        {{$log['level'] === 'error' ? 'bi-exclamation-diamond' : ''}}
+                                        {{$log['level'] === 'debug' ? 'bi-bug' : ''}}
+                                        {{$log['level'] === 'info' ? 'bi-info-circle' : ''}}
                                                 "
                                         aria-hidden="true"></span> &nbsp;{{$log['level']}}</td>
                             <td class="date">{{$log['date']}}</td>
                             <td class="text">
                                 @if ($log['stack'])
                                     <a class="pull-right expand" data-display="stack{{$key}}">
-                                        <i class="fa fa-search"></i></a>
+                                        <i class="bi bi-search"></i></a>
                                 @endif
                                 {{$log['text']}}
                                 @if (isset($log['in_file'])) <br/>{{$log['in_file']}}@endif
@@ -81,9 +81,9 @@
                 </table>
             @endif
             <div>
-                <a href="?dl={{ base64_encode($current_file) }}"><span class="fa fa-download text-warning"></span> 下载文件</a>
+                <a href="?dl={{ base64_encode($current_file) }}"><span class="bi bi-download text-warning"></span> 下载文件</a>
                 -
-                <a id="delete-log" href="?del={{ base64_encode($current_file) }}"><i class="fa fa-trash text-danger"></i> 删除日志</a>
+                <a id="delete-log" href="?del={{ base64_encode($current_file) }}"><i class="bi bi-trash text-danger"></i> 删除日志</a>
             </div>
         </div>
     </div>

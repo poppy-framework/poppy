@@ -72,11 +72,11 @@ class ListPamBan extends ListBase
             $isBlack = sys_setting('py-system::ban.type-' . $type, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
             $url     = route_url('py-mgr-page:backend.ban.type', null, ['type' => $type,]);
             if ($isBlack) {
-                $operations->request('黑名单模式', $url)->icon('lay:pause')->tooltip('当前黑名单, 点击切换到白名单')->sm()
+                $operations->request('黑名单模式', $url)->icon('bi:pause-circle')->tooltip('当前黑名单, 点击切换到白名单')->sm()
                     ->confirm('当前黑名单, 是否切换到白名单?')->danger();
             }
             else {
-                $operations->request('白名单模式', $url)->icon('lay:play')->tooltip('当前白名单, 点击切换到黑名单')->sm()
+                $operations->request('白名单模式', $url)->icon('bi:play-circle')->tooltip('当前白名单, 点击切换到黑名单')->sm()
                     ->confirm('当前白名单, 是否切换到黑名单?');
             }
             $operations->create(route_url('py-mgr-page:backend.ban.establish', null, ['type' => $type,]), '新增');

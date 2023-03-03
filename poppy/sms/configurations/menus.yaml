@@ -3,7 +3,7 @@ backend:
   groups:
     -
       title: 短信
-      icon: 'layui-icon layui-icon-dialogue'
+      icon: 'bi bi-chat-left-text'
       injection: 'poppy.mgr-page/backend||setting'
       children:
         -

@@ -9,13 +9,13 @@
         @endforeach
         <div class="layui-col-md2 layui-col-sm3 py-handle">
             <button class="layui-btn layui-btn-info" id="{{ $filter_id }}-search">
-                <i class="layui-icon layui-icon-search"></i>
+                <i class="bi bi-search"></i>
             </button>
             <button class="layui-btn layui-btn-warm" style="margin-left: 5px" id="{{ $filter_id }}-reload">
-                <i class="layui-icon layui-icon-refresh"></i>
+                <i class="bi bi-arrow-clockwise"></i>
             </button>
             <button class="layui-btn layui-btn-primary" style="margin-left: 5px" id="{{ $filter_id }}-reset">
-                <i class="layui-icon layui-icon-fonts-del"></i>
+                <i class="bi bi-x-lg"></i>
             </button>
         </div>
     </div>

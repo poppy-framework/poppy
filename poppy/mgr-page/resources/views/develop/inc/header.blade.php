@@ -1,7 +1,7 @@
 <ul class="layui-nav layui-bg-cyan dev--nav">
     <li class="layui-nav-item">
         <a href="{!! route('py-mgr-page:develop.cp.cp') !!}">
-            <i class="fa fa-home"></i>
+            <i class="bi bi-house"></i>
         </a>
     </li>
     @foreach($_menus as $key => $menu)
@@ -15,7 +15,7 @@
     @if ($pam)
         <li class="layui-nav-item pull-right">
             <a href="{!! route('py-mgr-page:develop.pam.logout') !!}" class="J_tooltip J_request" title="退出登录">
-                <i class="fa fa-bomb"></i>
+                <i class="bi bi-box-arrow-right"></i>
             </a>
         </li>
     @endif

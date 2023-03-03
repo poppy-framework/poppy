@@ -5,7 +5,7 @@
 @section('develop-main')
     @include('py-mgr-page::develop.inc.header')
     <fieldset class="layui-elem-field layui-field-title">
-        <legend><i class="fa fa-box"></i> Clockwork</legend>
+        <legend><i class="bi bi-buildings"></i> Clockwork</legend>
     </fieldset>
     <div class="layui-row">
         <a href="https://i.huowanes.com/clockwork" target="_blank" class="layui-btn layui-btn-warm">分析</a>
@@ -33,7 +33,7 @@
                         <td class="text">
                             <a href="{!! route_url('py-mgr-page:develop.clockwork.report', null, [
                                 'id' => $item['id']
-                            ]) !!}" class="fa fa-cc-jcb J_request J_tooltip" title="上报"></a>
+                            ]) !!}" class="bi bi-cloud-arrow-up J_request J_tooltip" title="上报"></a>
                         </td>
                     </tr>
                 @endforeach

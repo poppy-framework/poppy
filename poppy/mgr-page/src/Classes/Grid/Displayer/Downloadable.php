@@ -29,7 +29,7 @@ class Downloadable extends AbstractDisplayer
             $name = basename($value);
             return <<<HTML
 <a href="$src" download="$name" target="_blank" class="J_tooltip" title="$name">
-    <i class="fa fa-download"></i>
+    <i class="bi bi-download"></i>
 </a>
 HTML;
         })->implode('&nbsp;');

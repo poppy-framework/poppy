@@ -28,11 +28,11 @@ class ListPamToken extends ListBase
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var PamToken $item */
             $item = $actions->row;
-            $actions->request('下线用户', route('py-mgr-page:backend.pam.delete_token', [$item->id]))->icon('lay:close')
+            $actions->request('下线用户', route('py-mgr-page:backend.pam.delete_token', [$item->id]))->icon('bi:phone-flip')
                 ->confirm('使用户下线, 用户可重新登录')->primary();
-            $actions->request('禁用设备', route('py-mgr-page:backend.pam.ban', [$item->id, 'device']))->icon('lay:cellphone')
+            $actions->request('禁用设备', route('py-mgr-page:backend.pam.ban', [$item->id, 'device']))->icon('bi:phone')
                 ->confirm('禁用此设备, 此设备无法再继续访问, 如需开启在黑名单中移除即可')->primary();
-            $actions->request('禁用IP', route('py-mgr-page:backend.pam.ban', [$item->id, 'ip']))->icon('lay:wifi')
+            $actions->request('禁用IP', route('py-mgr-page:backend.pam.ban', [$item->id, 'ip']))->icon('bi:reception-4')
                 ->confirm('禁用此IP, 此IP无法再继续访问, 如需开启在黑名单中移除即可')->primary();
         },])->fixed()->width(260);
     }

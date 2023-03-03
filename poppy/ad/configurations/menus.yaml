@@ -3,7 +3,7 @@ backend :
   groups :
     -
       title : 广告管理
-      icon : 'layui-icon layui-icon-flag'
+      icon : 'bi bi-badge-ad'
       injection : 'poppy.mgr-page/backend||setting'
       children :
         -

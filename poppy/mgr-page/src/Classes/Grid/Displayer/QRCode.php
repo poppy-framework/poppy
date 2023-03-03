@@ -23,7 +23,7 @@ class QRCode extends AbstractDisplayer
         );
         return <<<HTML
 <a href="{$img}" class="J_iframe" data-width="600" data-height="600">
-    <i class="fa fa-qrcode"></i>
+    <i class="bi bi-qr-code"></i>
 </a>&nbsp
 HTML;
     }

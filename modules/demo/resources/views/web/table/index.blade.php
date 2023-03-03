@@ -3,9 +3,8 @@
     <div class="layui-card-header">
         商户合同
         <div class="pull-right">
-            <a class="J_iframe layui-btn layui-btn-sm" title="创建合同"
-                    href="#">
-                <i class="fa fa-plus"></i> 创建合同
+            <a class="J_iframe layui-btn layui-btn-sm" title="创建合同" href="#">
+                <i class="bi bi-plus-circle"></i> 创建合同
             </a>
         </div>
     </div>

@@ -3,11 +3,11 @@ backend :
   groups :
     setting :
       title : 核心Demo注入
-      icon : fa fa-cogs
+      icon : 'bi bi-box-fill'
       children :
         -
           title : 主页
-          icon : fa fa-home
+          icon : 'bi bi-box'
           url : http://www.baidu.com
 demo :
   title : Demo

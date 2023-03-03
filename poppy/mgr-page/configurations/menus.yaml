@@ -4,15 +4,15 @@ backend:
     # 这里的KEY 作为注入项目 poppy.mgr-page/backend||setting, 可以将配置注入到这个地方
     setting:
       title: 系统设置
-      icon: 'layui-icon layui-icon-set-fill'
+      icon: 'bi bi-gear'
       children:
         -
           title: 主页
-          icon: 'layui-icon layui-icon-home'
+          icon: 'bi bi-house'
           route: py-mgr-page:backend.home.cp
         -
           title: 配置
-          icon: 'layui-icon layui-icon-set'
+          icon: 'bi bi-sliders'
           children:
             -
               title: 系统配置
@@ -28,7 +28,7 @@ backend:
               permission: backend:py-system.global.manage
         -
           title: 账号管理
-          icon: 'layui-icon layui-icon-user'
+          icon: 'bi bi-person-vcard'
           children:
             -
               title: 角色管理

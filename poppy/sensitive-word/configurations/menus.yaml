@@ -3,7 +3,7 @@ backend:
   groups:
     -
       title: 敏感词管理
-      icon: 'layui-icon layui-icon-fonts-del'
+      icon: 'bi bi-file-word'
       injection: 'poppy.mgr-page/backend||setting'
       children:
         -

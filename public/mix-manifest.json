@@ -1,9 +1,10 @@
 {
-    "/assets/libs/boot/style-less.css": "/assets/libs/boot/style-less.css",
-    "/assets/libs/boot/style-scss.css": "/assets/libs/boot/style-scss.css",
+    "/assets/_temp/css/_mgr-page.css": "/assets/_temp/css/_mgr-page.css",
+    "/assets/_temp/css/_bootstrap.css": "/assets/_temp/css/_bootstrap.css",
     "/assets/libs/boot/style.css": "/assets/libs/boot/style.css",
-    "/assets/libs/boot/poppy.mgr.min.js": "/assets/libs/boot/poppy.mgr.min.js",
-    "/assets/libs/boot/vendor.min.js": "/assets/libs/boot/vendor.min.js",
+    "/assets/libs/boot/app.min.js": "/assets/libs/boot/app.min.js",
+    "/assets/font/bootstrap-icons/bootstrap-icons.woff": "/assets/font/bootstrap-icons/bootstrap-icons.woff",
+    "/assets/font/bootstrap-icons/bootstrap-icons.woff2": "/assets/font/bootstrap-icons/bootstrap-icons.woff2",
     "/assets/font/fontawesome/fa-brands-400.eot": "/assets/font/fontawesome/fa-brands-400.eot",
     "/assets/font/fontawesome/fa-brands-400.svg": "/assets/font/fontawesome/fa-brands-400.svg",
     "/assets/font/fontawesome/fa-brands-400.ttf": "/assets/font/fontawesome/fa-brands-400.ttf",
@@ -117,5 +118,6 @@
     "/assets/libs/layui/layui.js": "/assets/libs/layui/layui.js",
     "/assets/libs/layui/plugin/xm-select/xm-select.js": "/assets/libs/layui/plugin/xm-select/xm-select.js",
     "/assets/libs/vue/README.md": "/assets/libs/vue/README.md",
-    "/assets/libs/vue/vue.js": "/assets/libs/vue/vue.js"
+    "/assets/libs/vue/vue.js": "/assets/libs/vue/vue.js",
+    "/assets/libs/jquery/poshytip/yellowsimple/tip-yellowsimple.less": "/assets/libs/jquery/poshytip/yellowsimple/tip-yellowsimple.less"
 }

@@ -142,7 +142,7 @@ abstract class Operation implements Renderable
     }
 
     /**
-     * 设置 ICON 图标, 图标支持 layui 图标, 图标使用 `lay:` 前缀
+     * 设置 ICON 图标, 图标支持 bi 图标, 图标使用 `bi:` 前缀
      * @param string $icon ICON 图标
      * @return $this
      */
@@ -250,7 +250,6 @@ abstract class Operation implements Renderable
         }
 
         $this->title = $this->createIconTitle();
-
         if ($this->renderType === 'link') {
             return Html::link($this->url, $this->title, $this->attributes, null, false)->toHtml();
         }
@@ -264,15 +263,14 @@ abstract class Operation implements Renderable
      */
     protected function createIconTitle(): string
     {
-        $title = '';
         if ($this->icon) {
-            $isLay = Str::contains($this->icon, 'lay:');
-            if (!$isLay) {
+            $isBootstrapIcon = Str::contains($this->icon, 'bi:');
+            if (!$isBootstrapIcon) {
                 $icon = "<i class='fa fa-{$this->icon}'></i>";
             }
             else {
-                $iconName = Str::after($this->icon, 'lay:');
-                $icon     = "<i class='layui-icon layui-icon-{$iconName}'></i>";
+                $iconName = Str::after($this->icon, 'bi:');
+                $icon     = "<i class='bi bi-{$iconName}'></i>";
             }
             if ($this->only) {
                 $title = $icon;
@@ -280,7 +278,8 @@ abstract class Operation implements Renderable
             else {
                 $title = $icon . ' ' . $this->title;
             }
+            return $title;
         }
-        return $title;
+        return $this->title;
     }
 }

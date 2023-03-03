@@ -3,7 +3,7 @@ backend:
   groups:
     -
       title: 地区管理
-      icon: 'layui-icon layui-icon-template'
+      icon: 'bi bi-geo'
       injection: 'poppy.mgr-page/backend||setting'
       children:
         -

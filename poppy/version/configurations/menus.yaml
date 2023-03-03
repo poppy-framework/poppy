@@ -3,7 +3,7 @@ backend:
   groups:
     -
       title: App版本
-      icon: 'layui-icon layui-icon-cellphone'
+      icon: 'bi bi-google-play'
       injection: 'poppy.mgr-page/backend||setting'
       children:
         -

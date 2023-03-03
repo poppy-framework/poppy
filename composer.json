@@ -48,7 +48,8 @@
         "sentry/sentry-laravel": "3.*",
         "ezyang/htmlpurifier": "^4.16",
         "psr/http-factory-implementation": "*",
-        "mews/captcha": "3.2.*"
+        "mews/captcha": "3.2.*",
+        "twbs/bootstrap-icons": "^1.10"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

@@ -24,24 +24,17 @@ mix
      * ---------------------------------------- */
     // develop
     .less(
-        'poppy/mgr-page/resources/less/mgr-page.less',
-        'public/assets/libs/boot/style-less.css'
+        'poppy/mgr-page/resources/style/mgr-page.less',
+        'assets/_temp/css/_mgr-page.css'
     )
     .sass(
-        'poppy/mgr-page/resources/scss/mgr-page.scss',
-        'public/assets/libs/boot/style-scss.css'
+        'poppy/mgr-page/resources/style/bootstrap.scss',
+        'assets/_temp/css/_bootstrap.css'
     )
     .styles([
-        'public/assets/libs/boot/style-less.css',
-        'public/assets/libs/boot/style-scss.css'
+        'public/assets/_temp/css/_mgr-page.css',
+        'public/assets/_temp/css/_bootstrap.css',
     ], 'public/assets/libs/boot/style.css')
-    .scripts([
-            'poppy/mgr-page/resources/libs/poppy/util.js',
-            'poppy/mgr-page/resources/libs/poppy/cp.js',
-            'poppy/mgr-page/resources/libs/poppy/mgr-page/cp.js'
-        ],
-        'public/assets/libs/boot/poppy.mgr.min.js'
-    )
     .scripts([
             'poppy/mgr-page/resources/libs/jquery/2.2.4/jquery.min.js',
             'poppy/mgr-page/resources/libs/jquery/form/jquery.form.js',
@@ -55,8 +48,13 @@ mix
             'poppy/mgr-page/resources/libs/lodash/lodash.min.js',
             // bootstrap
             'poppy/mgr-page/resources/libs/bootstrap@5.2/bootstrap.bundle.min.js',
+
+            // mgr-page
+            'poppy/mgr-page/resources/libs/poppy/util.js',
+            'poppy/mgr-page/resources/libs/poppy/cp.js',
+            'poppy/mgr-page/resources/libs/poppy/mgr-page/cp.js'
         ],
-        'public/assets/libs/boot/vendor.min.js'
+        'public/assets/libs/boot/app.min.js'
     )
     .copyDirectory('poppy/mgr-page/resources/font/', 'public/assets/font/')
     .copyDirectory('poppy/mgr-page/resources/images/', 'public/assets/images/')

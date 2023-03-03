@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Displayer;
 
 use Illuminate\Support\Str;
@@ -7,7 +9,7 @@ use Illuminate\Support\Str;
 class SwitchDisplay extends AbstractDisplayer
 {
 
-    protected $states = [
+    protected array $states = [
         '1' => '开',
         '0' => '关',
     ];

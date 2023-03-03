@@ -4,9 +4,11 @@
         短信模板
         <div class="pull-right">
             <a href="{{route_url('py-sms:backend.sms.establish', null, ['_scope'=> $scope])}}" class="layui-btn layui-btn-sm J_iframe">
+                <i class="bi bi-plus-circle"></i>
                 创建模板
             </a>
             <a href="{{route_url('py-sms:backend.sms.store')}}" data-width="600" class="layui-btn layui-btn-sm J_iframe">
+                <i class="bi bi-sliders"></i>
                 短信设置
             </a>
         </div>
@@ -29,12 +31,12 @@
                         <td>
                             <a class="J_iframe layui-btn layui-btn-xs" title="编辑"
                                     href="{{route_url('py-sms:backend.sms.establish', [$item['scope'].':'.$item['type']])}}">
-                                <i class="layui-icon layui-icon-edit "></i> 编辑
+                                <i class="bi bi-pencil"></i> 编辑
                             </a>
                             <a title="删除" class="J_request layui-btn layui-btn-xs layui-btn-danger"
                                     data-confirm="确认删除 ?"
                                     href="{{route('py-sms:backend.sms.destroy', [$item['scope'].':'.$item['type']])}}">
-                                <i class="layui-icon layui-icon-close "></i> 删除
+                                <i class="bi bi-trash"></i> 删除
                             </a>
                         </td>
                     </tr>

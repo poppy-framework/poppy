@@ -29,9 +29,8 @@ class MixCommand extends Command
     public function handle()
     {
         $files = [
-            'assets/libs/boot/style.css'        => 'poppy/mgr-page/resources/libs/boot/style.css',
-            'assets/libs/boot/vendor.min.js'    => 'poppy/mgr-page/resources/libs/boot/vendor.min.js',
-            'assets/libs/boot/poppy.mgr.min.js' => 'poppy/mgr-page/resources/libs/boot/poppy.mgr.min.js'
+            'assets/libs/boot/style.css'  => 'poppy/mgr-page/resources/libs/boot/style.css',
+            'assets/libs/boot/app.min.js' => 'poppy/mgr-page/resources/libs/boot/app.min.js',
         ];
 
         collect($files)->each(function ($aim, $ori) {

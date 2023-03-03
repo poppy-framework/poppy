@@ -735,7 +735,6 @@ if (typeof Util !== 'object') {
                         return;
                     }
                 }
-                console.log(elem.attr('class'));
                 if (elem.attr('class') === 'form_thumb-url') {
                     elem = $(element).parents('.layui-form-thumb');
                     if (!elem) {

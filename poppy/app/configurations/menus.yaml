@@ -3,7 +3,7 @@ backend :
   groups :
     -
       title : 应用管理
-      icon : 'layui-icon layui-icon-template-1'
+      icon : 'bi bi-plugin'
       injection : 'poppy.mgr-page/backend||setting'
       children :
         -

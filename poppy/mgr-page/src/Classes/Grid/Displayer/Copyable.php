@@ -15,7 +15,7 @@ class Copyable extends AbstractDisplayer
     {
         return <<<HTML
 <span data-text="{$this->getValue()}" class="J_copy" style="cursor: pointer;">
-    <i class="fa fa-copy"></i> {$this->getValue()}
+    <i class="bi bi-clipboard"></i> {$this->getValue()}
 </span>&nbsp;
 HTML;
     }
