@@ -55,7 +55,9 @@
     "/assets/libs/jquery/pjax/jquery.pjax.js": "/assets/libs/jquery/pjax/jquery.pjax.js",
     "/assets/libs/jquery/poshytip/jquery.poshytip.js": "/assets/libs/jquery/poshytip/jquery.poshytip.js",
     "/assets/libs/jquery/poshytip/tip-yellow/tip-yellow.css": "/assets/libs/jquery/poshytip/tip-yellow/tip-yellow.css",
+    "/assets/libs/jquery/poshytip/tip-yellow/tip-yellow.less": "/assets/libs/jquery/poshytip/tip-yellow/tip-yellow.less",
     "/assets/libs/jquery/poshytip/yellowsimple/tip-yellowsimple.css": "/assets/libs/jquery/poshytip/yellowsimple/tip-yellowsimple.css",
+    "/assets/libs/jquery/poshytip/yellowsimple/tip-yellowsimple.less": "/assets/libs/jquery/poshytip/yellowsimple/tip-yellowsimple.less",
     "/assets/libs/jquery/sortable/jquery.sortable.js": "/assets/libs/jquery/sortable/jquery.sortable.js",
     "/assets/libs/jquery/validation/README.md": "/assets/libs/jquery/validation/README.md",
     "/assets/libs/jquery/validation/jquery.validation.js": "/assets/libs/jquery/validation/jquery.validation.js",
@@ -115,9 +117,14 @@
     "/assets/libs/layui/layer/mobile/layer.js": "/assets/libs/layui/layer/mobile/layer.js",
     "/assets/libs/layui/layer/mobile/need/layer.css": "/assets/libs/layui/layer/mobile/need/layer.css",
     "/assets/libs/layui/layer/readme.md": "/assets/libs/layui/layer/readme.md",
+    "/assets/libs/layui/layer/theme/default/icon-ext.png": "/assets/libs/layui/layer/theme/default/icon-ext.png",
+    "/assets/libs/layui/layer/theme/default/icon.png": "/assets/libs/layui/layer/theme/default/icon.png",
+    "/assets/libs/layui/layer/theme/default/layer.css": "/assets/libs/layui/layer/theme/default/layer.css",
+    "/assets/libs/layui/layer/theme/default/loading-0.gif": "/assets/libs/layui/layer/theme/default/loading-0.gif",
+    "/assets/libs/layui/layer/theme/default/loading-1.gif": "/assets/libs/layui/layer/theme/default/loading-1.gif",
+    "/assets/libs/layui/layer/theme/default/loading-2.gif": "/assets/libs/layui/layer/theme/default/loading-2.gif",
     "/assets/libs/layui/layui.js": "/assets/libs/layui/layui.js",
     "/assets/libs/layui/plugin/xm-select/xm-select.js": "/assets/libs/layui/plugin/xm-select/xm-select.js",
     "/assets/libs/vue/README.md": "/assets/libs/vue/README.md",
-    "/assets/libs/vue/vue.js": "/assets/libs/vue/vue.js",
-    "/assets/libs/jquery/poshytip/yellowsimple/tip-yellowsimple.less": "/assets/libs/jquery/poshytip/yellowsimple/tip-yellowsimple.less"
+    "/assets/libs/vue/vue.js": "/assets/libs/vue/vue.js"
 }

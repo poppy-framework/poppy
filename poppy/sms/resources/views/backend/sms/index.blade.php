@@ -7,7 +7,7 @@
                 <i class="bi bi-plus-circle"></i>
                 创建模板
             </a>
-            <a href="{{route_url('py-sms:backend.sms.store')}}" data-width="600" class="layui-btn layui-btn-sm J_iframe">
+            <a href="{{route_url('py-sms:backend.sms.store')}}" class="layui-btn layui-btn-sm J_iframe">
                 <i class="bi bi-sliders"></i>
                 短信设置
             </a>
@@ -15,18 +15,19 @@
     </div>
     <div class="layui-card-body">
         {!! app('poppy.mgr-page.form')->scopes(\Poppy\Sms\Action\Sms::kvPlatform(), $scope) !!}
-        <table class="layui-table">
+        <table class="layui-table" lay-filter="default">
+            <thead>
             <tr>
-                <th class="w108">平台</th>
-                <th class="w108">类型</th>
-                <th>短信内容/模版</th>
-                <th>操作</th>
+                <th {!! mgr_col(160)  !!}>类型</th>
+                <th {!! mgr_col(0, '', 'minWidth:220')  !!}>短信内容/模版</th>
+                <th {!! mgr_col(150, 'right')  !!}>操作</th>
             </tr>
+            </thead>
+            <tbody>
             @if (count($items))
                 @foreach($items as $item)
                     <tr>
-                        <td>{{ \Poppy\Sms\Action\Sms::kvPlatform($item['scope'])}}</td>
-                        <td>{{ \Poppy\Sms\Action\Sms::kvType($item['type'])}}</td>
+                        <td><span class="J_tooltip" title="标识 : {{$item['type']}}">{{ \Poppy\Sms\Action\Sms::kvType($item['type'])}}</span></td>
                         <td>{{$item['code']}}</td>
                         <td>
                             <a class="J_iframe layui-btn layui-btn-xs" title="编辑"
@@ -48,6 +49,8 @@
                     </td>
                 </tr>
             @endif
+            </tbody>
         </table>
     </div>
+    {!! mgr_table() !!}
 @endsection

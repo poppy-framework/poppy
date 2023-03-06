@@ -797,9 +797,9 @@ class Field implements Renderable
         }
         if ($this->horizontal) {
             return [
-                'label'         => "layui-col-xs{$this->width['label']}",
+                'label'         => "layui-col-sm{$this->width['label']} layui-col-xs-12",
                 'label_element' => "{$this->getLabelClass()}",
-                'field'         => "layui-col-xs{$this->width['field']}",
+                'field'         => "layui-col-sm{$this->width['field']} layui-col-xs-12",
                 'form-group'    => $this->getGroupClass(true),
             ];
         }

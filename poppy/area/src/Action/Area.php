@@ -242,9 +242,8 @@ class Area
         if ($view) {
             return $this->fixView();
         }
-        else {
-            return $this->fixResp();
-        }
+
+        return $this->fixResp();
     }
 
     /**

@@ -5,7 +5,6 @@ namespace Poppy\MgrPage\Classes\Setting;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
-use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Throwable;
 
 /**
@@ -40,27 +39,6 @@ class SettingView
                 /** @var FormSettingBase $cur */
                 $cur = $forms->offsetGet($index);
                 return $cur->render();
-            }
-
-            if (input('_skeleton')) {
-                $hk = [];
-                collect($groupHook)->each(function ($item, $key) use (&$hk) {
-                    $hk[] = [
-                        'title' => $item['title'],
-                        'key'   => $key,
-                        'url'   => route_url('py-mgr-page:backend.home.setting', [$key]),
-                    ];
-                });
-                $fm = [];
-                collect($forms)->each(function (FormWidget $form) use (&$fm) {
-                    $form->plainSkeleton();
-                    $fm[] = $form->render();
-                });
-                return Resp::success('获取成功', [
-                    'type'  => 'setting',
-                    'hooks' => $hk,
-                    'forms' => $fm,
-                ]);
             }
 
             return view('py-mgr-page::backend.tpl.settings', [

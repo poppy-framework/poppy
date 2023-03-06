@@ -16,7 +16,7 @@ class SearchHelper
      * @param string $input_key     默认的input键
      * @return string
      */
-    public static function key(string $default_order, $allowed = [], $input_key = '_order'): string
+    public static function key(string $default_order, array $allowed = [], string $input_key = '_order'): string
     {
         $order = input($input_key);
         if (!$order) {
@@ -30,7 +30,7 @@ class SearchHelper
         if (strpos($order, '_asc') !== false) {
             $orderKey = str_replace('_asc', '', $order);
         }
-        if (in_array($orderKey, $allowed)) {
+        if (in_array($orderKey, $allowed, true)) {
             return $orderKey;
         }
 
@@ -42,7 +42,7 @@ class SearchHelper
      * @param string $key key
      * @return string
      */
-    public static function order($key = '_order'): string
+    public static function order(string $key = '_order'): string
     {
         $order = (string) input($key);
         if (strpos($order, '_desc') !== false) {

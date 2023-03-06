@@ -1900,6 +1900,13 @@
   font-weight: bold;
   font-style: normal;
 }
+@media screen and (max-width: 768px) {
+  .layui-form-auto-label {
+    float: none;
+    text-align: left;
+    padding: 0 0;
+  }
+}
 .layui-form-auto-field {
   border-left: 2px solid transparent;
   padding-left: 2px;
@@ -2355,8 +2362,8 @@ div.layui-input.layui-input-inline {
   position: relative;
 }
 .layui-form .layui-field-checkbox + .layui-field-checkbox-label:before {
-  content: "\1005";
-  font-family: "layui-icon";
+  content: "\F26D";
+  font-family: "bootstrap-icons";
   display: inline-block;
   vertical-align: middle;
   width: 18px;

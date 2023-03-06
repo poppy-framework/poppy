@@ -949,7 +949,7 @@ HTML;
             else {
                 $class = '';
             }
-            $content .= "<li class=\"{$class}\"><a href=\"?_scope={$key}\">{$scope}</a></li>";
+            $content .= "<li class=\"{$class}\"><a class='J_ignore' href=\"?_scope={$key}\">{$scope}</a></li>";
         }
         return /** @lang text */ <<<HTML
 <div class="layui-tab">

@@ -75,7 +75,7 @@ class Operations implements Renderable
      */
     public function progress(string $url): void
     {
-        $this->iframe('更新', $url)->icon('bi:play')->sm();
+        $this->iframe('更新', $url)->icon('bi:columns-gap')->sm();
     }
 
     /**

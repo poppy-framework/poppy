@@ -7,7 +7,6 @@ namespace Poppy\Area\Http\Request\Backend;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
 use Poppy\Area\Action\Area;
 use Poppy\Area\Http\MgrPage\FormAreaEstablish;
 use Poppy\Area\Http\MgrPage\ListSysArea;
@@ -16,7 +15,6 @@ use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
-use Response;
 use Throwable;
 
 /**
@@ -35,7 +33,7 @@ class ContentController extends BackendController
 
     /**
      * 地区列表
-     * @return array|JsonResponse|RedirectResponse|\Illuminate\Http\Response|Redirector|Resp|Response|string
+     * @return \Illuminate\Http\Response|JsonResponse|RedirectResponse|string
      * @throws ApplicationException
      * @throws Throwable
      */

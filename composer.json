@@ -100,7 +100,8 @@
             "poppy/framework/src/Support/functions.php",
             "poppy/system/src/Support/functions.php",
             "poppy/core/src/Support/functions.php",
-            "poppy/sensitive-word/src/Support/functions.php"
+            "poppy/sensitive-word/src/Support/functions.php",
+            "poppy/mgr-page/src/Support/functions.php"
         ]
     },
     "extra": {

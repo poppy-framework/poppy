@@ -189,9 +189,7 @@ class Sms
         if ($templates->offsetExists($key)) {
             return $templates->offsetGet($key);
         }
-        else {
-            return [];
-        }
+        return [];
     }
 
     /**

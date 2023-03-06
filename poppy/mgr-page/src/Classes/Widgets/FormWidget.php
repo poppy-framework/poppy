@@ -131,16 +131,11 @@ class FormWidget implements Renderable
     ];
 
     /**
-     * @var bool
-     */
-    private $plainSkeleton = false;
-
-    /**
      * Form constructor.
      *
      * @param array $data
      */
-    public function __construct($data = [])
+    public function __construct(array $data = [])
     {
         $this->fill($data);
 
@@ -158,11 +153,11 @@ class FormWidget implements Renderable
     /**
      * Fill data to form fields.
      *
-     * @param array $data
+     * @param array|Arrayable $data
      *
      * @return $this
      */
-    public function fill($data = [])
+    public function fill($data = []): self
     {
         if ($data instanceof Arrayable) {
             $data = $data->toArray();
@@ -198,8 +193,8 @@ class FormWidget implements Renderable
     public function attribute($attr, $value = ''): self
     {
         if (is_array($attr)) {
-            foreach ($attr as $key => $value) {
-                $this->attribute($key, $value);
+            foreach ($attr as $key => $val) {
+                $this->attribute($key, $val);
             }
         }
         else {
@@ -251,7 +246,7 @@ class FormWidget implements Renderable
      */
     public function method($method = 'POST')
     {
-        if (strtolower($method) == 'put') {
+        if (strtolower($method) === 'put') {
             $this->hidden('_method')->default($method);
 
             return $this;
@@ -410,11 +405,6 @@ class FormWidget implements Renderable
     {
         $this->boxTools = array_merge($this->boxTools, $tools);
         return $this;
-    }
-
-    public function plainSkeleton()
-    {
-        $this->plainSkeleton = true;
     }
 
     /**

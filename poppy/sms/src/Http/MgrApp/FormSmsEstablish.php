@@ -33,7 +33,7 @@ class FormSmsEstablish extends FormWidget
         return [];
     }
 
-    public function form()
+    public function form(): void
     {
         $this->select('type', '类型')->rules([
             Rule::required(),

@@ -9,8 +9,8 @@
 
     @if(count($buttons) > 0)
         <div class="layui-row">
-            <div class="layui-col-xs{{$width['label']}}">&nbsp;</div>
-            <div class="layui-col-xs{{$width['field']}}">
+            <div class="layui-col-sm{{$width['label']}} layui-col-xs12">&nbsp;</div>
+            <div class="layui-col-sm{{$width['field']}} layui-col-xs12">
                 <div class="layui-form-auto-field">
                     @if(in_array('reset', $buttons, true))
                         <button type="reset" class="layui-btn layui-btn-primary">{{ trans('py-system::form.reset') }}</button>
@@ -28,7 +28,7 @@
     @endif
 </form>
 <script>
-$(function() {
+$(function () {
     layui.form.render();
     $('#{!! $id !!}').validate(Util.validateConfig({!! $validation !!}, true));
 })

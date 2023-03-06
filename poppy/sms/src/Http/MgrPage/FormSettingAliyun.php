@@ -19,7 +19,7 @@ class FormSettingAliyun extends FormSettingBase
     /**
      * Build a form here.
      */
-    public function form()
+    public function form():void
     {
         $this->text('aliyun_access_key', '阿里云 Key')->rules([
             Rule::nullable(),
