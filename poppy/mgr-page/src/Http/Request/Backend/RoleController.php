@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
@@ -66,14 +67,13 @@ class RoleController extends BackendController
 
     /**
      * Remove the specified resource from storage.
-     * @param string $id 角色id
+     * @param int $id 角色id
      * @return JsonResponse|RedirectResponse|Response
      * @throws Exception
      */
-    public function delete($id)
+    public function delete(int $id)
     {
         $role = $this->action();
-        $id   = (int) $id;
         if (!$role->delete($id)) {
             return Resp::error($role->getError());
         }
@@ -100,12 +100,19 @@ class RoleController extends BackendController
         }
         $permission = (new Role())->permissions($id);
 
-        if (!$permission) {
+        if (!count($permission)) {
             return Resp::error('暂无权限信息(请检查是否初始化权限)！');
         }
+        $groupedPermission = collect($permission)->groupBy(function ($item, $key) {
+            if (Str::contains($key, 'py-')) {
+                return 'poppy';
+            }
+            return 'module';
+        });
+
 
         return view('py-mgr-page::backend.role.menu', [
-            'permission' => $permission,
+            'permission' => $groupedPermission,
             'role'       => $role,
         ]);
     }

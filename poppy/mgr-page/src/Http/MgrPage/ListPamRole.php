@@ -32,7 +32,8 @@ class ListPamRole extends ListBase
             /** @var PamRole $item */
             $item = $actions->row;
             if ($user->can('permission', $item)) {
-                $actions->iframe("权限", route('py-mgr-page:backend.role.menu', [$item->id]))->icon('bi:x-diamond')
+                $actions->iframe("权限", route('py-mgr-page:backend.role.menu', [$item->id]))->icon('x-diamond')
+                    ->large()->height(660)
                     ->tooltip("编辑 [{$item->title}] 权限")->primary();
             }
             if ($user->can('edit', $item)) {

@@ -10,7 +10,17 @@ namespace Poppy\MgrPage\Classes\Operation;
 final class IframeOperation extends Operation
 {
 
-    protected int $width = 550;
+    /**
+     * 宽度
+     * @var int
+     */
+    private int $width = 550;
+
+    /**
+     * 高度
+     * @var int
+     */
+    private int $height = 550;
 
     /**
      * 预览
@@ -20,6 +30,12 @@ final class IframeOperation extends Operation
     public function width(int $width = 550): self
     {
         $this->width = $width;
+        return $this;
+    }
+
+    public function height(int $height = 550): self
+    {
+        $this->height = $height;
         return $this;
     }
 
@@ -40,6 +56,9 @@ final class IframeOperation extends Operation
         $this->classes[] = 'J_iframe';
         if ($this->width) {
             $this->attributes['data-width'] = $this->width;
+        }
+        if ($this->height) {
+            $this->attributes['data-height'] = $this->height;
         }
         return parent::render();
     }
