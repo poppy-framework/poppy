@@ -59,7 +59,7 @@ return [
     "size"             => [
         "numeric" => ":attribute 位数必须是 :size",
         "file"    => ":attribute 大小必须是 :size kb",
-        "string"  => ":attribute 长度必须为 :size characters",
+        "string"  => ":attribute 长度必须为 :size",
     ],
     "unique"           => ":attribute 已经存在了",
     "url"              => ":attribute 格式不正确",

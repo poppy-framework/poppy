@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Http\MgrPage;
 
 use Poppy\Framework\Validation\Rule;
@@ -14,7 +16,7 @@ class FormSettingSite extends FormSettingBase
     /**
      * Build a form here.
      */
-    public function form()
+    public function form(): void
     {
         $this->text('name', '网站名称')->rules([
             Rule::required(),
@@ -28,7 +30,8 @@ class FormSettingSite extends FormSettingBase
         $this->textarea('description', '网站描述')->placeholder('请输入网站描述');
         if ($this->pam) {
             $token = app('tymon.jwt.auth')->fromUser($this->pam);
-        } else {
+        }
+        else {
             $token = '';
         }
         $this->image('logo', 'Logo')->rules([

@@ -4,14 +4,12 @@ declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Http\MgrPage;
 
-use Poppy\Framework\Classes\Traits\KeyParserTrait;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
 class FormSettingLog extends FormSettingBase
 {
-    use KeyParserTrait;
 
-    const DAYS_FOREVER = 'forever';
+    public const DAYS_FOREVER = 'forever';
 
     protected $withContent = true;
 
@@ -22,7 +20,7 @@ class FormSettingLog extends FormSettingBase
     /**
      * Build a form here.
      */
-    public function form()
+    public function form(): void
     {
         $this->radio('days', '保存时间')->options([
             '60'               => '60天',

@@ -77,14 +77,13 @@ class FormBanEstablish extends FormWidget
                 'value'        => $this->item->value,
             ];
         }
-        else {
-            return array_merge($data, [
-                'account_type' => $this->accountType,
-            ]);
-        }
+
+        return array_merge($data, [
+            'account_type' => $this->accountType,
+        ]);
     }
 
-    public function form()
+    public function form(): void
     {
         if ($this->id) {
             $this->hidden('id', '设备id');

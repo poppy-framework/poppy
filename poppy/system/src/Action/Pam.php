@@ -394,6 +394,45 @@ class Pam
         return true;
     }
 
+    /**
+     * 设置登录密码
+     * @param PamAccount $pam    用户
+     * @param string     $mobile 密码
+     * @return bool
+     */
+    public function setMobile(PamAccount $pam, string $mobile): bool
+    {
+        if ($pam->type !== PamAccount::TYPE_BACKEND) {
+            return $this->setError('仅可以重置后台用户的手机号');
+        }
+
+        // 补充自定义的参数
+        $mobile = PamAccount::BACKEND_MOBILE_PREFIX . $mobile;
+
+        $validator = Validator::make([
+            'mobile' => $mobile,
+        ], [
+            'mobile' => [
+                Rule::required(),
+                Rule::mobile(),
+                Rule::unique((new PamAccount())->getTable(), 'mobile')->where(function ($query) use ($pam) {
+                    $query->where('type', PamAccount::TYPE_BACKEND);
+                    if ($pam->id) {
+                        $query->where('id', '!=', $pam->id);
+                    }
+                }),
+            ],
+        ]);
+        if ($validator->fails()) {
+            return $this->setError($validator->messages());
+        }
+
+        $pam->mobile = $mobile;
+        $pam->save();
+
+        return true;
+    }
+
 
     /**
      * 设置备注
@@ -401,7 +440,7 @@ class Pam
      * @param string     $note
      * @return void
      */
-    public function setNote(PamAccount $pam, string $note)
+    public function setNote(PamAccount $pam, string $note): void
     {
         $pam->note = $note;
         $pam->save();

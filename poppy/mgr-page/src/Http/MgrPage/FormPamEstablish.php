@@ -8,50 +8,40 @@ use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Pam;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
+use Route;
+use Throwable;
 
 class FormPamEstablish extends FormWidget
 {
 
     public $ajax = true;
 
-    private $type;
+    private string $type;
 
-    private $id;
+    private int $id = 0;
 
     /**
      * @var PamAccount
      */
     private $item;
 
-    /**
-     * 设置id
-     * @param $id
-     * @return $this
-     */
-    public function setId($id): self
+    public function __construct(array $data = [])
     {
-        $this->id = $id;
-
-        if ($id) {
-            $this->item = PamAccount::find($this->id);
-            if ($this->item) {
-                $this->type = $this->item->type;
-            }
+        parent::__construct($data);
+        $id = (int) Route::input('id');
+        if (!$id) {
+            $this->type = (string) input('type');
         }
-        return $this;
+        if ($id) {
+            $this->id   = $id;
+            $this->item = PamAccount::findOrFail($this->id);
+            $this->type = $this->item->type;
+        }
     }
 
     /**
-     * 设置类型
-     * @param string $type
-     * @return $this
+     * @throws Throwable
      */
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-        return $this;
-    }
-
     public function handle()
     {
         $username = input('username');
@@ -61,8 +51,8 @@ class FormPamEstablish extends FormWidget
         if (!$role_id) {
             return Resp::error('请选择角色');
         }
+        $Pam = new Pam();
         if ($this->item) {
-            $Pam = new Pam();
             if ($password && !$Pam->setPassword($this->item, $password)) {
                 return Resp::error($Pam->getError());
             }
@@ -72,7 +62,6 @@ class FormPamEstablish extends FormWidget
             ]);
         }
 
-        $Pam = new Pam();
         if ($Pam->register($username, $password, $role_id)) {
             return Resp::success('用户添加成功', [
                 '_top_reload' => 1,
@@ -94,7 +83,7 @@ class FormPamEstablish extends FormWidget
         return [];
     }
 
-    public function form()
+    public function form(): void
     {
         if ($this->id) {
             $this->hidden('id', 'ID');

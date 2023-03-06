@@ -241,10 +241,10 @@ class FormWidget implements Renderable
 
     /**
      * Method of the form.
-     *
      * @param string $method
+     * @return FormWidget
      */
-    public function method($method = 'POST')
+    public function method(string $method = 'POST'): self
     {
         if (strtolower($method) === 'put') {
             $this->hidden('_method')->default($method);
@@ -435,7 +435,7 @@ class FormWidget implements Renderable
 
         $form = view('py-mgr-page::tpl.widgets.form', $this->getVariables())->render();
 
-        if (!($title = $this->title()) || !$this->inbox) {
+        if (!$this->inbox || !($title = $this->title())) {
             if ($this->withContent) {
                 return (new Content())->body($form);
             }
@@ -489,7 +489,7 @@ class FormWidget implements Renderable
     /**
      * Initialize the form attributes.
      */
-    protected function initFormAttributes()
+    protected function initFormAttributes(): void
     {
         $this->attributes = [
             'method'         => 'POST',

@@ -82,6 +82,9 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
     const REG_PLATFORM_WEBAPP  = 'webapp';
     const REG_PLATFORM_MGRAPP  = 'mgrapp';
 
+
+    public const BACKEND_MOBILE_PREFIX = '33023-';
+
     protected $table = 'pam_account';
 
     protected $dates = [
@@ -140,13 +143,13 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
     public static function passportType(string $passport): string
     {
         if (UtilHelper::isMobile($passport)) {
-            $type = PamAccount::REG_TYPE_MOBILE;
+            $type = self::REG_TYPE_MOBILE;
         }
         elseif (UtilHelper::isEmail($passport)) {
-            $type = PamAccount::REG_TYPE_EMAIL;
+            $type = self::REG_TYPE_EMAIL;
         }
         else {
-            $type = PamAccount::REG_TYPE_USERNAME;
+            $type = self::REG_TYPE_USERNAME;
         }
         return $type;
     }
@@ -275,9 +278,8 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
             $pamClass = config('poppy.core.rbac.account');
             return new $pamClass();
         }
-        else {
-            return new self();
-        }
+
+        return new self();
     }
 
     /**
@@ -287,6 +289,6 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
      */
     public static function dftMobile($id): string
     {
-        return '33023-' . sprintf("%s%'.07d", '', $id);
+        return self::BACKEND_MOBILE_PREFIX . sprintf("%s%'.07d", '', $id);
     }
 }

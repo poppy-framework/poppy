@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Http\MgrPage;
 
 use Poppy\Framework\Classes\Resp;
@@ -56,7 +58,7 @@ class FormPassword extends FormWidget
     /**
      * Build a form here.
      */
-    public function form()
+    public function form():void
     {
         $this->hidden('account_id', 'account_id');
         $this->password('old_password', '原密码')->rules([

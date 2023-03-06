@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\System\Models\Policies;
 
 use Poppy\System\Models\PamAccount;
+use Poppy\System\Models\PamRole;
 use Poppy\System\Models\SysConfig;
 
 /**
@@ -42,7 +43,19 @@ class PamAccountPolicy
      */
     public function enable(PamAccount $pam, PamAccount $item)
     {
-        return (int) $item->is_enable === SysConfig::NO;
+        return $item->is_enable === SysConfig::NO;
+    }
+
+
+    /**
+     * 设置手机号
+     * @param PamAccount $pam
+     * @param PamAccount $item
+     * @return bool
+     */
+    public function mobile(PamAccount $pam, PamAccount $item)
+    {
+        return $pam->hasRole(PamRole::BE_ROOT);
     }
 
     /**

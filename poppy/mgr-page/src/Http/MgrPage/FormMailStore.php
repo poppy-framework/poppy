@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Http\MgrPage;
 
-use Poppy\Framework\Classes\Traits\KeyParserTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\Field\Link;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
 class FormMailStore extends FormSettingBase
 {
-    use KeyParserTrait;
 
-    public $ajax = true;
     public $inbox = true;
+
     protected $withContent = true;
+
     protected $title = '邮件配置';
 
     protected $group = 'py-system::mail';
@@ -21,7 +22,7 @@ class FormMailStore extends FormSettingBase
     /**
      * Build a form here.
      */
-    public function form()
+    public function form(): void
     {
         $this->boxTools([
             (new Link('发送测试邮件'))->small()->info()->iframe()->url(route('py-mgr-page:backend.mail.test')),

@@ -47,22 +47,18 @@ class RoleController extends BackendController
      */
     public function index()
     {
-        $grid = new Grid(new PamRole());
-        $grid->setLists(ListPamRole::class);
-        return $grid->render();
+        return (new Grid(new PamRole()))
+            ->setLists(ListPamRole::class)->render();
     }
 
     /**
      * 编辑 / 创建
-     * @param null $id 角色id
      * @return mixed
-     * @throws ApplicationException|Throwable
+     * @throws Throwable
      */
-    public function establish($id = null)
+    public function establish()
     {
-        $form = new FormRoleEstablish();
-        $form->setId($id);
-        return $form->render();
+        return (new FormRoleEstablish())->render();
     }
 
     /**

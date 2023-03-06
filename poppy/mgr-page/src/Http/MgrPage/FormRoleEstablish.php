@@ -3,12 +3,12 @@
 namespace Poppy\MgrPage\Http\MgrPage;
 
 use Poppy\Framework\Classes\Resp;
-use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Role;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
+use Route;
 
 class FormRoleEstablish extends FormWidget
 {
@@ -16,44 +16,33 @@ class FormRoleEstablish extends FormWidget
     public $ajax = true;
 
 
-    private $id;
+    private int $id;
 
     /**
      * @var PamRole
      */
-    private $item;
+    private PamRole $item;
 
-    /**
-     * 设置id
-     * @param $id
-     * @return $this
-     * @throws ApplicationException
-     */
-    public function setId($id)
+
+    public function __construct(array $data = [])
     {
+        parent::__construct($data);
+        $id       = (int) Route::input('id');
         $this->id = $id;
         if ($id) {
-            $this->item = PamRole::find($id);
-
-            if (!$this->item) {
-                throw  new ApplicationException('无用户数据');
-            }
+            $this->item = PamRole::findOrFail($id);
         }
-        return $this;
     }
+
 
     public function handle()
     {
         $Role = (new Role());
         $Role->setPam(request()->user());
-        if (is_post()) {
-            if ($Role->establish(request()->all(), $this->id)) {
-                return Resp::success('操作成功', '_top_reload|1;id|' . $Role->getRole()->id);
-            }
-
-            return Resp::error($Role->getError());
+        if ($Role->establish(request()->all(), $this->id)) {
+            return Resp::success('操作成功', '_top_reload|1;id|' . $Role->getRole()->id);
         }
-        $this->id && $Role->init($this->id) && $Role->share();
+        return Resp::error($Role->getError());
     }
 
     public function data(): array
@@ -68,7 +57,7 @@ class FormRoleEstablish extends FormWidget
         return [];
     }
 
-    public function form()
+    public function form(): void
     {
         if ($this->id) {
             $this->select('type', '角色组')->options(PamAccount::kvType())->attribute([

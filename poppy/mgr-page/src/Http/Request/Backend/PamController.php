@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Http\Request\Backend;
 
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
-use Poppy\MgrPage\Classes\Layout\Content;
 use Poppy\MgrPage\Http\MgrPage\FormPamDisable;
 use Poppy\MgrPage\Http\MgrPage\FormPamEnable;
 use Poppy\MgrPage\Http\MgrPage\FormPamEstablish;
+use Poppy\MgrPage\Http\MgrPage\FormPamMobile;
 use Poppy\MgrPage\Http\MgrPage\FormPamNote;
 use Poppy\MgrPage\Http\MgrPage\FormPamPassword;
 use Poppy\MgrPage\Http\MgrPage\FormSettingLog;
@@ -55,37 +58,23 @@ class PamController extends BackendController
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @param null|int $id ID
-     * @throws Throwable
+     * 创建/编辑
      */
-    public function establish($id = null)
+    public function establish()
     {
-        $form = new FormPamEstablish();
-        if (!$id) {
-            $form->setType((string) input('type'));
-        }
-        else {
-            $form->setId($id);
-        }
-        return $form->render();
+        return (new FormPamEstablish())->render();
     }
 
     /**
      * 设置密码
-     * @param int $id 用户ID
-     * @throws Throwable
      */
-    public function password(int $id)
+    public function password()
     {
-        $form = new FormPamPassword();
-        $form->setId($id);
-        return $form->render();
+        return (new FormPamPassword())->render();
     }
 
     /**
      * 设置备注
-     * @throws Throwable
      */
     public function note()
     {
@@ -102,11 +91,16 @@ class PamController extends BackendController
 
     /**
      * 启用用户
-     * @return Content
      */
     public function enable()
     {
         return (new FormPamEnable())->render();
+    }
+
+
+    public function mobile()
+    {
+        return (new FormPamMobile())->render();
     }
 
     /**
@@ -116,15 +110,13 @@ class PamController extends BackendController
      */
     public function log()
     {
-        $grid = new Grid(new PamLog());
-        $grid->setLists(ListPamLog::class);
-        return $grid->render();
+        return (new Grid(new PamLog()))
+            ->setLists(ListPamLog::class)->render();
     }
 
     public function settingLog()
     {
-        $form = new FormSettingLog();
-        return $form->render();
+        return (new FormSettingLog())->render();
     }
 
     /**
@@ -134,9 +126,8 @@ class PamController extends BackendController
      */
     public function token()
     {
-        $grid = new Grid(new PamToken());
-        $grid->setLists(ListPamToken::class);
-        return $grid->render();
+        return (new Grid(new PamToken()))
+            ->setLists(ListPamToken::class)->render();
     }
 
     public function ban($id, $type)
@@ -152,7 +143,7 @@ class PamController extends BackendController
      * 删除用户的指定 Token
      * @param $id
      * @return JsonResponse|RedirectResponse|Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function deleteToken($id)
     {

@@ -130,8 +130,7 @@ class HomeController extends BackendController
      */
     public function setting(string $path = 'poppy.mgr-page', $index = 0)
     {
-        $Setting = new SettingView();
-        return $Setting->render($path, $index);
+        return (new SettingView())->render($path, $index);
     }
 
     /**

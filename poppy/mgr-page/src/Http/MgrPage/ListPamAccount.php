@@ -30,7 +30,7 @@ class ListPamAccount extends ListBase
         $user = Auth::user();
         $this->column('id', "ID")->sortable()->width(80);
         $this->column('username', "用户名")->width(130);
-        $this->column('mobile', "手机号")->width(140);
+        $this->column('mobile', "手机号")->width(160);
         $this->column('email', "邮箱");
         $this->column('login_times', "登录次数")->widthAsId();
         $this->column('created_at', "注册/创建时间")->widthAsDatetime();
@@ -41,9 +41,12 @@ class ListPamAccount extends ListBase
             /** @var PamAccount $item */
             $item = $actions->row;
 
-            $actions->dropdown('编辑', function (Operations $operations) use ($item) {
+            $actions->dropdown('编辑', function (Operations $operations) use ($item, $user) {
                 $operations->iframe('修改密码', route('py-mgr-page:backend.pam.password', [$item->id]))->icon('bi:key')->primary();
                 $operations->iframe('编辑', route_url('py-mgr-page:backend.pam.establish', [$item->id]))->icon('bi:pen')->primary();
+                if ($user->can('mobile', $item)) {
+                    $operations->iframe('修改手机号', route_url('py-mgr-page:backend.pam.mobile', [$item->id]))->icon('phone')->primary();
+                }
                 $operations->iframe('备注', route_url('py-mgr-page:backend.pam.note', [$item->id]))->icon('bi:sticky')->primary();
             })->icon('lay:edit');
             if ($user->can('disable', $item)) {

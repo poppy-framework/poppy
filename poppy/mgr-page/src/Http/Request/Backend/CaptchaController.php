@@ -1,14 +1,14 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Http\Request\Backend;
 
-use Mews\Captcha\Facades\Captcha;
+use DB;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Http\Request\ApiV1\CaptchaController as BaseCaptchaController;
 use Validator;
-use DB;
 
 class CaptchaController extends BackendController
 {
@@ -16,7 +16,7 @@ class CaptchaController extends BackendController
     {
         if (is_post()) {
             $validator = Validator::make(input(), [
-                'passport'   => [
+                'passport' => [
                     Rule::required(),
                     Rule::mobile(),
                 ],

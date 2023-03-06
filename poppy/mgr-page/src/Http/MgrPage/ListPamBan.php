@@ -56,7 +56,7 @@ class ListPamBan extends ListBase
     }
 
 
-    public function quickButtons()
+    public function quickButtons(): Closure
     {
         $type = input(Scope::QUERY_NAME, PamAccount::TYPE_USER);
         return function (Operations $operations) use ($type) {

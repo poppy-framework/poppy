@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Http\Request\Develop;
 
 use Illuminate\Contracts\View\Factory;
@@ -14,7 +16,9 @@ use Poppy\System\Classes\Contracts\ProgressContract;
 use Poppy\System\Classes\Traits\FixTrait;
 
 /**
- * 更新数据
+ * 更新数据,对于数据更新, 稳健的方式是使用命令行
+ * @deprecated 4.2
+ * @removed    5.0
  */
 class ProgressController extends DevelopController
 {

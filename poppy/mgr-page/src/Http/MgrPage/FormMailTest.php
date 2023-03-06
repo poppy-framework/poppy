@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Http\MgrPage;
 
 use Illuminate\Http\Request;
@@ -27,7 +29,7 @@ class FormMailTest extends FormWidget
     /**
      * Build a form here.
      */
-    public function form()
+    public function form(): void
     {
         $this->email('to', '邮箱');
         $this->textarea('content', '内容')->rules([
