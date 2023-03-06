@@ -2026,8 +2026,14 @@
 .alert-danger {
   border-color: #ff5722;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
 .alert-warning {
   border-color: #ffb800;
+}
+.text-primary {
+  color: #009688;
 }
 .text-danger {
   color: #ff5722;
@@ -2035,10 +2041,15 @@
 .text-success {
   color: #5fb878;
 }
-.text-warning {
+.text-disable {
+  color: #ccc;
+}
+.text-warning,
+.text-warm {
   color: #ffb800;
 }
-.text-info {
+.text-info,
+.text-normal {
   color: #1E9FFF;
 }
 /* 系统的缩略图组件

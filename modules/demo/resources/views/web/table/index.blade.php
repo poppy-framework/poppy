@@ -24,21 +24,17 @@
         @include('py-mgr-page::backend.tpl._search')
         {!! Form::close() !!}
 
-        <table class="layui-table">
+        <table class="layui-table" lay-filter="default">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>
+                <th {!! mgr_col() !!}>ID</th>
+                <th {!! mgr_col() !!}>
                     标题
                     {!! Form::order('title') !!}
                 </th>
-                <th>合同模板</th>
-                <th>创建时间</th>
-                <th>签约状态</th>
-                <th>用户手机号</th>
-                <th>用户身份</th>
-                <th>备注</th>
-                <th>操作</th>
+                <th {!! mgr_col() !!}>创建时间</th>
+                <th {!! mgr_col() !!}>更新时间</th>
+                <th {!! mgr_col_actions(170) !!}>操作</th>
             </tr>
             </thead>
             <tbody>
@@ -47,34 +43,21 @@
                     <tr>
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->title }}</td>
-                        <td>{{ $item->updated_at }}</td>
                         <td>{{ $item->created_at }}</td>
+                        <td>{{ $item->updated_at }}</td>
                         <td>
-                            @if($item->buyer_status)
-                                买方已签约
-                            @endif
+                            {!! mgr_op()->copy('复制', $item->title)->primary()->bare()->only()->render(); !!}
 
-                            @if($item->seller_status)
-                                卖方已签约
-                            @endif
-                        </td>
-                        <td>{{ $item->mobile }}</td>
-                        <td>@if($item->mobile === $item->buyer_mobile)
-                                买方
-                            @elseif($item->mobile === $item->seller_mobile)
-                                卖方
-                            @else
-                                -
-                            @endif</td>
-                        <td>
-                            <a href="#" class="J_iframe"
-                                    data-title="{{ $item->title }} 备注" data-height="200">
-                                <i class="fa fa-comment-alt text-success" data-value=""></i>
-                            </a>
-                            {{ $item->note }}
-                        </td>
-                        <td>
+                            {!! mgr_op()->iframe('编辑', '/path/of/id')->only()->primary()->bare()->render(); !!}
 
+                            {!! mgr_actions(function (\Poppy\MgrPage\Classes\Operations $operations) use ($item){
+                                $operations->iframe('跳转', '#')->icon('pencil')->primary();
+                            }) !!}
+
+                            {!! mgr_dropdown('状态', function (\Poppy\MgrPage\Classes\Operations $dd) use ($item){
+                                   $dd->iframe('下拉1-'.$item->id, '#');
+                                   $dd->iframe('下拉2-'.$item->id, '#');
+                            }) !!}
                         </td>
                     </tr>
                 @endforeach
@@ -86,6 +69,7 @@
             </tbody>
         </table>
     </div>
+    {!! mgr_table() !!}
     <div class="clearfix layui-card-pager" align="right">
         {!! $items->render('py-mgr-page::vendor.pagination-layui') !!}
     </div>

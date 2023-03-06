@@ -25,15 +25,15 @@ class WordController extends BackendController
 {
     /**
      * 列表
-     * @return array|JsonResponse|RedirectResponse|\Illuminate\Http\Response|Redirector|Resp|Response|string
+     * @return \Illuminate\Http\Response|JsonResponse|RedirectResponse|string
      * @throws ApplicationException
      * @throws Throwable
      */
     public function index()
     {
-        $grid = new Grid(new SysSensitiveWord());
-        $grid->setLists(ListSysSensitiveWord::class);
-        return $grid->render();
+        return (new Grid(new SysSensitiveWord()))
+            ->setLists(ListSysSensitiveWord::class)
+            ->render();
     }
 
     /**

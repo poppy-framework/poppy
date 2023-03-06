@@ -31,7 +31,7 @@ class ListPoppyOperation extends ListBase
                 $actions->iframe('修改密码(Warm)', DemoDef::IFRAME_INBOX_NONE)->warm();
             }
             if ($item->id % 4 === 0) {
-                $actions->iframe('弹窗打开', DemoDef::IFRAME_INBOX_NONE);
+                $actions->iframe('弹窗打开', DemoDef::IFRAME_INBOX_NONE)->width(428);
                 $actions->iframe('弹窗打开(宽度 normal)', DemoDef::IFRAME_INBOX_NONE)->normal();
                 $actions->iframe('弹窗打开(宽度 large)', DemoDef::IFRAME_INBOX_NONE)->large();
                 $actions->request('请求并刷新', DemoDef::REQ_SUCCESS_RELOAD);

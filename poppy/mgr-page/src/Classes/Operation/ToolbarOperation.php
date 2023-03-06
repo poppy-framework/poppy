@@ -7,7 +7,7 @@ namespace Poppy\MgrPage\Classes\Operation;
 use Illuminate\Support\Str;
 
 /**
- * 网页预览(Iframe)
+ * 工具栏请求事件
  */
 final class ToolbarOperation extends Operation
 {

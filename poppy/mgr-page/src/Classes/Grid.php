@@ -194,7 +194,7 @@ class Grid
      * @param string $order
      * @throws ApplicationException
      */
-    public function setLists(string $grid_class, $field = '', $order = 'desc')
+    public function setLists(string $grid_class, string $field = '', string $order = 'desc'): self
     {
         if (!class_exists($grid_class)) {
             throw new ApplicationException('Grid Class `' . $grid_class . '` Not Exists.');
@@ -222,6 +222,7 @@ class Grid
         $this->filter($List->filter());
         $this->appendQuickButton($List->quickButtons());
         $this->batchActions($List->batchAction());
+        return $this;
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\MgrPage\Classes\Traits;
 
 use Closure;
+use Poppy\MgrPage\Classes\Operation\CopyOperation;
 use Poppy\MgrPage\Classes\Operation\DropdownOperation;
 use Poppy\MgrPage\Classes\Operation\IframeOperation;
 use Poppy\MgrPage\Classes\Operation\PageOperation;
@@ -28,6 +29,21 @@ trait UseInteraction
         });
     }
 
+
+    /**
+     * 复制
+     * @param string $title
+     * @param        $content
+     * @return CopyOperation
+     */
+    public function copy(string $title, $content): CopyOperation
+    {
+        $action = new CopyOperation($title, $content);
+        return tap($action, function () use ($action) {
+            $this->add($action);
+        });
+    }
+
     /**
      * 请求
      * @param string $title
@@ -41,6 +57,7 @@ trait UseInteraction
             $this->add($action);
         });
     }
+
     /**
      * 请求
      * @param string $title

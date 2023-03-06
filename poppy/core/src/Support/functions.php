@@ -178,6 +178,7 @@ if (!function_exists('sys_mark')) {
      * @return string
      * @see        sys_gen_mk()
      * @deprecated 4.1
+     * @removed    5.0
      */
     function sys_mark($object, string $class, $append = '', bool $with_time = false): string
     {

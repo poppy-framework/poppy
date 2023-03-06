@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Str;
 
 /**
+ * @method self bare()          素颜, 不进行样式修饰
  * @method self primary()       主要
  * @method self normal()        默认
  * @method self warm()          暖色
@@ -130,6 +131,12 @@ abstract class Operation implements Renderable
     private string $tooltip = '';
 
     /**
+     * 素颜
+     * @var true
+     */
+    private bool $bare = false;
+
+    /**
      * 创建 Action
      * @param $title
      * @param $url
@@ -204,6 +211,11 @@ abstract class Operation implements Renderable
             return $this;
         }
 
+        if ($method === 'bare') {
+            $this->bare = true;
+            return $this;
+        }
+
         if (in_array($method, [
             'round', 'only',
         ])) {
@@ -243,6 +255,18 @@ abstract class Operation implements Renderable
             $this->attributes['title'] = $this->tooltip;
         }
 
+        // 素颜模式, 移除 layui-btn 的修饰
+        if ($this->bare) {
+            foreach ($this->classes as $k => $v) {
+                if (Str::contains($v, 'layui-btn')) {
+                    unset($this->classes[$k]);
+                }
+            }
+            if ($this->type) {
+                $this->classes[] = 'text-' . $this->type;
+            }
+        }
+
         $this->attributes['class'] = implode(' ', $this->classes);
 
         if ($this->confirm) {
@@ -250,6 +274,9 @@ abstract class Operation implements Renderable
         }
 
         $this->title = $this->createIconTitle();
+        if ($this->renderType === 'tag') {
+            return Html::tag('span', $this->title, $this->attributes)->toHtml();
+        }
         if ($this->renderType === 'link') {
             return Html::link($this->url, $this->title, $this->attributes, null, false)->toHtml();
         }
@@ -265,13 +292,24 @@ abstract class Operation implements Renderable
     {
         if ($this->icon) {
             $isBootstrapIcon = Str::contains($this->icon, 'bi:');
-            if (!$isBootstrapIcon) {
-                $icon = "<i class='fa fa-{$this->icon}'></i>";
-            }
-            else {
+            $isLayuiIcon     = Str::contains($this->icon, 'lay:');
+            $isFaIcon        = Str::contains($this->icon, 'fa:');
+            if ($isBootstrapIcon) {
                 $iconName = Str::after($this->icon, 'bi:');
                 $icon     = "<i class='bi bi-{$iconName}'></i>";
             }
+            else if ($isLayuiIcon) {
+                $iconName = Str::after($this->icon, 'lay:');
+                $icon     = "<i class='layui-icon layui-icon-{$iconName}'></i>";
+            }
+            else if ($isFaIcon) {
+                $iconName = Str::after($this->icon, 'fa:');
+                $icon     = "<i class='fa fa-{$iconName}'></i>";
+            }
+            else {
+                $icon = "<i class='bi bi-{$this->icon}'></i>";
+            }
+
             if ($this->only) {
                 $title = $icon;
             }
