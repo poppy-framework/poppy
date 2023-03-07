@@ -19,19 +19,19 @@ if (!function_exists('mgr_col')) {
         if (!Str::contains($append, 'field')) {
             $field     = Str::random(8);
             $arrData[] = "field:'{$field}'";
+            $arrData[] = $append;
         }
         else {
             $arrData[] = trim($append, ',');
         }
 
         if ($width) {
-            $arrData[] = "width:'{$width}'";
+            $arrData[] = "width:{$width}";
         }
         if ($fixed) {
             $arrData[] = "fixed:'{$fixed}'";
         }
-
-        $strData = implode(', ', $arrData);
+        $strData = implode(', ', array_filter($arrData, fn($item) => trim($item)));
         return "lay-data=\"{{$strData}}\"";
     }
 }
