@@ -44,7 +44,7 @@ if (!function_exists('mgr_col_actions')) {
      * @param string $append
      * @return string
      */
-    function mgr_col_actions(int $width = 0, string $fixed = '', string $append = ''): string
+    function mgr_col_actions(int $width = 0, string $fixed = 'right', string $append = ''): string
     {
         return mgr_col($width, $fixed, "field: '_actions_'" . ($append ? ',' . trim($append, ',') : ''));
     }

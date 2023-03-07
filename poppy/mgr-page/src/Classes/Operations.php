@@ -41,6 +41,30 @@ class Operations implements Renderable
         $this->iframe($title, $url)->icon('plus-circle')->sm();
     }
 
+
+    /**
+     * 编辑
+     * @param string $url
+     * @param string $title
+     * @return void
+     */
+    public function edit(string $url, string $title = '编辑'): void
+    {
+        $this->iframe($title, $url)->icon('pencil')->xs();
+    }
+
+    /**
+     * 删除
+     * @param string $url
+     * @param string $confirm
+     * @param string $title
+     * @return void
+     */
+    public function delete(string $url, string $confirm = '', string $title = '删除'): void
+    {
+        $this->iframe($title, $url)->confirm($confirm)->icon('trash')->danger()->xs();
+    }
+
     /**
      * 设置
      * @param string $url
@@ -52,7 +76,15 @@ class Operations implements Renderable
         $this->iframe($title, $url)->icon('sliders')->sm();
     }
 
-    public function download(string $url, string $title = '下载', $tooltip = ''): void
+
+    /**
+     * 下载
+     * @param string $url
+     * @param string $title
+     * @param string $tooltip
+     * @return void
+     */
+    public function download(string $url, string $title = '下载', string $tooltip = ''): void
     {
         $this->page($title, $url)->icon('download')->sm()->tooltip($tooltip);
     }

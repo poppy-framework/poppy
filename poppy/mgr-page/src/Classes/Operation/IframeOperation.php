@@ -40,12 +40,25 @@ final class IframeOperation extends Operation
     }
 
 
-    public function normal(): self
+    public function widthNormal(): self
     {
         return $this->width(700);
     }
 
+    /**
+     * 大的宽度
+     * @return $this
+     * @see        widthLarge()
+     * @deprecated 4.2
+     * @removed    5.0
+     */
     public function large(): self
+    {
+        return $this->widthLarge();
+    }
+
+
+    public function widthLarge(): self
     {
         return $this->width(850);
     }

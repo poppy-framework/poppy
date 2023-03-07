@@ -32,8 +32,8 @@ class ListPoppyOperation extends ListBase
             }
             if ($item->id % 4 === 0) {
                 $actions->iframe('弹窗打开', DemoDef::IFRAME_INBOX_NONE)->width(428);
-                $actions->iframe('弹窗打开(宽度 normal)', DemoDef::IFRAME_INBOX_NONE)->normal();
-                $actions->iframe('弹窗打开(宽度 large)', DemoDef::IFRAME_INBOX_NONE)->large();
+                $actions->iframe('弹窗打开(宽度 normal)', DemoDef::IFRAME_INBOX_NONE)->widthNormal();
+                $actions->iframe('弹窗打开(宽度 large)', DemoDef::IFRAME_INBOX_NONE)->widthLarge();
                 $actions->request('请求并刷新', DemoDef::REQ_SUCCESS_RELOAD);
                 $actions->page('跳转', DemoDef::IFRAME_INBOX)->primary();
             }

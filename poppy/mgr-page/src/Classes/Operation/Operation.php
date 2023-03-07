@@ -199,8 +199,8 @@ abstract class Operation implements Renderable
     public function __call($method, $args)
     {
         if (in_array($method, [
-            'primary', 'normal', 'warm', 'danger', 'disabled',
-        ])) {
+            'primary', 'normal', 'warm', 'danger', 'disabled', 'empty',
+        ], true)) {
             $this->type = $method;
             return $this;
         }
@@ -230,7 +230,7 @@ abstract class Operation implements Renderable
         // 风格
         $this->attributes['title'] = $this->title;
         if ($this->type) {
-            if ($this->type === 'normal') {
+            if ($this->type === 'empty') {
                 $this->classes['type'] = '';
             }
             else {
@@ -266,6 +266,7 @@ abstract class Operation implements Renderable
                 $this->classes[] = 'text-' . $this->type;
             }
         }
+
 
         $this->attributes['class'] = implode(' ', $this->classes);
 
