@@ -74,8 +74,7 @@ class PamAccountPolicy
     public function beMobile(PamAccount $pam, PamAccount $item): bool
     {
         return $pam->hasRole(PamRole::BE_ROOT) &&
-            $item->type === PamAccount::TYPE_BACKEND &&
-            strlen($item->mobile) === 13;   // 33023-{7}
+            $item->type === PamAccount::TYPE_BACKEND;
     }
 
 
