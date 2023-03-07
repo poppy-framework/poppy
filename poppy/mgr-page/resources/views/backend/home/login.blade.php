@@ -17,17 +17,22 @@
     @include('py-mgr-page::tpl._toastr')
     <div class="layui-container">
         <div class="layui-col-md6 layui-col-md-offset3 layui-col-sm12">
-            {!! Form::open(['class'=> 'layui-form layui-form-pane login-pane']) !!}
+            {!! Form::open(['class'=> 'layui-form login-pane']) !!}
             <fieldset class="layui-elem-field layui-field-title">
                 <legend>{!! sys_setting('py-system::site.site_name') !!}登录</legend>
                 <div class="layui-field-box">
                     @if(!config('poppy.mgr-page.captcha_login'))
-                        <div class="layui-form-item">
+                        <div class="layui-col-sm3 layui-col-xs-12">
                             {!! Form::label('username', '用户名', ['class'=> 'layui-form-label validation']) !!}
-                            <div class="layui-input-block">
-                                {!! Form::text('username', null, ['class'=> 'layui-input']) !!}
+                        </div>
+                        <div class="layui-col-sm12 layui-col-xs12">
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    {!! Form::text('username', null, ['class'=> 'layui-input']) !!}
+                                </div>
                             </div>
                         </div>
+
                         <div class="layui-form-item">
                             {!! Form::label('password', '密码', ['class'=> 'layui-form-label validation']) !!}
                             <div class="layui-input-block">
@@ -36,15 +41,20 @@
                         </div>
                     @endif
                     @if(config('poppy.mgr-page.captcha_login'))
-                        <div class="layui-form-item">
-                            <label for="" class="layui-form-label validation">手机号</label>
-                            <div class="layui-input-block">
+                        <div class="layui-row">
+                            <div class="layui-col-sm3 layui-col-xs-12">
+                                {!! Form::label('mobile', '手机号', ['class'=> 'layui-form-label validation']) !!}
+                            </div>
+                            <div class="layui-col-sm12 layui-col-xs12">
                                 {!! Form::text('mobile', null, ['class' => 'layui-input']) !!}
                             </div>
                         </div>
-                        <div class="layui-form-item">
-                            <label for="" class="layui-form-label validation">图形验证码</label>
-                            <div class="layui-input-block login-captcha">
+
+                        <div class="layui-row">
+                            <div class="layui-col-sm3 layui-col-xs-12">
+                                {!! Form::label('captcha', '图形验证码', ['class'=> 'layui-form-label validation']) !!}
+                            </div>
+                            <div class="layui-col-sm12 layui-col-xs12 login-captcha">
                                 {!! Form::text('captcha', null, ['class' => 'layui-input captcha-input']) !!}
                                 <img src="{{captcha_src()}}" style="cursor: pointer" id="codeImg" alt="captcha"
                                         onclick="this.src='{{captcha_src()}}'+Math.random()">
@@ -53,20 +63,18 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="layui-form-item">
-                            <label for="" class="layui-form-label validation">手机验证码</label>
-                            <div class="layui-input-block  login-captcha">
+
+                        <div class="layui-row">
+                            <div class="layui-col-sm3 layui-col-xs-12">
+                                {!! Form::label('code', '手机验证码', ['class'=> 'layui-form-label validation']) !!}
+                            </div>
+                            <div class="layui-col-sm12 layui-col-xs12 login-captcha">
                                 {!! Form::text('code', null, ['class' => 'layui-input code-input']) !!}
                             </div>
                         </div>
                     @endif
-                    <div class="layui-form-item">
-                        <div class="layui-input-block">
-                            {!! Form::button('登录', [
-                            'class'=> 'layui-btn layui-btn-info J_submit',
-                            'type' => 'submit',
-                        ]) !!}
-                        </div>
+                    <div class="layui-form-item mt5">
+                        {!! Form::button('登录', ['class'=> 'layui-btn layui-btn-info J_submit','type' => 'submit',]) !!}
                     </div>
                 </div>
             </fieldset>
@@ -102,25 +110,27 @@
                     return;
                 }
                 let timerInstance = new easytimer.Timer();
-                timerInstance.start({
-                    countdown: true,
-                    startValues: { seconds: 60 }
-                })
-                $('#send_captcha').html(60)
-                    .addClass('layui-btn-disabled').attr('disabled', true);
+                timerInstance.stop()
+
                 Util.makeRequest('{!! route_url('py-mgr-page:backend.captcha.send') !!}', {
                     mobile: mobile,
                     captcha: captcha
                 }, function (resp) {
                     Util.splash(resp);
                     if (resp.status === 0) {
+                        timerInstance.start({
+                            countdown: true,
+                            startValues: { seconds: 60 }
+                        })
+                        $('#send_captcha').html(60)
+                            .addClass('layui-btn-disabled').attr('disabled', true);
                         timerInstance.addEventListener('secondsUpdated', function (e) {
                             let $send = $('#send_captcha');
                             let seconds = timerInstance.getTimeValues().seconds;
                             if (seconds) {
                                 $send.html(seconds);
                             } else {
-                                $send.html('<i class="bi bi-send"></i> 重新发送')
+                                $send.html('<i class="bi bi-send"></i> 重发')
                                     .removeClass('layui-btn-disabled')
                                     .attr('disabled', false);
                             }

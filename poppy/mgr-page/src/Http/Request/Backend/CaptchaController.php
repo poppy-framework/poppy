@@ -34,8 +34,8 @@ class CaptchaController extends BackendController
             ],
             'captcha' => 'required|captcha',
         ], [], [
-            'mobile' => '手机号',
-            'code'   => '验证码',
+            'mobile'  => '手机号',
+            'captcha' => '验证码',
         ]);
 
         $mobile = input('mobile');

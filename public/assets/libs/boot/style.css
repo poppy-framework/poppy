@@ -2592,6 +2592,9 @@ div.layui-input.layui-input-inline {
   margin-top: calc((100vh - 330px) / 2);
   min-height: 300px;
 }
+.login-pane .layui-form-label {
+  color: #C7CFDA;
+}
 .login-pane .login-captcha .captcha-input {
   width: 80px;
   display: inline-block;
@@ -2604,6 +2607,11 @@ div.layui-input.layui-input-inline {
   width: 84px;
   height: 36px;
   line-height: 36px;
+}
+@media screen and (max-width: 768px) {
+  .login-pane .login-captcha .code-input {
+    width: 100%;
+  }
 }
 .poppy--tip {
   height: 38px;
