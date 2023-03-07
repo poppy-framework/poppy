@@ -186,12 +186,17 @@
                         "thumb": _src //缩略图地址
                     })
                 }
+
+                let index = _.findIndex(urls, function (item){
+                    return item.src === _src;
+                })
+
                 layer.photos({
                     shade: [0.6, '#393d49'],
                     photos: {
                         "title": "预览", //相册标题
                         "id": 1, //相册id
-                        "start": 0, //初始显示的图片序号，默认0
+                        "start": index, //初始显示的图片序号，默认0
                         "data": urls
                     },
                     anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
