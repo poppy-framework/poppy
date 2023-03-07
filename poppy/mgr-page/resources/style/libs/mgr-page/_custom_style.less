@@ -619,10 +619,11 @@ div.layui-input.layui-input-inline {
  * ---------------------------------------- */
 .btn-group-xs > .btn {
     height: 22px;
-    line-height: 22px;
     padding: 0 5px;
     font-size: 12px;
     border-radius: 2px;
+    display: flex;
+    align-items: center;
 }
 
 .layui-btn + .btn-group {
@@ -651,9 +652,32 @@ div.layui-input.layui-input-inline {
 /* 表格的最小高度, 目的是为了对下拉框进行展示
  * ---------------------------------------- */
 .layui-table-view .layui-table-main {
-    min-height: 136px;
+    min-height: 428px;
 }
 
+
+.login-pane {
+    background: rgba(1, 1, 1, 0.1);
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: calc((100vh - 330px) / 2);
+    min-height: 300px;
+    .login-captcha {
+        .captcha-input {
+            width: 80px;
+            display: inline-block;
+        }
+        .code-input {
+            width: 250px;
+            display: inline-block;
+        }
+        .captcha-send {
+            width: 84px;
+            height: 36px;
+            line-height: 36px;
+        }
+    }
+}
 
 .poppy--tip {
     height: 38px;

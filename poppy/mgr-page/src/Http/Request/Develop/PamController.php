@@ -24,7 +24,7 @@ class PamController extends DevelopController
             $password = input('password');
 
             $pam = new Pam();
-            if ($pam->loginCheck($username, $password, PamAccount::GUARD_DEVELOP, true)) {
+            if ($pam->loginCheck($username, $password, PamAccount::GUARD_DEVELOP)) {
                 return Resp::success('登录成功！', '_location|' . route('py-mgr-page:develop.cp.cp'));
             }
 

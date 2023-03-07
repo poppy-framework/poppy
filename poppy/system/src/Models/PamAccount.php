@@ -291,4 +291,15 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
     {
         return self::BACKEND_MOBILE_PREFIX . sprintf("%s%'.07d", '', $id);
     }
+
+
+    /**
+     * 后台手机通行证
+     * @param $mobile
+     * @return string
+     */
+    public static function beMobile($mobile):string
+    {
+        return self::BACKEND_MOBILE_PREFIX . $mobile;
+    }
 }

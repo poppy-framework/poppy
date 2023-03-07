@@ -38,7 +38,7 @@ class Operations implements Renderable
      */
     public function create(string $url, string $title = '新建'): void
     {
-        $this->iframe($title, $url)->icon('bi:plus-circle')->sm();
+        $this->iframe($title, $url)->icon('plus-circle')->sm();
     }
 
     /**
@@ -49,12 +49,12 @@ class Operations implements Renderable
      */
     public function setting(string $url, string $title = '设置'): void
     {
-        $this->iframe($title, $url)->icon('bi:sliders')->sm();
+        $this->iframe($title, $url)->icon('sliders')->sm();
     }
 
     public function download(string $url, string $title = '下载', $tooltip = ''): void
     {
-        $this->page($title, $url)->icon('bi:download')->sm()->tooltip($tooltip);
+        $this->page($title, $url)->icon('download')->sm()->tooltip($tooltip);
     }
 
     /**
@@ -64,7 +64,7 @@ class Operations implements Renderable
      */
     public function toolbarDelete($url): void
     {
-        $this->toolbar('批量删除', $url)->icon('bi:trash')->danger()
+        $this->toolbar('批量删除', $url)->icon('trash')->danger()
             ->confirm("确认删除选中数据 ?")->sm();
     }
 
@@ -75,7 +75,7 @@ class Operations implements Renderable
      */
     public function progress(string $url): void
     {
-        $this->iframe('更新', $url)->icon('bi:columns-gap')->sm();
+        $this->iframe('更新', $url)->icon('columns-gap')->sm();
     }
 
     /**
@@ -86,7 +86,7 @@ class Operations implements Renderable
      */
     public function disable(string $url, string $title): void
     {
-        $this->request('已启用', $url)->icon('bi:check-circle')
+        $this->request('已启用', $url)->icon('check-circle')
             ->confirm("确定要禁用 [{$title}]")->tooltip("当前启用, 点击禁用 [{$title}]")->sm();
     }
 
@@ -98,7 +98,7 @@ class Operations implements Renderable
      */
     public function enable(string $url, string $title): void
     {
-        $this->request('已禁用', $url)->icon('bi:slash-circle')
+        $this->request('已禁用', $url)->icon('slash-circle')
             ->confirm("确定启用 [{$title}]")->tooltip("当前禁用, 点击启用 [{$title}]")->danger()->sm();
     }
 

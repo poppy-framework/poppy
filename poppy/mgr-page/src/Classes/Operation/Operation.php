@@ -149,7 +149,7 @@ abstract class Operation implements Renderable
     }
 
     /**
-     * 设置 ICON 图标, 图标支持 bi 图标, 图标使用 `bi:` 前缀
+     * 设置 ICON 图标,默认支持 bootstrap icon, 可以使用 lay: 前缀来引用 layui 图标
      * @param string $icon ICON 图标
      * @return $this
      */

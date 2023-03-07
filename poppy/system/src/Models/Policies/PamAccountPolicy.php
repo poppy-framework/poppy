@@ -48,17 +48,6 @@ class PamAccountPolicy
 
 
     /**
-     * 设置手机号
-     * @param PamAccount $pam
-     * @param PamAccount $item
-     * @return bool
-     */
-    public function mobile(PamAccount $pam, PamAccount $item)
-    {
-        return $pam->hasRole(PamRole::BE_ROOT);
-    }
-
-    /**
      * 删除
      * @param PamAccount $pam  账号
      * @param PamAccount $item 账号
@@ -73,4 +62,29 @@ class PamAccountPolicy
 
         return !$this->enable($pam, $item);
     }
+
+    //region 后台用户权限
+
+    /**
+     * 设置后台用户通行证
+     * @param PamAccount $pam
+     * @param PamAccount $item
+     * @return bool
+     */
+    public function beMobile(PamAccount $pam, PamAccount $item): bool
+    {
+        return $pam->hasRole(PamRole::BE_ROOT) &&
+            $item->type === PamAccount::TYPE_BACKEND &&
+            strlen($item->mobile) === 13;   // 33023-{7}
+    }
+
+
+    public function beClearMobile(PamAccount $pam, PamAccount $item): bool
+    {
+        return $pam->hasRole(PamRole::BE_ROOT) &&
+            $item->type === PamAccount::TYPE_BACKEND &&
+            strlen($item->mobile) === 17;   // 33023-{11};
+    }
+
+    //endregion
 }

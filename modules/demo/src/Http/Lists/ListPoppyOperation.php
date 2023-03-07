@@ -49,8 +49,8 @@ class ListPoppyOperation extends ListBase
             }
             if ($item->id % 7 === 0) {
                 $actions->request('Icon', DemoDef::REQ_SUCCESS_RELOAD)->icon('radiation');
-                $actions->request('Bi Info', DemoDef::REQ_SUCCESS_RELOAD)->icon('bi:info');
-                $actions->request('Bi Smile', DemoDef::REQ_SUCCESS_RELOAD)->icon('bi:emoji-smile');
+                $actions->request('Bi Info', DemoDef::REQ_SUCCESS_RELOAD)->icon('info');
+                $actions->request('Bi Smile', DemoDef::REQ_SUCCESS_RELOAD)->icon('emoji-smile');
             }
             if ($item->id % 4 === 0) {
                 $actions->request('代码提示', DemoDef::REQ_SUCCESS_RELOAD)->tooltip('代码提示');

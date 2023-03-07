@@ -431,7 +431,7 @@ if (typeof Util !== 'object') {
             }
         }
         objData = Util.toJson(data);
-        if (objData.status == 'error') {
+        if (objData.status !== 0) {
             $(btn_selector).attr('disabled', false);
             if (typeof error_submit != 'undefined') {
                 $(btn_selector).html(error_submit);
@@ -1304,7 +1304,7 @@ if (typeof Util !== 'object') {
         let type = '';
         _.each(arrRules, function (rule) {
             let splitRule = rule.split('|');
-            if (splitRule[1] && _.includes(urlParser.host, splitRule[1]) ) {
+            if (splitRule[1] && _.includes(urlParser.host, splitRule[1])) {
                 type = splitRule[0];
             }
         })

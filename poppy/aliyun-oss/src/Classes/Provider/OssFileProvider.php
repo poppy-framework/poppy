@@ -32,7 +32,7 @@ class OssFileProvider extends DefaultFileProvider
      * 当前仓库
      * @var string
      */
-    private $bucket = '';
+    private string $bucket;
 
     /**
      * OssDefaultUploadProvider constructor.

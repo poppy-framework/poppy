@@ -34,7 +34,7 @@
                 </th>
                 <th {!! mgr_col() !!}>创建时间</th>
                 <th {!! mgr_col() !!}>更新时间</th>
-                <th {!! mgr_col_actions(170) !!}>操作</th>
+                <th {!! mgr_col_actions(180) !!}>操作</th>
             </tr>
             </thead>
             <tbody>

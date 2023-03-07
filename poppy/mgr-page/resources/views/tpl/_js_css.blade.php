@@ -9,9 +9,9 @@ $_type = $_type ?? [];
     {!! Html::style('assets/libs/easy-web/module/admin.css') !!}
 @endif
 @if (true)
-    {!! Html::style('assets/libs/boot/style.css?v=2023-03-02') !!}
+    {!! Html::style('assets/libs/boot/style.css?v=2023-03-07') !!}
     {{--js--}}
-    {!! Html::script('assets/libs/boot/app.min.js?v=2023-03-02') !!}
+    {!! Html::script('assets/libs/boot/app.min.js?v=2023-03-07') !!}
     {!! Html::script('assets/libs/vue/vue.js') !!}
 @endif
 {{-- 加载 layui / layui.all[用于页面的模块化加载] --}}

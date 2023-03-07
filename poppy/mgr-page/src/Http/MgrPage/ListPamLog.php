@@ -50,7 +50,7 @@ class ListPamLog extends ListBase
     public function quickButtons(): Closure
     {
         return function (Operations $operations) {
-            $operations->iframe('日志配置', route_url('py-mgr-page:backend.pam.setting_log'))->icon('bi:sliders')->sm();
+            $operations->iframe('日志配置', route_url('py-mgr-page:backend.pam.setting_log'))->icon('sliders')->sm();
         };
     }
 }

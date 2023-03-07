@@ -28,7 +28,7 @@ class ListSysSensitiveWord extends ListBase
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var SysSensitiveWord $item */
             $item = $actions->row;
-            $actions->request('删除', route('py-sensitive-word:backend.word.delete', [$item->id]))->icon('bi:trash')->danger();
+            $actions->request('删除', route('py-sensitive-word:backend.word.delete', [$item->id]))->icon('trash')->danger();
         },
         ])->width(70)->fixed();
     }

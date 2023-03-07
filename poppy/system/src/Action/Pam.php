@@ -138,6 +138,59 @@ class Pam
         return true;
     }
 
+
+    /**
+     * 后台验证码登录
+     * @param string $mobile  通行证
+     * @param string $captcha 验证码
+     * @return bool
+     */
+    public function beCaptchaLogin(string $mobile, string $captcha): bool
+    {
+        $guard  = PamAccount::GUARD_BACKEND;
+        $initDb = [
+            'mobile'  => $mobile,
+            'captcha' => $captcha,
+        ];
+
+        // 数据验证
+        $validator = Validator::make($initDb, [
+            'mobile'  => [
+                Rule::required(),
+                Rule::mobile(),
+            ],
+            'captcha' => Rule::required(),
+        ]);
+        if ($validator->fails()) {
+            return $this->setError($validator->messages());
+        }
+
+        // 验证账号 + 验证码
+        $verification = new Verification();
+
+        if (!$verification->checkCaptcha($mobile, $captcha)) {
+            return $this->setError($verification->getError()->getMessage());
+        }
+
+        // 判定账号是否存在, 如果不存在则进行注册
+        $beMobile  = PamAccount::beMobile($mobile);
+        $this->pam = PamAccount::where('type', PamAccount::TYPE_BACKEND)->where('mobile', $beMobile)->firstOrFail();
+
+        // 检测权限, 是否被禁用
+        if (!$this->checkIsEnable($this->pam)) {
+            return false;
+        }
+
+        try {
+            event(new LoginBannedEvent($this->pam, $guard));
+        } catch (Throwable $e) {
+            return $this->setError($e);
+        }
+
+        event(new LoginSuccessEvent($this->pam, $guard));
+        return true;
+    }
+
     /**
      * 设置父级ID
      * @param int $parent_id 父级id
@@ -395,15 +448,33 @@ class Pam
     }
 
     /**
-     * 设置登录密码
+     * 清空后台登录用户的手机通行证
+     * @param int $id
+     * @return bool
+     */
+    public function clearMobile(int $id): bool
+    {
+        $pam = PamAccount::findOrFail($id);
+        if (!$this->pam->can('beClearMobile', $pam)) {
+            return $this->setError('你无权操作此账号, 请检查权限和用户类型');
+        }
+
+        $mobile      = PamAccount::dftMobile($pam->id);
+        $pam->mobile = $mobile;
+        $pam->save();
+        return true;
+    }
+
+    /**
+     * 设置后台登录用户的手机通行证
      * @param PamAccount $pam    用户
      * @param string     $mobile 密码
      * @return bool
      */
     public function setMobile(PamAccount $pam, string $mobile): bool
     {
-        if ($pam->type !== PamAccount::TYPE_BACKEND) {
-            return $this->setError('仅可以重置后台用户的手机号');
+        if (!$this->pam->can('beMobile', $pam)) {
+            return $this->setError('你无权操作此账号, 请检查权限和用户类型');
         }
 
         // 补充自定义的参数

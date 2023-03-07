@@ -29,26 +29,26 @@ class Actions extends AbstractDisplayer
 
     public function edit($url): void
     {
-        $this->iframe('编辑', $url)->icon('bi:pen')->primary();
+        $this->iframe('编辑', $url)->icon('pen')->primary();
     }
 
     public function delete($url, $title): void
     {
-        $this->request('删除', $url)->icon('bi:trash')->danger()
+        $this->request('删除', $url)->icon('trash')->danger()
             ->confirm("确认删除 [{$title}]?");
     }
 
 
     public function disable($url, $title): void
     {
-        $this->request('已启用', $url)->icon('bi:check-circle')
+        $this->request('已启用', $url)->icon('check-circle')
             ->confirm("确定要禁用 [{$title}]")->tooltip("当前启用, 点击禁用 [{$title}]");
     }
 
 
     public function enable($url, $title): void
     {
-        $this->request('已禁用', $url)->icon('bi:slash-circle')
+        $this->request('已禁用', $url)->icon('slash-circle')
             ->confirm("确定启用 [{$title}]")->tooltip("当前禁用, 点击启用 [{$title}]")->danger();
     }
 

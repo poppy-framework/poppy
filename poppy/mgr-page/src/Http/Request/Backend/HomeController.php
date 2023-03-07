@@ -63,14 +63,33 @@ class HomeController extends BackendController
         $auth     = $this->auth();
         $username = (string) input('username');
         $password = (string) input('password');
+        $mobile   = (string) input('mobile');
+        $code     = (string) input('code');
         if (is_post()) {
             $Pam = new Pam();
             try {
-                if ($Pam->loginCheck($username, $password, PamAccount::GUARD_BACKEND)) {
-                    $auth->login($Pam->getPam(), true);
-                    return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
+                if ($username) {
+                    if (config('poppy.mgr-page.captcha_login')) {
+                        return Resp::error('请使用手机号+验证码登录');
+                    }
+                    if ($Pam->loginCheck($username, $password, PamAccount::GUARD_BACKEND)) {
+                        $auth->login($Pam->getPam(), true);
+                        return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
+                    }
+                    return Resp::error($Pam->getError());
                 }
-                return Resp::error($Pam->getError());
+                if ($mobile) {
+                    if (!config('poppy.mgr-page.captcha_login')) {
+                        return Resp::error('请使用通行证密码登录');
+                    }
+                    if ($Pam->beCaptchaLogin($mobile, $code)) {
+                        $auth->login($Pam->getPam(), true);
+                        return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
+                    }
+                    return Resp::error($Pam->getError());
+                }
+
+                return Resp::error('请输入通行证账号');
             } catch (ApplicationException $e) {
                 return Resp::error($e->getMessage());
             }

@@ -28,15 +28,16 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
         // backend
         Route::group([
             'prefix' => $this->prefix,
+            'namespace' => 'Poppy\MgrPage\Http\Request\Backend'
         ], function (Router $router) {
-            $router->any('/', 'Poppy\MgrPage\Http\Request\Backend\HomeController@index')
+            $router->any('/', 'HomeController@index')
                 ->middleware('backend-auth')
                 ->name('py-mgr-page:backend.home.index');
-            $router->any('login', 'Poppy\MgrPage\Http\Request\Backend\HomeController@login')
+            $router->any('login', 'HomeController@login')
                 ->middleware('web')
                 ->name('py-mgr-page:backend.home.login');
 
-            $router->any('captcha/send', '\Poppy\MgrPage\Http\Request\Backend\CaptchaController@send')
+            $router->any('captcha/send', 'CaptchaController@send')
                 ->middleware('web')
                 ->name('py-mgr-page:backend.captcha.send');
         });

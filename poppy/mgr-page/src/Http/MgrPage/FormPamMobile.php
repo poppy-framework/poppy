@@ -33,16 +33,19 @@ class FormPamMobile extends FormWidget
         $this->pam = PamAccount::findOrFail($id);
         /** @var PamAccount $user */
         $user = Auth::user();
-        if (!$user->can('mobile', $this->pam)) {
+        if (!$user->can('beMobile', $this->pam)) {
             throw new ApplicationException('你无权修改通行证');
         }
-        
+
     }
 
     public function handle()
     {
         $mobile = input('mobile');
         $Pam    = new Pam();
+        /** @var PamAccount $user */
+        $user = Auth::user();
+        $Pam->setPam($user);
         if (!$Pam->setMobile($this->pam, $mobile)) {
             return Resp::error($Pam->getError());
         }

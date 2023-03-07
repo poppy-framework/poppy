@@ -2026,8 +2026,14 @@
 .alert-danger {
   border-color: #ff5722;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
 .alert-warning {
   border-color: #ffb800;
+}
+.text-primary {
+  color: #009688;
 }
 .text-danger {
   color: #ff5722;
@@ -2035,10 +2041,15 @@
 .text-success {
   color: #5fb878;
 }
-.text-warning {
+.text-disable {
+  color: #ccc;
+}
+.text-warning,
+.text-warm {
   color: #ffb800;
 }
-.text-info {
+.text-info,
+.text-normal {
   color: #1E9FFF;
 }
 /* 系统的缩略图组件
@@ -2547,10 +2558,11 @@ div.layui-input.layui-input-inline {
  * ---------------------------------------- */
 .btn-group-xs > .btn {
   height: 22px;
-  line-height: 22px;
   padding: 0 5px;
   font-size: 12px;
   border-radius: 2px;
+  display: flex;
+  align-items: center;
 }
 .layui-btn + .btn-group {
   margin-left: 10px;
@@ -2571,7 +2583,27 @@ div.layui-input.layui-input-inline {
 /* 表格的最小高度, 目的是为了对下拉框进行展示
  * ---------------------------------------- */
 .layui-table-view .layui-table-main {
-  min-height: 136px;
+  min-height: 428px;
+}
+.login-pane {
+  background: rgba(1, 1, 1, 0.1);
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: calc((100vh - 330px) / 2);
+  min-height: 300px;
+}
+.login-pane .login-captcha .captcha-input {
+  width: 80px;
+  display: inline-block;
+}
+.login-pane .login-captcha .code-input {
+  width: 250px;
+  display: inline-block;
+}
+.login-pane .login-captcha .captcha-send {
+  width: 84px;
+  height: 36px;
+  line-height: 36px;
 }
 .poppy--tip {
   height: 38px;

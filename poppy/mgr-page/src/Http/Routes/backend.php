@@ -41,6 +41,8 @@ Route::group([
         ->name('py-mgr-page:backend.pam.enable');
     $router->any('pam/mobile/{id}', 'PamController@mobile')
         ->name('py-mgr-page:backend.pam.mobile');
+    $router->any('pam/clearMobile/{id}', 'PamController@clearMobile')
+        ->name('py-mgr-page:backend.pam.clear_mobile');
     $router->any('pam/log', 'PamController@log')
         ->name('py-mgr-page:backend.pam.log');
     $router->any('pam/setting_log', 'PamController@settingLog')

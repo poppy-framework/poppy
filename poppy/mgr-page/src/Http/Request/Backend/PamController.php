@@ -22,6 +22,7 @@ use Poppy\MgrPage\Http\MgrPage\ListPamAccount;
 use Poppy\MgrPage\Http\MgrPage\ListPamLog;
 use Poppy\MgrPage\Http\MgrPage\ListPamToken;
 use Poppy\System\Action\Ban;
+use Poppy\System\Action\Pam;
 use Poppy\System\Action\Sso;
 use Poppy\System\Events\PamTokenBanEvent;
 use Poppy\System\Models\PamAccount;
@@ -52,9 +53,8 @@ class PamController extends BackendController
      */
     public function index()
     {
-        $grid = new Grid(new PamAccount());
-        $grid->setLists(ListPamAccount::class);
-        return $grid->render();
+        return (new Grid(new PamAccount()))
+            ->setLists(ListPamAccount::class)->render();
     }
 
     /**
@@ -101,6 +101,16 @@ class PamController extends BackendController
     public function mobile()
     {
         return (new FormPamMobile())->render();
+    }
+
+    public function clearMobile(int $id)
+    {
+        $Pam = new Pam();
+        $Pam->setPam($this->pam());
+        if (!$Pam->clearMobile($id)) {
+            return Resp::error($Pam->getError());
+        }
+        return Resp::success('已清除此用户手机通行证', '_top_reload|1');
     }
 
     /**

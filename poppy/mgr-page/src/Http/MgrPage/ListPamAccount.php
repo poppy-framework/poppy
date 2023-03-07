@@ -42,19 +42,24 @@ class ListPamAccount extends ListBase
             $item = $actions->row;
 
             $actions->dropdown('编辑', function (Operations $operations) use ($item, $user) {
-                $operations->iframe('修改密码', route('py-mgr-page:backend.pam.password', [$item->id]))->icon('bi:key')->primary();
-                $operations->iframe('编辑', route_url('py-mgr-page:backend.pam.establish', [$item->id]))->icon('bi:pen')->primary();
-                if ($user->can('mobile', $item)) {
+                $operations->iframe('修改密码', route('py-mgr-page:backend.pam.password', [$item->id]))->icon('key')->primary();
+                $operations->iframe('编辑', route_url('py-mgr-page:backend.pam.establish', [$item->id]))->icon('pen')->primary();
+                if ($user->can('beMobile', $item)) {
                     $operations->iframe('修改手机号', route_url('py-mgr-page:backend.pam.mobile', [$item->id]))->icon('phone')->primary();
                 }
-                $operations->iframe('备注', route_url('py-mgr-page:backend.pam.note', [$item->id]))->icon('bi:sticky')->primary();
+                if ($user->can('beClearMobile', $item)) {
+                    $operations->request('清空手机号', route_url('py-mgr-page:backend.pam.clear_mobile', [$item->id]))
+                        ->confirm('确认要清空此用户的通行证, 清空之后此用户无法进行登录操作')
+                        ->icon('phone-flip')->danger();
+                }
+                $operations->iframe('备注', route_url('py-mgr-page:backend.pam.note', [$item->id]))->icon('sticky')->primary();
             })->icon('lay:edit');
             if ($user->can('disable', $item)) {
-                $actions->iframe('已启用', route_url('py-mgr-page:backend.pam.disable', [$item->id]))->icon('bi:check-circle')->default()
+                $actions->iframe('已启用', route_url('py-mgr-page:backend.pam.disable', [$item->id]))->icon('check-circle')->default()
                     ->tooltip('当前启用, 点击禁用');
             }
             if ($user->can('enable', $item)) {
-                $actions->iframe('已禁用', route_url('py-mgr-page:backend.pam.enable', [$item->id]))->icon('bi:slash-circle')->danger()
+                $actions->iframe('已禁用', route_url('py-mgr-page:backend.pam.enable', [$item->id]))->icon('slash-circle')->danger()
                     ->tooltip('当前禁用, 点击启用');
             }
         },])->fixed()->width(165);
@@ -99,8 +104,8 @@ class ListPamAccount extends ListBase
         $scope = input(Scope::QUERY_NAME);
         return function (Operations $operations) use ($scope) {
             $operations->page('封禁管理', route_url('py-mgr-page:backend.ban.index', null, [Scope::QUERY_NAME => $scope]))
-                ->icon('bi:slash-circle')->sm();
-            $operations->page('登录凭证', route('py-mgr-page:backend.pam.token'))->icon('bi:person-badge')
+                ->icon('slash-circle')->sm();
+            $operations->page('登录凭证', route('py-mgr-page:backend.pam.token'))->icon('person-badge')
                 ->tooltip('登录用户管理, 开启单点登录可用')->sm();
             $operations->create(route_url('py-mgr-page:backend.pam.establish', null, ['type' => $scope]), '新增账号');
         };
