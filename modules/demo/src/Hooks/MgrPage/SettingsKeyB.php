@@ -2,8 +2,9 @@
 
 namespace Demo\Hooks\MgrPage;
 
+use Demo\Http\Forms\FormSettingAli;
+use Demo\Http\Forms\FormSettingAvatar;
 use Poppy\Core\Services\Contracts\ServiceArray;
-use Poppy\MgrPage\Http\MgrPage\FormSettingPam;
 
 class SettingsKeyB implements ServiceArray
 {
@@ -13,12 +14,13 @@ class SettingsKeyB implements ServiceArray
         return 'demo.key-b';
     }
 
-    public function data():array
+    public function data(): array
     {
         return [
             'title' => 'KEY-B',
             'forms' => [
-                FormSettingPam::class,
+                FormSettingAvatar::class,
+                FormSettingAli::class,
             ],
         ];
     }

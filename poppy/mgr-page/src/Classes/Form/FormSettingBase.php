@@ -16,6 +16,7 @@ use Poppy\Framework\Classes\Traits\KeyParserTrait;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Exceptions\FormException;
+use Poppy\System\Setting\Repository\SettingRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -56,10 +57,10 @@ abstract class FormSettingBase extends FormWidget
     /**
      * @param Request $request
      * @return Response|JsonResponse|RedirectResponse
-     * @throws FormException
      */
     public function handle(Request $request)
     {
+        /** @var SettingRepository $Setting */
         $Setting = app(SettingContract::class);
         $all     = $request->all();
 
@@ -75,11 +76,9 @@ abstract class FormSettingBase extends FormWidget
                 $value = $all[$key];
             }
             $fullKey = $this->group . '.' . $key;
-            $class   = self::class;
-            if (!$this->keyParserMatch($fullKey)) {
-                throw new FormException("Key {$fullKey} Not Match At Group `{$this->group}` In Class `{$class}`");
+            if (!$Setting->set($fullKey, $value)) {
+                return Resp::error($field->label() . '设置不符合规范:' . $Setting->getError()->getMessage());
             }
-            $Setting->set($fullKey, $value);
         }
         return Resp::success('更新配置成功');
     }

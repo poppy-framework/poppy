@@ -112,7 +112,6 @@ class SettingRepository implements SettingContract
                     return false;
                 }
             }
-
             return true;
         }
 
@@ -122,22 +121,26 @@ class SettingRepository implements SettingContract
             ]));
         }
 
-        $record = $this->findRecord($key);
+        $record         = $this->findRecord($key);
+        $serializeValue = serialize($value);
+        if (strlen($serializeValue) >= 65535) {
+            return $this->setError(trans('py-system::util.setting.value_out_of_range'));
+        }
         if (!$record) {
             [$namespace, $group, $item] = $this->parseKey($key);
             SysConfig::create([
                 'namespace' => $namespace,
                 'group'     => $group,
                 'item'      => $item,
-                'value'     => serialize($value),
+                'value'     => $serializeValue,
             ]);
         }
         else {
-            $record->value = serialize($value);
+            $record->value = $serializeValue;
             $record->save();
         }
 
-        self::$rds->hSet(PySystemDef::ckSetting(), $this->convertKey($key), serialize($value));
+        self::$rds->hSet(PySystemDef::ckSetting(), $this->convertKey($key), $serializeValue);
         return true;
     }
 

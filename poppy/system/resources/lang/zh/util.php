@@ -5,7 +5,8 @@ return [
         'send_success' => '发送验证码成功',
     ],
     'setting' => [
-        'key_not_match' => '给定的键 :key 格式不匹配',
+        'key_not_match'      => '给定的键 :key 格式不匹配',
+        'value_out_of_range' => '所设定的内容超长',
     ],
     'classes' => [
         'models' => [
