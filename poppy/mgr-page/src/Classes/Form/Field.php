@@ -597,7 +597,7 @@ class Field implements Renderable
     /**
      * Get column of the field.
      *
-     * @return string|array
+     * @return string
      */
     public function column()
     {

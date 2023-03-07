@@ -7,6 +7,7 @@ namespace Poppy\MgrPage\Http\MgrPage;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
 use Poppy\System\Action\Sso;
+use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\SysConfig;
 
 class FormSettingPam extends FormSettingBase
@@ -25,6 +26,8 @@ class FormSettingPam extends FormSettingBase
         $this->switch('auto_enable', '账号自动解封')->help('账号自动解封, 默认时间 15 分钟执行一次');
         $this->textarea('test_account', '测试账号')->placeholder('请填写测试账号, 每行一个')->help('在此测试账号内的应用, 不需要正确的验证码即可登录');
 
+        /* 单点登录
+         * ---------------------------------------- */
         $this->divider('单点登录设定');
         $this->radio('sso_type', '单点登录类型')->options(Sso::kvType())->stacked()->rules([
             Rule::required(),
@@ -35,6 +38,17 @@ class FormSettingPam extends FormSettingBase
         $this->text('sso_device_num', '最大设备数量')->help('启用数量限制模式时, 非无限模式下的数量限制, 默认最大数量为10')->rules([
             Rule::max(10), Rule::required(), Rule::numeric(),
         ]);
+
+        /* 密码策略
+         * ---------------------------------------- */
+        $this->divider('密码策略');
+        $this->checkbox('develop_pwd_strength', '开发者密码策略')->options(PamAccount::kvPwdStrength());
+        $this->checkbox('backend_pwd_strength', '后台密码策略')->options(PamAccount::kvPwdStrength());
+        $this->checkbox('user_pwd_strength', '用户密码策略')->options(PamAccount::kvPwdStrength())
+            ->help('密码策略: 系统默认密码长度 6-20, 可选范围是 0-9, a-z, A-Z, 特殊字符(*.[]-!@#$%^&()~]+)');
+
+        /* 账号验证码
+         * ---------------------------------------- */
         $this->divider('账号验证码');
         $this->text('captcha_expired', '验证码有效期(分钟)')->rules([
             Rule::integer(),

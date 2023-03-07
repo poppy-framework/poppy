@@ -435,6 +435,10 @@ class Pam
             return $this->setError($validator->messages());
         }
 
+        if (!$this->checkPwdStrength($pam->type, $password)) {
+            return false;
+        }
+
         $key               = Str::random(6);
         $regDatetime       = $pam->created_at->toDateTimeString();
         $cryptPassword     = app(PasswordContract::class)->genPassword($password, $regDatetime, $key);
@@ -727,6 +731,24 @@ class Pam
         }
 
         return $this->setPassword($this->pam, $password);
+    }
+
+    public function checkPwdStrength($type, $password): bool
+    {
+        $key      = "py-system::pam.{$type}_pwd_strength";
+        $strength = (array) sys_setting($key, []);
+        if (!count($strength)) {
+            return true;
+        }
+        $pwdStrength  = PamAccount::pwdStrength($password);
+        $diffStrength = array_diff($strength, $pwdStrength);
+        if (!count($diffStrength)) {
+            return true;
+        }
+        $desc = collect($diffStrength)->map(function ($type) {
+            return PamAccount::kvPwdStrength($type);
+        })->implode(', ');
+        return $this->setError('密码强度不足, 必须包含 ' . $desc);
     }
 
     /**

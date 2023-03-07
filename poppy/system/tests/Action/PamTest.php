@@ -183,4 +183,23 @@ class PamTest extends TestCase
             $this->fail($Pam->getError());
         }
     }
+
+
+    public function testCheckPwdStrength(): void
+    {
+        $Pam  = new Pam();
+        $type = 'user';
+        $key  = "py-system::pam.{$type}_pwd_strength";
+        $old  = sys_setting($key);
+        app('poppy.system.setting')->set($key, array_keys(PamAccount::kvPwdStrength()));
+        $this->assertFalse($Pam->checkPwdStrength($type, '123456'));
+        $this->assertFalse($Pam->checkPwdStrength($type, '123456x'));
+        $this->assertFalse($Pam->checkPwdStrength($type, '123456xX'));
+        $this->assertFalse($Pam->checkPwdStrength($type, '123456*'));
+        $this->assertFalse($Pam->checkPwdStrength($type, '123456*X'));
+        $this->assertFalse($Pam->checkPwdStrength($type, '123456*x'));
+        $this->assertFalse($Pam->checkPwdStrength($type, 'X*x'));
+        $this->assertTrue($Pam->checkPwdStrength($type, 'X*x1'));
+        app('poppy.system.setting')->set($key, $old);
+    }
 }

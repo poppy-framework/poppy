@@ -85,6 +85,12 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
 
     public const BACKEND_MOBILE_PREFIX = '33023-';
 
+
+    public const PWD_NUMBER  = 'number';
+    public const PWD_CHAR    = 'char';
+    public const PWD_CASE    = 'case';
+    public const PWD_SPECIAL = 'special';
+
     protected $table = 'pam_account';
 
     protected $dates = [
@@ -298,8 +304,48 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
      * @param $mobile
      * @return string
      */
-    public static function beMobile($mobile):string
+    public static function beMobile($mobile): string
     {
         return self::BACKEND_MOBILE_PREFIX . $mobile;
+    }
+
+
+    /**
+     * @param null|string $key          Key
+     * @param bool        $check_exists 检测键值是否存在
+     * @return array|string
+     */
+    public static function kvPwdStrength(string $key = null, bool $check_exists = false)
+    {
+        $desc = [
+            self::PWD_NUMBER  => '数字',
+            self::PWD_CHAR    => '字母',
+            self::PWD_CASE    => '大小写字母',
+            self::PWD_SPECIAL => '特殊字符',
+        ];
+        return kv($desc, $key, $check_exists);
+    }
+
+    /**
+     * 密码策略
+     * @param string $password 密码
+     * @return array
+     */
+    public static function pwdStrength(string $password): array
+    {
+        $strength = [];
+        if (preg_match('/\d/', $password)) {
+            $strength[] = self::PWD_NUMBER;
+        }
+        if (preg_match('/[a-zA-Z]/', $password)) {
+            $strength[] = self::PWD_CHAR;
+        }
+        if (preg_match('/[a-z]/', $password) && preg_match('/[A-Z]/', $password)) {
+            $strength[] = self::PWD_CASE;
+        }
+        if (preg_match('/[!@#$%&*?_()^`~.]/', $password) && preg_match('/[A-Z]/', $password)) {
+            $strength[] = self::PWD_SPECIAL;
+        }
+        return $strength;
     }
 }

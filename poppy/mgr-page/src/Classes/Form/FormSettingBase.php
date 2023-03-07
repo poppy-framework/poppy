@@ -16,7 +16,8 @@ use Poppy\Framework\Classes\Traits\KeyParserTrait;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Exceptions\FormException;
-use Poppy\System\Models\PamAccount;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 abstract class FormSettingBase extends FormWidget
 {
@@ -33,11 +34,6 @@ abstract class FormSettingBase extends FormWidget
      * @var bool
      */
     public $inbox = false;
-
-    /**
-     * @var PamAccount
-     */
-    protected $user;
 
     /**
      * 是否显示标题
@@ -66,9 +62,17 @@ abstract class FormSettingBase extends FormWidget
     {
         $Setting = app(SettingContract::class);
         $all     = $request->all();
-        foreach ($all as $key => $value) {
-            if (is_null($value)) {
-                $value = '';
+
+        foreach ($this->fields as $field) {
+            $key = $field->column();
+            if (in_array($field->getType(), ['divider', '_REPLACE_'], true)) {
+                continue;
+            }
+            if (is_null($all[$key] ?? null)) {
+                $value = $field->getType() === 'checkbox' ? [] : '';
+            }
+            else {
+                $value = $all[$key];
             }
             $fullKey = $this->group . '.' . $key;
             $class   = self::class;
@@ -77,22 +81,24 @@ abstract class FormSettingBase extends FormWidget
             }
             $Setting->set($fullKey, $value);
         }
-
         return Resp::success('更新配置成功');
     }
 
     /**
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function data(): array
     {
         $Setting = app(SettingContract::class);
         $data    = [];
         foreach ($this->fields() as $field) {
-            if (Str::startsWith($field->column(), '_')) {
+            $key = $field->column();
+            if (Str::startsWith($key, '_')) {
                 continue;
             }
-            $data[$field->column()] = $Setting->get($this->group . '.' . $field->column());
+            $data[$key] = $Setting->get($this->group . '.' . $key);
         }
         return $data;
     }
