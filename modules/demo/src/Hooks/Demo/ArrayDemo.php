@@ -2,7 +2,7 @@
 
 namespace Demo\Hooks\Demo;
 
-use Demo\Http\Forms\FormSettingAli;
+use Demo\Http\Forms\FormDemoAli;
 use Demo\Http\Forms\FormSettingAvatar;
 use Poppy\Core\Services\Contracts\ServiceArray;
 
@@ -23,7 +23,7 @@ class ArrayDemo implements ServiceArray
         return [
             'title' => 'Demo',
             'forms' => [
-                FormSettingAli::class,
+                FormDemoAli::class,
                 FormSettingAvatar::class,
             ]
         ];

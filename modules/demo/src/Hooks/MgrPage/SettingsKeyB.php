@@ -2,7 +2,7 @@
 
 namespace Demo\Hooks\MgrPage;
 
-use Demo\Http\Forms\FormSettingAli;
+use Demo\Http\Forms\FormDemoAli;
 use Demo\Http\Forms\FormSettingAvatar;
 use Poppy\Core\Services\Contracts\ServiceArray;
 
@@ -20,7 +20,7 @@ class SettingsKeyB implements ServiceArray
             'title' => 'KEY-B',
             'forms' => [
                 FormSettingAvatar::class,
-                FormSettingAli::class,
+                FormDemoAli::class,
             ],
         ];
     }

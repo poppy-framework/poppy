@@ -22,20 +22,19 @@
                 <legend>{!! sys_setting('py-system::site.site_name') !!}登录</legend>
                 <div class="layui-field-box">
                     @if(!config('poppy.mgr-page.captcha_login'))
-                        <div class="layui-col-sm3 layui-col-xs-12">
-                            {!! Form::label('username', '用户名', ['class'=> 'layui-form-label validation']) !!}
-                        </div>
-                        <div class="layui-col-sm12 layui-col-xs12">
-                            <div class="layui-form-item">
-                                <div class="layui-input-block">
-                                    {!! Form::text('username', null, ['class'=> 'layui-input']) !!}
-                                </div>
+                        <div class="layui-row">
+                            <div class="layui-col-sm3 layui-col-xs-12">
+                                {!! Form::label('username', '用户名', ['class'=> 'layui-form-label validation']) !!}
+                            </div>
+                            <div class="layui-col-sm12 layui-col-xs12">
+                                {!! Form::text('username', null, ['class'=> 'layui-input']) !!}
                             </div>
                         </div>
-
-                        <div class="layui-form-item">
-                            {!! Form::label('password', '密码', ['class'=> 'layui-form-label validation']) !!}
-                            <div class="layui-input-block">
+                        <div class="layui-row">
+                            <div class="layui-col-sm3 layui-col-xs-12">
+                                {!! Form::label('password', '密码', ['class'=> 'layui-form-label validation']) !!}
+                            </div>
+                            <div class="layui-col-sm12 layui-col-xs12">
                                 {!! Form::password('password', ['class'=> 'layui-input']) !!}
                             </div>
                         </div>

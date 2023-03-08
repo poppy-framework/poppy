@@ -30,7 +30,7 @@
         {!! $grid->renderFilter() !!}
 
         {{-- Layui Table--}}
-        <table class="layui-hide" id="{!! $id !!}" lay-filter="{!! $id !!}-filter"></table>
+        <table class="layui-hide J_lay_table" id="{!! $id !!}" lay-filter="{!! $id !!}-filter"></table>
     </div>
 </div>
 <script type="text/html" id="{!! $filter_id !!}-toolbar">
