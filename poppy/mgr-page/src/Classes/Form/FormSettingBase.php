@@ -66,7 +66,7 @@ abstract class FormSettingBase extends FormWidget
 
         foreach ($this->fields as $field) {
             $key = $field->column();
-            if (in_array($field->getType(), ['divider', '_REPLACE_'], true)) {
+            if (in_array($field->getType(), ['divider', 'html', 'link'], true)) {
                 continue;
             }
             if (is_null($all[$key] ?? null)) {
