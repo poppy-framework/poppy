@@ -279,7 +279,7 @@ class Pam
             $role = PamRole::whereIn('id', (array) $role_name)->get();
         }
 
-        if (!$role) {
+        if (!$role->count()) {
             return $this->setError(trans('py-system::action.pam.role_not_exists'));
         }
 

@@ -29,7 +29,7 @@ class FormTags extends FormBaseWidget
     public function form()
     {
         $this->tags('tags', 'Tags')
-            ->options(PamRole::getLinear('backend', 'id'))->rules([
+            ->options(PamRole::getLinear('backend'))->rules([
                 Rule::required(),
             ])->help('标签必选且最多选择4项');
         // 添加 code 代码

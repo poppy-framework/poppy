@@ -34,6 +34,11 @@ class Tags extends Field
     protected $max = 1;
 
     /**
+     * @var true
+     */
+    private bool $create = false;
+
+    /**
      * @inheritDoc
      */
     public function fill($data): void
@@ -106,24 +111,21 @@ class Tags extends Field
     {
         $this->addVariables([
             'options' => $this->options,
+            'create'  => $this->create,
         ]);
 
         return parent::render();
     }
 
 
-    public function skeleton(): array
+    /**
+     * 是否允许创建
+     * @return $this
+     */
+    public function create(): self
     {
-        $options = [];
-        collect($this->options)->map(function ($value, $id) use (&$options) {
-            $options[] = [
-                'id'    => $id,
-                'value' => $value,
-            ];
-        })->toArray();
-        return [
-            'options' => $options,
-        ];
+        $this->create = true;
+        return $this;
     }
 
     /**

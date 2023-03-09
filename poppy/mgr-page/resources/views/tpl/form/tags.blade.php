@@ -20,7 +20,7 @@
                 $(function () {
                     new TomSelect('#{!! $id !!}', {
                         plugins: ['remove_button'],
-                        create: true,
+                        create: {!! $create ? 'true' : 'false' !!},
                         maxItems: 50
                     });
                 })

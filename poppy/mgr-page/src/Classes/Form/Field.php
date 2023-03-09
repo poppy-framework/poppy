@@ -1107,11 +1107,6 @@ class Field implements Renderable
         return '';
     }
 
-    public function skeleton(): array
-    {
-        return [];
-    }
-
     /**
      * Format the field column name.
      *
