@@ -197,6 +197,14 @@ class SettingRepository implements SettingContract
     }
 
     /**
+     * @inheritDoc
+     */
+    public function clear(): void
+    {
+        self::$rds->del(PySystemDef::ckSetting());
+    }
+
+    /**
      * 转换 KEY
      * @param $key
      * @return string

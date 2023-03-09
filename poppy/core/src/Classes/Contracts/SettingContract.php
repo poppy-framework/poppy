@@ -29,4 +29,11 @@ interface SettingContract
      * @param mixed        $value 需要设置的值
      */
     public function set(string $key, $value = ''): bool;
+
+
+    /**
+     * 清空所有缓存
+     * @return void
+     */
+    public function clear(): void;
 }
