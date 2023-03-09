@@ -53,20 +53,6 @@ class Pam
     private bool $isRegister = false;
 
     /**
-     * @var string Pam table
-     */
-    private $pamTable;
-
-    public function __construct()
-    {
-        $pamClass = config('poppy.core.rbac.account');
-        if (!$pamClass) {
-            $pamClass = PamAccount::class;
-        }
-        $this->pamTable = (new $pamClass())->getTable();
-    }
-
-    /**
      * @return bool
      */
     public function getIsRegister(): bool
@@ -105,10 +91,13 @@ class Pam
         }
 
         // 验证账号 + 验证码
-        $verification = new Verification();
-
-        if (!$verification->checkCaptcha($passport, $captcha)) {
-            return $this->setError($verification->getError()->getMessage());
+        $Verification = new Verification();
+        // 频率拦截
+        if (!$Verification->isPassThrottle($passport, 10)) {
+            return $this->setError($Verification->getError());
+        }
+        if (!$Verification->checkCaptcha($passport, $captcha)) {
+            return $this->setError($Verification->getError()->getMessage());
         }
 
         // 判定账号是否存在, 如果不存在则进行注册
@@ -226,8 +215,6 @@ class Pam
                 Rule::required(),
                 Rule::string(),
                 Rule::between(6, 50),
-                // 唯一性认证
-                Rule::unique($this->pamTable, $type),
             ],
             'password' => [
                 Rule::string(),
@@ -303,7 +290,12 @@ class Pam
         $initDb['is_enable'] = SysConfig::ENABLE;
 
         // 处理数据库
-        DB::transaction(function () use ($initDb, $role, $password, $hasAccountName, $prefix) {
+        DB::transaction(function () use ($initDb, $role, $password, $hasAccountName, $prefix, $type) {
+
+            if (PamAccount::where($type, $initDb[$type])->exists()) {
+                throw new ApplicationException("账号 {$initDb[$type]} 已存在");
+            }
+
             /** @var PamAccount $pam pam */
             $pam = PamAccount::create($initDb);
 

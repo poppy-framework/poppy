@@ -50,6 +50,9 @@ class CaptchaController extends BackendController
 
         $Verification = new Verification();
         $expired      = (int) sys_setting('py-system::pam.captcha_expired') ?: 5;
+        if (!$Verification->isPassThrottle($mobile)){
+            return Resp::error($Verification->getError());
+        }
         if ($Verification->genCaptcha($mobile, $expired)) {
             $captcha = $Verification->getCaptcha();
             try {

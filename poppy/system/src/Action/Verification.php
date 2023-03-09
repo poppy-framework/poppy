@@ -7,6 +7,7 @@ namespace Poppy\System\Action;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Poppy\Core\Redis\RdsDb;
+use Poppy\Core\Redis\RdsStore;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Helper\EnvHelper;
 use Poppy\Framework\Helper\StrHelper;
@@ -64,7 +65,7 @@ class Verification
         }
         $key = $this->passportKey;
 
-        if ($data = self::$db->get(PySystemDef::ckTagVerificationCaptcha() . ':' . $key)) {
+        if ($data = self::$db->get(PySystemDef::ckTagVerificationCaptcha($key))) {
             if ($data['silence'] > Carbon::now()->timestamp) {
                 $captcha = $data['captcha'];
             }
@@ -76,7 +77,7 @@ class Verification
             'captcha' => $captcha,
             'silence' => Carbon::now()->timestamp + 60,
         ];
-        self::$db->set(PySystemDef::ckTagVerificationCaptcha() . ':' . $key, $data, 'ex', $expired_min * 60);
+        self::$db->set(PySystemDef::ckTagVerificationCaptcha($key), $data, 'ex', $expired_min * 60);
 
         $this->captcha = $captcha;
         return true;
@@ -126,13 +127,25 @@ class Verification
             }
         }
 
-        if ($data = self::$db->get(PySystemDef::ckTagVerificationCaptcha() . ':' . $key)) {
-            if ((string) $data['captcha'] === $captcha) {
-                self::$db->del(PySystemDef::ckTagVerificationCaptcha() . ':' . $key);
-                return true;
-            }
+        if (($data = self::$db->get(PySystemDef::ckTagVerificationCaptcha($key))) && ((string) $data['captcha']) === $captcha) {
+            self::$db->del(PySystemDef::ckTagVerificationCaptcha($key));
+            return true;
         }
         return $this->setError('验证码填写错误');
+    }
+
+    /**
+     * 限流以及提示
+     * @param string $key
+     * @param int    $seconds
+     * @return bool
+     */
+    public function isPassThrottle(string $key, int $seconds = 30): bool
+    {
+        if (RdsStore::inLock('verification:' . $key, $seconds)) {
+            return $this->setError('请勿频繁请求');
+        }
+        return true;
     }
 
 
@@ -149,7 +162,7 @@ class Verification
         }
         $key = $this->passportKey;
 
-        if ($data = self::$db->get(PySystemDef::ckTagVerificationCaptcha() . ':' . $key)) {
+        if ($data = self::$db->get(PySystemDef::ckTagVerificationCaptcha($key))) {
             $this->captcha = $data['captcha'];
             return true;
         }

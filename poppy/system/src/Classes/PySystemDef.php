@@ -53,12 +53,13 @@ class PySystemDef
     }
 
     /**
-     * 验证码
+     * 验证码 KEY
+     * @param string $key
      * @return string
      */
-    public static function ckTagVerificationCaptcha(): string
+    public static function ckTagVerificationCaptcha(string $key = ''): string
     {
-        return 'tag:py-system:verification-captcha';
+        return 'tag:py-system:verification-captcha' . $key ? ':' . $key : '';
     }
 
     /**
