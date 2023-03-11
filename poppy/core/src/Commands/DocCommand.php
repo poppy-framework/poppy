@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Poppy\Core\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Poppy\Core\Events\ApidocGeneratedEvent;
 use Symfony\Component\Console\Input\InputArgument;
@@ -157,7 +158,11 @@ class DocCommand extends Command
             }
         });
 
-        event(new ApidocGeneratedEvent($type));
+        try {
+            event(new ApidocGeneratedEvent($type));
+        } catch (Exception $e) {
+            $this->warn($e->getMessage());
+        }
         $this->info($process->getOutput());
     }
 }
