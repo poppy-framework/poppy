@@ -133,7 +133,7 @@ class SysConfig extends Model
         $tbStatus = (array) sys_setting($statusKey, []);
         $expired  = (int) sys_setting($expiredKey, 0);
 
-        if (!$expired || $expired <= Carbon::now()->timestamp || !isset($tbStatus[$table])) {
+        if (!isset($tbStatus[$table]) || !$expired || $expired <= Carbon::now()->timestamp) {
             app('poppy.system.setting')->set($expiredKey, Carbon::now()->addMinutes(600)->timestamp);
 
             // 重新查询表格是否存在
