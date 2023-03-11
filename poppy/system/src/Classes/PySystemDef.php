@@ -57,9 +57,9 @@ class PySystemDef
      * @param string $key
      * @return string
      */
-    public static function ckTagVerificationCaptcha(string $key = ''): string
+    public static function ckTagVerificationCaptcha(string $key): string
     {
-        return 'tag:py-system:verification-captcha' . ($key ? ':' . $key : '');
+        return 'tag:py-system:verification-captcha:' . $key;
     }
 
     /**
