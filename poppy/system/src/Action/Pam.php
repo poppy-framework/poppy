@@ -93,7 +93,7 @@ class Pam
         // 验证账号 + 验证码
         $Verification = new Verification();
         // 频率拦截
-        if (!$Verification->isPassThrottle($passport, 10)) {
+        if (!$Verification->isPassThrottle($passport, 2)) {
             return $this->setError($Verification->getError());
         }
         if (!$Verification->checkCaptcha($passport, $captcha)) {
