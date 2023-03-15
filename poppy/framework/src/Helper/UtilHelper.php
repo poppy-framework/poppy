@@ -560,7 +560,7 @@ class UtilHelper
      */
     public static function isPwd(string $pwd): bool
     {
-        if (preg_match('/([0-9a-zA-Z_*.\[\]\-!@#$%^&()~]+)/i', $pwd, $match)) {
+        if (preg_match('/([0-9a-zA-Z_.[\]!@#$%^&()~+={};\'":<>?|`,\-\/\\\*]+)/i', $pwd, $match)) {
             return $match[0] === $pwd;
         }
         return false;
