@@ -22,7 +22,7 @@ class Ad
     /**
      * @var string
      */
-    protected $adTable;
+    protected string $adTable;
     /**
      * @var SysAdContent $adContent
      */
