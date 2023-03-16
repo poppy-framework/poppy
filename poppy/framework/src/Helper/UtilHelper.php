@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Poppy\Framework\Helper;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
+use JsonException;
 
 /**
  * 功能函数类
@@ -45,7 +47,7 @@ class UtilHelper
      */
     public static function isEmail(string $email): bool
     {
-        return strlen($email) > 6 && preg_match("/^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/", $email);
+        return strlen($email) > 6 && preg_match("/^[\w\-.]+@[\w\-.]+(\.\w+)+$/", $email);
     }
 
     /**
@@ -55,7 +57,7 @@ class UtilHelper
      */
     public static function isUrl(string $url): bool
     {
-        return (bool) preg_match('/^http(s?):\/\/.*/', $url);
+        return (bool) preg_match('/^http(s?):\/\//', $url);
     }
 
 
@@ -98,7 +100,7 @@ class UtilHelper
      */
     public static function isIp(string $ip): bool
     {
-        return (bool) preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $ip);
+        return (bool) preg_match('/^(\d{1,3}\.){3}\d{1,3}$/', $ip);
     }
 
 
@@ -143,10 +145,10 @@ class UtilHelper
      */
     public static function isMobile(string $mobile): bool
     {
-        if ((strlen($mobile) && is_numeric($mobile)) || Str::startsWith($mobile, ['+86', '86-'])) {
+        if (($mobile !== '' && is_numeric($mobile)) || Str::startsWith($mobile, ['+86', '86-'])) {
             return self::isChMobile($mobile);
         }
-        return (bool) preg_match('/^\+?(\d{1,5})-?\d{6,14}[0-9]$/', $mobile);
+        return (bool) preg_match('/^\+?(\d{1,5})-?\d{6,14}\d$/', $mobile);
     }
 
     /**
@@ -156,7 +158,7 @@ class UtilHelper
      */
     public static function isChMobile(string $mobile): bool
     {
-        return (bool) preg_match("/^(\+86|86-)?1(3|4|5|6|8|7|9)[0-9]\d{8}$/i", $mobile);
+        return (bool) preg_match("/^(\+86|86-)?1(3|4|5|6|8|7|9)\d{9}$/", $mobile);
     }
 
     /**
@@ -178,7 +180,7 @@ class UtilHelper
      */
     public static function isChinese(string $str): bool
     {
-        return (bool) preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $str, $matches);
+        return (bool) preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $str);
     }
 
     /**
@@ -252,7 +254,7 @@ class UtilHelper
      * @param int    $precision 保留小数
      * @return float|string
      */
-    public static function formatDecimal(string $input, $sprinft = true, $precision = 2)
+    public static function formatDecimal(string $input, bool $sprinft = true, int $precision = 2)
     {
         $var = round((float) $input, $precision);
         if ($sprinft) {
@@ -287,7 +289,7 @@ class UtilHelper
             return false;
         }
         $idcard_base = substr($idcard, 0, 17);
-        return !(self::chidVerify($idcard_base) !== strtoupper(substr($idcard, 17, 1)));
+        return !(self::chidVerify($idcard_base) !== strtoupper($idcard[17]));
     }
 
     /**
@@ -313,7 +315,7 @@ class UtilHelper
      * @param string       $son   子元素
      * @return array        返回的排序好的数组
      */
-    public static function genTree($items, $id = 'id', $pid = 'pid', $son = 'children', $reserve_pid = true)
+    public static function genTree($items, string $id = 'id', string $pid = 'pid', string $son = 'children', $reserve_pid = true): array
     {
         $items = self::objToArray($items);
 
@@ -352,26 +354,32 @@ class UtilHelper
      * @param object|array $obj 需要转换的对象
      * @return array
      */
-    public static function objToArray($obj)
+    public static function objToArray($obj): array
     {
-        $arr = json_decode(json_encode($obj), true);
-        foreach ($arr as $k => $v) {
-            if (is_object($v)) {
-                $arr[$k] = self::objToArray($v);
+        try {
+            $arr = json_decode(json_encode($obj, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+            foreach ($arr as $k => $v) {
+                if (is_object($v)) {
+                    $arr[$k] = self::objToArray($v);
+                }
             }
-        }
 
-        return $arr;
+            return $arr;
+        } catch (JsonException $e) {
+            return [];
+        }
     }
 
     /**
-     * 生成 提示信息
+     * 生成 提示信息, 当前已经不使用字符串来生成提示信息
      * @param string       $type    type
      * @param string       $message message
      * @param string|array $append  append
      * @return array
+     * @deprecated 4.2
+     * @removed    5.0
      */
-    public static function genSplash($type = 'success', $message = '', $append = '')
+    public static function genSplash(string $type = 'success', string $message = '', $append = '')
     {
         if ($type === 'success' && !$message) {
             $message = '操作成功';
@@ -397,11 +405,13 @@ class UtilHelper
     }
 
     /**
-     * 返回 sql 中存储的时间信息.
+     * 返回 sql 中存储的时间信息
      * @param int|null $time time
      * @return bool|string
+     * @see        Carbon
+     * @deprecated 4.2
      */
-    public static function sqlTime($time = null)
+    public static function sqlTime(int $time = null)
     {
         if (!$time) {
             $time = EnvHelper::time();
@@ -442,7 +452,7 @@ class UtilHelper
      * @param int $precision 分数
      * @return string
      */
-    public static function formatBytes(int $bytes, $precision = 2): string
+    public static function formatBytes(int $bytes, int $precision = 2): string
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
 
@@ -479,11 +489,11 @@ class UtilHelper
     /**
      * 检测是不是正规版本号
      * @param string $version 版本
-     * @return int
+     * @return bool
      */
-    public static function isVersion(string $version)
+    public static function isVersion(string $version): bool
     {
-        return preg_match("/\d\.\d\..+/", $version);
+        return (bool) preg_match("/\d\.\d\..+/", $version);
     }
 
     /**
@@ -534,9 +544,12 @@ class UtilHelper
      */
     public static function isJson($string): bool
     {
-        json_decode($string);
-
-        return json_last_error() === JSON_ERROR_NONE;
+        try {
+            json_decode($string, false, 512, JSON_THROW_ON_ERROR);
+            return true;
+        } catch (JsonException $e) {
+            return false;
+        }
     }
 
     /**
@@ -573,7 +586,7 @@ class UtilHelper
      */
     public static function isComma(string $str): bool
     {
-        if (preg_match('/^(\d+\,)+\d+$|^\d+$/i', $str)) {
+        if (preg_match('/^(\d+,)+\d+$|^\d+$/', $str)) {
             return true;
         }
 
@@ -587,7 +600,7 @@ class UtilHelper
      * @param string $pid_key
      * @return array
      */
-    private static function removePidAt(array $tree, $child_key = 'children', $pid_key = 'parent_id'): array
+    private static function removePidAt(array $tree, string $child_key = 'children', string $pid_key = 'parent_id'): array
     {
         $return = [];
         foreach ($tree as $k => $ch) {
@@ -617,7 +630,7 @@ class UtilHelper
         $verify_number_list = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
         $checksum           = 0;
         for ($i = 0, $iMax = strlen($id_base); $i < $iMax; $i++) {
-            $checksum += (int) substr($id_base, $i, 1) * $factor[$i];
+            $checksum += (int) $id_base[$i] * $factor[$i];
         }
         $mod = $checksum % 11;
         return $verify_number_list[$mod];
@@ -635,7 +648,7 @@ class UtilHelper
         }
 
         // 如果身份证顺序码是996 997 998 999，这些是为百岁以上老人的特殊编码
-        if (array_search(substr($chid, 12, 3), ['996', '997', '998', '999']) !== false) {
+        if (in_array(substr($chid, 12, 3), ['996', '997', '998', '999'], true)) {
             $chid = substr($chid, 0, 6) . '18' . substr($chid, 6, 9);
         }
         else {

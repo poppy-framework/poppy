@@ -8,13 +8,12 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Poppy\Ad\Action\Place;
 use Poppy\Ad\Http\MgrApp\GridAdPlace;
-use Poppy\Ad\Models\Policies\AdPlacePolicy;
 use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrApp\Classes\Widgets\GridWidget;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 
@@ -26,12 +25,16 @@ class PlaceController extends BackendController
     public function __construct()
     {
         parent::__construct();
-        self::$permission = AdPlacePolicy::getPermissionMap();
+        self::$permission = [
+            'global'    => 'backend:py-ad.place.manage',
+            'establish' => 'backend:py-ad.place.establish',
+        ];
     }
 
     /**
      * 广告位列表
      * @return JsonResponse|RedirectResponse|Response
+     * @throws ApplicationException
      */
     public function index()
     {
@@ -64,7 +67,7 @@ class PlaceController extends BackendController
     /**
      * 删除广告位
      * @param int $id 广告位ID
-     * @return JsonResponse|RedirectResponse|Response|Redirector
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function delete($id)
     {

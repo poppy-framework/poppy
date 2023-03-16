@@ -15,12 +15,12 @@ use Poppy\Version\Classes\PyVersionDef;
 /**
  * User\Models\AppVersion
  *
- * @property int         $id
+ * @property int         $id           ID
  * @property string      $title        版本号
  * @property string      $description  描述
  * @property string      $download_url 下载地址
- * @property int         $is_upgrade   是否强制升级当前版本
- * @property string      $platform     操作平台 android ios
+ * @property int         $is_upgrade   是否强制升级(当前版本)
+ * @property string      $platform     操作平台[android ios]
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @method static Builder|SysAppVersion newModelQuery()

@@ -65,6 +65,7 @@ class ValidationTest extends TestCase
     }
 
 
+
     public function testJson(): void
     {
         $json      = '{}';
@@ -136,7 +137,7 @@ class ValidationTest extends TestCase
         }
     }
 
-    public function testUsername()
+    public function testUsername(): void
     {
         // false
         $str       = '我是中国人---xxx';
@@ -168,6 +169,23 @@ class ValidationTest extends TestCase
         ]);
         if ($validator->fails()) {
             $this->fail($validator->messages()->toJson(JSON_UNESCAPED_UNICODE));
+        }
+        else {
+            $this->assertTrue(true);
+        }
+
+        $pwd       = '[]{}#%^*+=\|~<>-/@';
+        $validator = Validator::make([
+            'password' => $pwd,
+        ], [
+            'password' => [
+                Rule::between(6, 20),
+            ],
+        ], [], [
+            'password' => '密码',
+        ]);
+        if ($validator->fails()) {
+            $this->fail();
         }
         else {
             $this->assertTrue(true);

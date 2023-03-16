@@ -118,6 +118,30 @@ class PermissionManager
         return $this->cachedPermissionNames()->contains($permission);
     }
 
+
+    /**
+     * 缓存的权限 KV
+     * @param string|null $key
+     * @return mixed|string
+     */
+    public function cachedPermissionKv(string $key = null)
+    {
+        static $permissions;
+        if (!$permissions) {
+            $permissions = sys_tag('py-core')->remember(PyCoreDef::ckPermissionKv(), config('cache.ttl', 600), function () {
+                $data = collect();
+                $this->corePermission()->permissions()->each(function (Permission $permission) use ($data) {
+                    $data->put($permission->key(), $permission->description());
+                });
+                return $data->toArray();
+            });
+        }
+        if ($key) {
+            return $permissions[$key] ?? '';
+        }
+        return $permissions;
+    }
+
     /**
      * 缓存的权限
      * @return Collection
@@ -133,7 +157,7 @@ class PermissionManager
      * 清除权限缓存
      * @return void
      */
-    public function clearCachedPermissionNames()
+    public function clearCachedPermissionNames(): void
     {
         sys_tag('py-core')->del(PyCoreDef::ckPermissionNames());
     }
@@ -143,6 +167,7 @@ class PermissionManager
      * @param string $group 获取分组
      * @return Collection
      * @deprecated 4.2 未发现有什么作用
+     * @removed    5.0
      */
     public function defaultPermissions(string $group): Collection
     {

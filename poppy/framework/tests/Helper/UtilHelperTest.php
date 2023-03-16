@@ -21,7 +21,7 @@ class UtilHelperTest extends TestCase
         $this->assertEquals('3.22 MB', $format);
     }
 
-    public function testSizeToBytes()
+    public function testSizeToBytes():void
     {
         $size  = '3.22 K';
         $bytes = UtilHelper::sizeToBytes($size);
@@ -31,7 +31,7 @@ class UtilHelperTest extends TestCase
     /**
      * 验证身份证号
      */
-    public function testIsChid()
+    public function testIsChid():void
     {
         $format = UtilHelper::isChId('110101190001011009');
         $this->assertEquals(true, $format);
@@ -229,8 +229,9 @@ class UtilHelperTest extends TestCase
 
     public function testIsVersion(): void
     {
-        $str = UtilHelper::isVersion('7.2.0');
-        $this->assertEquals(1, $str);
+        $this->assertTrue(UtilHelper::isVersion('7.2.0'));
+        $this->assertTrue(UtilHelper::isVersion('7.2.0-beta'));
+        $this->assertTrue(UtilHelper::isVersion('7.2.0-alpha.1'));
     }
 
     public function testGetDistance(): void
@@ -241,7 +242,6 @@ class UtilHelperTest extends TestCase
 
     public function testGuid(): void
     {
-        // todo li 随机返回 , 验证位数, 验证是否随机返回
         $str    = UtilHelper::guid();
         $result = preg_match('/[A-Z0-9-{}]{38}$/', $str);
         $this->assertEquals(1, $result);
@@ -251,18 +251,18 @@ class UtilHelperTest extends TestCase
     {
         $str = UtilHelper::isJson(json_encode([
             'a' => 'b', 'c' => 'd',
-        ]));
+        ], JSON_THROW_ON_ERROR));
         $this->assertEquals(true, $str);
         $str = UtilHelper::isJson(json_encode([
             'a', 'b',
-        ]));
+        ], JSON_THROW_ON_ERROR));
         $this->assertEquals(true, $str);
 
-        $str = UtilHelper::isJson(json_encode(''));
+        $str = UtilHelper::isJson(json_encode('', JSON_THROW_ON_ERROR));
         $this->assertEquals(true, $str);
-        $str = UtilHelper::isJson(json_encode(true));
+        $str = UtilHelper::isJson(json_encode(true, JSON_THROW_ON_ERROR));
         $this->assertEquals(true, $str);
-        $str = UtilHelper::isJson(json_encode(false));
+        $str = UtilHelper::isJson(json_encode(false, JSON_THROW_ON_ERROR));
         $this->assertEquals(true, $str);
     }
 

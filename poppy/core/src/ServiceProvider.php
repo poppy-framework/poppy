@@ -67,6 +67,7 @@ class ServiceProvider extends PoppyServiceProvider
         $this->commands([
             Commands\PermissionCommand::class,
             Commands\DocCommand::class,
+            Commands\DbCommand::class,
             Commands\OpCommand::class,
             Commands\InspectCommand::class,
             Commands\PersistCommand::class,

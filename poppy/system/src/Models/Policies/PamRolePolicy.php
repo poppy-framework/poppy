@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Models\Policies;
 
+use Poppy\System\Classes\Traits\PolicyTrait;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
 
@@ -12,6 +13,19 @@ use Poppy\System\Models\PamRole;
  */
 class PamRolePolicy
 {
+
+    use PolicyTrait;
+
+    /**
+     * @var array 权限映射
+     */
+    protected static array $permissionMap = [
+        'edit'       => 'backend:py-system.role.manage',
+        'delete'     => 'backend:py-system.role.manage',
+        'create'     => 'backend:py-system.role.manage',
+        'permission' => 'backend:py-system.role.permissions',
+    ];
+
 
     /**
      * 编辑

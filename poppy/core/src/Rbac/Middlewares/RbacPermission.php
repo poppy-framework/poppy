@@ -71,8 +71,8 @@ class RbacPermission
             if ($user->capable($methodPermission)) {
                 return $next($request);
             }
-
-            return Resp::error('用户方法权限访问受限');
+            $title = $this->corePermission()->cachedPermissionKv($methodPermission);
+            return Resp::error("用户无独立 [{$title}] 权限, 无法访问");
         }
 
         /* 全局权限
@@ -82,7 +82,8 @@ class RbacPermission
             if ($user->capable($globalPermission)) {
                 return $next($request);
             }
-            return Resp::error('用户权限访问受限');
+            $title = $this->corePermission()->cachedPermissionKv($globalPermission);
+            return Resp::error("用户无全局 [{$title}] 权限, 无法访问");
         }
         return $next($request);
     }

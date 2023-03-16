@@ -38,6 +38,9 @@
                                                     'title'=> $sv['description'],
                                                     'lay-skin'=>'primary',
                                                 ]) !!}
+                                                @if(input('key'))
+                                                    {!! mgr_op()->copy($sv['key'], $sv['key'])->xs()->bare()->warm()->render() !!}<br>
+                                                @endif
                                             @endforeach
                                         </td>
                                     </tr>

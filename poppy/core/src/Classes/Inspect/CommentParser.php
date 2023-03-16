@@ -93,7 +93,7 @@ class CommentParser
      */
     private function parseVarName(string $str): string
     {
-        if (preg_match('/\s+(\$[a-z0-9]+)\s*/i', $str, $match)) {
+        if (preg_match('/\s+(\$[a-z0-9_]+)\s*/i', $str, $match)) {
             return $match[1];
         }
 
@@ -107,10 +107,10 @@ class CommentParser
      */
     private function parseVarDesc(string $str): string
     {
-        if (preg_match('/\s+\$[a-z0-9]+\s(.*+)/i', $str, $match)) {
+
+        if (preg_match('/\s+\$[a-z0-9_]+\s+(.*+)/i', $str, $match)) {
             return trim($match[1]);
         }
-
         return '';
     }
 }

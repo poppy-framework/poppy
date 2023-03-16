@@ -58,7 +58,7 @@ class Handler extends ExceptionHandler
 
         if ($e instanceof ModelNotFoundException) {
             $message = trans('poppy::resp.model_not_found_exception', [
-                'name' => poppy_friendly($e->getModel()),
+                'name' => poppy_friendly($e->getModel()) . ' id: [ ' . implode(', ', $e->getIds()) . ' ]',
             ]);
             return Resp::error($message);
         }

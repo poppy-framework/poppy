@@ -60,7 +60,7 @@ class RoleController extends BackendController
     /**
      * Remove the specified resource from storage.
      * @param int $id 角色id
-     * @return JsonResponse|RedirectResponse|Resp|Response
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function delete($id)
     {
@@ -74,11 +74,10 @@ class RoleController extends BackendController
 
     /**
      * 菜单列表
-     * @return JsonResponse|RedirectResponse|Resp|Response
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function menu()
     {
-        $form = new FormRolePermission();
-        return $form->resp();
+        return (new FormRolePermission())->resp();
     }
 }

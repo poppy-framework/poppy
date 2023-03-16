@@ -34,7 +34,7 @@ class ListSysAppVersion extends ListBase
             /** @var SysAppVersion $item */
             $item = $actions->row;
             $actions->edit(route('py-version:backend.version.establish', [$item->id]));
-            $actions->delete(route('py-version:backend.version.delete', [$item->id]), "版本:{$item->title}");
+            $actions->delete(route('py-version:backend.version.delete', [$item->id .'1']), "版本:{$item->title}");
         },])->fixed()->width(140);
     }
 

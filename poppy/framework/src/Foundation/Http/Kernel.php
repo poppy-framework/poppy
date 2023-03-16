@@ -6,6 +6,9 @@ namespace Poppy\Framework\Foundation\Http;
 
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode as IlluminateCheckForMaintenanceMode;
+use Illuminate\Foundation\Http\Middleware\TrimStrings as IlluminateTrimStrings;
+use Illuminate\Foundation\Http\Middleware\ValidatePostSize as IlluminateValidatePostSize;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Session\Middleware\StartSession;
@@ -25,9 +28,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
-        'Illuminate\Foundation\Http\Middleware\ValidatePostSize',
-        'Illuminate\Foundation\Http\Middleware\TrimStrings',
+        IlluminateCheckForMaintenanceMode::class,
+        IlluminateValidatePostSize::class,
+        IlluminateTrimStrings::class,
     ];
 
     /**

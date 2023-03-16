@@ -7,8 +7,6 @@ namespace Poppy\Core\Commands;
 use Illuminate\Console\Command;
 use Mail;
 use Poppy\System\Mail\MaintainMail;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 
 /**
@@ -19,7 +17,12 @@ class OpCommand extends Command
     /**
      * @var string 名称
      */
-    protected $name = 'py-core:op';
+    protected $signature = 'py-core:op
+        {do: Maintain type}
+        {--title=: Mail title}
+        {--content=: Mail content}
+        {--file=: Mail attachment file}
+    ';
 
     /**
      * @var string 描述
@@ -55,24 +58,5 @@ class OpCommand extends Command
                 $this->warn('Error type in maintain tool.');
                 break;
         }
-    }
-
-    protected function getArguments(): array
-    {
-        return [
-            ['do', InputArgument::REQUIRED, 'Maintain type.'],
-        ];
-    }
-
-    protected function getOptions(): array
-    {
-        return [
-            ['title', null, InputOption::VALUE_OPTIONAL, 'Mail Title'],
-            ['content', null, InputOption::VALUE_OPTIONAL, 'Mail Content'],
-            ['file', null, InputOption::VALUE_OPTIONAL, 'Mail Content'],
-            ['log', null, InputOption::VALUE_NONE, 'Need Log'],
-            ['type', null, InputOption::VALUE_OPTIONAL, 'Request Type'],
-            ['url', null, InputOption::VALUE_OPTIONAL, 'Request Url'],
-        ];
     }
 }

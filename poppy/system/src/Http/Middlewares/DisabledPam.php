@@ -13,7 +13,9 @@ use Response;
 use Tymon\JWTAuth\JWTGuard;
 
 /**
- * 用户禁用不可访问
+ * 用户禁用不可访问, 此中间件和 sys-auth:xx 合并
+ * @deprecated 4.2
+ * @removed    5.0
  */
 class DisabledPam
 {
@@ -37,9 +39,8 @@ class DisabledPam
                 if ($isJwt) {
                     return Response::make($reason, 401);
                 }
-                else {
-                    return Resp::error($reason);
-                }
+
+                return Resp::error($reason);
             }
         }
 

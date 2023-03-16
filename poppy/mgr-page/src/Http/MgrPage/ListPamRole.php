@@ -26,6 +26,7 @@ class ListPamRole extends ListBase
      */
     public function columns()
     {
+        /** @var PamAccount $user */
         $user = Auth::user();
 
         $this->column('id', "ID")->sortable()->width(80);
@@ -35,7 +36,7 @@ class ListPamRole extends ListBase
             $item = $actions->row;
             if ($user->can('permission', $item)) {
                 $actions->iframe("权限", route('py-mgr-page:backend.role.menu', [$item->id]))->icon('x-diamond')
-                    ->large()->height(660)
+                    ->widthLarge()->height(660)
                     ->tooltip("编辑 [{$item->title}] 权限")->primary();
             }
             if ($user->can('edit', $item)) {

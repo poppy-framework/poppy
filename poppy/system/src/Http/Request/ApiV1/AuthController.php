@@ -203,7 +203,11 @@ class AuthController extends JwtApiController
         $validator = Validator::make([
             'password' => $password,
         ], [
-            'password' => 'required|between:6,20',
+            'password' => [
+                Rule::required(),
+                Rule::string(),
+                Rule::between(6, 20),
+            ],
         ]);
         if ($validator->fails()) {
             return Resp::error($validator->messages());

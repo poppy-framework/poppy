@@ -149,13 +149,9 @@ class Version
      */
     public function init(int $id): bool
     {
-        try {
-            $this->item = SysAppVersion::findOrFail($id);
-            $this->id   = $this->item->id;
-            return true;
-        } catch (Exception $e) {
-            return $this->setError('ID 不合法, 不存在此数据');
-        }
+        $this->item = SysAppVersion::findOrFail($id);
+        $this->id   = $this->item->id;
+        return true;
     }
 
     /**

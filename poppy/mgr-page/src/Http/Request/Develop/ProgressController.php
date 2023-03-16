@@ -48,7 +48,7 @@ class ProgressController extends DevelopController
         })->filter()->each(function ($item) {
             $files = app('files')->files($item['path']);
             foreach ($files as $file) {
-                $name        = FileHelper::removeExtension($file);
+                $name        = FileHelper::removeExtension($file->getFilename());
                 $class       = Str::snake(substr($name, strrpos($name, '/') + 1));
                 $cache_class = sys_setting('py-system::progress.' . Str::snake($class)) ?? [];
                 // 获取 sys_setting 中 已经执行过的类 进行对比 返回 执行过的类

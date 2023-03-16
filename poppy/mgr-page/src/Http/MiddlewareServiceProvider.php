@@ -14,7 +14,6 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-site_open',
             'sys-auth:develop',
             'sys-auth_session',
-            'sys-disabled_pam',
             'sys-mgr-rbac',
         ]);
 
@@ -22,7 +21,6 @@ class MiddlewareServiceProvider extends ServiceProvider
             'web',
             'sys-auth:backend',
             'sys-auth_session',
-            'sys-disabled_pam',
             'sys-ban:backend',
             'sys-mgr-rbac',
         ]);

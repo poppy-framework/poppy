@@ -17,11 +17,11 @@ if (!function_exists('route_url')) {
      * 自定义可以传值的路由写法
      * @param string            $route
      * @param array|string|null $route_params
-     * @param array|null        $params
+     * @param array|string|null $params
      * @param bool              $absolute 是否绝对路径
      * @return string
      */
-    function route_url(string $route = '', $route_params = [], $params = null, $absolute = true): string
+    function route_url(string $route = '', $route_params = [], $params = null, bool $absolute = true): string
     {
         if (is_null($route_params)) {
             $route_params = [];
@@ -91,7 +91,7 @@ if (!function_exists('kv')) {
      * @param bool  $check_key 检查key 是否正常
      * @return array|string
      */
-    function kv(array $desc, $key = null, $check_key = false)
+    function kv(array $desc, $key = null, bool $check_key = false)
     {
         if ($check_key) {
             return isset($desc[$key]);
@@ -114,10 +114,10 @@ if (!function_exists('input')) {
      * </pre>
      * Booleans are converted from strings
      * @param string|null $name
-     * @param string|null $default
+     * @param mixed       $default
      * @return string|array
      */
-    function input($name = null, $default = null)
+    function input(string $name = null, $default = null)
     {
         if ($name === null) {
             return Request::all();
@@ -169,19 +169,18 @@ if (!function_exists('poppy_path')) {
     /**
      * Return the path to the given module file.
      * @param string|null $slug
-     * @param string      $file
+     * @param string|null $file
      * @return string
      */
-    function poppy_path($slug = null, $file = ''): string
+    function poppy_path(string $slug = null, string $file = null): string
     {
         if (Str::contains($slug, 'poppy.')) {
             $modulesPath = app('path.poppy');
-            $dir         = Str::after($slug, '.');
         }
         else {
             $modulesPath = app('path.module');
-            $dir         = Str::after($slug, '.');
         }
+        $dir = Str::after($slug, '.');
 
         $filePath = $file ? '/' . ltrim($file, '/') : '';
 
@@ -197,7 +196,7 @@ if (!function_exists('poppy_class')) {
      * @param string $class
      * @return string
      */
-    function poppy_class(string $slug, $class = ''): string
+    function poppy_class(string $slug, string $class = ''): string
     {
         $type       = Str::before($slug, '.');
         $moduleName = Str::after($slug, '.');
@@ -225,7 +224,7 @@ if (!function_exists('poppy_friendly')) {
         $part1 = $snake->first();
         $part2 = $snake->offsetGet(1);
         if ($part1 === 'poppy') {
-            $namespace = $part2 === 'framework' ? 'poppy' : 'py-' . $part2;
+            $namespace = $part2 === 'framework' ? 'poppy' : 'py-' . Str::slug($part2);
             $path      = $snake->slice(2)->join('.');
         }
         else {
@@ -332,12 +331,11 @@ if (!function_exists('py_faker')) {
      */
     function py_faker(): ?Poppy\Faker\Generator
     {
-        if (class_exists('Poppy\Faker\Factory')) {
+        if (class_exists(Factory::class)) {
             return Factory::create('zh_CN');
         }
-        else {
-            throw new ApplicationException('未安装 `poppy/faker`, 无法生成假数据');
-        }
+
+        throw new ApplicationException('未安装 `poppy/faker`, 无法生成假数据');
     }
 }
 

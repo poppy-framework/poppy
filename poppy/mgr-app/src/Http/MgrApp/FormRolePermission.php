@@ -67,7 +67,7 @@ class FormRolePermission extends FormWidget
         return $data;
     }
 
-    public function form()
+    public function form(): void
     {
         foreach ($this->permission as $key => $permission) {
             $this->divider($permission['title']);

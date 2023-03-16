@@ -67,7 +67,7 @@ class PermissionCommand extends Command
     }
 
 
-    private function lists()
+    private function lists(): void
     {
         $data = new Collection();
         $this->permission->permissions()->each(function (Permission $permission) use ($data) {

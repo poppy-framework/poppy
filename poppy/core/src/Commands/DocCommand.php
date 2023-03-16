@@ -6,7 +6,6 @@ namespace Poppy\Core\Commands;
 use Exception;
 use Illuminate\Console\Command;
 use Poppy\Core\Events\ApidocGeneratedEvent;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\Process;
 
 /**
@@ -96,18 +95,6 @@ class DocCommand extends Command
                 $this->comment('Type is now allowed.');
                 break;
         }
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['type', InputArgument::REQUIRED, ' Support Type [api,phpcs|cs,log,php].'],
-        ];
     }
 
     /**

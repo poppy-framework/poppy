@@ -7,6 +7,7 @@ namespace Poppy\Core\Classes;
 
 class PyCoreDef
 {
+
     public const MIN_DEBUG     = 0;
     public const MIN_ONE_HOUR  = 60;
     public const MIN_SIX_HOUR  = 360;
@@ -33,7 +34,7 @@ class PyCoreDef
      */
     public static function ckLangModels(): string
     {
-        return 'lang-models';
+        return 'tag:py-core:lang-models';
     }
 
     /**
@@ -44,6 +45,15 @@ class PyCoreDef
     public static function ckModule(string $type): string
     {
         return 'module' . ($type ? '-' . $type : '');
+    }
+
+    /**
+     * 权限
+     * @return string
+     */
+    public static function ckPermissionKv(): string
+    {
+        return 'permission-kv';
     }
 
     /**

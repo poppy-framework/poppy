@@ -19,9 +19,6 @@ class AdPlacePolicy
      * @var array 权限映射
      */
     protected static array $permissionMap = [
-        // for controller
-        'establish'  => 'backend:py-ad.place.establish',
-        'global'     => 'backend:py-ad.place.manage',
         // create 操作 必须要有对应的  'backend:py-ad.place.establish' 权限
         'create'     => 'backend:py-ad.place.establish',
         'edit'       => 'backend:py-ad.place.establish',

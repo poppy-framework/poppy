@@ -15,7 +15,6 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-auth:jwt_backend',  // Auth
             'sys-jwt',               // Pwd Changed
             'sys-ban:backend',       // Ban Backend
-            'sys-disabled_pam',      // Pam Disabled
             'sys-mgr-rbac',          // Permission
         ]);
 
@@ -25,7 +24,6 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-auth:jwt_develop',  // Auth
             'sys-jwt',               // Pwd Changed
             'sys-ban:develop',       // Ban Backend
-            'sys-disabled_pam',      // Pam Disabled
             'sys-mgr-rbac',          // Permission
         ]);
     }

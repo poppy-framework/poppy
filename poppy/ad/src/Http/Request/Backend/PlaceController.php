@@ -11,9 +11,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Poppy\Ad\Action\Place;
-use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Ad\Models\Filters\AdPlaceFilter;
-use Poppy\Ad\Models\Policies\AdPlacePolicy;
+use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 
@@ -22,12 +21,6 @@ use Poppy\MgrPage\Http\Request\Backend\BackendController;
  */
 class PlaceController extends BackendController
 {
-    public function __construct()
-    {
-        parent::__construct();
-        self::$permission = AdPlacePolicy::getPermissionMap();
-    }
-
     /**
      * 广告位列表
      * @return Factory|View

@@ -9,12 +9,16 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate as IlluminateAuthenticate;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Models\PamAccount;
+use Poppy\System\Models\SysConfig;
 
 /**
  * Class Authenticate.
  */
 class Authenticate extends IlluminateAuthenticate
 {
+
+    private bool $isJwt = false;
+
     /**
      * 检测跳转地址
      * @param $guards
@@ -44,11 +48,11 @@ class Authenticate extends IlluminateAuthenticate
         try {
             $this->authenticate($request, $guards);
         } catch (AuthenticationException $e) {
-            if ($request->expectsJson()) {
+            if ($this->isJwt || $request->expectsJson()) {
                 return response()->json([
                     'status'  => 401,
-                    'message' => 'Unauthorized',
-                ], 401);
+                    'message' => $e->getMessage(),
+                ], 401, [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             }
 
             if ($location = self::detectLocation($guards)) {
@@ -76,14 +80,20 @@ class Authenticate extends IlluminateAuthenticate
             'web'     => 'jwt_web',
             'develop' => 'jwt_develop',
         ];
-        if ($type = x_header('type')) {
-            if (isset($extendGuards[$type])) {
-                $guards = array_merge($extendGuards, [$extendGuards[$type]]);
-            }
+        if (($type = x_header('type')) && isset($extendGuards[$type])) {
+            $guards = array_merge($extendGuards, [$extendGuards[$type]]);
         }
         foreach ($guards as $guard) {
             if (app('auth')->guard($guard)->check()) {
-                return app('auth')->shouldUse($guard);
+                /** @var PamAccount $user */
+                $user = app('auth')->guard($guard)->user();
+                if ($user->is_enable === SysConfig::NO) {
+                    $reason      = '用户被禁用' . ($user->disable_reason ? ', 原因: ' . $user->disable_reason : '') . ', 解禁时间 : ' . $user->disable_end_at;
+                    $this->isJwt = (bool) jwt_token();
+                    throw new AuthenticationException($reason, $guards);
+                }
+                app('auth')->shouldUse($guard);
+                return true;
             }
         }
         throw new AuthenticationException('Unauthenticated.', $guards);

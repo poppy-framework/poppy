@@ -49,14 +49,28 @@ if (!function_exists('mgr_col_actions')) {
         return mgr_col($width, $fixed, "field: '_actions_'" . ($append ? ',' . trim($append, ',') : ''));
     }
 }
-
-if (!function_exists('mgr_table')) {
+if (!function_exists('mgr_table_open')) {
     /**
-     * Layui Table 初始化
+     * Layui Table 初始化 KEY
      * @param string $filter
      * @return string
      */
-    function mgr_table(string $filter = 'default'): string
+    function mgr_table_open(string $filter = 'default'): string
+    {
+        return <<<HTML
+lay-filter="{$filter}"
+HTML;
+    }
+}
+
+
+if (!function_exists('mgr_table_close')) {
+    /**
+     * Layui Table 初始化 End
+     * @param string $filter
+     * @return string
+     */
+    function mgr_table_close(string $filter = 'default'): string
     {
         return <<<HTML
     <script>

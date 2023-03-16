@@ -8,9 +8,7 @@
             </a>
         </div>
     </div>
-
     <div class="layui-card-body">
-
         {!! Form::model(input(),['method' => 'get', 'class'=> 'layui-form', 'data-pjax', 'pjax-ctr'=> '#main']) !!}
         <div class="layui-input-inline">
             {!! Form::text('title', null, ['placeholder' => '请输入标题（支持模糊搜索）', 'class' => 'layui-input w240']) !!}
@@ -23,8 +21,7 @@
         </div>
         @include('py-mgr-page::backend.tpl._search')
         {!! Form::close() !!}
-
-        <table class="layui-table" lay-filter="default">
+        <table class="layui-table" {!! mgr_table_open() !!}>
             <thead>
             <tr>
                 <th {!! mgr_col() !!}>ID</th>
@@ -38,39 +35,34 @@
             </tr>
             </thead>
             <tbody>
-            @if($items->total())
-                @foreach($items as $item)
-                    <tr>
-                        <td>{{ $item->id }}</td>
-                        <td>{{ $item->title }}</td>
-                        <td>{{ $item->created_at }}</td>
-                        <td>{{ $item->updated_at }}</td>
-                        <td>
-                            {!! mgr_op()->copy('复制', $item->title)->primary()->bare()->only()->render(); !!}
-
-                            {!! mgr_op()->iframe('编辑', '/path/of/id')->only()->primary()->bare()->render(); !!}
-
-                            {!! mgr_actions(function (\Poppy\MgrPage\Classes\Operations $operations) use ($item){
-                                $operations->iframe('跳转', '#')->icon('pencil')->primary();
-                            }) !!}
-
-                            {!! mgr_dropdown('状态', function (\Poppy\MgrPage\Classes\Operations $dd) use ($item){
-                                   $dd->iframe('下拉1-'.$item->id, '#');
-                                   $dd->iframe('下拉2-'.$item->id, '#');
-                            }) !!}
-                        </td>
-                    </tr>
-                @endforeach
-            @else
+            @foreach($items as $item)
                 <tr>
-                    <td colspan="100" align="center">暂无数据</td>
+                    <td>{{ $item->id }}</td>
+                    <td>{{ $item->title }}</td>
+                    <td>{{ $item->created_at }}</td>
+                    <td>{{ $item->updated_at }}</td>
+                    <td>
+
+                        {!! mgr_op()->copy('复制', $item->title)->primary()->bare()->only()->render();!!}
+
+                        {!! mgr_op()->iframe('编辑', '/path/of/id')->only()->primary()->bare()->render(); !!}
+
+                        {!! mgr_actions(function (\Poppy\MgrPage\Classes\Operations $operations) use ($item){
+                            $operations->iframe('跳转', '#')->icon('pencil')->primary();
+                        }) !!}
+
+                        {!! mgr_dropdown('状态', function (\Poppy\MgrPage\Classes\Operations $dd) use ($item){
+                               $dd->iframe('下拉1-'.$item->id, '#');
+                               $dd->iframe('下拉2-'.$item->id, '#');
+                        }) !!}
+                    </td>
                 </tr>
-            @endif
+            @endforeach
             </tbody>
         </table>
     </div>
-    {!! mgr_table() !!}
-    <div class="clearfix layui-card-pager" align="right">
+    {!! mgr_table_close() !!}
+    <div class="clearfix layui-card-pager">
         {!! $items->render('py-mgr-page::vendor.pagination-layui') !!}
     </div>
 @endsection

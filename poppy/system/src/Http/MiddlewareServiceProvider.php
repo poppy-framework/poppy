@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Poppy\System\Http;
 
@@ -45,7 +45,6 @@ class MiddlewareServiceProvider extends ServiceProvider
             'web-base',
             'sys-auth:web',
             'sys-auth_session',
-            'sys-disabled_pam',
         ]);
 
         /* Web + Auth 进行验证
@@ -53,7 +52,6 @@ class MiddlewareServiceProvider extends ServiceProvider
         $router->middlewareGroup('web-with-auth', [
             'sys-auth:web',
             'sys-auth_session',
-            'sys-disabled_pam',
         ]);
 
 
@@ -75,7 +73,6 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-ban:user',     // 禁用
             'sys-sso',          // 单点登录
             'sys-auth:jwt_web', // 用户登录
-            'sys-disabled_pam', // 用户禁用
         ]);
 
 

@@ -35,5 +35,5 @@
             </tbody>
         </table>
     </div>
-    {!! mgr_table() !!}
+    {!! mgr_table_close() !!}
 @endsection

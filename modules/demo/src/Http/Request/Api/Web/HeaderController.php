@@ -1,6 +1,6 @@
 <?php
 
-namespace Demo\Http\Request\Web;
+namespace Demo\Http\Request\Api\Web;
 
 use Poppy\Framework\Application\Controller;
 

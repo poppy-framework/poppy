@@ -223,7 +223,7 @@ class Role
      * @param bool $has_key 是否有值
      * @return array|mixed|Permission
      */
-    public function permissions($id, $has_key = true)
+    public function permissions(int $id, bool $has_key = true)
     {
         $role = PamRole::find($id);
         if (!$role) {
@@ -279,7 +279,6 @@ class Role
                 $item['root'],
                 $item['group'],
                 $item['module'],
-                $item['key'],
                 $item['root_title'],
                 $item['type'],
                 $item['group_title']
