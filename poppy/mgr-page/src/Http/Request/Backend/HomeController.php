@@ -22,6 +22,7 @@ use Poppy\Framework\Helper\StrHelper;
 use Poppy\MgrPage\Classes\Setting\SettingView;
 use Poppy\MgrPage\Http\MgrPage\FormPassword;
 use Poppy\System\Action\Pam;
+use Poppy\System\Events\BePamLogoutEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
 
@@ -126,9 +127,15 @@ class HomeController extends BackendController
      */
     public function logout()
     {
-        Auth::guard(PamAccount::GUARD_BACKEND)->logout();
+        $guard = Auth::guard(PamAccount::GUARD_BACKEND);
+
+        $accountId = $guard->id();
+
+        $guard->logout();
 
         app('session.store')->flush();
+
+        event(new BePamLogoutEvent((int) $accountId));
 
         return Resp::success('退出登录', '_location|' . route('py-mgr-page:backend.home.login'));
     }
