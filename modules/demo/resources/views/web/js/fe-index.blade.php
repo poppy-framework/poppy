@@ -246,3 +246,9 @@ layui.form.render();
         </tr>
     </table>
 </div>
+<fieldset class="layui-elem-field layui-field-title">
+    <legend>J_Request (请求完成后调用 Top 回调)</legend>
+</fieldset>
+<a href="/demo/js?type=top-request" class="layui-btn J_request">
+    Top 回调
+</a>

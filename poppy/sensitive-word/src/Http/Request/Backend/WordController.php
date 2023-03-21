@@ -42,14 +42,13 @@ class WordController extends BackendController
      */
     public function establish()
     {
-        $form = new FormSensWordEstablish();
-        return $form->render();
+        return (new FormSensWordEstablish())->render();
     }
 
     /**
      * 删除
      * @param $id
-     * @return array|JsonResponse|RedirectResponse|\Illuminate\Http\Response|Redirector|Resp|Response
+     * @return \Illuminate\Http\Response|JsonResponse|RedirectResponse
      * @throws \Exception
      */
     public function delete($id = null)
@@ -59,7 +58,7 @@ class WordController extends BackendController
         if (!$Word->delete($id)) {
             return Resp::error($Word->getError());
         }
-        return Resp::success('删除成功', '_top_reload|1');
+        return Resp::success('删除成功', '_reload|1');
     }
 
     /**

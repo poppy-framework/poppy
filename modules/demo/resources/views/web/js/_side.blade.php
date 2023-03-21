@@ -17,11 +17,6 @@
 			Pjax 示例
 		</a>
 	</li>
-	<li>
-		<a href="?type=top" class="J_ignore">
-			Iframe 打开再调用 Top 实例
-		</a>
-	</li>
 </ul>
 <hr>
 <h4>前端组件</h4>
