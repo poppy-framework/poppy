@@ -27,7 +27,6 @@ class PlaceController extends BackendController
         parent::__construct();
         self::$permission = [
             'global'    => 'backend:py-ad.place.manage',
-            'establish' => 'backend:py-ad.place.establish',
         ];
     }
 

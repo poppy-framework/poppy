@@ -20,10 +20,10 @@ class AdPlacePolicy
      */
     protected static array $permissionMap = [
         // create 操作 必须要有对应的  'backend:py-ad.place.establish' 权限
-        'create'     => 'backend:py-ad.place.establish',
-        'edit'       => 'backend:py-ad.place.establish',
-        'delete'     => 'backend:py-ad.place.delete',
-        'permission' => 'backend:py-ad.place.permission',
+        'create'     => 'backend:py-ad.place.manage',
+        'edit'       => 'backend:py-ad.place.manage',
+        'delete'     => 'backend:py-ad.place.manage',
+        'permission' => 'backend:py-ad.place.manage',
     ];
 
     /**

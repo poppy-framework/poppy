@@ -9,4 +9,4 @@ backend :
         -
           title : 广告位管理
           route : py-ad:backend.place.index
-          permission : backend:poppy-ad.place.manage
+          permission : backend:py-ad.place.manage

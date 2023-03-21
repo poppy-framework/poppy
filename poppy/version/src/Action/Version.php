@@ -47,9 +47,10 @@ class Version
         $this->table = (new SysAppVersion())->getTable();
     }
 
-    public function allowCopy()
+    public function allowCopy(): self
     {
         $this->allowCopy = true;
+        return $this;
     }
 
     public function establish($data, $id = null): bool

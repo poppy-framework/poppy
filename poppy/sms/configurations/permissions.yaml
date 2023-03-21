@@ -1,13 +1,13 @@
 -
-  title: 阿里云短信
-  description: 管理阿里云短信
-  slug: backend:py-sms
-  groups:
+  title : 短信
+  description : 短信管理
+  slug : backend:py-sms
+  groups :
     -
-      slug: sms
-      title: 短信管理
-      description: 短信管理
-      permissions:
+      slug : global
+      title : 短信管理
+      description : 短信管理
+      permissions :
         -
-          slug: manage
-          description: 短信管理
+          slug : manage
+          description : 短信管理

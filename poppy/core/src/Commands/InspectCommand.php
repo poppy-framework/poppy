@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\Core\Commands;
 
+use Artisan;
 use Illuminate\Console\Command;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
@@ -101,8 +102,8 @@ class InspectCommand extends Command
                 }
                 $this->inspectAction($slug);
                 break;
-            case 'permission':
-                $this->inspectPermission();
+            case 'perms':
+                $this->inspectPerms();
                 break;
             case 'seo':
                 $this->inspectSeo();
@@ -608,7 +609,7 @@ class InspectCommand extends Command
         $files = app('files')->allFiles($directory);
 
         foreach ($files as $file) {
-            $pathName   = $file->getPathname();
+            $pathName = $file->getPathname();
 
             if (!preg_match('/Action\/(\w+)\.php/', $pathName, $match)) {
                 continue;
@@ -680,10 +681,12 @@ class InspectCommand extends Command
 
 
     /**
-     * 把所有的业务逻辑都列出来
+     * 权限定义和控制器对比
      */
-    private function inspectPermission(): void
+    private function inspectPerms(): void
     {
+
+        Artisan::call('poppy:optimize');
 
         $permissions = [];
         app('poppy')->enabled()->each(function ($module, $slug) use (&$permissions) {
@@ -714,6 +717,33 @@ class InspectCommand extends Command
             }
         });
 
+
+        $menus = $this->coreModule()->menus();
+
+
+        $menus->each(function ($menu) use (&$permissions) {
+
+            $groups = $menu['groups'] ?? [];
+            foreach ($groups as $group) {
+                $gc = $group['children'] ?? [];
+                if (count($gc)) {
+                    foreach ($gc as $gi) {
+                        if ($gi['permission'] ?? '') {
+                            $permissions[] = $gi['permission'] ?? '';
+                        }
+                        $gcc = $gi['children'] ?? [];
+                        if (count($gcc)) {
+                            foreach ($gcc as $gci) {
+                                if ($gci['permission'] ?? '') {
+                                    $permissions[] = $gci['permission'] ?? '';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         $definedPermissions = $this->corePermission()->cachedPermissionNames();
 
         $notUsed = array_diff($definedPermissions->toArray(), $permissions);
@@ -721,9 +751,9 @@ class InspectCommand extends Command
         $notDefined = array_diff($permissions, $definedPermissions->toArray());
 
 
-        $this->table(['Permission Not Used'], collect($notUsed)->map(fn($item) => [$item]));
+        $this->table(['Permission Defined But Not Used'], collect($notUsed)->map(fn($item) => [$item]));
 
-        $this->table(['Permission Not Defined'], collect($notDefined)->map(fn($item) => [$item]));
+        $this->table(['Permission Used But Not Defined'], collect($notDefined)->map(fn($item) => [$item]));
     }
 
     /**

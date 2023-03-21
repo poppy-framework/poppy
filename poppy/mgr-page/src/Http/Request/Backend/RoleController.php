@@ -35,7 +35,6 @@ class RoleController extends BackendController
 
         self::$permission = [
             'global' => 'backend:py-system.role.manage',
-            'delete' => 'backend:py-system.role.delete',
             'menu'   => 'backend:py-system.role.permissions',
         ];
     }
