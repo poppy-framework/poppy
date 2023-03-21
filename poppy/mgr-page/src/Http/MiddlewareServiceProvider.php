@@ -14,7 +14,7 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-site_open',
             'sys-auth:develop',
             'sys-auth_session',
-            'sys-mgr-rbac',
+            'sys-rbac',
         ]);
 
         $router->middlewareGroup('backend-auth', [
@@ -22,7 +22,7 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-auth:backend',
             'sys-auth_session',
             'sys-ban:backend',
-            'sys-mgr-rbac',
+            'sys-rbac',
         ]);
     }
 }

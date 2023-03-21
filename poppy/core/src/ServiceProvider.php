@@ -46,6 +46,7 @@ class ServiceProvider extends PoppyServiceProvider
 
         $this->app->register(Module\ModuleServiceProvider::class);
         $this->app->register(Rbac\RbacServiceProvider::class);
+        $this->app->register(Http\MiddlewareServiceProvider::class);
 
         $this->registerConsole();
 

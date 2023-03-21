@@ -9,8 +9,8 @@ if (typeof Util !== 'object') {
     Util = {};
 }
 
-
 (function ($) {
+
     if (typeof $.validator !== 'undefined') {
 
         $.validator.addMethod("mobile", function (phone_number, element) {
@@ -378,6 +378,12 @@ if (typeof Util !== 'object') {
                 $topPjax.submit();
             } else {
                 $('form[data-pjax]').submit();
+            }
+        }
+
+        if (obj_data._top) {
+            if (typeof top.window._app !== 'undefined'){
+                typeof top.window._app(obj_resp);
             }
         }
 

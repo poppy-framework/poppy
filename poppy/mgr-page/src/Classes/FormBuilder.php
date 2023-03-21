@@ -980,7 +980,7 @@ HTML;
 {$select}
 <script>
 $(function() {
-    new TomSelect('#{!! $id !!}', {
+    new TomSelect('#{$id}', {
         plugins: ['remove_button'],
         create: true,
         maxItems: 50

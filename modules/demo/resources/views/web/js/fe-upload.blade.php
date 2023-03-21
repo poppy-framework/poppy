@@ -11,7 +11,7 @@
 	<legend>图片地址(生成随机图片地址, 布局使用)</legend>
 </fieldset>
 <div>
-	{!! Html::image($faker->phUrl(100, 50)) !!}
+	{!! Html::image($faker->imageUrl(100, 50)) !!}
 </div>
 <pre class="layui-code"><?php echo '{!! ' ?> Html::image($faker->phUrl(100, 50)) !!}</pre>
 {{--生成图片地址--}}

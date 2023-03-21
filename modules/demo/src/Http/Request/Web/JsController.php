@@ -43,6 +43,13 @@ class JsController extends WebController
         if ($type === 'pjax-error') {
             return $this->pjaxError('Pjax 请求错误 : 提交的时间和日期不符');
         }
+        if ($type === 'top-request') {
+            return Resp::error('错误信息', [
+                '_top' => [
+                    'operation' => 'doWhat',
+                ],
+            ]);
+        }
         if (is_post()) {
             if ($type === 'submit') {
                 return Resp::success('J_submit 提交, title:' . input('title'));

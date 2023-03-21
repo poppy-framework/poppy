@@ -143,6 +143,9 @@ layui.form.render();
     <a href="http://www.baidu.com/" class="layui-btn layui-btn-primary J_iframe" data-width="800" data-height="600">
         弹窗打开百度
     </a>
+    <a href="http://www.baidu.com/" class="layui-btn layui-btn-primary J_iframe" data-width="800" data-height="600">
+        弹窗打开, 操作完成后触发 _top 方法
+    </a>
     <table class="layui-table">
         <tr>
             <td class="w240">参数</td>

@@ -55,10 +55,8 @@ class RbacPermission
 
         /* 超级管理员通过
          * ---------------------------------------- */
-        if (method_exists($this, 'passed')) {
-            if ($this->passed($user)) {
-                return $next($request);
-            }
+        if (method_exists($this, 'passed') && $this->passed($user)) {
+            return $next($request);
         }
 
         $permissions = $controller::$permission;

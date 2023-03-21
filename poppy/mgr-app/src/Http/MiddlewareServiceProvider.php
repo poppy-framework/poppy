@@ -15,7 +15,7 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-auth:jwt_backend',  // Auth
             'sys-jwt',               // Pwd Changed
             'sys-ban:backend',       // Ban Backend
-            'sys-mgr-rbac',          // Permission
+            'sys-rbac',              // Permission
         ]);
 
         // 开发中间件
@@ -24,7 +24,7 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-auth:jwt_develop',  // Auth
             'sys-jwt',               // Pwd Changed
             'sys-ban:develop',       // Ban Backend
-            'sys-mgr-rbac',          // Permission
+            'sys-rbac',              // Permission
         ]);
     }
 }
