@@ -53,7 +53,7 @@ trait AppTrait
             foreach ($messages as $message) {
                 $strMessage .= implode(',', $message) . PHP_EOL;
             }
-            $this->error = new Resp(Resp::PARAM_ERROR, $strMessage);
+            $this->error = new Resp(Resp::PARAM_ERROR, trim($strMessage));
         }
         elseif ($error instanceof Exception) {
             if ($error->getCode()) {
