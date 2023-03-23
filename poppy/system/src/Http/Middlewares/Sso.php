@@ -7,7 +7,6 @@ namespace Poppy\System\Http\Middlewares;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
-use Poppy\Core\Redis\RdsDb;
 use Poppy\System\Classes\PySystemDef;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
