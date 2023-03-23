@@ -106,6 +106,12 @@ class Pam
             if (Str::contains($guard, ['develop', 'backend'])) {
                 return $this->setError('此类账号不允许自动注册');
             }
+
+            // 不允许不在项目中的人登录
+            if (!config('poppy.system.captcha_register')) {
+                return $this->setError('该账号不存在, 无法登录');
+            }
+
             if (!$this->register($initDb['passport'])) {
                 return false;
             }
