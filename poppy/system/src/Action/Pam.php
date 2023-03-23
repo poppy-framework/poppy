@@ -728,7 +728,7 @@ class Pam
     public function checkPwdStrength($type, $password): bool
     {
         $key      = "py-system::pam.{$type}_pwd_strength";
-        $strength = (array) sys_setting($key, []);
+        $strength = array_filter((array) sys_setting($key, []));
         if (!count($strength)) {
             return true;
         }
