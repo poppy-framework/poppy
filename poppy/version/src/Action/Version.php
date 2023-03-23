@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Poppy\Version\Action;
 
 use Exception;
-use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Classes\Contracts\FileContract;
@@ -176,7 +175,7 @@ class Version
 
     private function clearCache($platform)
     {
-        RdsDb::instance()->hDel(PyVersionDef::ckTagMaxVersion(), $platform);
-        RdsDb::instance()->hDel(PyVersionDef::ckTagVersions(), $platform);
+        sys_tag('py-version')->hDel(PyVersionDef::ckMaxVersion(), $platform);
+        sys_tag('py-version')->hDel(PyVersionDef::ckVersions(), $platform);
     }
 }

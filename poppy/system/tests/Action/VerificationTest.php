@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Tests\Action;
 
 use Poppy\Framework\Application\TestCase;
@@ -21,7 +23,7 @@ class VerificationTest extends TestCase
             $this->assertTrue($Verification->checkCaptcha($mobile, $captcha));
         }
         else {
-            $this->fail($Verification->getError());
+            $this->fail($Verification->getError()->getMessage());
         }
 
         $mobile = $this->faker()->phoneNumber;
@@ -31,7 +33,7 @@ class VerificationTest extends TestCase
 
 
         $mobile = $this->faker()->phoneNumber;
-        $Verification->genCaptcha($mobile, '5', '4');
+        $Verification->genCaptcha($mobile, 5, 4);
         $captcha = $Verification->getCaptcha();
         $this->assertEquals(4, strlen($captcha));
     }
@@ -64,22 +66,22 @@ class VerificationTest extends TestCase
         $key          = '1-2-3';
         // 存在, 成功
         $Verification->saveWord($key, $str);
-        $this->assertTrue($Verification->verifyWord($key, $str), $Verification->getError());
+        $this->assertTrue($Verification->verifyWord($key, $str), $Verification->getError()->getMessage());
 
         // 不存在, 失败
         $Verification->removeWord($key);
-        $this->assertFalse($Verification->verifyWord($key, $str), $Verification->getError());
+        $this->assertFalse($Verification->verifyWord($key, $str), $Verification->getError()->getMessage());
 
         // 支持数组隐藏
         $str = ['a', 'b'];
         $Verification->saveWord($key, $str);
-        $this->assertTrue($Verification->verifyWord($key, $str), $Verification->getError());
+        $this->assertTrue($Verification->verifyWord($key, $str), $Verification->getError()->getMessage());
 
         $str = 428;
         // 存在, 成功
         $Verification->saveWord($key, $str);
-        $this->assertTrue($Verification->verifyWord($key, $str), $Verification->getError());
+        $this->assertTrue($Verification->verifyWord($key, $str), $Verification->getError()->getMessage());
         // 验证不匹配, 失败
-        $this->assertFalse($Verification->verifyWord($key, $str + 1), $Verification->getError());
+        $this->assertFalse($Verification->verifyWord($key, $str + 1), $Verification->getError()->getMessage());
     }
 }

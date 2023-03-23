@@ -76,7 +76,7 @@ class Word
         SysSensitiveWord::insert($diff->toArray());
 
         // 移除词典
-        sys_cache('py-sensitive-word')->forget(PySensitiveWordDef::ckDict());
+        sys_tag('py-sensitive-word')->del(PySensitiveWordDef::ckDict());
 
         return true;
     }
@@ -92,7 +92,7 @@ class Word
         try {
             SysSensitiveWord::whereIn('id', $id)->delete();
             // 移除词典
-            sys_cache('py-sensitive-word')->forget(PySensitiveWordDef::ckDict());
+            sys_tag('py-sensitive-word')->del(PySensitiveWordDef::ckDict());
             return true;
         } catch (Exception $e) {
             return $this->setError($e->getMessage());

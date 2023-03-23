@@ -39,19 +39,18 @@ class RdsPersist
      */
     public static function where($table, array $where = []): array
     {
-        $rdsDb     = RdsDb::instance();
-        $rdsKey    = PyCoreDef::ckTagPersist($table . '_' . self::TYPE_UPDATE);
+        $rdsDb     = sys_tag('py-core-persist');
+        $rdsKey    = PyCoreDef::ckPersistPersist($table . '_' . self::TYPE_UPDATE);
         $whereJson = self::whereCondition($where);
         // 当前key的所有list数据
-        $exists = $rdsDb->hexists($rdsKey, $whereJson);
+        $exists = $rdsDb->hExists($rdsKey, $whereJson);
 
         if ($exists) {
             // 获取存储的数据
-            return $rdsDb->hget($rdsKey, $whereJson);
+            return $rdsDb->hGet($rdsKey, $whereJson);
         }
-        else {
-            return [];
-        }
+
+        return [];
     }
 
     /**
@@ -61,13 +60,13 @@ class RdsPersist
      */
     public static function exec()
     {
-        $rdsDb = RdsDb::instance();
+        $rdsDb = sys_tag('py-core-persist');
         // 所有新增数据的key
         $insertKeys = [];
         // 所有修改数据的key
         $updateKeys = [];
 
-        $keys = $rdsDb->keys(PyCoreDef::ckTagPersist('*'));
+        $keys = $rdsDb->keys(PyCoreDef::ckPersistPersist('*'));
 
         foreach ($keys as $_key) {
             $keyName = substr($_key, strrpos($_key, ':') + 1);
@@ -165,8 +164,8 @@ class RdsPersist
      */
     public static function update(string $table = '', array $where = [], array $update = [])
     {
-        $rdsKey = PyCoreDef::ckTagPersist($table . '_' . self::TYPE_UPDATE);
-        $rdsDb  = RdsDb::instance();
+        $rdsKey = PyCoreDef::ckPersistPersist($table . '_' . self::TYPE_UPDATE);
+        $rdsDb  = sys_tag('py-core-persist');
 
         if (empty($where)) {
             return;
@@ -234,12 +233,12 @@ class RdsPersist
             }
         }
 
-        $rdsKey    = PyCoreDef::ckTagPersist($table . '_' . self::TYPE_INSERT);
+        $rdsKey    = PyCoreDef::ckPersistPersist($table . '_' . self::TYPE_INSERT);
         $arrValues = [];
         foreach ($values as $value) {
             $arrValues[] = $value;
         }
-        RdsDb::instance()->rpush($rdsKey, $arrValues);
+        sys_tag('py-core-persist')->rPush($rdsKey, $arrValues);
         return true;
     }
 
@@ -269,10 +268,10 @@ class RdsPersist
      */
     private static function execInsert(array $insert_keys = [])
     {
-        $rdsDb = RdsDb::instance();
+        $rdsDb = sys_tag('py-core-persist');
         foreach ($insert_keys as $_key) {
 
-            $rdsKey = PyCoreDef::ckTagPersist($_key);
+            $rdsKey = PyCoreDef::ckPersistPersist($_key);
             // 当前key的所有list数据
             $_keyData = $rdsDb->lrange($rdsKey, 0, -1);
             $_arrData = [];
@@ -302,9 +301,9 @@ class RdsPersist
      */
     private static function execUpdate(array $update_keys = [])
     {
-        $rdsDb = RdsDb::instance();
+        $rdsDb = sys_tag('py-core-persist');
         foreach ($update_keys as $_key) {
-            $rdsKey = PyCoreDef::ckTagPersist($_key);
+            $rdsKey = PyCoreDef::ckPersistPersist($_key);
             // 当前key的所有list数据
             $keys = $rdsDb->hkeys($rdsKey);
 

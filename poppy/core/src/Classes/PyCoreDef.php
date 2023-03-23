@@ -23,9 +23,9 @@ class PyCoreDef
      * @param string $key 持久化KEY
      * @return string
      */
-    public static function ckTagPersist(string $key): string
+    public static function ckPersistPersist(string $key): string
     {
-        return 'tag:py-core:persist:' . $key;
+        return 'persist:' . $key;
     }
 
     /**
@@ -34,7 +34,7 @@ class PyCoreDef
      */
     public static function ckLangModels(): string
     {
-        return 'tag:py-core:lang-models';
+        return 'lang-models';
     }
 
     /**
@@ -109,8 +109,8 @@ class PyCoreDef
      * @param $key
      * @return string
      */
-    public static function ckTagRdsLock($key): string
+    public static function ckPersistRdsLock($key): string
     {
-        return 'tag:py-core:rds-lock:' . $key;
+        return 'rds-lock:' . $key;
     }
 }

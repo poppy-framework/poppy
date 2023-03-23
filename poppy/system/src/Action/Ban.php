@@ -30,7 +30,7 @@ class Ban
 
     public function __construct()
     {
-        self::$rds = RdsDb::instance();
+        self::$rds = sys_tag('py-system');
     }
 
     /**
@@ -92,10 +92,10 @@ class Ban
         ]);
 
         if ($isRange) {
-            $this->saveRanges(PySystemDef::ckTagBanIpRange($account_type), collect([$item]));
+            $this->saveRanges(PySystemDef::ckBanIpRange($account_type), collect([$item]));
         }
         else {
-            $this->saveOnes(PySystemDef::ckTagBanOne($account_type), collect([$item]));
+            $this->saveOnes(PySystemDef::ckBanOne($account_type), collect([$item]));
         }
         return true;
     }
@@ -118,10 +118,10 @@ class Ban
             }
 
             if ($isRange) {
-                $this->removeRanges(PySystemDef::ckTagBanIpRange($ban->account_type), collect([$ban]));
+                $this->removeRanges(PySystemDef::ckBanIpRange($ban->account_type), collect([$ban]));
             }
             else {
-                $this->removeOnes(PySystemDef::ckTagBanOne($ban->account_type), collect([$ban]));
+                $this->removeOnes(PySystemDef::ckBanOne($ban->account_type), collect([$ban]));
             }
 
             $ban->delete();
@@ -140,8 +140,8 @@ class Ban
      */
     public function checkIn(string $account_type, string $type, string $value): bool
     {
-        $oneKey    = PySystemDef::ckTagBanOne($account_type);
-        $rangesKey = PySystemDef::ckTagBanIpRange($account_type);
+        $oneKey    = PySystemDef::ckBanOne($account_type);
+        $rangesKey = PySystemDef::ckBanIpRange($account_type);
         if (!self::$rds->exists($oneKey) || !self::$rds->exists($rangesKey)) {
             $this->initAccountType($account_type);
         }
@@ -285,7 +285,7 @@ class Ban
      */
     private function initOne(string $account_type, Collection $items): void
     {
-        $key = PySystemDef::ckTagBanOne($account_type);
+        $key = PySystemDef::ckBanOne($account_type);
         self::$rds->del($key);
         // 保障KEY存在
         self::$rds->hSet($key, 'init|duoli', 'duoli' . '|init|' . Carbon::now()->toDateTimeString());
@@ -300,7 +300,7 @@ class Ban
      */
     private function initRanges(string $account_type, Collection $items): void
     {
-        $key = PySystemDef::ckTagBanIpRange($account_type);
+        $key = PySystemDef::ckBanIpRange($account_type);
         self::$rds->del($key);
         // 保障KEY存在
         self::$rds->sAdd($key, [

@@ -8,7 +8,6 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use Poppy\Core\Redis\RdsDb;
 use Poppy\System\Classes\File\FileManager;
 use Poppy\Version\Classes\PyVersionDef;
 
@@ -67,7 +66,7 @@ class SysAppVersion extends Model
      */
     public static function latestVersion(string $platform = self::PLATFORM_ANDROID)
     {
-        $version = RdsDb::instance()->hGet(PyVersionDef::ckTagMaxVersion(), $platform);
+        $version = sys_tag('py-version')->hGet(PyVersionDef::ckMaxVersion(), $platform);
         if (!$version) {
             $versions = self::versions($platform);
             if (count($versions)) {
@@ -79,7 +78,7 @@ class SysAppVersion extends Model
                     'description' => '默认版本',
                 ];
             }
-            RdsDb::instance()->hSet(PyVersionDef::ckTagMaxVersion(), $platform, $version);
+            sys_tag('py-version')->hSet(PyVersionDef::ckMaxVersion(), $platform, $version);
         }
         return $version;
     }
@@ -92,10 +91,10 @@ class SysAppVersion extends Model
      */
     public static function isUpgrade(string $platform, string $version): bool
     {
-        $versions = RdsDb::instance()->hGet(PyVersionDef::ckTagVersions(), $platform);
+        $versions = sys_tag('py-version')->hGet(PyVersionDef::ckVersions(), $platform);
         if (!$versions) {
             $versions = self::versions($platform);
-            RdsDb::instance()->hSet(PyVersionDef::ckTagVersions(), $platform, $versions);
+            sys_tag('py-version')->hSet(PyVersionDef::ckVersions(), $platform, $versions);
         }
         $isUpgrade = false;
         if (count($versions)) {

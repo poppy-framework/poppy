@@ -7,14 +7,6 @@ namespace Poppy\System\Classes;
 
 class PySystemDef
 {
-    /**
-     * 模型注释
-     * @return string
-     */
-    public static function ckModelComment(): string
-    {
-        return 'model-comment';
-    }
 
     /**
      * 设置
@@ -22,7 +14,7 @@ class PySystemDef
      */
     public static function ckSetting(): string
     {
-        return 'tag:py-system:setting';
+        return 'setting';
     }
 
     /**
@@ -35,31 +27,31 @@ class PySystemDef
     }
 
     /**
-     * 一次验证码
+     * 一次验证码(永久保存)
      * @return string
      */
-    public static function ckTagVerificationOnce(): string
+    public static function ckPersistVerificationOnce(): string
     {
-        return 'tag:py-system:verification-once_code';
+        return 'verification-once_code';
     }
 
     /**
-     * 自定义验证
+     * 自定义验证(永久保存)
      * @return string
      */
-    public static function ckTagVerificationWord(): string
+    public static function ckPersistVerificationWord(): string
     {
-        return 'tag:py-system:verification-word';
+        return 'verification-word';
     }
 
     /**
-     * 验证码 KEY
+     * 验证码 KEY(持久保存)
      * @param string $key
      * @return string
      */
-    public static function ckTagVerificationCaptcha(string $key): string
+    public static function ckPersistVerificationCaptcha(string $key): string
     {
-        return 'tag:py-system:verification-captcha:' . $key;
+        return 'verification-captcha:' . $key;
     }
 
     /**
@@ -76,9 +68,9 @@ class PySystemDef
      * @param string $type 账号类型
      * @return string
      */
-    public static function ckTagBanOne(string $type): string
+    public static function ckBanOne(string $type): string
     {
-        return 'tag:py-system:ban-one-' . $type;
+        return 'ban-one-' . $type;
     }
 
     /**
@@ -86,8 +78,8 @@ class PySystemDef
      * @param string $type
      * @return string
      */
-    public static function ckTagBanIpRange(string $type): string
+    public static function ckBanIpRange(string $type): string
     {
-        return 'tag:py-system:ban-ip-range-' . $type;
+        return 'ban-ip-range-' . $type;
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\Version\Tests\Models;
 
 use Poppy\Framework\Application\TestCase;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Classes\Traits\DbTrait;
 use Poppy\Version\Action\Version;
 use Poppy\Version\Models\SysAppVersion;
@@ -22,8 +23,9 @@ class SysAppVersionTest extends TestCase
     /**
      * 测试 Android 数据
      * @return void
+     * @throws ApplicationException
      */
-    public function testAddAndroid()
+    public function testAddAndroid(): void
     {
         SysAppVersion::whereIn('title', array_keys($this->dataAndroid()))
             ->where('platform', SysAppVersion::PLATFORM_ANDROID)
@@ -81,8 +83,9 @@ class SysAppVersionTest extends TestCase
     /**
      * 测试 IOS 的数据问题
      * @return void
+     * @throws ApplicationException
      */
-    public function testIos()
+    public function testIos():void
     {
         SysAppVersion::whereIn('title', array_keys($this->dataIos()))
             ->where('platform', SysAppVersion::PLATFORM_IOS)
@@ -137,6 +140,9 @@ class SysAppVersionTest extends TestCase
         $this->assertFalse($isUpgrade451);
     }
 
+    /**
+     * @throws ApplicationException
+     */
     private function dataAndroid(): array
     {
         return [
@@ -164,6 +170,9 @@ class SysAppVersionTest extends TestCase
         ];
     }
 
+    /**
+     * @throws ApplicationException
+     */
     private function dataIos(): array
     {
         return [

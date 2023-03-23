@@ -28,7 +28,7 @@ class Verification
     /**
      * @var RdsDb
      */
-    private static $db;
+    private static RdsDb $db;
 
     /**
      * @var string
@@ -48,7 +48,7 @@ class Verification
 
     public function __construct()
     {
-        self::$db = RdsDb::instance();
+        self::$db = sys_tag('py-system-persist');
     }
 
     /**
@@ -65,7 +65,7 @@ class Verification
         }
         $key = $this->passportKey;
 
-        if ($data = self::$db->get(PySystemDef::ckTagVerificationCaptcha($key))) {
+        if ($data = self::$db->get(PySystemDef::ckPersistVerificationCaptcha($key))) {
             if ($data['silence'] > Carbon::now()->timestamp) {
                 $captcha = $data['captcha'];
             }
@@ -77,7 +77,7 @@ class Verification
             'captcha' => $captcha,
             'silence' => Carbon::now()->timestamp + 60,
         ];
-        self::$db->set(PySystemDef::ckTagVerificationCaptcha($key), $data, 'ex', $expired_min * 60);
+        self::$db->set(PySystemDef::ckPersistVerificationCaptcha($key), $data, 'ex', $expired_min * 60);
 
         $this->captcha = $captcha;
         return true;
@@ -127,8 +127,8 @@ class Verification
             }
         }
 
-        if (($data = self::$db->get(PySystemDef::ckTagVerificationCaptcha($key))) && ((string) $data['captcha']) === $captcha) {
-            self::$db->del(PySystemDef::ckTagVerificationCaptcha($key));
+        if (($data = self::$db->get(PySystemDef::ckPersistVerificationCaptcha($key))) && ((string) $data['captcha']) === $captcha) {
+            self::$db->del(PySystemDef::ckPersistVerificationCaptcha($key));
             return true;
         }
         return $this->setError('验证码填写错误');
@@ -162,7 +162,7 @@ class Verification
         }
         $key = $this->passportKey;
 
-        if ($data = self::$db->get(PySystemDef::ckTagVerificationCaptcha($key))) {
+        if ($data = self::$db->get(PySystemDef::ckPersistVerificationCaptcha($key))) {
             $this->captcha = $data['captcha'];
             return true;
         }
@@ -186,7 +186,7 @@ class Verification
             'random' => $randStr . '@' . Carbon::now()->timestamp,
         ];
         $code = md5(json_encode($str) . microtime());
-        self::$db->set(PySystemDef::ckTagVerificationOnce() . ':' . $code, $str, 'ex', $expired_min * 60);
+        self::$db->set(PySystemDef::ckPersistVerificationOnce() . ':' . $code, $str, 'ex', $expired_min * 60);
         return $code;
     }
 
@@ -198,10 +198,10 @@ class Verification
      */
     public function verifyOnceCode(string $code, bool $forget = true): bool
     {
-        if ($data = self::$db->get(PySystemDef::ckTagVerificationOnce() . ':' . $code)) {
+        if ($data = self::$db->get(PySystemDef::ckPersistVerificationOnce() . ':' . $code)) {
             $this->hidden = unserialize($data['hidden']);
             if ($forget) {
-                self::$db->del(PySystemDef::ckTagVerificationOnce() . ':' . $code);
+                self::$db->del(PySystemDef::ckPersistVerificationOnce() . ':' . $code);
             }
             return true;
         }
@@ -210,7 +210,7 @@ class Verification
 
     public function removeOnceCode($code): bool
     {
-        self::$db->del(PySystemDef::ckTagVerificationOnce() . ':' . $code);
+        self::$db->del(PySystemDef::ckPersistVerificationOnce() . ':' . $code);
         return true;
     }
 
@@ -224,7 +224,7 @@ class Verification
         if (!is_array($word)) {
             $word = (string) $word;
         }
-        self::$db->set(PySystemDef::ckTagVerificationWord() . ':' . $key, $word, 'ex', $expired_min * 60);
+        self::$db->set(PySystemDef::ckPersistVerificationWord() . ':' . $key, $word, 'ex', $expired_min * 60);
     }
 
     /**
@@ -242,7 +242,7 @@ class Verification
             return $this->setError('请输入校验值');
         }
 
-        if ($data = self::$db->get(PySystemDef::ckTagVerificationWord() . ':' . $key)) {
+        if ($data = self::$db->get(PySystemDef::ckPersistVerificationWord() . ':' . $key)) {
             if (is_numeric($data)) {
                 $data = (string) $data;
             }
@@ -257,9 +257,9 @@ class Verification
      * 删除验证数据
      * @param string $key
      */
-    public function removeWord(string $key)
+    public function removeWord(string $key): void
     {
-        self::$db->del(PySystemDef::ckTagVerificationWord() . ':' . $key);
+        self::$db->del(PySystemDef::ckPersistVerificationWord() . ':' . $key);
     }
 
 

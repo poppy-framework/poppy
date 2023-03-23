@@ -36,11 +36,11 @@ class RbacTest extends TestCase
         }
 
         $pam  = TestingPam::randBackend();
-        $key  = 'tag:py-core-rbac:' . PyCoreDef::rbacCkUserRoles($pam->id);
+        $key  = PyCoreDef::rbacCkUserRoles($pam->id);
         $role = TestingRole::randBackend();
         // 获取用户的缓存角色, 缓存存在值
         $pam->cachedRoles();
-        $this->assertTrue(RdsDb::instance()->exists($key));
+        $this->assertTrue(sys_tag('py-core-rbac')->exists($key));
         $pam->attachRole($role);
         $pam->detachRole($role);
         $pam->attachRole($role->id);

@@ -30,7 +30,6 @@ class RdsPersistTest extends TestCase
 {
     /**
      * 写入单条测试
-     * @throws TransactionException
      */
     public function testInsert()
     {
@@ -177,7 +176,7 @@ class RdsPersistTest extends TestCase
 
     }
 
-    public function testParseUpdateWithDiff()
+    public function testParseUpdateWithDiff():void
     {
         $init = [
             'add' => 0,
@@ -190,7 +189,7 @@ class RdsPersistTest extends TestCase
         $this->assertCount(2, array_keys($result));
     }
 
-    private function initOne()
+    private function initOne():void
     {
         // insert data
         DB::table('sys_test_persist')->insert([

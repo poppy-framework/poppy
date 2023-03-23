@@ -152,8 +152,7 @@ class RdsStore
             return true;
         }
         if (strtolower(config('cache.default')) === 'redis') {
-            $client = RdsDb::instance();
-            $res    = $client->set(PyCoreDef::ckTagRdsLock($key), 'atomic-' . Carbon::now()->timestamp, 'EX', $seconds, 'NX');
+            $res    = sys_tag('py-core-persist')->set(PyCoreDef::ckPersistRdsLock($key), 'atomic-' . Carbon::now()->timestamp, 'EX', $seconds, 'NX');
             return $res === false;
         }
         return true;
