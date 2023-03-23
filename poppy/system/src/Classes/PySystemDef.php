@@ -63,12 +63,12 @@ class PySystemDef
     }
 
     /**
-     * 单点登录的Hash(允许访问的)
+     * 允许访问的单点登录的 Hash(永久保存)
      * @return string
      */
-    public static function ckTagSsoValid(): string
+    public static function ckPersistSsoValid(): string
     {
-        return 'tag:py-system:sso-valid';
+        return 'sso-valid';
     }
 
     /**

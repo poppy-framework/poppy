@@ -156,9 +156,8 @@ class Sso
      */
     public function validateUser($pamId): void
     {
-        $Rds  = RdsDb::instance();
         $data = $this->userTokenData($pamId);
-        $Rds->hSet(PySystemDef::ckTagSsoValid(), $pamId, $data);
+        sys_tag('py-system-persist')->hSet(PySystemDef::ckPersistSsoValid(), $pamId, $data);
     }
 
     /**
@@ -169,10 +168,9 @@ class Sso
      */
     public function banUser(int $pamId): void
     {
-        $Rds = RdsDb::instance();
         PamToken::where('account_id', $pamId)->delete();
         // delete from key
-        $Rds->hDel(PySystemDef::ckTagSsoValid(), $pamId);
+        sys_tag('py-system-persist')->hDel(PySystemDef::ckPersistSsoValid(), $pamId);
     }
 
 
@@ -185,16 +183,15 @@ class Sso
      */
     public function banToken(PamToken $pt, bool $delete = true): void
     {
-        $Rds = RdsDb::instance();
         // delete from key
-        $tokens = $Rds->hGet(PySystemDef::ckTagSsoValid(), $pt->account_id);
+        $tokens = sys_tag('py-system-persist')->hGet(PySystemDef::ckPersistSsoValid(), $pt->account_id);
         if (is_array($tokens) && count($tokens) && isset($tokens[$pt->token_hash])) {
             unset($tokens[$pt->token_hash]);
             if (count($tokens)) {
-                $Rds->hSet(PySystemDef::ckTagSsoValid(), $pt->account_id, $tokens);
+                sys_tag('py-system-persist')->hSet(PySystemDef::ckPersistSsoValid(), $pt->account_id, $tokens);
             }
             else {
-                $Rds->hDel(PySystemDef::ckTagSsoValid(), $pt->account_id);
+                sys_tag('py-system-persist')->hDel(PySystemDef::ckPersistSsoValid(), $pt->account_id);
             }
         }
 

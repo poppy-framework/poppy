@@ -8,7 +8,7 @@ use Poppy\Core\Redis\RdsDb;
 
 class RdsDbTest extends RdsBaseTest
 {
-    public function testExists()
+    public function testExists(): void
     {
         $key   = $this->key('exists');
         $keyNx = $this->key('exists-nx');
@@ -20,7 +20,7 @@ class RdsDbTest extends RdsBaseTest
         $this->rds->del($key);
     }
 
-    public function testType()
+    public function testType(): void
     {
         $keyNx   = $this->key('type-nx');
         $keyStr  = $this->key('type-string');
@@ -44,12 +44,11 @@ class RdsDbTest extends RdsBaseTest
         $this->assertEquals('hash', $this->rds->type($keyHash));
     }
 
-    public function testRename()
+    public function testRename(): void
     {
         $ori    = $this->key('rename-ori');
         $dist   = $this->key('rename-dist');
         $distEx = $this->key('rename-dist-ex');
-
 
         $this->rds->del([
             $ori, $dist,
@@ -70,7 +69,7 @@ class RdsDbTest extends RdsBaseTest
         ]);
     }
 
-    public function testDel()
+    public function testDel(): void
     {
         $this->rds->set('del-0', 'del');
         $this->rds->set('del-1', 'del');
@@ -79,7 +78,7 @@ class RdsDbTest extends RdsBaseTest
     }
 
 
-    public function testTag()
+    public function testTag(): void
     {
         $Tag = sys_tag('py-core');
         $Tag->hSet('testing-tag-h', 'a', 1);

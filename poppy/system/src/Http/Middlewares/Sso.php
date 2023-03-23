@@ -43,8 +43,7 @@ class Sso extends BaseMiddleware
         $md5Token = md5($token);
         $pamId    = data_get($payload, 'sub');
 
-        $Rds     = RdsDb::instance();
-        $devices = $Rds->hGet(PySystemDef::ckTagSsoValid(), $pamId);
+        $devices = sys_tag('py-system-persist')->hGet(PySystemDef::ckPersistSsoValid(), $pamId);
         if (!$devices) {
             return response('Unauthorized Jwt, No valid device.', 401);
         }
