@@ -133,7 +133,7 @@ if (!function_exists('sys_gen_mk')) {
             return "[{$class}]:" . $info . (($request && $req) ? PHP_EOL . json_encode($req, $jsonMark) : '');
         };
 
-        // append data
+        // append datagtvgit flow hotfix finish 2.9.7
         if (is_array($info)) {
             return $append(json_encode($info, $jsonMark));
         }
