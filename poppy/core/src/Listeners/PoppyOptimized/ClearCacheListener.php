@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\Core\Listeners\PoppyOptimized;
 
 use Poppy\Framework\Events\PoppyOptimized;
+use Poppy\Framework\Foundation\Console\Kernel;
 use Storage;
 
 /**
@@ -33,13 +34,17 @@ class ClearCacheListener
         });
 
         // clear console logs
-        $logs  = glob('storage/logs/console-*.log');
+        $logs  = glob(storage_path('logs/console-*.log'));
         $count = count($logs);
         collect($logs)->each(function ($file, $idx) use ($disk, $count) {
             if ($idx + 5 < $count) {
                 $disk->delete($file);
             }
         });
+
+        app(Kernel::class)->call('py-core:db', [
+            'do' => 'fields',
+        ]);
     }
 }
 

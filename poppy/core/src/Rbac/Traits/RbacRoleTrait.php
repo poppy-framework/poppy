@@ -31,7 +31,7 @@ trait RbacRoleTrait
     /**
      * @inheritDoc
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
         $traits = class_uses_recursive(static::class);
@@ -110,7 +110,7 @@ trait RbacRoleTrait
     /**
      * @inheritDoc
      */
-    public function savePermissions($permissions)
+    public function savePermissions($permissions): void
     {
         $this->syncPermission($permissions);
     }
@@ -118,7 +118,7 @@ trait RbacRoleTrait
     /**
      * @inheritDoc
      */
-    public function syncPermission($id)
+    public function syncPermission($id): void
     {
         $this->perms()->sync($id);
     }
@@ -128,7 +128,7 @@ trait RbacRoleTrait
      * @param object|array|Permission $id 权限
      * @return void
      */
-    public function attachPermission($id)
+    public function attachPermission($id): void
     {
         if (is_object($id)) {
             $id = $id->getKey();
@@ -146,7 +146,7 @@ trait RbacRoleTrait
      * @param object|array $id 权限
      * @return void
      */
-    public function detachPermission($id)
+    public function detachPermission($id): void
     {
         if (is_object($id)) {
             $id = $id->getKey();
@@ -162,7 +162,7 @@ trait RbacRoleTrait
     /**
      * @inheritDoc
      */
-    public function attachPermissions($permissions)
+    public function attachPermissions($permissions): void
     {
         foreach ($permissions as $permission) {
             $this->attachPermission($permission);
@@ -172,7 +172,7 @@ trait RbacRoleTrait
     /**
      * @inheritDoc
      */
-    public function detachPermissions($permissions)
+    public function detachPermissions($permissions): void
     {
         foreach ($permissions as $permission) {
             $this->detachPermission($permission);
@@ -215,7 +215,7 @@ trait RbacRoleTrait
         return false;
     }
 
-    protected static function clearCachedPermissions()
+    protected static function clearCachedPermissions(): void
     {
         sys_tag('py-core-rbac')->clear(PyCoreDef::rbacCkRolePermissions('*'));
     }
