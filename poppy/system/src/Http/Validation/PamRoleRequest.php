@@ -9,6 +9,7 @@ use Poppy\Framework\Application\Request;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
+use Route;
 
 class PamRoleRequest extends Request
 {
@@ -23,8 +24,9 @@ class PamRoleRequest extends Request
      */
     public function authorize(): bool
     {
-        if ($id = $this->input('id')) {
+        if ($id = Route::input('id')) {
             $role = PamRole::findOrFail($id);
+            $this->scene('edit');
             return $this->can('edit', $role);
         }
         return $this->can('create', PamRole::class);
@@ -44,10 +46,7 @@ class PamRoleRequest extends Request
 
     public function attributes(): array
     {
-        return [
-            'title' => '角色名称',
-            'type'  => '角色类型',
-        ];
+        return sys_db(PamRole::class);
     }
 
     /**
@@ -62,7 +61,7 @@ class PamRoleRequest extends Request
             'title' => [
                 Rule::required(),
                 Rule::unique($tbRole, 'title')->where(function ($query) {
-                    if ($id = $this->input('id')) {
+                    if ($id = Route::input('id')) {
                         $query->where('id', '!=', $id);
                     }
                 }),

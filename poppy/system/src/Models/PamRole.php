@@ -12,13 +12,13 @@ use Poppy\Core\Rbac\Traits\RbacRoleTrait;
 
 /**
  * 用户角色
- * @property int                             $id
- * @property string                          $name
- * @property string                          $title
- * @property string                          $description
- * @property string                          $type
- * @property bool                            $is_system
- * @property int                             $is_enable 是否可用
+ * @property int                             $id          ID
+ * @property string                          $name        标识
+ * @property string                          $title       角色名称
+ * @property string                          $description 描述
+ * @property string                          $type        角色组
+ * @property bool                            $is_system   是否系统
+ * @property int                             $is_enable   是否可用
  * @property-read Collection|PamPermission[] $perms
  * @property-read Collection|PamAccount[]    $users
  * @mixin Eloquent
@@ -27,9 +27,9 @@ class PamRole extends Model implements RbacRoleContract
 {
     use RbacRoleTrait;
 
-    const BE_ROOT  = 'root';      // admin user
-    const FE_USER  = 'user';      // web user
-    const DEV_USER = 'develop';   // developer
+    public const BE_ROOT  = 'root';      // admin user
+    public const FE_USER  = 'user';      // web user
+    public const DEV_USER = 'develop';   // developer
 
     public $timestamps = false;
 

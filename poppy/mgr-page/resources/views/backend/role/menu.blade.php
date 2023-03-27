@@ -13,25 +13,27 @@
             <?php $display = 0; ?>
             @foreach($permission as $pk => $pv)
                 <div class="layui-tab-item {!! $display++ === 0 ? 'layui-show' : '' !!}" id="{!! $pk !!}">
-                    @foreach($pv as $p)
-                        @if ($p['groups'])
-                            <table class="layui-table">
-                                <colgroup>
-                                    <col style="width: 120px;">
-                                    <col style="width: 108px;">
-                                </colgroup>
+                    <table class="layui-table">
+                        <colgroup>
+                            <col style="width: 120px;">
+                            <col style="width: 108px;">
+                            <col/>
+                        </colgroup>
+                        <tr>
+                            <th class="text-center">模块</th>
+                            <th class="text-center">分组</th>
+                            <th class="text-center">权限</th>
+                        </tr>
+                        @foreach($pv as $p)
+                            @if ($p['groups'])
                                 <tr>
                                     <th class="text-center" rowspan="{!! count($p['groups'])+2 !!}">
                                         {!! $p['title'] !!}
                                     </th>
                                 </tr>
-                                <tr>
-                                    <th>分组</th>
-                                    <th>权限</th>
-                                </tr>
                                 @foreach($p['groups'] as $gk => $gv)
                                     <tr>
-                                        <td>{!! $gv['title'] !!}</td>
+                                        <td class="text-center">{!! $gv['title'] !!}</td>
                                         <td>
                                             @foreach($gv['permissions'] as $sk => $sv)
                                                 {!! Form::checkbox('permission_id[]', $sv['id'], $sv['value'], [
@@ -45,9 +47,9 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            </table>
-                        @endif
-                    @endforeach
+                            @endif
+                        @endforeach
+                    </table>
                 </div>
             @endforeach
         </div>

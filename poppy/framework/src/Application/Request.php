@@ -43,7 +43,7 @@ abstract class Request extends FormRequest
      * @throws ValidationException
      * @throws AuthorizationException
      */
-    public function validateResolved()
+    public function validateResolved(): void
     {
         if ($this->isValidate) {
             $this->manualValidateResolved();
@@ -98,7 +98,7 @@ abstract class Request extends FormRequest
      * @throws ValidationException
      * @throws AuthorizationException
      */
-    protected function manualValidateResolved()
+    protected function manualValidateResolved(): void
     {
         $this->prepareForValidation();
 

@@ -2,10 +2,13 @@
 
 namespace Poppy\MgrPage\Http\MgrPage;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Validation\ValidationException;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Role;
+use Poppy\System\Http\Validation\PamRoleRequest;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
 use Route;
@@ -35,11 +38,16 @@ class FormRoleEstablish extends FormWidget
     }
 
 
-    public function handle()
+    /**
+     * @throws AuthorizationException
+     * @throws ValidationException
+     */
+    public function handle($request)
     {
         $Role = (new Role());
         $Role->setPam(request()->user());
-        if ($Role->establish(request()->all(), $this->id)) {
+        $validated = app(PamRoleRequest::class, [$request])->validated();
+        if ($Role->establish($validated, $this->id)) {
             return Resp::success('操作成功', '_top_reload|1;id|' . $Role->getRole()->id);
         }
         return Resp::error($Role->getError());

@@ -199,11 +199,11 @@ class Resp
         }
         elseif ($msg instanceof MessageBag) {
             $messages = $msg->messages();
-            $strMsg   = '';
+            $arrMsg   = [];
             foreach ($messages as $message) {
-                $strMsg .= implode(',', $message);
+                $arrMsg[] = implode(' ', $message);
             }
-            $resp = new self(self::PARAM_ERROR, $strMsg);
+            $resp = new self(self::PARAM_ERROR, implode(', ', $arrMsg));
         }
         elseif (!($msg instanceof self)) {
             $resp = new self($type, $msg);

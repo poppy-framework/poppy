@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Tests\Action;
 
 use Auth;
@@ -35,14 +37,14 @@ class RoleTest extends TestCase
 
         Auth::login($pam);
 
-        $request = app(PamRoleRequest::class, [(app(Request::class))->replace([
+        $validated = app(PamRoleRequest::class, [(app(Request::class))->replace([
             'title' => 'role-be-' . $this->faker()->lexify(),
             'type'  => PamAccount::TYPE_BACKEND,
-        ]), $this->app]);
+        ]), $this->app])->validated();
 
         // 一个虚拟手机号
         $Role = new Role();
-        if ($Role->establishRequest($request)) {
+        if ($Role->establish($validated)) {
             $this->assertTrue(true);
         }
 

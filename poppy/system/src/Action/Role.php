@@ -5,22 +5,14 @@ declare(strict_types = 1);
 namespace Poppy\System\Action;
 
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Arr;
-use Illuminate\Validation\ValidationException;
 use Poppy\Core\Classes\Traits\CoreTrait;
-use Poppy\Core\Rbac\Permission\Permission;
 use Poppy\Framework\Classes\Traits\AppTrait;
-use Poppy\Framework\Validation\Rule;
 use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Events\RolePermissionUpdatedEvent;
-use Poppy\System\Http\Validation\PamRoleRequest;
-use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamPermission;
 use Poppy\System\Models\PamRole;
 use Poppy\System\Models\PamRoleAccount;
-use Validator;
-use View;
 
 /**
  * 角色action
@@ -32,57 +24,7 @@ class Role
     /**
      * @var PamRole
      */
-    protected $role;
-
-    /**
-     * @var int Role id
-     */
-    protected $roleId;
-
-    /**
-     * @var string
-     */
-    protected $roleTable;
-
-    public function __construct()
-    {
-        $this->roleTable = (new PamRole())->getTable();
-    }
-
-
-    /**
-     * 创建角色
-     * @param PamRoleRequest $request
-     * @return bool
-     * @throws ValidationException
-     * @throws AuthorizationException
-     */
-    public function establishRequest(PamRoleRequest $request): bool
-    {
-        $validate = $request->validated();
-        $id       = (int) $request->input('id');
-
-        $initDb = [
-            'title'       => (string) $validate['title'],
-            'type'        => (string) $validate['type'],
-            'description' => (string) ($validate['description'] ?? ''),
-        ];
-
-        if ($id) {
-            unset($initDb['type']);
-            $this->init($id);
-        }
-
-        if ($this->roleId) {
-            // 编辑时候类型和名称不允许编辑
-            $this->role->update($initDb);
-        }
-        else {
-            $this->role = PamRole::create($initDb);
-        }
-
-        return true;
-    }
+    protected PamRole $role;
 
     /**
      * 创建需求
@@ -90,65 +32,23 @@ class Role
      * @param null|int $id   角色id
      * @return bool
      */
-    public function establish(array $data, int $id = null)
+    public function establish(array $data, int $id = null): bool
     {
-        if (!$this->checkPam()) {
-            return false;
-        }
-
         $initDb = [
             'title'       => (string) Arr::get($data, 'title', ''),
             'type'        => (string) Arr::get($data, 'type', ''),
             'description' => (string) Arr::get($data, 'description', ''),
         ];
 
-        $rule = [
-            'title' => [
-                Rule::required(),
-                Rule::unique($this->roleTable, 'title')->where(function ($query) use ($id) {
-                    if ($id) {
-                        $query->where('id', '!=', $id);
-                    }
-                }),
-            ],
-            'type'  => [
-                Rule::required(),
-                Rule::in([
-                    PamAccount::TYPE_BACKEND,
-                    PamAccount::TYPE_DEVELOP,
-                    PamAccount::TYPE_USER,
-                ]),
-            ],
-        ];
-        if ($id) {
-            unset($rule['type']);
-        }
-        $validator = Validator::make($initDb, $rule, [], [
-            'name'  => '角色用户名',
-            'title' => '角色名称',
-            'type'  => '角色类型',
-        ]);
-        if ($validator->fails()) {
-            return $this->setError($validator->messages());
-        }
-
         // init
-        if ($id && !$this->init($id)) {
-            return false;
-        }
+        $id && $this->init($id);
 
-        if ($this->roleId) {
-            if (!$this->pam->can('edit', $this->role)) {
-                return $this->setError(trans('py-system::action.role.no_policy_to_update'));
-            }
+        if ($id) {
             // 编辑时候类型和名称不允许编辑
             unset($initDb['type']);
             $this->role->update($initDb);
         }
         else {
-            if (!$this->pam->can('create', PamRole::class)) {
-                return $this->setError(trans('py-system::action.role.no_policy_to_create'));
-            }
             $this->role = PamRole::create($initDb);
         }
 
@@ -161,15 +61,13 @@ class Role
      * @param int   $role_id        角色ID
      * @return bool
      */
-    public function savePermission($role_id, $permission_ids)
+    public function savePermission(int $role_id, array $permission_ids): bool
     {
         if (!$this->checkPam()) {
             return false;
         }
 
-        if (!$this->init($role_id)) {
-            return false;
-        }
+        $this->init($role_id);
 
         if ($this->pam->can('savePermission', PamRole::class)) {
             return $this->setError(trans('py-system::action.role.no_policy_to_save_permission'));
@@ -196,21 +94,10 @@ class Role
     /**
      * @param int $id 角色id
      */
-    public function init(int $id): bool
+    public function init(int $id): void
     {
-        $this->role   = PamRole::findOrFail($id);
-        $this->roleId = $this->role->id;
-        return true;
+        $this->role = PamRole::findOrFail($id);
     }
-
-    /**
-     * 分配视图数据
-     */
-    public function share()
-    {
-        View::share(['item' => $this->role]);
-    }
-
 
     public function getRole(): PamRole
     {
@@ -221,7 +108,7 @@ class Role
      * 获取所有权限以及默认值
      * @param int  $id      角色id
      * @param bool $has_key 是否有值
-     * @return array|mixed|Permission
+     * @return array|bool
      */
     public function permissions(int $id, bool $has_key = true)
     {
@@ -315,15 +202,13 @@ class Role
             return false;
         }
 
-        if ($id && !$this->init($id)) {
-            return false;
-        }
+        $id && $this->init($id);
 
         if (!$this->pam->can('delete', $this->role)) {
             return $this->setError(trans('py-system::action.role.no_policy_to_delete'));
         }
 
-        if (PamRoleAccount::where('role_id', $this->roleId)->exists()) {
+        if (PamRoleAccount::where('role_id', $id)->exists()) {
             return $this->setError(trans('py-system::action.role.role_has_account'));
         }
 

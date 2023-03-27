@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
         }
 
         if ($e instanceof ValidationException) {
-            return Resp::web(Resp::PARAM_ERROR, $e->validator->errors());
+            return Resp::error($e->validator->errors());
         }
 
         if ($e instanceof AuthorizationException || $e instanceof BaseException) {
