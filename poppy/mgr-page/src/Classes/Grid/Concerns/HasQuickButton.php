@@ -17,6 +17,25 @@ trait HasQuickButton
     protected ?Operations $operations = null;
 
     /**
+     * 是否显示导出按钮
+     */
+    public function isShowQuickButton(): bool
+    {
+        return $this->option('show_quick_button');
+    }
+
+    /**
+     * Disable export.
+     *
+     * @param bool $disable
+     * @return $this
+     */
+    public function disableQuickButton(bool $disable = true): self
+    {
+        return $this->option('show_quick_button', !$disable);
+    }
+
+    /**
      * Get create url.
      *
      * @param array|Closure $buttons

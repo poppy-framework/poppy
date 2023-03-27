@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\Sms\Hooks\MgrApp;
 
 use Poppy\Core\Services\Contracts\ServiceArray;
-use Poppy\Sms\Http\MgrApp\SettingSms;
+use Poppy\MgrApp\Http\MgrApp\SettingSms;
 
 class Settings implements ServiceArray
 {

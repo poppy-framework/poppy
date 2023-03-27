@@ -33,8 +33,6 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
         $this->mapWebRoutes();
 
         $this->mapApiRoutes();
-
-        $this->mapBackendRoutes();
     }
 
     /**
@@ -65,21 +63,6 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
             'prefix'     => 'api_v1/area',
         ], function () {
             require_once __DIR__ . '/Routes/api_v1.php';
-        });
-    }
-
-    /**
-     * Define the "web" routes for the module.
-     * These routes all receive session state, CSRF protection, etc.
-     * @return void
-     */
-    protected function mapBackendRoutes(): void
-    {
-        Route::group([
-            'prefix'     => 'api/mgr-app/py-area',
-            'middleware' => 'mgr-auth',
-        ], function () {
-            require_once __DIR__ . '/Routes/api-mgr-app.php';
         });
     }
 }

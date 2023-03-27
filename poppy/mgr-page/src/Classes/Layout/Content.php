@@ -5,7 +5,6 @@ namespace Poppy\MgrPage\Classes\Layout;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
-use Poppy\Framework\Exceptions\PoppyException;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Throwable;
 
@@ -34,13 +33,9 @@ class Content implements Renderable
      * Content constructor.
      *
      * @param Closure|null $callback
-     * @throws PoppyException
      */
     public function __construct(Closure $callback = null)
     {
-        if (!app('poppy')->exists('poppy.mgr-page')) {
-            throw new PoppyException('模块 `poppy.mgr-page` 不存在');
-        }
         if ($callback instanceof Closure) {
             $callback($this);
         }
@@ -86,7 +81,7 @@ class Content implements Renderable
         }
 
         // 接收 Form 请求并返回Form 数据
-        if ($content instanceof FormWidget && (is_post() || input('_query')) && method_exists($content, 'render')) {
+        if ($content instanceof FormWidget && (is_post() || input('_query'))) {
             return $content->render();
         }
 
@@ -100,11 +95,11 @@ class Content implements Renderable
      *
      * @return $this
      */
-    public function row($content)
+    public function row($content): self
     {
         if ($content instanceof Closure) {
             $row = new Row();
-            call_user_func($content, $row);
+            $content($row);
             $this->addRow($row);
         }
         else {
@@ -142,7 +137,7 @@ class Content implements Renderable
      *
      * @return string
      */
-    public function build()
+    public function build(): string
     {
         ob_start();
 
@@ -150,11 +145,7 @@ class Content implements Renderable
             $row->build();
         }
 
-        $contents = ob_get_contents();
-
-        ob_end_clean();
-
-        return $contents;
+        return ob_get_clean();
     }
 
     /**

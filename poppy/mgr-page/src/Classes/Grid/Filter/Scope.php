@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
 use Illuminate\Contracts\Support\Renderable;
@@ -8,7 +10,7 @@ use Illuminate\Support\Str;
 
 class Scope implements Renderable
 {
-    const QUERY_NAME = '_scope';
+    public const QUERY_NAME = '_scope';
 
     /**
      * @var string

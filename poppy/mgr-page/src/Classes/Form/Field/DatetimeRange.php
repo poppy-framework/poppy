@@ -15,6 +15,7 @@ class DatetimeRange extends Date
             'layui-range' => true,
             'layui-type'  => 'datetime',
         ]);
+        $this->attribute('style', 'width:300px');
         return parent::render();
     }
 }

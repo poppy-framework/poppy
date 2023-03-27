@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Concerns;
 
 use Poppy\MgrPage\Classes\Grid\Exporter;

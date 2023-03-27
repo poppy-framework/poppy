@@ -123,6 +123,7 @@ class Form implements Renderable
         'tags'           => Field\Tags::class,
         'timezone'       => Field\Timezone::class,
         'keyword'        => Field\Keyword::class,
+        'hook'           => Field\Hook::class,
     ];
 
     /**

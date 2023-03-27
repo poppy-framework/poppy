@@ -4,13 +4,7 @@
             {!! $title !!}
             @if ($tools)
                 <div class="pull-right">
-                    @foreach($tools as $tool)
-                        @if ($tool instanceof \Poppy\MgrPage\Classes\Form\Field)
-                            {!! $tool->render() !!}
-                        @else
-                            {!! $tool !!}
-                        @endif
-                    @endforeach
+                    {!! $tools !!}
                 </div>
             @endif
         </div>

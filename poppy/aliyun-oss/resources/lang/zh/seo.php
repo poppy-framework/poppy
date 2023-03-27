@@ -6,8 +6,5 @@
 |
 */
 return [
-    'backend_app_index'     => '应用管理',
-    'backend_app_establish' => '管理应用',
-    'backend_app_delete'    => '删除应用',
-    'backend_app_status'    => '应用状态',
+    'backend_upload_store' => '密钥配置',
 ];

@@ -4,7 +4,3 @@
     - '\Poppy\Sms\Hooks\Sms\SendTypeLocal'
     - '\Poppy\Sms\Hooks\Sms\SendTypeAliyun'
     - '\Poppy\Sms\Hooks\Sms\SendTypeChuanglan'
--
-  name : 'poppy.mgr-app.settings'
-  hooks :
-    - '\Poppy\Sms\Hooks\MgrApp\Settings'

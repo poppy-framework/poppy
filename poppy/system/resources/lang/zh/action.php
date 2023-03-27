@@ -1,48 +1,18 @@
 <?php
 
 return [
-    /* 地区
-     * ---------------------------------------- */
-    'area'    => [
-        'same_error'      => '父级元素不能和子集元素相同',
-        'exist_error'     => '该类别下存在子元素, 不得删除',
-        'undefined_error' => '条目不存在, 不得操作',
-    ],
-
     /* 验证码
      * ---------------------------------------- */
-    'captcha' => [
+    'captcha'      => [
         'send_passport_format_error' => '无法发送验证码, 格式不正确',
         'account_miss'               => '指定账号不存在, 无法发送',
         'account_exists'             => '指定手机号已经存在, 不能绑定, 请更换',
         'account_no_password'        => '账户未设置密码',
     ],
 
-    /* 帮助中心
-    * ---------------------------------------- */
-    'help'    => [
-        'item_not_exist'       => '条目不存在, 不得操作',
-        'parent_error'         => '分类级别错误',
-        'parent_id_not_exists' => '分类级别不存在',
-    ],
-
-    'category' => [
-        'item_not_exist' => '条目不存在, 不得操作',
-    ],
-
-    'image_captcha' => [
-        'check_not_input' => '请填写验证码',
-        'check_not_exist' => '验证码已经过期',
-        'check_error'     => '验证码不正确',
-    ],
-    'o_auth'        => [
-        'bind_type'       => '第三方绑定账号类型',
-        'bind_type_error' => '第三方绑定账号类型错误',
-    ],
-
     /* 用户
     * ---------------------------------------- */
-    'pam'           => [
+    'pam'          => [
         'check_permission_need_login' => '用户需要登录',
         'not_set_name_prefix'         => '尚未设置用户名默认前缀, 无法注册, 请联系管理员',
         'account_disable_not_login'   => '本账户被禁用, 不得登入',
@@ -58,7 +28,7 @@ return [
         'sub_user_account_need_colon' => '子用户账户必须包含 :',
         'pam_error'                   => '用户不存在',
     ],
-    'role'          => [
+    'role'         => [
         'permissions'                  => '权限ID',
         'permission_error'             => '权限错误',
         'no_policy_to_delete'          => '无权删除此角色',
@@ -68,7 +38,7 @@ return [
         'role_not_exists'              => '角色不存在',
         'role_has_account'             => '当前角色下存在用户, 请先清除用户的这类角色信息, 再行删除',
     ],
-    'verification'  => [
+    'verification' => [
         'send_passport_format_error' => '无法发送验证码, 格式不正确',
         'check_captcha_error'        => '验证码错误',
         'verify_code_expired'        => '验证码已过期, 请重新发送',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes;
 
 use Closure;
@@ -120,7 +122,7 @@ class Grid
      *
      * @var bool
      */
-    protected $isBuild = false;
+    protected bool $isBuild = false;
 
     /**
      * All variables in grid view.
@@ -153,9 +155,10 @@ class Grid
      *
      * @var array
      */
-    protected $options = [
+    protected array $options = [
         'show_tools'        => true,
         'show_exporter'     => false,
+        'show_quick_button' => true,
         'show_row_selector' => true,
     ];
 
@@ -192,6 +195,7 @@ class Grid
      * @param string $grid_class
      * @param string $field
      * @param string $order
+     * @return Grid
      * @throws ApplicationException
      */
     public function setLists(string $grid_class, string $field = '', string $order = 'desc'): self
@@ -202,9 +206,7 @@ class Grid
 
         /** @var ListBase $List */
         $List = new $grid_class($this);
-        if ($title = $List->title) {
-            $this->setTitle($title);
-        }
+        $this->setTitle($List->title);
         $List->columns();
         $List->actions();
         $this->columns = $List->getColumns();
@@ -217,6 +219,10 @@ class Grid
                 input('_field', $field ?: $pk),
                 $order
             );
+        }
+
+        if (!$List->isShowRowSelector()){
+            $this->disableRowSelector();
         }
 
         $this->filter($List->filter());
@@ -370,15 +376,12 @@ class Grid
 
     /**
      * Set grid title.
-     *
      * @param string $title
-     *
      * @return $this
      */
     public function setTitle(string $title): self
     {
         $this->variables['title'] = $title;
-
         return $this;
     }
 
@@ -473,7 +476,7 @@ class Grid
      *
      * @return void
      */
-    protected function prependRowSelectorColumn()
+    protected function prependRowSelectorColumn(): void
     {
         if (!$this->option('show_row_selector')) {
             return;

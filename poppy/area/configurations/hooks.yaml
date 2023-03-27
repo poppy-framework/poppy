@@ -1,3 +1,0 @@
--   name : 'poppy.mgr-app.form-dependence'
-    hooks :
-        - '\Poppy\Area\Classes\Form\Dependence\Area'

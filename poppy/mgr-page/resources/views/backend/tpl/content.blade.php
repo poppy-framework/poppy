@@ -20,7 +20,9 @@
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
                 <legend>
                     {!! $title !!}
-                    @if ($description) <small>{!! $description !!}</small> @endif
+                    @if ($description)
+                        <small>{!! $description !!}</small>
+                    @endif
                 </legend>
             </fieldset>
         @endif

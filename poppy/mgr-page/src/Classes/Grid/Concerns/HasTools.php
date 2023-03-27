@@ -18,15 +18,35 @@ trait HasTools
     public $tools;
 
     /**
+     * 是否显示导出按钮
+     */
+    public function isShowTools(): bool
+    {
+        return $this->option('show_tools');
+    }
+
+    /**
+     * Disable export.
+     *
+     * @param bool $disable
+     * @return $this
+     */
+    public function disableTools(bool $disable = true): self
+    {
+        return $this->option('show_tools', !$disable);
+    }
+
+    /**
      * Setup grid tools.
      *
      * @param Closure $callback
      *
      * @return void
      */
-    public function tools(Closure $callback)
+    public function tools(Closure $callback): self
     {
-        call_user_func($callback, $this->tools);
+        $callback($this->tools);
+        return $this;
     }
 
     /**

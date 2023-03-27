@@ -18,6 +18,8 @@ class ListSysSensitiveWord extends ListBase
 
     public $title = '敏感词';
 
+    protected bool $showRowSelector = true;
+
     /**
      * @throws ApplicationException
      */

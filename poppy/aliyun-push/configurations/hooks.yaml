@@ -2,7 +2,3 @@
   name : 'poppy.mgr-page.settings'
   hooks :
     - '\Poppy\AliyunPush\Hooks\MgrPage\SettingsAliyunPush'
--
-  name : 'poppy.mgr-app.settings'
-  hooks :
-    - '\Poppy\AliyunPush\Hooks\MgrApp\Settings'

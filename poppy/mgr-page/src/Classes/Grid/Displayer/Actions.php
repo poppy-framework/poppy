@@ -39,16 +39,16 @@ class Actions extends AbstractDisplayer
     }
 
 
-    public function disable($url, $title): void
+    public function disable($url, $title, $status = '已启用'): void
     {
-        $this->request('已启用', $url)->icon('check-circle')
+        $this->request($status, $url)->icon('check-circle')
             ->confirm("确定要禁用 [{$title}]")->tooltip("当前启用, 点击禁用 [{$title}]");
     }
 
 
-    public function enable($url, $title): void
+    public function enable($url, $title, $status = '已禁用'): void
     {
-        $this->request('已禁用', $url)->icon('slash-circle')
+        $this->request($status, $url)->icon('slash-circle')
             ->confirm("确定启用 [{$title}]")->tooltip("当前禁用, 点击启用 [{$title}]")->danger();
     }
 

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Poppy\MgrPage\Http\MgrPage;
 
 use Poppy\Framework\Validation\Rule;
-use Poppy\MgrPage\Classes\Form\Field\Link;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
+use Poppy\MgrPage\Classes\Operations;
 
 class FormMailStore extends FormSettingBase
 {
@@ -24,9 +24,9 @@ class FormMailStore extends FormSettingBase
      */
     public function form(): void
     {
-        $this->boxTools([
-            (new Link('发送测试邮件'))->small()->info()->iframe()->url(route('py-mgr-page:backend.mail.test')),
-        ]);
+        $this->boxTools(function (Operations $operations) {
+            $operations->iframe('发送测试邮件', route('py-mgr-page:backend.mail.test'));
+        });
 
         $this->radio('driver', '发送方式')->options([
             'mail' => '内置Mail函数',

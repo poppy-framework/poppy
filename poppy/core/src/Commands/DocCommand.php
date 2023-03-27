@@ -118,8 +118,7 @@ class DocCommand extends Command
         else {
             $matches = [
                 'web'     => 'Api.*/Web|ApiWeb|ApiV1|Api.*/Web',
-                'dev'     => 'api.*/dev|ApiDev|api/dev',
-                'mgr-app' => 'ApiMgrApp|api/mgr_app|api.*/mgr_app',
+                'dev'     => 'api.*/dev|ApiDev|api/dev'
             ];
             $type    = $def['type'] ?? 'web';
             $match   = $matches[$type] ?? $matches['web'];

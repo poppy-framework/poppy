@@ -30,7 +30,7 @@ class InspectCommand extends Command
      */
     protected $signature = 'py-core:inspect 
         {--slug= : slug name}
-		{type? : Support type need to input, [method, file, db, env]}
+		{type? : Support type need to input, [method, file, class, env, action, controller]}
 		{--module= : The module to check}
 		{--export= : The module to check}
 		{--class_load_only : Only load class with not show tables}
@@ -229,7 +229,6 @@ class InspectCommand extends Command
         foreach ($files as $file) {
             $pathName = $file->getPathname();
 
-            $moduleName = $this->moduleName($pathName);
 
             // 排除指定的类
             if (Str::contains($pathName, [
@@ -238,16 +237,9 @@ class InspectCommand extends Command
                 continue;
             }
 
-            // 模块名称解析错误
-            if (!$moduleName) {
-                $this->warn('Error module name in path:' . $pathName);
-                return;
-            }
-
-            $slug = '';
 
             $relativePath = $file->getRelativePath();
-            $className    = $this->className($moduleName, $relativePath, $file->getFilename());
+            $className    = $this->className($slug, $relativePath, $file->getFilename());
 
             try {
                 $refection = new ReflectionClass($className);
@@ -516,29 +508,21 @@ class InspectCommand extends Command
         $table = [];
         $files = app('files')->allFiles(poppy_path($slug, 'src'));
         foreach ($files as $file) {
-            $pathName   = $file->getPathname();
-            $moduleName = $this->moduleName($pathName);
-
+            $pathName = $file->getPathname();
             // 排除指定的类
             if (!Str::contains($pathName, ['Http/Request/'])) {
                 continue;
             }
 
-            // 模块名称解析错误
-            if (!$moduleName) {
-                $this->warn('Error module name in path:' . $pathName);
-
-                return;
-            }
 
             $fileName = Str::after($pathName, 'Http/Request/');
 
             $relativePath = $file->getRelativePath();
-            $className    = $this->className($moduleName, $relativePath, $file->getFilename());
+            $className    = $this->className($slug, $relativePath, $file->getFilename());
             try {
                 $refection = new ReflectionClass($className);
             } catch (Throwable $e) {
-                $this->warn($moduleName . $e->getMessage());
+                $this->warn($slug . $e->getMessage());
                 continue;
             }
 
@@ -567,7 +551,7 @@ class InspectCommand extends Command
                 // 检查 注释
                 $comment = $method->getDocComment();
                 $item    = [
-                    $moduleName,
+                    $slug,
                     $fileName,
                     $methodName,
                 ];
@@ -592,7 +576,7 @@ class InspectCommand extends Command
             }
         }
 
-        $this->table(['module', 'file', 'do', 'description'], $table);
+        $this->table(['slug', 'file', 'do', 'description'], $table);
     }
 
     /**
@@ -691,35 +675,57 @@ class InspectCommand extends Command
         $permissions = [];
         app('poppy')->enabled()->each(function ($module, $slug) use (&$permissions) {
             $directory = poppy_path($slug, 'src/Http/Request');
-            if (!app('files')->exists($directory)) {
-                return;
-            }
-            $files = app('files')->allFiles($directory);
-            foreach ($files as $file) {
-                $pathName   = $file->getPathname();
-                $moduleName = $this->moduleName($pathName);
+            if (app('files')->exists($directory)) {
+                $files = app('files')->allFiles($directory);
+                foreach ($files as $file) {
+                    $pathName = $file->getPathname();
 
-                $path = str_replace('/', '\\', substr(Str::after($pathName, poppy_path($slug, 'src/')), 0, -4));
+                    $path = str_replace('/', '\\', substr(Str::after($pathName, poppy_path($slug, 'src/')), 0, -4));
 
-                $className = poppy_class($slug, $path);
+                    $className = poppy_class($slug, $path);
 
-                try {
-                    $refection = new ReflectionClass($className);
-                    if ($refection->isAbstract()) {
+                    try {
+                        $refection = new ReflectionClass($className);
+                        if ($refection->isAbstract()) {
+                            continue;
+                        }
+                    } catch (Throwable $e) {
+                        $this->warn($slug . $e->getMessage());
                         continue;
                     }
-                } catch (Throwable $e) {
-                    $this->warn($moduleName . $e->getMessage());
-                    continue;
+                    $ctlPermissions = (new $className)::$permission;
+                    $permissions    = array_merge($permissions, $ctlPermissions);
                 }
-                $ctlPermissions = (new $className)::$permission;
-                $permissions    = array_merge($permissions, $ctlPermissions);
+            }
+
+
+            $directory = poppy_path($slug, 'src/Models/Policies');
+            if (app('files')->exists($directory)) {
+                $files = app('files')->allFiles($directory);
+                foreach ($files as $file) {
+                    $pathName = $file->getPathname();
+
+                    $path = str_replace('/', '\\', substr(Str::after($pathName, poppy_path($slug, 'src/')), 0, -4));
+
+                    $className = poppy_class($slug, $path);
+
+                    try {
+                        $refection = new ReflectionClass($className);
+                        if (!$refection->hasMethod('getPermissionMap')) {
+                            continue;
+                        }
+                    } catch (Throwable $e) {
+                        $this->warn($slug . $e->getMessage());
+                        continue;
+                    }
+                    $ctlPermissions = (new $className)::getPermissionMap();
+                    $permissions    = array_merge($permissions, $ctlPermissions);
+                }
             }
         });
 
 
         $menus = $this->coreModule()->menus();
-
 
         $menus->each(function ($menu) use (&$permissions) {
 
@@ -754,19 +760,6 @@ class InspectCommand extends Command
         $this->table(['Permission Defined But Not Used'], collect($notUsed)->map(fn($item) => [$item]));
 
         $this->table(['Permission Used But Not Defined'], collect($notDefined)->map(fn($item) => [$item]));
-    }
-
-    /**
-     * 获取模块信息
-     * @param string $path path
-     * @return string
-     */
-    private function moduleName(string $path): string
-    {
-        if (preg_match('/\/(poppy|modules)\/([a-z-_]{1,20})\/src/', $path, $match)) {
-            return ($match[1] === 'poppy' ? 'poppy' : 'module') . '.' . $match[2];
-        }
-        return '';
     }
 
     /**

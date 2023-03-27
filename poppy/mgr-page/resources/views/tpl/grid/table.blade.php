@@ -1,17 +1,23 @@
 <div class="layui-card">
     {{--  标题以及工具  --}}
-    <div class="layui-card-header">
-        {{ $title }}
-        {{--显示工具--}}
-        {!! $grid->renderHeaderTools() !!}
+    @if($title || $grid->isShowTools() || $grid->isShowQuickButton() || $grid->isShowExporter())
+        <div class="layui-card-header">
+            {{ $title }}
+            {{--显示工具--}}
+            @if($grid->isShowTools())
+                {!! $grid->renderHeaderTools() !!}
+            @endif
 
-        <div class="pull-right">
-            {!! $grid->renderQuickButton() !!}
+            @if($grid->isShowQuickButton())
+                <div class="pull-right">
+                    {!! $grid->renderQuickButton() !!}
+                </div>
+            @endif
+            @if ($grid->isShowExporter())
+                {!! $grid->renderExportButton() !!}
+            @endif
         </div>
-        @if ($grid->isShowExporter())
-            {!! $grid->renderExportButton() !!}
-        @endif
-    </div>
+    @endif
 
     <div class="layui-card-body">
 
@@ -42,54 +48,54 @@
 <script>
 layui.table.render($.extend({!! $lay !!}, {
     // 返回的数据去做解析
-    request : {
-        limitName : 'pagesize'
+    request: {
+        limitName: 'pagesize'
     },
-    limit : {!! $grid->getPerPage() !!},
+    limit: {!! $grid->getPerPage() !!},
     // 使用后端排序
-    autoSort : false,
-    id : '{!! $filter_id !!}-table',
-    loading : true,
-    toolbar : '#{!! $filter_id !!}-toolbar',
-    defaultToolbar : ['filter', 'print'],
-    even : true,
-    parseData : function(resp) {
+    autoSort: false,
+    id: '{!! $filter_id !!}-table',
+    loading: true,
+    toolbar: '#{!! $filter_id !!}-toolbar',
+    defaultToolbar: ['filter', 'print'],
+    even: true,
+    parseData: function (resp) {
         return {
-            code : resp.status,
-            msg : resp.message,
-            count : resp.data.pagination.total,
-            data : resp.data.list
+            code: resp.status,
+            msg: resp.message,
+            count: resp.data.pagination.total,
+            data: resp.data.list
         };
     }
 }));
-$('#{!! $filter_id !!}-search').on('click', function() {
+$('#{!! $filter_id !!}-search').on('click', function () {
     let values = $('#{!! $filter_id !!}-form').serializeArray();
-    let query  = {
-        _query : 1
+    let query = {
+        _query: 1
     };
-    $.each(values, function(i, field) {
+    $.each(values, function (i, field) {
         query[field.name] = field.value;
     });
     layui.table.reload('{!! $filter_id !!}-table', {
-        page : {
-            curr : 1 //重新从第 1 页开始
+        page: {
+            curr: 1 //重新从第 1 页开始
         },
-        where : query
+        where: query
     });
     return false;
 });
-$('#{!! $filter_id !!}-reload').on('click', function() {
+$('#{!! $filter_id !!}-reload').on('click', function () {
     layui.table.reload('{!! $filter_id !!}-table', true);
     return false;
 });
-$('#{!! $filter_id !!}-reset').on('click', function() {
+$('#{!! $filter_id !!}-reset').on('click', function () {
     $('#{!! $filter_id !!}-form').resetForm();
     layui.table.reload('{!! $filter_id !!}-table', {
-        page : {
-            curr : 1 //重新从第 1 页开始
+        page: {
+            curr: 1 //重新从第 1 页开始
         },
-        where : {
-            _query : 1
+        where: {
+            _query: 1
         }
     });
     return false;
@@ -97,18 +103,18 @@ $('#{!! $filter_id !!}-reset').on('click', function() {
 
 // 监听排序事件
 // https://www.layui.com/doc/modules/table.html#onsort
-layui.table.on('sort({!! $id !!}-filter)', function(obj) {
+layui.table.on('sort({!! $id !!}-filter)', function (obj) {
     layui.table.reload('{!! $filter_id !!}-table', {
-        initSort : obj,
-        where : {
-            _field : obj.field,
-            _order : obj.type,
-            _query : 1
+        initSort: obj,
+        where: {
+            _field: obj.field,
+            _order: obj.type,
+            _query: 1
         }
     });
 });
 
-layui.table.on('toolbar({!! $id !!}-filter)', function(obj) {
+layui.table.on('toolbar({!! $id !!}-filter)', function (obj) {
     if (obj.event.indexOf('LAYTABLE') > -1) {
         return false;
     }
@@ -118,7 +124,7 @@ layui.table.on('toolbar({!! $id !!}-filter)', function(obj) {
         return false;
     }
     let status = layui.table.checkStatus(obj.config.id);
-    let data   = status.data;
+    let data = status.data;
     if (!data.length) {
         layui.layer.msg('你尚未选中数据, 请选择');
         return false;
@@ -126,7 +132,6 @@ layui.table.on('toolbar({!! $id !!}-filter)', function(obj) {
 
     // confirm
     let str_confirm = $(this).attr('data-confirm');
-    console.log(str_confirm);
     if (str_confirm && !confirm(str_confirm)) return false;
 
     let ids = [];
@@ -141,7 +146,7 @@ layui.table.on('toolbar({!! $id !!}-filter)', function(obj) {
 
     Util.makeRequest(url, {
         {!! $model_pk !!} : ids
-    }, function(data) {
+    }, function (data) {
         Util.splash(data);
     });
 });
@@ -150,32 +155,32 @@ layui.table.on('toolbar({!! $id !!}-filter)', function(obj) {
 // obj.value 得到修改后的值
 // obj.field 当前编辑的字段名
 // obj.data 所在行的所有相关数据
-layui.table.on('edit({!! $id !!}-filter)', function(obj) {
+layui.table.on('edit({!! $id !!}-filter)', function (obj) {
     if (!obj.data['{!! $model_pk !!}']) {
         Util.splash({
-            status : 1,
-            message : '尚未定义/返回主键, 无法使用编辑功能'
+            status: 1,
+            message: '尚未定义/返回主键, 无法使用编辑功能'
         })
         return obj;
     }
     Util.makeRequest('{!! $url_base !!}', {
-        '_edit' : 1,
-        '_field' : obj.field,
-        '_value' : obj.value,
-        '_pk' : obj.data['{!! $model_pk !!}']
+        '_edit': 1,
+        '_field': obj.field,
+        '_value': obj.value,
+        '_pk': obj.data['{!! $model_pk !!}']
     })
 });
 
-layui.table.on('tool({!! $id !!}-filter)', function(obj) {
+layui.table.on('tool({!! $id !!}-filter)', function (obj) {
     if (!obj.data['{!! $model_pk !!}']) {
         Util.splash({
-            status : 1,
-            message : '尚未定义/返回主键, 无法使用编辑功能'
+            status: 1,
+            message: '尚未定义/返回主键, 无法使用编辑功能'
         })
         return obj;
     }
-    let field   = this.getAttribute('data-field');
-    let type    = this.getAttribute('data-type');
+    let field = this.getAttribute('data-field');
+    let type = this.getAttribute('data-type');
     let value;
     let checked = $(this).prop('checked');
     if (type === 'Y/N') {
@@ -184,10 +189,10 @@ layui.table.on('tool({!! $id !!}-filter)', function(obj) {
         value = checked ? '1' : '0';
     }
     Util.makeRequest('{!! $url_base !!}', {
-        '_edit' : 1,
-        '_field' : field,
-        '_value' : value,
-        '_pk' : obj.data['{!! $model_pk !!}']
+        '_edit': 1,
+        '_field': field,
+        '_value': value,
+        '_pk': obj.data['{!! $model_pk !!}']
     })
 });
 </script>

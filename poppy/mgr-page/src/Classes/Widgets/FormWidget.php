@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Widgets;
 
+use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -48,7 +51,7 @@ use Poppy\MgrPage\Classes\Layout\Content;
  * @method Field\Year           year($column, $label = '')
  * @method Field\Month          month($column, $label = '')
  * @method Field\DateRange      dateRange($start, $end, $label = '')
- * @method Field\DateTimeRange  dateTimeRange($start, $end, $label = '')
+ * @method Field\DateTimeRange  dateTimeRange($at, $label = '')
  * @method Field\TimeRange      timeRange($start, $end, $label = '')
  * @method Field\Number         number($name, $label = '')
  * @method Field\Currency       currency($name, $label = '')
@@ -115,10 +118,10 @@ class FormWidget implements Renderable
     protected $buttons = ['reset', 'submit'];
 
     /**
-     *
-     * @var array
+     * 可用操作
+     * @var Closure|null
      */
-    protected $boxTools = [];
+    protected ?Closure $boxTools = null;
 
     /**
      * Width for label and submit field.
@@ -401,9 +404,14 @@ class FormWidget implements Renderable
     }
 
 
-    public function boxTools($tools)
+    /**
+     * 设定工具栏
+     * @param Closure $closure
+     * @return $this
+     */
+    public function boxTools(Closure $closure): self
     {
-        $this->boxTools = array_merge($this->boxTools, $tools);
+        $this->boxTools = $closure;
         return $this;
     }
 
@@ -444,6 +452,7 @@ class FormWidget implements Renderable
 
         // init box and render
         $box = (new BoxWidget($title, $form));
+
 
         $box->tools($this->boxTools);
         if ($this->withContent) {
@@ -587,14 +596,14 @@ class FormWidget implements Renderable
                     $jqRules['regex'] = Str::replaceLast('/', '', $rule);
                 }
 
-                if (in_array(Rule::numeric(), $rules)) {
-                    if (in_array('min', $rules)) {
+                if (in_array(Rule::numeric(), $rules, true)) {
+                    if (in_array('min', $rules, true)) {
                         $jqRules['min'] = (int) Str::after($rule, 'min:');
                     }
                 }
 
                 if (Str::contains($rule, 'min')) {
-                    if (in_array(Rule::numeric(), $rules)) {
+                    if (in_array(Rule::numeric(), $rules, true)) {
                         $jqRules['min'] = (int) Str::after($rule, 'min:');
                     }
                     else {
@@ -602,7 +611,7 @@ class FormWidget implements Renderable
                     }
                 }
                 if (Str::contains($rule, 'max')) {
-                    if (in_array(Rule::numeric(), $rules)) {
+                    if (in_array(Rule::numeric(), $rules, true)) {
                         $jqRules['max'] = (int) Str::after($rule, 'max:');
                     }
                     else {

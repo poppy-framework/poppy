@@ -1,5 +1,8 @@
 <?php
 
+
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid;
 
 use Closure;
@@ -33,6 +36,9 @@ abstract class ListBase implements ListContract
     protected $grid;
 
 
+    protected bool $showRowSelector = false;
+
+
     /**
      * Collection of all grid columns.
      *
@@ -52,6 +58,11 @@ abstract class ListBase implements ListContract
         $this->columns = collect();
     }
 
+
+    public function isShowRowSelector(): bool
+    {
+        return $this->showRowSelector;
+    }
 
     /**
      * Add a column to Grid.
