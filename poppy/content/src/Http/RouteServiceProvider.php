@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Content\Http;
 
 use Route;
@@ -17,21 +19,13 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
      * Define the routes for the module.
      * @return void
      */
-    public function map()
+    public function map(): void
     {
         Route::group([
             'prefix'     => $this->prefix . '/py-content',
             'middleware' => 'backend-auth',
         ], function () {
             require_once __DIR__ . '/Routes/backend.php';
-        });
-
-        // 排序
-        Route::group([
-            'middleware' => 'api-sign',
-            'prefix'     => 'api_v1/content',
-        ], function () {
-            require_once __DIR__ . '/Routes/api_v1.php';
         });
     }
 }

@@ -13,4 +13,6 @@ Route::group([
         ->name('py-content:backend.content.establish');
     $router->any('content/delete/{id}', 'ContentController@delete')
         ->name('py-content:backend.content.delete');
+    $router->any('content/toggle/{id}', 'ContentController@toggle')
+        ->name('py-content:backend.content.toggle');
 });

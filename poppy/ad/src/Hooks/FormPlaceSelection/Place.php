@@ -25,7 +25,7 @@ class Place implements ServiceForm
 
         $options += [
             'class'       => 'layui-input',
-            'placeholder' => '请选择广告位',
+            'placeholder' => '请选择占位',
         ];
         $places  = SysAdPlace::pluck('title', 'id');
 

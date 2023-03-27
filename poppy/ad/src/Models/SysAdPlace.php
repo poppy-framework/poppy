@@ -88,7 +88,7 @@ class SysAdPlace extends Model
      * @param int $id id
      * @return array
      */
-    public static function returnAdContent($id)
+    public static function returnAdContent(int $id): array
     {
         $picture = [];
         if (SysAdContent::where('place_id', $id)->exists()) {
@@ -97,7 +97,7 @@ class SysAdPlace extends Model
             foreach ($adContent as $content) {
                 $picture[] = [
                     'picture'    => $content->image_src,
-                    'is_open'    => $content->action !== SysAdContent::ACTION_NO_CLICK ? 'Y' : 'N',
+                    'is_open'    => $content->action !== SysAdContent::ACTION_NONE ? 'Y' : 'N',
                     'return_url' => $content->image_url,
                     'title'      => $content->title,
                     'action'     => $content->action,

@@ -9,9 +9,12 @@ use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Classes\Traits\PamTrait;
+use Throwable;
+use Validator;
+use View;
 
 /**
- * 广告位处理类
+ * 处理类
  */
 class Place
 {
@@ -21,10 +24,12 @@ class Place
      * @var string
      */
     protected $placeTable;
+
     /**
      * @var SysAdPlace $adPlace
      */
     private $adPlace;
+
     /**
      * @var int $id
      */
@@ -37,30 +42,27 @@ class Place
 
     /**
      * 编辑/创建 广告位
-     * @param array $data 传入数据
-     *                    string  title       广告位名称
-     *                    int     width       广告位宽度
-     *                    int     height      广告位高度
-     *                    string  thumb       广告位示意图
-     *                    string  introduce   广告位介绍
-     * @param null  $id   广告位ID
+     * @param array    $data 传入数据
+     *                       string  title       名称
+     *                       int     width       宽度
+     *                       int     height      高度
+     *                       string  thumb       示意图
+     *                       string  introduce   介绍
+     * @param null|int $id   广告位ID
      * @return bool
      */
-    public function establish($data, $id = null): bool
+    public function establish(array $data, int $id = null): bool
     {
-        if (!$this->checkPam()) {
-            return false;
-        }
 
         $initDb = [
             'title'     => (string) sys_get($data, 'title'),
-            'width'     => sys_get($data, 'width'),
-            'height'    => sys_get($data, 'height'),
+            'width'     => (string) sys_get($data, 'width'),
+            'height'    => (string) sys_get($data, 'height'),
             'thumb'     => (string) sys_get($data, 'thumb'),
             'introduce' => (string) sys_get($data, 'introduce'),
         ];
 
-        $validator = \Validator::make($initDb, [
+        $validator = Validator::make($initDb, [
             'title'     => [
                 Rule::required(),
                 Rule::string(),
@@ -101,9 +103,7 @@ class Place
         }
 
         // init
-        if ($id && !$this->init($id)) {
-            return false;
-        }
+        $id && $this->init($id);
 
         if ($id) {
             $this->adPlace->update($initDb);
@@ -122,14 +122,9 @@ class Place
      * @param int $id 活动ID
      * @return bool
      */
-    public function delete($id): bool
+    public function delete(int $id): bool
     {
-        if (!$this->checkPam()) {
-            return false;
-        }
-        if ($id && !$this->init($id)) {
-            return false;
-        }
+        $id && $this->init($id);
 
         if (SysAdContent::where('place_id', $id)->exists()) {
             return $this->setError('存在广告, 不得删除!');
@@ -137,7 +132,7 @@ class Place
 
         try {
             $this->adPlace->delete();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $this->setError($e->getMessage());
         }
 
@@ -147,18 +142,11 @@ class Place
     /**
      * 初始化
      * @param int $id 活动 ID
-     * @return bool
      */
-    public function init($id)
+    public function init(int $id): void
     {
-        try {
-            $this->adPlace = SysAdPlace::findOrFail($id);
-            $this->id      = $this->adPlace->id;
-
-            return true;
-        } catch (\Throwable $e) {
-            return $this->setError('ID 不合法, 不存在此数据');
-        }
+        $this->adPlace = SysAdPlace::findOrFail($id);
+        $this->id      = $this->adPlace->id;
     }
 
     /**
@@ -166,7 +154,7 @@ class Place
      */
     public function share()
     {
-        \View::share([
+        View::share([
             'item' => $this->adPlace,
             'id'   => $this->adPlace->id,
         ]);

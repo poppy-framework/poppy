@@ -14,11 +14,12 @@ use Poppy\Content\Models\SysContent;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
+use Poppy\MgrPage\Classes\Operations;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 use Throwable;
 
 /**
- * 分类管理
+ * 内容管理
  */
 class ContentController extends BackendController
 {
@@ -38,9 +39,7 @@ class ContentController extends BackendController
      */
     public function index()
     {
-        $grid = new Grid(new SysContent());
-        $grid->setLists(ListSysContent::class);
-        return $grid->render();
+        return (new Grid(new SysContent()))->setLists(ListSysContent::class)->render();
     }
 
     /**
@@ -49,7 +48,7 @@ class ContentController extends BackendController
      */
     public function establish()
     {
-        return (new \Poppy\Ad\Http\MgrPage\FormContentEstablish())->render();
+        return (new FormContentEstablish())->render();
     }
 
     /**
@@ -59,11 +58,31 @@ class ContentController extends BackendController
      */
     public function delete(int $id)
     {
-        $Category = new Content();
-        if ($Category->delete($id)) {
-            return Resp::success('删除分类成功', '_reload|1');
+        $Content = $this->action();
+        if ($Content->delete($id)) {
+            return Resp::success('删除成功', '_reload|1');
         }
 
-        return Resp::error($Category->getError());
+        return Resp::error($Content->getError());
+    }
+
+    /**
+     * 开启/关闭 广告
+     * @param int $id 活动ID
+     * @return JsonResponse|RedirectResponse|Response
+     */
+    public function toggle(int $id)
+    {
+        $Ad = $this->action();
+        if ($Ad->toggle($id)) {
+            return Resp::success('操作成功', '_reload|1');
+        }
+
+        return Resp::error($Ad->getError());
+    }
+
+    private function action(): Content
+    {
+        return (new Content());
     }
 }

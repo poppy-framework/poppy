@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Demo\Http\Request\Web;
 
 use Demo\Forms\FormBaseWidget;
@@ -24,8 +26,6 @@ class FormController extends WebController
         if (method_exists($form, 'setPam')) {
             $form->setPam(PamAccount::first());
         }
-        $inbox       = (bool) input('inbox', 1);
-        $form->inbox = $inbox;
         return $form->render();
     }
 

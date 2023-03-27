@@ -16,7 +16,7 @@ use Poppy\MgrPage\Classes\Operations;
 class ListSysContent extends ListBase
 {
 
-    public $title = '分类管理';
+    public $title = '内容管理';
 
     /**
      * @inheritDoc
@@ -25,13 +25,21 @@ class ListSysContent extends ListBase
     public function columns()
     {
         $this->column('id', "ID")->sortable()->width(80);
+        $this->column('list_order', '排序')->editable()->width(80)->sortable();
+        $this->column('thumb', '缩略图')->image()->width(80);
         $this->column('title', "标题");
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var SysContent $item */
             $item = $actions->row;
-            $actions->edit(route('py-category:backend.category.establish', [$item->id]));
-            $actions->delete(route('py-category:backend.category.delete', [$item->id]), $item->title);
-        },])->width(170);
+            $actions->edit(route('py-content:backend.content.establish', [$item->id]));
+            $actions->delete(route('py-content:backend.content.delete', [$item->id]), $item->title);
+            if ($item->is_enable) {
+                $actions->disable(route('py-content:backend.content.toggle', [$item->id]), $item->title, '展示');
+            }
+            else {
+                $actions->enable(route('py-content:backend.content.toggle', [$item->id]), $item->title, '隐藏');
+            }
+        },])->width(215);
     }
 
     /**
@@ -41,13 +49,8 @@ class ListSysContent extends ListBase
     public function filter(): Closure
     {
         return function (Filter $filter) {
-            $type = input(Scope::QUERY_NAME, SysContent::TYPE_DEFAULT);
             $filter->column(1 / 12, function (Filter $ft) {
                 $ft->like('title', '标题');
-            });
-            // todo 这里需要默认选择为空的上级 ID
-            $filter->column(1 / 12, function (Filter $ft) use ($type) {
-                $ft->equal('parent_id', '上级 ID')->select(SysContent::tree($type, true));
             });
 
             $types = SysContent::kvType();
@@ -61,7 +64,8 @@ class ListSysContent extends ListBase
     {
         $scope = input(Scope::QUERY_NAME);
         return function (Operations $operations) use ($scope) {
-            $operations->create(route_url('py-category:backend.category.establish', null, ['type' => $scope]), '新建类别');
+            $operations->page('新建文章', route_url('py-content:backend.content.establish', null, ['type' => $scope]))
+                ->icon('plus-circle')->sm();
         };
     }
 }

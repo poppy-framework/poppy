@@ -9,13 +9,21 @@ use Poppy\Content\Action\Content;
 use Poppy\Content\Models\SysContent;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Validation\Rule;
+use Poppy\MgrPage\Classes\Operations;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Route;
 
 class FormContentEstablish extends FormWidget
 {
 
+    public $title = '内容管理';
+
     public $ajax = true;
+
+    protected $width = [
+        'label' => 2,
+        'field' => 10,
+    ];
 
     /**
      * 类型
@@ -53,6 +61,11 @@ class FormContentEstablish extends FormWidget
             $this->type = $this->item->type;
         }
         $this->id = $id;
+
+        $this->boxTools = function (Operations $operations) {
+            $operations->page('文章列表', route_url('py-content:backend.content.index', ['_scope' => $this->type]))
+                ->icon('grid')->sm();
+        };
     }
 
     public function handle(Request $request)
@@ -61,34 +74,27 @@ class FormContentEstablish extends FormWidget
             'type' => $this->type,
         ]);
         if ($this->content->establish($data, $this->id)) {
-            return Resp::success('添加成功', [
-                '_top_reload' => 1,
-                'id'          => $this->content->getItem()->id,
-            ]);
+            return Resp::success('操作成功');
         }
         return Resp::error($this->content->getError());
     }
 
     public function data(): array
     {
-        return $this->item ? [
-            'parent_id' => $this->item->parent_id,
-            'title'     => $this->item->title,
-            'type'      => $this->type,
-        ] : [
+        return $this->item ? $this->item->toArray() : [
             'type' => $this->type,
         ];
     }
 
-    public function form()
+    public function form(): void
     {
         $this->hidden('type', $this->type);
-        $this->select('parent_id', '上一级')->rules([
-            Rule::nullable(),
-        ])->options(SysContent::tree($this->type));
         $this->text('title', '标题')->rules([
             Rule::nullable(),
             Rule::required(),
         ]);
+        $this->image('thumb', '封面图');
+        $this->editor('content', '详情');
+        $this->text('list_order', '排序');
     }
 }

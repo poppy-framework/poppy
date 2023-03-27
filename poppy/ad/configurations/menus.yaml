@@ -1,12 +1,12 @@
 backend :
-  title : 广告管理
+  title : 占位管理
   groups :
     -
-      title : 广告管理
+      title : 占位管理
       icon : 'bi bi-badge-ad'
       injection : 'poppy.mgr-page/backend||setting'
       children :
         -
-          title : 广告位管理
+          title : 占位管理
           route : py-ad:backend.place.index
           permission : backend:py-ad.place.manage

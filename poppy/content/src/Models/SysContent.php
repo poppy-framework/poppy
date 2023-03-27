@@ -4,49 +4,52 @@ declare(strict_types = 1);
 
 namespace Poppy\Content\Models;
 
-use Carbon\Carbon;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Poppy\Framework\Helper\TreeHelper;
+use Illuminate\Support\Carbon;
 use Poppy\Framework\Http\Pagination\PageInfo;
 use Poppy\System\Classes\Traits\FilterTrait;
 
 /**
- * 分类管理
- * @property int         $id         id
+ * \Poppy\Content\Models\SysContent
+ *
+ * @mixin Eloquent
+ * @property int         $id
  * @property string      $title      标题
- * @property string      $parent_id  上级 ID
- * @property string      $type       类型
- * @property string      $list_order 排序
- * @property Carbon|null $created_at 创建时间
- * @property Carbon|null $updated_at 修改时间
- * @method static Builder|SysContent filter($input = [], $filter = null)
+ * @property string      $type       分类[简易分类标识]
+ * @property int         $cat_id     分类 ID
+ * @property string      $thumb      缩略图
+ * @property int         $list_order 排序
+ * @property int         $is_enable  是否启用
+ * @property string      $content    内容
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|SysContent filter(array $input = [], $filter = null)
+ * @method static Builder|SysContent newModelQuery()
+ * @method static Builder|SysContent newQuery()
  * @method static Builder|SysContent pageFilter(PageInfo $pageInfo)
  * @method static Builder|SysContent paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ * @method static Builder|SysContent query()
  * @method static Builder|SysContent simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
  * @method static Builder|SysContent whereBeginsWith($column, $value, $boolean = 'and')
  * @method static Builder|SysContent whereEndsWith($column, $value, $boolean = 'and')
  * @method static Builder|SysContent whereLike($column, $value, $boolean = 'and')
- * @mixin Eloquent
  */
 class SysContent extends Model
 {
     use FilterTrait;
 
-    const TYPE_DEFAULT = 'default';
+    public const TYPE_DEFAULT = 'default';
 
-    const POSITION_BEFORE = 'before';
-    const POSITION_AFTER  = 'after';
-
-    protected $table = 'sys_category';
+    protected $table = 'sys_content';
 
     protected $fillable = [
         'title',
         'type',
+        'thumb',
         'list_order',
-        'parent_id',
-        'top_id',
+        'content',
     ];
 
     public static function kvType(): array
@@ -57,28 +60,7 @@ class SysContent extends Model
                 'title' => '默认',
             ],
         ];
-        return collect(array_merge(config('poppy.category.types', []), $default))
+        return collect(array_merge(config('poppy.content.types', []), $default))
             ->pluck('title', 'type')->toArray();
-    }
-
-    /**
-     * 树型
-     * @param string $type          类型
-     * @param bool   $replace_space 空格
-     * @return array
-     */
-    public static function tree(string $type, bool $replace_space = false): array
-    {
-        $categories = self::select(['id', 'title', 'parent_id'])
-            ->where('type', $type)
-            ->orderBy('list_order', 'desc')
-            ->get()->keyBy('id')->toArray();
-
-        $Tree = new TreeHelper();
-        if ($replace_space) {
-            $Tree->replaceSpace();
-        }
-        $Tree->init($categories, 'id', 'parent_id', 'title');
-        return $Tree->getTreeArray(0);
     }
 }

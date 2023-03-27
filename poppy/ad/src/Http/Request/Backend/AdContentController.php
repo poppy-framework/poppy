@@ -11,15 +11,18 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Poppy\Ad\Action\Ad;
+use Poppy\Ad\Http\MgrPage\FormContentEstablish;
+use Poppy\Ad\Http\MgrPage\ListSysAdContent;
 use Poppy\Ad\Models\SysAdContent;
-use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Exceptions\ApplicationException;
+use Poppy\MgrPage\Classes\Grid;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 
 /**
  * 广告管理
  */
-class ContentController extends BackendController
+class AdContentController extends BackendController
 {
 
     public function __construct()
@@ -32,62 +35,30 @@ class ContentController extends BackendController
 
     /**
      * 广告列表
-     * @return Factory|View
+     * @return JsonResponse|RedirectResponse|Response|string
+     * @throws ApplicationException
+     * @throws \Throwable
      */
     public function index()
     {
-        $place_id = input('place_id');
-
-        $items = SysAdContent::where('place_id', $place_id)
-            ->orderBy('list_order')
-            ->paginate($this->pagesize);
-        $items->appends(input());
-
-        return view('py-ad::backend.content.index', [
-            'items' => $items,
-        ]);
+        return (new Grid(new SysAdContent()))->setLists(ListSysAdContent::class)->render();
     }
 
     /**
      * 创建/编辑广告
-     * @param null $id 广告ID
      * @return Factory|JsonResponse|RedirectResponse|Response|Redirector|View
      */
-    public function establish($id = null)
+    public function establish()
     {
-        $Ad = $this->action();
-
-        $input    = input();
-        $place_id = $input['place_id'];
-        $place    = SysAdPlace::find($place_id);
-        $info     = '名称：' . $place->title . ' [ 宽度：' . $place->width . 'px , 高度：' . $place->height . 'px ]';
-
-        if (is_post()) {
-            if ($Ad->establish($input, $id)) {
-                return Resp::success('添加广告成功', '_location|'
-                    . route_url(
-                        'ad:backend.content.index',
-                        ['place_id' => $place_id]
-                    ));
-            }
-
-            return Resp::error($Ad->getError());
-        }
-
-        $id && $Ad->init($id) && $Ad->share();
-
-        return view('py-ad::backend.content.establish', [
-            'info'     => $info,
-            'place_id' => $place_id,
-        ]);
+        return (new FormContentEstablish())->render();
     }
 
     /**
      * 删除广告
      * @param int $id 广告ID
-     * @return JsonResponse|RedirectResponse|Response|Redirector
+     * @return JsonResponse|RedirectResponse|Response
      */
-    public function delete($id)
+    public function delete(int $id)
     {
         $Place = $this->action();
         if ($Place->delete($id)) {
@@ -100,9 +71,9 @@ class ContentController extends BackendController
     /**
      * 开启/关闭 广告
      * @param int $id 活动ID
-     * @return JsonResponse|RedirectResponse|Response|Redirector
+     * @return JsonResponse|RedirectResponse|Response
      */
-    public function toggle($id)
+    public function toggle(int $id)
     {
         $Ad = $this->action();
         if ($Ad->toggle($id)) {
