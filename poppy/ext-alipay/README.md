@@ -1,3 +1,3 @@
 # Alipay Extension Of Poppy Framework [READ ONLY]
 
-[Alipay Document](https://poppy-framework.com/4.x/poppy/ext-alipay.html)
+[Alipay Document](https://i.huowanes.com/docs/poppy/4.x/extension/alipay.html)

@@ -1,3 +1,3 @@
 # App SDK Extension Of Poppy Framework [READ ONLY]
 
-[App Extension Document](https://poppy-framework.com/4.x/poppy/ext-app.html)
+[App Extension Document](https://i.huowanes.com/docs/poppy/4.x/poppy/app.html)
