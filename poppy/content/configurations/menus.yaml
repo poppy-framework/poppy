@@ -1,0 +1,13 @@
+backend :
+  title : 内容管理
+  groups :
+    -
+      title : 内容管理
+      icon : 'bi bi-paragraph'
+      injection : 'poppy.mgr-page/backend||setting'
+      children :
+        -
+          title : 内容管理
+          route : py-content:backend.content.index
+          param : _scope=default
+          permission : backend:py-content.content.manage

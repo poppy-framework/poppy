@@ -1,0 +1,7 @@
+{
+    "name": "内容管理",
+    "slug": "content",
+    "version": "1.0",
+    "order": 1009,
+    "description": "This is the description for the poppy content module."
+}

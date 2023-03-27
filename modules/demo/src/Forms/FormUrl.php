@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Demo\Forms;
 
 use Poppy\Framework\Validation\Rule;
@@ -18,7 +20,7 @@ class FormUrl extends FormBaseWidget
     /**
      * Build a form here.
      */
-    public function form()
+    public function form(): void
     {
         $this->url('url', 'Url')->rules([
             Rule::required(),

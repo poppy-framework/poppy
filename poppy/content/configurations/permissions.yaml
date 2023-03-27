@@ -1,0 +1,13 @@
+-
+  title : 分类
+  description : 管理内容
+  slug : backend:py-content
+  groups :
+    -
+      slug : content
+      title : 内容管理
+      description : 管理分类
+      permissions :
+        -
+          slug : manage
+          description : 管理分类

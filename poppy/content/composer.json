@@ -1,0 +1,25 @@
+{
+    "name": "poppy/content",
+    "description": "An Multi Level Category Management.",
+    "license": "Apache-2.0",
+    "type": "poppy",
+    "authors": [
+        {
+            "name": "Mark Zhao",
+            "email": "zhaody901@126.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Poppy\\Content\\": "src/",
+            "Poppy\\Content\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "dev"
+}

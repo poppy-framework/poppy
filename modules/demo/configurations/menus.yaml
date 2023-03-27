@@ -163,6 +163,11 @@ demo :
               route_param :
                 - Html
             -
+              title : Hook
+              route : demo:web.form.index
+              route_param :
+                - Hook
+            -
               title : Id
               route : demo:web.form.index
               route_param :

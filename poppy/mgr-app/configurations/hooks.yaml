@@ -1,4 +1,0 @@
--
-  name : 'poppy.mgr-app.settings'
-  hooks :
-    - '\Poppy\MgrApp\Hooks\MgrApp\Settings'

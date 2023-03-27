@@ -81,7 +81,7 @@ return [
         | 需要运行 `php artisan py-core:doc api` 来生成技术文档
         */
         'apidoc'  => [
-            'web'     => [
+            'web' => [
                 // 标题
                 'title'       => '用户接口',
                 // 默认访问地址
@@ -92,18 +92,12 @@ return [
                 'sign_token' => true,
                 'match'      => 'api.*/web|ApiWeb|api/web|ApiV1',
             ],
-            'dev'     => [
+            'dev' => [
                 'title'       => '开发平台',
                 'default_url' => 'api/mgr-dev/apidoc/json',
                 'method'      => 'post',
                 'match'       => 'api.*/dev|ApiDev|api/dev',
 
-            ],
-            'mgr-app' => [
-                'title'       => '后台管理',
-                'default_url' => 'api/mgr-app/default/ban',
-                'method'      => 'post',
-                'match'       => 'ApiMgrApp|api/mgr_app|api.*/mgr_app',
             ],
         ],
     ],
