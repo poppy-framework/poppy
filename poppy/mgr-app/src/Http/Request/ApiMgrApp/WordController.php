@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\SensitiveWord\Http\Request\ApiMgrApp;
+namespace Poppy\MgrApp\Http\Request\ApiMgrApp;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -11,10 +11,10 @@ use Illuminate\Http\Response;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrApp\Classes\Widgets\GridWidget;
+use Poppy\MgrApp\Http\MgrApp\FormSensWordEstablish;
+use Poppy\MgrApp\Http\MgrApp\GridSensitiveWord;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 use Poppy\SensitiveWord\Action\Word;
-use Poppy\SensitiveWord\Http\MgrApp\FormSensWordEstablish;
-use Poppy\SensitiveWord\Http\MgrApp\GridSensitiveWord;
 use Poppy\SensitiveWord\Models\SysSensitiveWord;
 use Throwable;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\SensitiveWord\Http\MgrApp;
+namespace Poppy\MgrApp\Http\MgrApp;
 
 use Poppy\MgrApp\Classes\Filter\FilterPlugin;
 use Poppy\MgrApp\Classes\Grid\GridBase;

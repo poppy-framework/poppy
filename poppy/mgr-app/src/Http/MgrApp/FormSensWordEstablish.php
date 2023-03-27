@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\SensitiveWord\Http\MgrApp;
+namespace Poppy\MgrApp\Http\MgrApp;
 
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrApp\Classes\Widgets\FormWidget;
