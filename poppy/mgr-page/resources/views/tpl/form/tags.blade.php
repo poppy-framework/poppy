@@ -21,7 +21,7 @@
                     new TomSelect('#{!! $id !!}', {
                         plugins: ['remove_button'],
                         create: {!! $create ? 'true' : 'false' !!},
-                        maxItems: 50
+                        maxItems: {!! $max !!}
                     });
                 })
                 </script>

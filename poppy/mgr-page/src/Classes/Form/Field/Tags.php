@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form\Field;
 
-use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -25,18 +26,24 @@ class Tags extends Field
      */
     protected $key = null;
 
-    /**
-     * @var Closure
-     */
-    protected $saveAction = null;
 
-
-    protected $max = 1;
+    private int $max = 5;
 
     /**
      * @var true
      */
     private bool $create = false;
+
+    /**
+     * 设置最大值
+     * @param int $num
+     * @return $this
+     */
+    public function max(int $num = 5): self
+    {
+        $this->max = $num;
+        return $this;
+    }
 
     /**
      * @inheritDoc
@@ -112,6 +119,7 @@ class Tags extends Field
         $this->addVariables([
             'options' => $this->options,
             'create'  => $this->create,
+            'max'     => $this->max,
         ]);
 
         return parent::render();
@@ -140,20 +148,6 @@ class Tags extends Field
     {
         $this->visibleColumn = $visibleColumn;
         $this->key           = $key;
-
-        return $this;
-    }
-
-    /**
-     * Set save Action.
-     *
-     * @param Closure $saveAction
-     *
-     * @return $this
-     */
-    public function saving(Closure $saveAction)
-    {
-        $this->saveAction = $saveAction;
 
         return $this;
     }

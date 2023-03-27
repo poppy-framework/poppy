@@ -41,5 +41,10 @@ class FormTags extends FormBaseWidget
     ])->help('标签必选且最多选择4项');
 CODE;
         $this->code('tags-code', 'Code@Tags')->default($code);
+
+        $this->tags('users', 'Tags')
+            ->options(PamRole::getLinear('backend'))->rules([
+                Rule::required(),
+            ])->help('标签必选且最多选择4项')->max(1);
     }
 }
