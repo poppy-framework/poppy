@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\Area\Http\MgrApp;
+namespace Poppy\MgrApp\Http\MgrApp;
 
 use Auth;
 use Illuminate\Support\Facades\Route;

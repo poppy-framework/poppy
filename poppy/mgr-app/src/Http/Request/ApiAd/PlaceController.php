@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\Ad\Http\Request\ApiMgrApp;
+namespace Poppy\MgrApp\Http\Request\ApiAd;
 
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
@@ -10,11 +10,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Poppy\Ad\Action\Place;
-use Poppy\Ad\Http\MgrApp\GridAdPlace;
 use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrApp\Classes\Widgets\GridWidget;
+use Poppy\MgrApp\Http\MgrApp\GridAdPlace;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 
 /**

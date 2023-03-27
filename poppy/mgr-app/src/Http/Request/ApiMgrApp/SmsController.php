@@ -2,17 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\Sms\Http\Request\ApiMgrApp;
+namespace Poppy\MgrApp\Http\Request\ApiMgrApp;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrApp\Classes\Widgets\GridWidget;
+use Poppy\MgrApp\Http\MgrApp\FormSmsEstablish;
+use Poppy\MgrApp\Http\MgrApp\GridSms;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 use Poppy\Sms\Action\Sms;
-use Poppy\Sms\Http\MgrApp\FormSmsEstablish;
-use Poppy\Sms\Http\MgrApp\GridSms;
 use Poppy\Sms\Models\Query\SmsQuery;
 
 /**

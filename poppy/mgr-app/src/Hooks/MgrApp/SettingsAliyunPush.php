@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Poppy\AliyunPush\Hooks\MgrApp;
+namespace Poppy\MgrApp\Hooks\MgrApp;
 
-use Poppy\AliyunPush\Http\MgrApp\SettingAliyunPush;
 use Poppy\Core\Services\Contracts\ServiceArray;
+use Poppy\MgrApp\Http\MgrApp\SettingAliyunPush;
 
-class Settings implements ServiceArray
+class SettingsAliyunPush implements ServiceArray
 {
     public function key(): string
     {

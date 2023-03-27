@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\Area\Http\MgrApp;
+namespace Poppy\MgrApp\Http\MgrApp;
 
 use Poppy\Area\Models\SysArea;
 use Poppy\MgrApp\Classes\Filter\FilterPlugin;

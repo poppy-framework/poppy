@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\Area\Classes\Form\Dependence;
+namespace Poppy\MgrApp\Classes\Form\Dependence;
 
 use Poppy\Area\Models\SysArea;
 use Poppy\MgrApp\Classes\Form\Field\Select;

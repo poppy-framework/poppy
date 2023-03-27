@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\Sms\Http\MgrApp;
+namespace Poppy\MgrApp\Http\MgrApp;
 
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrApp\Classes\Form\SettingBase;

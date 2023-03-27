@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\AliyunOss\Http\Request\ApiMgrApp;
+namespace Poppy\MgrApp\Http\Request\ApiMgrApp;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Poppy\AliyunOss\Http\MgrApp\SettingAliyunOss;
+use Poppy\MgrApp\Http\MgrApp\SettingAliyunOss;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 
 /**

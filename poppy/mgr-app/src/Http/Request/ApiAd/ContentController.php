@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\Ad\Http\Request\ApiMgrApp;
+namespace Poppy\MgrApp\Http\Request\ApiAd;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -13,10 +13,10 @@ use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Poppy\Ad\Action\Ad;
 use Poppy\Ad\Models\SysAdPlace;
-use Poppy\Area\Http\MgrApp\GridArea;
 use Poppy\Area\Models\SysArea;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrApp\Classes\Widgets\GridWidget;
+use Poppy\MgrApp\Http\MgrApp\GridArea;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 
 /**
