@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Poppy\MgrPage\Classes\Traits;
 
 use Illuminate\Contracts\Support\Renderable;
-use Poppy\MgrApp\Classes\Action\Action;
 
 trait UseItems
 {
@@ -19,7 +18,7 @@ trait UseItems
     /**
      * Append an action.
      *
-     * @param array|Action|Renderable $action
+     * @param array|Renderable $action
      *
      * @return $this
      */

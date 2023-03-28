@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace DummyNamespace;
 
 use DummyNamespace\Http\RouteServiceProvider;
@@ -14,7 +16,7 @@ class ServiceProvider extends PoppyServiceProvider
      * @return void
      * @throws ModuleNotFoundException
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot('DummySlug');
     }
@@ -23,7 +25,7 @@ class ServiceProvider extends PoppyServiceProvider
      * Register the module services.
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
     }
