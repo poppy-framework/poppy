@@ -12,6 +12,7 @@ use Poppy\Core\Classes\Inspect\CommentParser;
 use Poppy\Core\Classes\Traits\CoreTrait;
 use Poppy\Framework\Classes\Traits\KeyParserTrait;
 use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Throwable;
@@ -54,6 +55,7 @@ class InspectCommand extends Command
 
     /**
      * Execute the console command.
+     * @throws ReflectionException
      */
     public function handle(): void
     {
@@ -102,6 +104,15 @@ class InspectCommand extends Command
                 }
                 $this->inspectAction($slug);
                 break;
+            case 'util':
+                if ($all) {
+                    app('poppy')->enabled()->each(function ($module, $slug) {
+                        $this->inspectUtil($slug);
+                    });
+                    return;
+                }
+                $this->inspectUtil($slug);
+                break;
             case 'perms':
                 $this->inspectPerms();
                 break;
@@ -135,6 +146,10 @@ class InspectCommand extends Command
                 $this->call('py-core:inspect', array_merge($option, [
                     'type' => 'action',
                 ]));
+
+                $this->call('py-core:inspect', array_merge($option, [
+                    'type' => 'util',
+                ]));
                 break;
         }
     }
@@ -163,6 +178,69 @@ class InspectCommand extends Command
             }
             $this->table(['Trans'], $trans);
         }
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function inspectUtil($slug): void
+    {
+        $directory = poppy_path($slug, 'src/Models/Policies');
+        $keys      = [];
+        if (app('files')->exists($directory)) {
+            $files = app('files')->files($directory);
+            foreach ($files as $file) {
+                $class = $this->className($slug, 'Models/Policies', $file->getFilename());
+                $refs  = new ReflectionClass($class);
+                $model = Str::before($file->getFilename(), 'Policy');
+                foreach ($refs->getMethods() as $method) {
+                    if ($method->isPublic() && !$method->isStatic()) {
+                        $name = $method->getName();
+                        if (Str::startsWith($slug, 'poppy')) {
+                            $prefix = 'py-' . Str::after($slug, 'poppy.');
+                        }
+                        else {
+                            $prefix = Str::after($slug, 'module.');
+                        }
+                        $keys[] = $prefix . '::util.policy.' . Str::snake($model) . '.' . $name;
+                    }
+                }
+
+            }
+        }
+        else {
+            $this->info("{$slug} has no policies.");
+        }
+
+
+        $directory = poppy_path($slug, 'src/Models');
+        if (app('files')->exists($directory)) {
+            $files = app('files')->files($directory);
+            foreach ($files as $file) {
+                $model  = Str::before($file->getFilename(), '.php');
+                $prefix = Str::startsWith($slug, 'poppy') ? 'py-' . Str::after($slug, 'poppy.') : Str::after($slug, 'module.');
+                $keys[] = $prefix . '::util.classes.models.' . Str::snake($model);
+            }
+        }
+        else {
+            $this->info("{$slug} has no policies.");
+        }
+
+        $needModifies = [];
+        if (!count($keys)) {
+            $this->info(sys_gen_mk('py-core.inspect', 'util of ' . $slug . ' no keys to trans'));
+        }
+        else {
+            foreach ($keys as $key) {
+                if (trans($key) === $key) {
+                    $needModifies[] = [
+                        $key,
+                    ];
+                }
+            }
+            $this->table(['Keys'], $needModifies);
+        }
+
     }
 
     /**
