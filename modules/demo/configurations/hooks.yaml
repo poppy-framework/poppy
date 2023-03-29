@@ -1,21 +1,25 @@
 -
-  name: 'demo.array_demo'
-  hooks:
+  name : 'demo.array_demo'
+  hooks :
     - '\Demo\Hooks\Demo\ArrayDemo'
 -
-  name: 'demo.html_demo'
-  hooks:
+  name : 'demo.html_demo'
+  hooks :
     - '\Demo\Hooks\Demo\HtmlDemo'
 -
-  name: 'poppy.mgr-dev.checker'
-  hooks:
+  name : 'poppy.mgr-dev.checker'
+  hooks :
     - '\Demo\Hooks\MgrDev\Checker'
 -
-  name: 'poppy.mgr-page.settings'
-  hooks:
+  name : 'poppy.mgr-page.settings'
+  hooks :
     - '\Demo\Hooks\MgrPage\SettingsKeyA'
     - '\Demo\Hooks\MgrPage\SettingsKeyB'
 -
-  name: 'poppy.system.auth_access'
-  hooks:
+  name : 'poppy.system.auth_access'
+  hooks :
     - '\Demo\Hooks\System\AuthAccessUser'
+-
+  name : 'poppy.mgr-page.html_cp'
+  hooks :
+    - '\Demo\Hooks\MgrPage\HtmlCpA'

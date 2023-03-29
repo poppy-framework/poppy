@@ -63,7 +63,7 @@ class InspectCommand extends Command
         $all  = $this->option('all');
 
         $type = $this->argument('type');
-        if (!$all && !$slug && in_array($type, ['class', 'file', 'controller', 'action', ''], true)) {
+        if (!$all && !$slug && in_array($type, ['class', 'file', 'controller', 'action', '', 'util'], true)) {
             $this->warn($type . ' need slug or all option');
             return;
         }
@@ -196,6 +196,9 @@ class InspectCommand extends Command
                 foreach ($refs->getMethods() as $method) {
                     if ($method->isPublic() && !$method->isStatic()) {
                         $name = $method->getName();
+                        if (in_array($name, ['after', 'before'])) {
+                            continue;
+                        }
                         if (Str::startsWith($slug, 'poppy')) {
                             $prefix = 'py-' . Str::after($slug, 'poppy.');
                         }
