@@ -12,8 +12,6 @@
 @section('body-main')
     @include('py-mgr-page::tpl._toastr')
     <div class="layui-fluid pt15 pb15" data-pjax pjax-ctr="#main" id="main">
-        <div class="layui-row layui-col-space6">
-            {!! sys_hook('poppy.mgr-page.html_cp') !!}
-        </div>
+        {!! sys_hook('poppy.mgr-page.html_cp') !!}
     </div>
 @endsection
