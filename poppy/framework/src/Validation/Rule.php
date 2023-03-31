@@ -342,6 +342,16 @@ class Rule extends IlluminateRule
         return 'url';
     }
 
+
+    /**
+     * 多个图片地址
+     * @return string
+     */
+    public static function urls():string
+    {
+        return 'urls';
+    }
+
     /**
      * Between String
      * @param int|float $start start

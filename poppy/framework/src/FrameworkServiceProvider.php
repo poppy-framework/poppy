@@ -97,5 +97,16 @@ class FrameworkServiceProvider extends ServiceProvider
             $first = Arr::first($parameters);
             return UtilHelper::isUsername($value, $first === 'sub');
         });
+        app('validator')->extend('urls', function ($attribute, $value) {
+            if (!is_array($value)) {
+                return false;
+            }
+            foreach ($value as $val) {
+                if (!UtilHelper::isUrl($val)) {
+                    return false;
+                }
+            }
+            return true;
+        });
     }
 }
