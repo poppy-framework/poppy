@@ -65,7 +65,6 @@ class ValidationTest extends TestCase
     }
 
 
-
     public function testJson(): void
     {
         $json      = '{}';
@@ -200,6 +199,25 @@ class ValidationTest extends TestCase
         ], [
             'v' => [
                 Rule::digits(4),
+            ],
+        ]);
+        if ($validator->fails()) {
+            $this->fail($validator->messages()->toJson(JSON_UNESCAPED_UNICODE));
+        }
+        else {
+            $this->assertTrue(true);
+        }
+    }
+
+
+    public function testStartWith(): void
+    {
+        $str       = '234';
+        $validator = Validator::make([
+            'v' => $str,
+        ], [
+            'v' => [
+                Rule::startsWith('2'),
             ],
         ]);
         if ($validator->fails()) {

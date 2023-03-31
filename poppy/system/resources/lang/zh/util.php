@@ -22,9 +22,19 @@ return [
         ],
     ],
     'policy'  => [
-        'pam_role' => [
-            'create' => '用户角色创建',
-            'edit'   => '用户角色编辑',
+        'pam_role'    => [
+            'create'     => '角色创建',
+            'edit'       => '角色编辑',
+            'permission' => '角色权限',
+            'delete'     => '角色删除',
+        ],
+        'pam_account' => [
+            'create'        => '账号创建',
+            'edit'          => '账号编辑',
+            'enable'        => '账号启用',
+            'disable'       => '账号禁用',
+            'beMobile'      => '设置后台手机号',
+            'beClearMobile' => '清空后台手机号',
         ],
     ],
 ];

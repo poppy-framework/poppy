@@ -1,42 +1,42 @@
 -
-  slug: backend:demo
-  title: 核心Demo(Backend)
-  description: 核心 Demo Backend 权限
-  groups:
+  slug : backend:demo
+  title : 核心Demo(Backend)
+  description : 核心 Demo Backend 权限
+  groups :
     -
-      slug: global
-      title: 全局
-      description: 管理配置内容
-      permissions:
+      slug : global
+      title : 全局
+      description : 管理配置内容
+      permissions :
         -
-          slug: manage
-          description: 系统设置
+          slug : manage
+          description : 系统设置
     -
-      slug: pam
-      title: 账号管理
-      description: 账号管理
-      permissions:
+      slug : pam
+      title : 账号管理
+      description : 账号管理
+      permissions :
         -
-          slug: manage
-          description: 账号管理
+          slug : manage
+          description : 账号管理
 -
-  slug: develop:demo
-  title: PyDemo(Develop)
-  description: 核心 Demo Develop 权限
-  groups:
+  slug : develop:demo
+  title : PyDemo(Develop)
+  description : 核心 Demo Develop 权限
+  groups :
     -
-      slug: global
-      title: 全局
-      description: 管理配置内容
-      permissions:
+      slug : global
+      title : 全局
+      description : 管理配置内容
+      permissions :
         -
-          slug: manage
-          description: 系统设置
+          slug : manage
+          description : 系统设置
     -
-      slug: pam
-      title: 账号管理
-      description: 账号管理
-      permissions:
+      slug : pam
+      title : 账号管理
+      description : 账号管理
+      permissions :
         -
-          slug: manage
-          description: 账号管理
+          slug : manage
+          description : 账号管理

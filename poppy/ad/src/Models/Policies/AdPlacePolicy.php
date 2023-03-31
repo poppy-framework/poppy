@@ -20,10 +20,8 @@ class AdPlacePolicy
      */
     protected static array $permissionMap = [
         // create 操作 必须要有对应的  'backend:py-ad.place.establish' 权限
-        'create'     => 'backend:py-ad.place.manage',
-        'edit'       => 'backend:py-ad.place.manage',
-        'delete'     => 'backend:py-ad.place.manage',
-        'permission' => 'backend:py-ad.place.manage',
+        'create' => 'backend:py-ad.place.manage',
+        'edit'   => 'backend:py-ad.place.manage',
     ];
 
     /**
@@ -47,29 +45,4 @@ class AdPlacePolicy
         return true;
     }
 
-    /**
-     * 保存权限
-     * @param PamAccount $pam  账号
-     * @param PamRole    $role 角色
-     * @return bool
-     */
-    public function permission(PamAccount $pam, PamRole $role): bool
-    {
-        return !($role->name === PamRole::BE_ROOT);
-    }
-
-    /**
-     * 删除
-     * @param PamAccount $pam  账号
-     * @param PamRole    $role 角色
-     * @return bool
-     */
-    public function delete(PamAccount $pam, PamRole $role): bool
-    {
-        if ($role->is_system) {
-            return false;
-        }
-
-        return true;
-    }
 }

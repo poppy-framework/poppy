@@ -12,4 +12,10 @@ return [
             'sys_ad_place'   => '广告位',
         ],
     ],
+    'policy'  => [
+        'ad_place' => [
+            'create' => '创建位置',
+            'edit'   => '位置编辑',
+        ],
+    ],
 ];
