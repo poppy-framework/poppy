@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Poppy\Core\Classes\Inspect\CommentParser;
 use Poppy\Core\Classes\Traits\CoreTrait;
 use Poppy\Framework\Classes\Traits\KeyParserTrait;
+use Poppy\Framework\Validation\Rule;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\Finder\Finder;
@@ -30,13 +31,11 @@ class InspectCommand extends Command
      * @var string
      */
     protected $signature = 'py-core:inspect 
-        {--slug= : slug name}
 		{type? : Support type need to input, [method, file, class, env, action, controller]}
 		{--module= : The module to check}
 		{--export= : The module to check}
 		{--class_load_only : Only load class with not show tables}
 		{--log : Is Display Request Log}
-		{--all : 是否显示所有的数据模块}
 
 	';
 
@@ -59,62 +58,38 @@ class InspectCommand extends Command
      */
     public function handle(): void
     {
-        $slug = $this->option('slug');
-        $all  = $this->option('all');
-
         $type = $this->argument('type');
-        if (!$all && !$slug && in_array($type, ['class', 'file', 'controller', 'action', '', 'util'], true)) {
-            $this->warn($type . ' need slug or all option');
-            return;
-        }
         switch ($type) {
             case 'class':
-                if ($all) {
-                    app('poppy')->enabled()->each(function ($module, $slug) {
-                        $this->inspectClass($slug);
-                    });
-                    return;
-                }
-                $this->inspectClass($slug);
+                app('poppy')->enabled()->each(function ($module, $slug) {
+                    $this->inspectClass($slug);
+                });
                 break;
             case 'file':
-                if ($all) {
-                    app('poppy')->enabled()->each(function ($module, $slug) {
-                        $this->inspectFileName($slug);
-                    });
-                    return;
-                }
-                $this->inspectFileName($slug);
+                app('poppy')->enabled()->each(function ($module, $slug) {
+                    $this->inspectFileName($slug);
+                });
                 break;
             case 'controller':
-                if ($all) {
-                    app('poppy')->enabled()->each(function ($module, $slug) {
-                        $this->inspectController($slug);
-                    });
-                    return;
-                }
-                $this->inspectController($slug);
+                app('poppy')->enabled()->each(function ($module, $slug) {
+                    $this->inspectController($slug);
+                });
                 break;
             case 'action':
-                if ($all) {
-                    app('poppy')->enabled()->each(function ($module, $slug) {
-                        $this->inspectAction($slug);
-                    });
-                    return;
-                }
-                $this->inspectAction($slug);
+                app('poppy')->enabled()->each(function ($module, $slug) {
+                    $this->inspectAction($slug);
+                });
                 break;
             case 'util':
-                if ($all) {
-                    app('poppy')->enabled()->each(function ($module, $slug) {
-                        $this->inspectUtil($slug);
-                    });
-                    return;
-                }
-                $this->inspectUtil($slug);
+                app('poppy')->enabled()->each(function ($module, $slug) {
+                    $this->inspectUtil($slug);
+                });
                 break;
             case 'perms':
                 $this->inspectPerms();
+                break;
+            case 'validation':
+                $this->inspectValidation();
                 break;
             case 'seo':
                 $this->inspectSeo();
@@ -123,35 +98,72 @@ class InspectCommand extends Command
                 $this->inspectTrans();
                 break;
             default:
-                $option = [];
-                if ($all) {
-                    $option['--all'] = true;
-                }
-                if ($slug) {
-                    $option['--slug'] = $slug;
-                }
-
-                $this->call('py-core:inspect', array_merge($option, [
+                $this->call('py-core:inspect', [
                     'type' => 'file',
-                ]));
+                ]);
 
-                $this->call('py-core:inspect', array_merge($option, [
+                $this->call('py-core:inspect', [
                     'type' => 'class',
-                ]));
+                ]);
 
-                $this->call('py-core:inspect', array_merge($option, [
-                    'type' => 'controller',
-                ]));
-
-                $this->call('py-core:inspect', array_merge($option, [
-                    'type' => 'action',
-                ]));
-
-                $this->call('py-core:inspect', array_merge($option, [
+                $this->call('py-core:inspect', [
                     'type' => 'util',
-                ]));
+                ]);
+
+                $this->call('py-core:inspect', [
+                    'type' => 'validation',
+                ]);
+
+                $this->call('py-core:inspect', [
+                    'type' => 'seo',
+                ]);
+
+                $this->call('py-core:inspect', [
+                    'type' => 'perms',
+                ]);
                 break;
         }
+    }
+
+
+    private function inspectValidation(): void
+    {
+        $ref     = new ReflectionClass(Rule::class);
+        $methods = $ref->getMethods();
+        $keys    = [];
+        foreach ($methods as $method) {
+            $name = $method->getName();
+
+            if (in_array($name, ['mixin', 'hasMacro', '__callStatic', '__call', 'macro'])) {
+                continue;
+            }
+
+            if (in_array($name, ['min', 'max', 'size', 'between'])) {
+                foreach (['numeric', 'file', 'string'] as $rule) {
+                    $keys[] = $name . '.' . $rule;
+                }
+            }
+            else {
+                $keys[] = Str::before(Str::snake($name), ':');
+            }
+        }
+        $values = [];
+        foreach ($keys as $key) {
+            $value = trans('validation.' . $key);
+            if (!preg_match('/[\x{4e00}-\x{9fa5}]/u', $value)) {
+                $values[] = [
+                    'rule'    => $key,
+                    'content' => $value,
+                ];
+            }
+        }
+        if (count($values)) {
+            $this->table(['规则', '验证内容'], $values);
+        }
+        else {
+            $this->info('Inspect: Validation OK');
+        }
+
     }
 
     private function inspectTrans(): void
@@ -297,7 +309,7 @@ class InspectCommand extends Command
     }
 
     /**
-     * 检测类注释
+     * 检测类注释和加载
      */
     private function inspectClass($slug): void
     {
@@ -312,12 +324,9 @@ class InspectCommand extends Command
 
 
             // 排除指定的类
-            if (Str::contains($pathName, [
-                'functions.php', 'ServiceProvider', 'Http/Routes/', '.sql', '.txt', '.pem', '.xml', '.md', '.yaml', '.table', '.stub',
-            ])) {
+            if (Str::contains($pathName, ['functions.php', 'ServiceProvider', 'Http/Routes/',]) || !Str::endsWith($pathName, '.php')) {
                 continue;
             }
-
 
             $relativePath = $file->getRelativePath();
             $className    = $this->className($slug, $relativePath, $file->getFilename());
@@ -570,7 +579,7 @@ class InspectCommand extends Command
             $checkFile($file);
         }
 
-        $this->warn('[Inspect:Name Rule]');
+        $this->warn('[Inspect:Name Rule]: ' . $slug);
         if ($this->nameRules) {
             $this->table([
                 'slug' => 'Module', 'file' => 'FileName', 'path' => 'Path',
@@ -838,9 +847,9 @@ class InspectCommand extends Command
         $notDefined = array_diff($permissions, $definedPermissions->toArray());
 
 
-        $this->table(['Permission Defined But Not Used'], collect($notUsed)->map(fn($item) => [$item]));
+        $this->table(['Inspect Permission: Permission Defined But Not Used'], collect($notUsed)->map(fn($item) => [$item]));
 
-        $this->table(['Permission Used But Not Defined'], collect($notDefined)->map(fn($item) => [$item]));
+        $this->table(['Inspect Permission: Permission Used But Not Defined'], collect($notDefined)->map(fn($item) => [$item]));
     }
 
     /**
