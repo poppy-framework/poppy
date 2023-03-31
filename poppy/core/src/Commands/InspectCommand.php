@@ -36,7 +36,6 @@ class InspectCommand extends Command
 		{--export= : The module to check}
 		{--class_load_only : Only load class with not show tables}
 		{--log : Is Display Request Log}
-
 	';
 
     /**

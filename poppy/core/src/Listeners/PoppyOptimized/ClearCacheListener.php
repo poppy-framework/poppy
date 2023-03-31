@@ -17,7 +17,7 @@ class ClearCacheListener
     /**
      * @param PoppyOptimized $event 框架优化
      */
-    public function handle(PoppyOptimized $event)
+    public function handle(PoppyOptimized $event): void
     {
         sys_tag('py-core')->clear();
 
@@ -45,6 +45,10 @@ class ClearCacheListener
         app(Kernel::class)->call('py-core:db', [
             'do' => 'fields',
         ]);
+
+        if (function_exists('opcache_reset')) {
+            opcache_reset();
+        }
     }
 }
 
