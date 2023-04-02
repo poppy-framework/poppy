@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace DummyNamespace\Http;
 
-use Illuminate\Routing\Router;
 use Poppy\Framework\Application\RouteServiceProvider as PoppyFrameworkRouteServiceProvider;
 use Route;
 
@@ -19,7 +20,7 @@ class RouteServiceProvider extends PoppyFrameworkRouteServiceProvider
      * Define your route model bindings, pattern filters, etc.
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
     }
@@ -28,7 +29,7 @@ class RouteServiceProvider extends PoppyFrameworkRouteServiceProvider
      * Define the routes for the module.
      * @return void
      */
-    public function map()
+    public function map(): void
     {
         $this->mapWebRoutes();
 
@@ -40,20 +41,20 @@ class RouteServiceProvider extends PoppyFrameworkRouteServiceProvider
      * These routes all receive session state, CSRF protection, etc.
      * @return void
      */
-    protected function mapWebRoutes()
+    protected function mapWebRoutes(): void
     {
         Route::group([
             // todo auth
             'prefix' => 'DummySlug',
-        ], function (Router $route) {
-            require_once poppy_path('DummySlug', 'src/Http/Routes/web.php');
+        ], function () {
+            require_once __DIR__ . '/Routes/web.php';
         });
 
         Route::group([
             'prefix'     => $this->prefix . '/DummySlug',
             'middleware' => 'backend-auth',
-        ], function (Router $route) {
-            require_once poppy_path('DummySlug', 'src/Http/Routes/backend.php');
+        ], function () {
+            require_once __DIR__ . '/Routes/backend.php';
         });
     }
 
@@ -62,13 +63,13 @@ class RouteServiceProvider extends PoppyFrameworkRouteServiceProvider
      * These routes are typically stateless.
      * @return void
      */
-    protected function mapApiRoutes()
+    protected function mapApiRoutes(): void
     {
         Route::group([
             // todo auth
             'prefix' => 'api/DummySlug',
-        ], function (Router $route) {
-            require_once poppy_path('DummySlug', 'src/Http/Routes/api.php');
+        ], function () {
+            require_once __DIR__ . '/Routes/api.php';
         });
     }
 }

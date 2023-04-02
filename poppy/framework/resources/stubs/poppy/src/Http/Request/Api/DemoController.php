@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace DummyNamespace\Http\Request\Api;
 
 use Poppy\Framework\Application\ApiController;
