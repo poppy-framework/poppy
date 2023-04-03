@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
 use Illuminate\Support\Arr;
@@ -9,9 +11,9 @@ class BetweenDate extends AbstractFilter
     /**
      * @inheritDoc
      */
-    protected $view = 'py-mgr-page::tpl.filter.between_date';
+    protected string $view = 'py-mgr-page::tpl.filter.between_date';
 
-    protected $variables = [
+    protected array $variables = [
         'layui-range' => 'true',
         'layui-type'  => 'date',
     ];
@@ -42,7 +44,7 @@ class BetweenDate extends AbstractFilter
         ]);
     }
 
-    public function variables()
+    public function variables(): array
     {
         $variables = parent::variables();
         return array_merge($variables, ['variables' => $this->variables]);

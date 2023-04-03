@@ -358,8 +358,8 @@ if (typeof Util !== 'object') {
 
         if (obj_data._reload_opener || obj_data._parent_reload) {
             setTimeout(function () {
-                if (typeof top.layui !== 'undefined' && typeof top.layui.admin !== 'undefined') {
-                    top.layui.admin.refresh();
+                if (typeof parent.layui !== 'undefined' && typeof parent.layui.admin !== 'undefined') {
+                    parent.layui.admin.refresh();
                 } else {
                     parent.location.reload();
                 }

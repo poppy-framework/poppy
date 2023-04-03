@@ -15,17 +15,17 @@ class Scope implements Renderable
     /**
      * @var string
      */
-    public $key = '';
+    public string $key = '';
 
     /**
      * @var string
      */
-    protected $label = '';
+    protected string $label = '';
 
     /**
      * @var Collection
      */
-    protected $queries;
+    protected Collection $queries;
 
     /**
      * Scope constructor.

@@ -9,7 +9,7 @@ class Lt extends AbstractFilter
     /**
      * @inheritDoc
      */
-    protected $view = 'py-mgr-page::tpl.filter.lt';
+    protected string $view = 'py-mgr-page::tpl.filter.lt';
 
     /**
      * Get condition of this filter.

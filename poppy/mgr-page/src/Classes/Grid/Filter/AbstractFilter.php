@@ -36,12 +36,14 @@ abstract class AbstractFilter extends Filter
      * @var Collection
      */
     public $group;
+
     /**
      * Element id.
      *
      * @var array|string
      */
     protected $id;
+
     /**
      * Label of presenter.
      *
@@ -86,7 +88,7 @@ abstract class AbstractFilter extends Filter
     /**
      * @var string
      */
-    protected $view = 'py-mgr-page::tpl.filter.where';
+    protected string $view = 'py-mgr-page::tpl.filter.where';
 
     /**
      * AbstractFilter constructor.
@@ -495,7 +497,7 @@ abstract class AbstractFilter extends Filter
      *
      * @return array
      */
-    protected function variables()
+    protected function variables(): array
     {
         return array_merge([
             'id'        => $this->id,

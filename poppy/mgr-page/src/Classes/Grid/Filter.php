@@ -113,7 +113,7 @@ class Filter extends FilterButton
     /**
      * @var string
      */
-    protected $view = 'py-mgr-page::tpl.filter.container';
+    protected string $view = 'py-mgr-page::tpl.filter.container';
 
     /**
      * @var string

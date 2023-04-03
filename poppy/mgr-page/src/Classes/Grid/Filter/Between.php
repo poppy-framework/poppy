@@ -9,7 +9,7 @@ class Between extends AbstractFilter
     /**
      * @inheritDoc
      */
-    protected $view = 'py-mgr-page::tpl.filter.between';
+    protected string $view = 'py-mgr-page::tpl.filter.between';
 
     /**
      * Format id.
@@ -23,31 +23,6 @@ class Between extends AbstractFilter
         $id = str_replace('.', '_', $column);
 
         return ['start' => "{$id}_start", 'end' => "{$id}_end"];
-    }
-
-    /**
-     * Format two field names of this filter.
-     *
-     * @param string $column
-     *
-     * @return array
-     */
-    protected function formatName($column)
-    {
-        $columns = explode('.', $column);
-
-        if (count($columns) == 1) {
-            $name = $columns[0];
-        }
-        else {
-            $name = array_shift($columns);
-
-            foreach ($columns as $column) {
-                $name .= "[$column]";
-            }
-        }
-
-        return ['start' => "{$name}[start]", 'end' => "{$name}[end]"];
     }
 
     /**
@@ -84,5 +59,30 @@ class Between extends AbstractFilter
         $this->query = 'whereBetween';
 
         return $this->buildCondition($this->column, $this->value);
+    }
+
+    /**
+     * Format two field names of this filter.
+     *
+     * @param string $column
+     *
+     * @return array
+     */
+    protected function formatName($column)
+    {
+        $columns = (array) explode('.', $column);
+
+        if (count($columns) === 1) {
+            $name = $columns[0];
+        }
+        else {
+            $name = array_shift($columns);
+
+            foreach ($columns as $column) {
+                $name .= "[$column]";
+            }
+        }
+
+        return ['start' => "{$name}[start]", 'end' => "{$name}[end]"];
     }
 }

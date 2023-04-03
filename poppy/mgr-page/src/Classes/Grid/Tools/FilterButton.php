@@ -13,7 +13,7 @@ class FilterButton extends AbstractTool
     /**
      * @var string
      */
-    protected $view = 'py-mgr-page::tpl.filter.button';
+    protected string $view = 'py-mgr-page::tpl.filter.button';
 
     /**
      * @inheritDoc

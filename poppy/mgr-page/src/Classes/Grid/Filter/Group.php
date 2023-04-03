@@ -182,7 +182,7 @@ class Group extends AbstractFilter
     /**
      * @inheritDoc
      */
-    public function variables()
+    public function variables():array
     {
         $select = request("{$this->id}_group");
 
