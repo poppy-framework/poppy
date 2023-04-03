@@ -56,6 +56,10 @@ Route::group([
      * ---------------------------------------- */
     $router->any('js', 'JsController@index')
         ->name('demo:web.js.index');
+    $router->any('js/popup', 'JsController@popup')
+        ->name('demo:web.js.popup');
+    $router->any('js/location', 'JsController@location')
+        ->name('demo:web.js.location');
 
     /* Exception
      * ---------------------------------------- */

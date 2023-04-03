@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Demo\Http\Request\Web;
 
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Classes\Traits\PjaxTrait;
@@ -34,17 +37,11 @@ class JsController extends WebController
     public function index()
     {
         $type = input('type');
-        if ($type === 'popup') {
-            if (is_post()) {
-                return Resp::success('提交信息成功', '_top_reload|1');
-            }
-            return view('demo::js.fe-popup');
-        }
         if ($type === 'pjax-error') {
             return $this->pjaxError('Pjax 请求错误 : 提交的时间和日期不符');
         }
         if ($type === 'top-request') {
-            return Resp::error('错误信息', [
+            return Resp::success('Top Request 响应信息', [
                 '_top' => [
                     'operation' => 'doWhat',
                 ],
@@ -65,5 +62,22 @@ class JsController extends WebController
             'pam' => $this->pam(),
             'xss' => '<sCRiPt/SrC=></script>',
         ]);
+    }
+
+    public function popup()
+    {
+        $type = input('type');
+        if (Str::startsWith($type, '_')) {
+            if (Str::endsWith($type, '_location')) {
+                return Resp::success($type, $type . '|' . route('demo:web.js.location'));
+            }
+            return Resp::success($type, $type . '|1');
+        }
+        return view('demo::web.js.popup');
+    }
+
+    public function location()
+    {
+        return view('demo::web.js.location');
     }
 }

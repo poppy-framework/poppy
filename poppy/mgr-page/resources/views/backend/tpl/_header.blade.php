@@ -55,8 +55,7 @@
                 <span class="layui-nav-more"></span>
             </a>
             <dl class="layui-nav-child">
-                <dd><a ew-href="{!! route('py-mgr-page:backend.home.password') !!}" class="J_ignore">修改密码</a>
-                </dd>
+                <dd><a ew-href="{!! route('py-mgr-page:backend.home.password') !!}" class="J_ignore">修改密码</a></dd>
                 <dd><a href="{!! route('py-mgr-page:backend.home.clear_cache') !!}" class="J_ignore J_request">清空缓存</a></dd>
                 <dd style="text-align: center;">
                     <a href="#" ew-event="logout" data-url="{!! route('py-mgr-page:backend.home.logout') !!}" class="J_ignore">退出</a>

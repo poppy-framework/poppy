@@ -60,7 +60,8 @@
         </div>
         <script>
         window._app = function (data) {
-            layer.alert('TOP 调用回调函数示例');
+            layer.closeAll();
+            layer.alert('TOP 调用回调函数示例(此对话框由回调函数)');
             console.log(data);
         }
         window.mgrHost = '{!! $host !!}';

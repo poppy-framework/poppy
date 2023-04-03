@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Demo\Http\Lists;
 
 use Closure;

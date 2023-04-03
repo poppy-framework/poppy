@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Demo\Http\Request\Web;
 
 use Demo\Classes\DemoDef;
+use Demo\Http\Lists\ListPoppyDefault;
 use Demo\Http\Lists\ListPoppyDemo;
 use Demo\Http\Lists\ListPoppyEditable;
 use Demo\Http\Lists\ListPoppyIndex;
@@ -42,6 +43,9 @@ class GridController extends WebController
         }
         if ($type === 'index') {
             $grid->setLists(ListPoppyIndex::class);
+        }
+        if ($type === 'default') {
+            $grid->setLists(ListPoppyDefault::class);
         }
         if ($type === 'user') {
             $grid->setLists(ListPoppyUser::class);
