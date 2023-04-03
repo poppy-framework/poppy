@@ -54,8 +54,11 @@ class PushSender extends BaseClient
 
         if ($this->isAndroid() && $this->isNotice()) {
             $query = array_merge($query, [
-                'AndroidExtParameters'       => $message->getExtParameters(),
-                'AndroidNotificationChannel' => $this->androidChannel,
+                'AndroidExtParameters'             => $message->getExtParameters(),
+                'AndroidNotificationChannel'       => $this->androidChannel,
+                'AndroidNotificationHuaweiChannel' => 'NORMAL',//NORMAL：服务与通讯类消息LOW：资讯营销类消息
+                'AndroidNotificationHonorChannel'  => 'NORMAL',//NORMAL：服务与通讯类消息LOW：资讯营销类消息
+                'AndroidNotificationVivoChannel'   => '1',//1：系统类消息0：运营类消息（默认）
             ]);
             if ($this->androidActivity) {
                 $query += [
