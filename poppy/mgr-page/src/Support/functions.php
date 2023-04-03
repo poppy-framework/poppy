@@ -36,6 +36,7 @@ if (!function_exists('mgr_col')) {
     }
 }
 
+
 if (!function_exists('mgr_col_actions')) {
     /**
      * Layui Table 列参数定义
@@ -49,6 +50,8 @@ if (!function_exists('mgr_col_actions')) {
         return mgr_col($width, $fixed, "field: '_actions_'" . ($append ? ',' . trim($append, ',') : ''));
     }
 }
+
+
 if (!function_exists('mgr_table_open')) {
     /**
      * Layui Table 初始化 KEY
@@ -95,6 +98,7 @@ if (!function_exists('mgr_actions')) {
         return $operations->render();
     }
 }
+
 
 if (!function_exists('mgr_op')) {
     /**
