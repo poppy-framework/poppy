@@ -17,6 +17,14 @@ class FormSettingPam extends FormSettingBase
 
     protected $group = 'py-system::pam';
 
+    public function data(): array
+    {
+        $data = parent::data();
+        return array_merge($data, [
+            'lifetime' => sys_setting('py-system::pam.lifetime') ?: 12,
+        ]);
+    }
+
     public function form(): void
     {
         $groups = (new Sso())->groupDesc(true);
@@ -30,6 +38,13 @@ class FormSettingPam extends FormSettingBase
             Rule::numeric(),
             Rule::between(1, 400),
         ])->help('设置记住登录的时长, 默认 60 天, 最长时间不超过 400 天(浏览器安全限制)');
+        $this->text('lifetime', '默认登录时长')->rules([
+            Rule::numeric(),
+            Rule::between(3, 3 * 24),
+        ])->help('用户多长时间无操作之后退出登录, 允许范围 3-' . (3 * 24) .
+            ' 小时(3 天), 默认值: 12 小时, 如果设定了退出浏览器失效, 则此项不起作用, 当前退出设定:' .
+            (config('session.expire_on_close') ? '已设定' : '未设定')
+        );
 
         /* 单点登录
          * ---------------------------------------- */

@@ -195,8 +195,11 @@ class HomeController extends BackendController
      */
     private function setSessionLifetime(PamAccount $pam): void
     {
+        $defaultLoginHours = sys_setting('py-system::pam.lifetime') ?: 12;
+
+        // 获取用户设定
         $setting  = $this->userSettingGet($pam->id, PySystemDef::uskAccount());
-        $lifetime = ($setting['expired_hour'] ?? 12) * 60;
+        $lifetime = ($setting['expired_hour'] ?? $defaultLoginHours) * 60;
         config(['session.lifetime' => $lifetime]);
     }
 
