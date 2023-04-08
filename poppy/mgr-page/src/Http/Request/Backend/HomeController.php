@@ -140,9 +140,9 @@ class HomeController extends BackendController
 
         $guard->logout();
 
-        app('session.store')->flush();
-
         event(new BePamLogoutEvent((int) $accountId));
+
+        app('session.store')->flush();
 
         return Resp::success('退出登录', '_location|' . route('py-mgr-page:backend.home.login'));
     }
