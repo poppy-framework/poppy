@@ -17,6 +17,7 @@ use Poppy\MgrPage\Http\MgrPage\FormPamEstablish;
 use Poppy\MgrPage\Http\MgrPage\FormPamMobile;
 use Poppy\MgrPage\Http\MgrPage\FormPamNote;
 use Poppy\MgrPage\Http\MgrPage\FormPamPassword;
+use Poppy\MgrPage\Http\MgrPage\FormPamSetting;
 use Poppy\MgrPage\Http\MgrPage\FormSettingLog;
 use Poppy\MgrPage\Http\MgrPage\ListPamAccount;
 use Poppy\MgrPage\Http\MgrPage\ListPamLog;
@@ -95,6 +96,11 @@ class PamController extends BackendController
     public function enable()
     {
         return (new FormPamEnable())->render();
+    }
+
+    public function setting()
+    {
+        return (new FormPamSetting())->render();
     }
 
 

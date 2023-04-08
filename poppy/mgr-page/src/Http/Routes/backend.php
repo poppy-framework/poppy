@@ -53,6 +53,8 @@ Route::group([
         ->name('py-mgr-page:backend.pam.ban');
     $router->any('pam/delete_token/{id}', 'PamController@deleteToken')
         ->name('py-mgr-page:backend.pam.delete_token');
+    $router->any('pam/setting/{id}', 'PamController@setting')
+        ->name('py-mgr-page:backend.pam.setting');
 
     $router->any('ban', 'BanController@index')
         ->name('py-mgr-page:backend.ban.index');

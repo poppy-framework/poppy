@@ -63,7 +63,7 @@ trait PamTrait
      * @param string $permission_key 权限KEY
      * @return bool
      */
-    public function checkPermission($permission_key): bool
+    public function checkPermission(string $permission_key): bool
     {
         if (!$this->checkPam()) {
             return false;

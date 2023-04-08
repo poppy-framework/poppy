@@ -4,9 +4,16 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Classes;
 
-
 class PySystemDef
 {
+    /**
+     * [user-setting-key]:账号
+     * @return string
+     */
+    public static function uskAccount(): string
+    {
+        return 'py-sys-account';
+    }
 
     /**
      * 设置

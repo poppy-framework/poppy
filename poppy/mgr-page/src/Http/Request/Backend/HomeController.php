@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Poppy\MgrPage\Http\Request\Backend;
 
 use Auth;
+use Illuminate\Auth\SessionGuard;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -22,6 +22,8 @@ use Poppy\Framework\Helper\StrHelper;
 use Poppy\MgrPage\Classes\Setting\SettingView;
 use Poppy\MgrPage\Http\MgrPage\FormPassword;
 use Poppy\System\Action\Pam;
+use Poppy\System\Classes\PySystemDef;
+use Poppy\System\Classes\Traits\UserSettingTrait;
 use Poppy\System\Events\BePamLogoutEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
@@ -31,7 +33,7 @@ use Poppy\System\Models\PamRole;
  */
 class HomeController extends BackendController
 {
-    use PoppyTrait, CoreTrait;
+    use PoppyTrait, CoreTrait, UserSettingTrait;
 
     /**
      * 主页
@@ -66,31 +68,38 @@ class HomeController extends BackendController
         $password = (string) input('password');
         $mobile   = (string) input('mobile');
         $code     = (string) input('code');
+
         if (is_post()) {
             $Pam = new Pam();
             try {
+                $loginSuccess = false;
+                if (!$username && !$mobile) {
+                    return Resp::error('请输入通行证账号');
+                }
                 if ($username) {
                     if (config('poppy.mgr-page.captcha_login')) {
                         return Resp::error('请使用手机号+验证码登录');
                     }
                     if ($Pam->loginCheck($username, $password, PamAccount::GUARD_BACKEND)) {
-                        $auth->login($Pam->getPam(), true);
-                        return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
+                        $auth->login($Pam->getPam(), $this->isRemember());
+                        $loginSuccess = true;
                     }
-                    return Resp::error($Pam->getError());
                 }
                 if ($mobile) {
                     if (!config('poppy.mgr-page.captcha_login')) {
                         return Resp::error('请使用通行证密码登录');
                     }
                     if ($Pam->beCaptchaLogin($mobile, $code)) {
-                        $auth->login($Pam->getPam(), true);
-                        return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
+                        $auth->login($Pam->getPam(), $this->isRemember());
+                        $loginSuccess = true;
                     }
-                    return Resp::error($Pam->getError());
                 }
-
-                return Resp::error('请输入通行证账号');
+                if ($loginSuccess) {
+                    $this->setSessionLifetime($Pam->getPam());
+                    $this->setRememberTokenExpired();
+                    return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
+                }
+                return Resp::error($Pam->getError());
             } catch (ApplicationException $e) {
                 return Resp::error($e->getMessage());
             }
@@ -159,10 +168,10 @@ class HomeController extends BackendController
 
     /**
      * tools
-     * @param null|string $type 类型
+     * @param string $type 类型
      * @return Factory|View
      */
-    public function easyWeb($type = null)
+    public function easyWeb(string $type)
     {
         $host = StrHelper::formatId(EnvHelper::host());
         return view('py-mgr-page::backend.home.easyweb.' . $type, [
@@ -172,10 +181,50 @@ class HomeController extends BackendController
 
     /**
      * 获取后台的Auth
-     * @return Guard|StatefulGuard
+     * @return Guard|SessionGuard
      */
     private function auth()
     {
         return Auth::guard(PamAccount::GUARD_BACKEND);
+    }
+
+
+    /**
+     * 用户自定义的 Session 生命周期
+     * @param PamAccount $pam
+     */
+    private function setSessionLifetime(PamAccount $pam): void
+    {
+        $setting  = $this->userSettingGet($pam->id, PySystemDef::uskAccount());
+        $lifetime = ($setting['expired_hour'] ?? 12) * 60;
+        config(['session.lifetime' => $lifetime]);
+    }
+
+    /**
+     * 是否记住了自动登录
+     * @return bool
+     */
+    private function isRemember(): bool
+    {
+        return (bool) sys_setting('py-system::pam.is_remember');
+    }
+
+    /**
+     * 设置记录登录时长的有效期
+     * @return void
+     */
+    private function setRememberTokenExpired(): void
+    {
+        if (!$this->isRemember()) {
+            return;
+        }
+
+        $auth        = $this->auth();
+        $cookieJar   = $auth->getCookieJar();
+        $cookieValue = $cookieJar->queued($auth->getRecallerName())->getValue();
+
+        // reset expired value
+        $rememberTokenExpireMinutes = ((int) sys_setting('py-system::pam.remember_hour', 60) ?: 60) * 24 * 60;
+        $cookieJar->queue($auth->getRecallerName(), $cookieValue, $rememberTokenExpireMinutes);
     }
 }

@@ -32,7 +32,7 @@ class CrossRequest extends EnableCrossRequest
             $schema    = EnvHelper::scheme();
             $domain    = EnvHelper::domain();
             $reqDomain = "{$schema}{$domain}";
-            if (in_array($reqDomain, $origin)) {
+            if (in_array($reqDomain, $origin, true)) {
                 $origin = $reqDomain;
             }
             else {

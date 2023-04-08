@@ -13,7 +13,7 @@ use Poppy\System\Models\SysConfig;
 class FormSettingPam extends FormSettingBase
 {
 
-    protected $title = 'Pam设置';
+    protected $title = '账号安全';
 
     protected $group = 'py-system::pam';
 
@@ -25,6 +25,11 @@ class FormSettingPam extends FormSettingBase
         ])->placeholder('请输入账号前缀, 用于账号注册默认用户名生成');
         $this->switch('auto_enable', '账号自动解封')->help('账号自动解封, 默认时间 15 分钟执行一次');
         $this->textarea('test_account', '测试账号')->placeholder('请填写测试账号, 每行一个')->help('在此测试账号内的应用, 不需要正确的验证码即可登录');
+        $this->switch('is_remember', '是否记住登录')->help('根据记住登录的时间来设定账号登录的有效期');
+        $this->text('remember_hour', '记住登录')->placeholder('记住登录的时长')->rules([
+            Rule::numeric(),
+            Rule::between(1, 400),
+        ])->help('设置记住登录的时长, 默认 60 天, 最长时间不超过 400 天(浏览器安全限制)');
 
         /* 单点登录
          * ---------------------------------------- */

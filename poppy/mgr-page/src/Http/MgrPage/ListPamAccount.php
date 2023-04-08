@@ -27,18 +27,18 @@ class ListPamAccount extends ListBase
      * @inheritDoc
      * @throws ApplicationException
      */
-    public function columns()
+    public function columns(): void
     {
         $user = Auth::user();
-        $this->column('id', "ID")->sortable()->width(80);
-        $this->column('username', "用户名")->width(130);
-        $this->column('mobile', "手机号")->width(160);
-        $this->column('email', "邮箱");
-        $this->column('login_times', "登录次数")->widthAsId();
-        $this->column('created_at', "注册/创建时间")->widthAsDatetime();
-        $this->column('reg_ip', "注册 IP")->widthAsIp();
-        $this->column('logined_at', "最后登录时间")->widthAsDatetime();
-        $this->column('note', "备注")->widthAsNote();
+        $this->column('id', 'ID')->sortable()->width(80);
+        $this->column('username', '用户名')->width(130);
+        $this->column('mobile', '手机号')->width(160);
+        $this->column('email', '邮箱');
+        $this->column('login_times', '登录次数')->widthAsId();
+        $this->column('created_at', '注册/创建时间')->widthAsDatetime();
+        $this->column('reg_ip', '注册 IP')->widthAsIp();
+        $this->column('logined_at', '最后登录时间')->widthAsDatetime();
+        $this->column('note', '备注')->widthAsNote();
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) use ($user) {
             /** @var PamAccount $item */
             $item = $actions->row;
@@ -55,6 +55,7 @@ class ListPamAccount extends ListBase
                         ->icon('phone-flip')->danger();
                 }
                 $operations->iframe('备注', route_url('py-mgr-page:backend.pam.note', [$item->id]))->icon('sticky')->primary();
+                $operations->iframe('设置', route_url('py-mgr-page:backend.pam.setting', [$item->id]))->icon('gear')->primary();
             })->icon('lay:edit');
             if ($user->can('disable', $item)) {
                 $actions->iframe('已启用', route_url('py-mgr-page:backend.pam.disable', [$item->id]))->icon('check-circle')->default()
