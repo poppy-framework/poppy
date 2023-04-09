@@ -2626,6 +2626,41 @@ div.layui-input.layui-input-inline {
   text-align: center;
   line-height: 1.5;
 }
+.grid-quick-wrapper .bi-menu-button {
+  display: none;
+  cursor: pointer;
+}
+.grid-quick-wrapper .grid-quick-button.open {
+  width: 200px;
+  max-width: 100%;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  z-index: 2;
+  padding: 5px 8px 3px;
+}
+.grid-quick-wrapper .grid-quick-button.open a {
+  display: block;
+  margin-left: 0;
+  margin-bottom: 5px;
+}
+@media screen and (max-width: 768px) {
+  .grid-quick-wrapper .bi-menu-button {
+    display: block;
+  }
+  .grid-quick-wrapper .bi-menu-button:hover {
+    color: #00A65A;
+  }
+  .grid-quick-wrapper .grid-quick-button {
+    position: absolute;
+    top: 42px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    display: none;
+    right: 0;
+  }
+  .grid-quick-wrapper .grid-quick-button.open {
+    display: block;
+  }
+}
 /* develop
  * ---------------------------------------- */
 .dev--nav.layui-nav .layui-nav-item a {

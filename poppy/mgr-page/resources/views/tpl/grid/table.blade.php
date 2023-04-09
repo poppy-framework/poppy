@@ -3,14 +3,18 @@
     @if($title || $grid->isShowTools() || $grid->isShowQuickButton() || $grid->isShowExporter())
         <div class="layui-card-header">
             {{ $title }}
+
             {{--显示工具--}}
             @if($grid->isShowTools())
                 {!! $grid->renderHeaderTools() !!}
             @endif
 
             @if($grid->isShowQuickButton())
-                <div class="pull-right">
-                    {!! $grid->renderQuickButton() !!}
+                <div class="text-right grid-quick-wrapper pull-right">
+                    <i class="bi bi-menu-button" id="show-quick-button"></i>
+                    <div class="grid-quick-button" id="quick-button">
+                        {!! $grid->renderQuickButton() !!}
+                    </div>
                 </div>
             @endif
             @if ($grid->isShowExporter())

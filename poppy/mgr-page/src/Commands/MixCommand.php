@@ -14,7 +14,7 @@ class MixCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'py-mgr-page:mix';
+    protected $signature = 'py-mgr:mix';
 
     /**
      * The console command description.
