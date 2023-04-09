@@ -7,11 +7,9 @@ namespace Poppy\Ad\Models;
 use Carbon\Carbon;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Poppy\Framework\Http\Pagination\PageInfo;
 use Poppy\System\Classes\Traits\FilterTrait;
-use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\SysConfig;
 
 /**
@@ -70,41 +68,14 @@ class SysAdPlace extends Model
     }
 
     /**
-     * @param int    $id    id
-     * @param string $field 获取字段
-     * @return Collection|Model|mixed|null|PamAccount|PamAccount[]
-     */
-    public static function fetch($id, $field = '')
-    {
-        if ($field) {
-            return self::find($id)->$field;
-        }
-
-        return self::find($id);
-    }
-
-    /**
      * 通过广告位id获取广告位内容
      * @param int $id id
      * @return array
      */
     public static function returnAdContent(int $id): array
     {
-        $picture = [];
-        if (SysAdContent::where('place_id', $id)->exists()) {
-            $adContent = SysAdContent::where('place_id', $id)->where('status', SysConfig::YES)->select(['image_src', 'action', 'image_url', 'title', 'action'])->get();
-
-            foreach ($adContent as $content) {
-                $picture[] = [
-                    'picture'    => $content->image_src,
-                    'is_open'    => $content->action !== SysAdContent::ACTION_NONE ? 'Y' : 'N',
-                    'return_url' => $content->image_url,
-                    'title'      => $content->title,
-                    'action'     => $content->action,
-                ];
-            }
-        }
-
-        return $picture;
+        return SysAdContent::where('place_id', $id)
+            ->orderBy('list_order')
+            ->where('status', SysConfig::YES)->select(['id', 'src', 'action', 'value', 'title'])->get()->toArray();
     }
 }

@@ -17,6 +17,7 @@ use Poppy\System\Classes\Traits\FilterTrait;
  * @mixin Eloquent
  * @property int         $id         id
  * @property string      $title      广告标题
+ * @property string      $src        地址
  * @property int         $place_id   广告位ID
  * @property string      $value      动作值
  * @property string      $introduce  广告的介绍
