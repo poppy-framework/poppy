@@ -21,15 +21,16 @@
             <fieldset class="layui-elem-field layui-field-title">
                 <legend>{!! sys_setting('py-system::site.site_name') !!}登录</legend>
                 <div class="layui-field-box">
-                    @if(!config('poppy.mgr-page.captcha_login'))
-                        <div class="layui-row">
-                            <div class="layui-col-sm3 layui-col-xs-12">
-                                {!! Form::label('username', '用户名', ['class'=> 'layui-form-label validation']) !!}
-                            </div>
-                            <div class="layui-col-sm12 layui-col-xs12">
-                                {!! Form::text('username', null, ['class'=> 'layui-input']) !!}
-                            </div>
+                    <div class="layui-row">
+                        <div class="layui-col-sm3 layui-col-xs-12">
+                            {!! Form::label('passport', config('poppy.mgr-page.captcha_login') ? '手机号' : '用户名',
+                                ['class'=> 'layui-form-label validation']) !!}
                         </div>
+                        <div class="layui-col-sm12 layui-col-xs12">
+                            {!! Form::text('passport', null, ['class'=> 'layui-input']) !!}
+                        </div>
+                    </div>
+                    @if(!config('poppy.mgr-page.captcha_login'))
                         <div class="layui-row">
                             <div class="layui-col-sm3 layui-col-xs-12">
                                 {!! Form::label('password', '密码', ['class'=> 'layui-form-label validation']) !!}
@@ -42,19 +43,10 @@
                     @if(config('poppy.mgr-page.captcha_login'))
                         <div class="layui-row">
                             <div class="layui-col-sm3 layui-col-xs-12">
-                                {!! Form::label('mobile', '手机号', ['class'=> 'layui-form-label validation']) !!}
-                            </div>
-                            <div class="layui-col-sm12 layui-col-xs12">
-                                {!! Form::text('mobile', null, ['class' => 'layui-input']) !!}
-                            </div>
-                        </div>
-
-                        <div class="layui-row">
-                            <div class="layui-col-sm3 layui-col-xs-12">
-                                {!! Form::label('captcha', '图形验证码', ['class'=> 'layui-form-label validation']) !!}
+                                {!! Form::label('code', '图形验证码', ['class'=> 'layui-form-label validation']) !!}
                             </div>
                             <div class="layui-col-sm12 layui-col-xs12 login-captcha">
-                                {!! Form::text('captcha', null, ['class' => 'layui-input captcha-input']) !!}
+                                {!! Form::text('code', null, ['class' => 'layui-input captcha-input']) !!}
                                 <img src="{{captcha_src()}}" style="cursor: pointer" id="codeImg" alt="captcha"
                                         onclick="this.src='{{captcha_src()}}'+Math.random()">
                                 <button class="layui-btn captcha-send" type="button" id="send_captcha">
@@ -62,13 +54,12 @@
                                 </button>
                             </div>
                         </div>
-
                         <div class="layui-row">
                             <div class="layui-col-sm3 layui-col-xs-12">
-                                {!! Form::label('code', '手机验证码', ['class'=> 'layui-form-label validation']) !!}
+                                {!! Form::label('captcha', '手机验证码', ['class'=> 'layui-form-label validation']) !!}
                             </div>
                             <div class="layui-col-sm12 layui-col-xs12 login-captcha">
-                                {!! Form::text('code', null, ['class' => 'layui-input code-input']) !!}
+                                {!! Form::text('captcha', null, ['class' => 'layui-input code-input']) !!}
                             </div>
                         </div>
                     @endif
@@ -92,52 +83,54 @@
                     "{!! url('assets/images/default/login/bg4.jpg')!!}"
                 ], { fade: 1e3, duration: 8e3 })
             });
-
-            $('body').on('click', '#send_captcha', function () {
-                let mobile = $('input[name="mobile"]').val();
-                let captcha = $('input[name="captcha"]').val();
-                if (!Util.isMobile(mobile)) {
-                    layer.msg('请输入正确的手机号', {
-                        time: 3000
-                    })
-                    return;
-                }
-                if (!captcha) {
-                    layer.msg('请输入验证码', {
-                        time: 3000
-                    })
-                    return;
-                }
-                let timerInstance = new easytimer.Timer();
-                timerInstance.stop()
-
-                Util.makeRequest('{!! route_url('py-mgr-page:backend.captcha.send') !!}', {
-                    mobile: mobile,
-                    captcha: captcha
-                }, function (resp) {
-                    Util.splash(resp);
-                    if (resp.status === 0) {
-                        timerInstance.start({
-                            countdown: true,
-                            startValues: { seconds: 60 }
-                        })
-                        $('#send_captcha').html(60)
-                            .addClass('layui-btn-disabled').attr('disabled', true);
-                        timerInstance.addEventListener('secondsUpdated', function (e) {
-                            let $send = $('#send_captcha');
-                            let seconds = timerInstance.getTimeValues().seconds;
-                            if (seconds) {
-                                $send.html(seconds);
-                            } else {
-                                $send.html('<i class="bi bi-send"></i> 重发')
-                                    .removeClass('layui-btn-disabled')
-                                    .attr('disabled', false);
-                            }
-                        });
-                    }
-                })
-            })
             </script>
         </div>
     </div>
+    @if(config('poppy.mgr-page.captcha_login'))
+        <script>
+        $('body').on('click', '#send_captcha', function () {
+            let passport = $('input[name="passport"]').val();
+            let captcha = $('input[name="code"]').val();
+            if (!Util.isMobile(passport)) {
+                layer.msg('请输入正确的手机号', {
+                    time: 3000
+                })
+                return;
+            }
+            if (!captcha) {
+                layer.msg('请输入验证码', {
+                    time: 3000
+                })
+                return;
+            }
+            let timerInstance = new easytimer.Timer();
+            timerInstance.stop()
+            Util.makeRequest('{!! route_url('py-mgr-page:backend.captcha.send') !!}', {
+                passport: passport,
+                captcha: captcha
+            }, function (resp) {
+                Util.splash(resp);
+                if (resp.status === 0) {
+                    timerInstance.start({
+                        countdown: true,
+                        startValues: { seconds: 60 }
+                    })
+                    $('#send_captcha').html(60)
+                        .addClass('layui-btn-disabled').attr('disabled', true);
+                    timerInstance.addEventListener('secondsUpdated', function (e) {
+                        let $send = $('#send_captcha');
+                        let seconds = timerInstance.getTimeValues().seconds;
+                        if (seconds) {
+                            $send.html(seconds);
+                        } else {
+                            $send.html('<i class="bi bi-send"></i> 重发')
+                                .removeClass('layui-btn-disabled')
+                                .attr('disabled', false);
+                        }
+                    });
+                }
+            })
+        })
+        </script>
+    @endif
 @endsection

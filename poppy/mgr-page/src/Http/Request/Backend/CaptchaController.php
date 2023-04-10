@@ -7,6 +7,7 @@ namespace Poppy\MgrPage\Http\Request\Backend;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Action\Verification;
@@ -24,39 +25,35 @@ class CaptchaController extends BackendController
     /**
      * 发送后台通行证的验证码
      * @return JsonResponse|RedirectResponse|Response
+     * @throws ValidationException
      */
     public function send()
     {
         $validator = Validator::make(input(), [
-            'mobile'  => [
-                Rule::required(),
-                Rule::mobile(),
-            ],
-            'captcha' => 'required|captcha',
+            'passport' => [Rule::required(), Rule::mobile(),],
+            'captcha'  => [Rule::required(), 'captcha'],
         ], [], [
-            'mobile'  => '手机号',
-            'captcha' => '验证码',
+            'passport' => '手机号',
+            'captcha'  => '验证码',
         ]);
 
-        $mobile = input('mobile');
-        if ($validator->fails()) {
-            return Resp::error($validator->messages());
-        }
+        $valid    = $validator->validated();
+        $passport = $valid['passport'];
 
-        $beMobile = PamAccount::beMobile($mobile);
+        $beMobile = PamAccount::beMobile($passport);
         if (!PamAccount::where('type', PamAccount::TYPE_BACKEND)->where('mobile', $beMobile)->exists()) {
             return Resp::error('用户不存在');
         }
 
         $Verification = new Verification();
         $expired      = (int) sys_setting('py-system::pam.captcha_expired') ?: 5;
-        if (!$Verification->isPassThrottle($mobile)){
+        if (!$Verification->isPassThrottle($passport)) {
             return Resp::error($Verification->getError());
         }
-        if ($Verification->genCaptcha($mobile, $expired)) {
+        if ($Verification->genCaptcha($passport, $expired)) {
             $captcha = $Verification->getCaptcha();
             try {
-                event(new CaptchaSendEvent($mobile, $captcha));
+                event(new CaptchaSendEvent($passport, $captcha));
                 return Resp::success('验证码发送成功' . (!is_production() ? ', 验证码:' . $captcha : ''));
             } catch (Throwable $e) {
                 return Resp::error($e);

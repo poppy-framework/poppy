@@ -5,12 +5,15 @@ declare(strict_types = 1);
 namespace Poppy\MgrPage\Http\Request\Backend;
 
 use Auth;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Poppy\Core\Classes\Traits\CoreTrait;
 use Poppy\Core\Exceptions\PermissionException;
@@ -19,12 +22,14 @@ use Poppy\Framework\Classes\Traits\PoppyTrait;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Helper\EnvHelper;
 use Poppy\Framework\Helper\StrHelper;
+use Poppy\Framework\Helper\UtilHelper;
 use Poppy\MgrPage\Classes\Setting\SettingView;
 use Poppy\MgrPage\Http\MgrPage\FormPassword;
 use Poppy\System\Action\Pam;
 use Poppy\System\Classes\PySystemDef;
 use Poppy\System\Classes\Traits\UserSettingTrait;
 use Poppy\System\Events\BePamLogoutEvent;
+use Poppy\System\Http\Validation\PamLoginRequest;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
 
@@ -60,49 +65,44 @@ class HomeController extends BackendController
 
     /**
      * 登录
+     * @throws ApplicationException
+     * @throws ValidationException
+     * @throws AuthorizationException
      */
-    public function login()
+    public function login(Request $req)
     {
-        $auth     = $this->auth();
-        $username = (string) input('username');
-        $password = (string) input('password');
-        $mobile   = (string) input('mobile');
-        $code     = (string) input('code');
+        $auth = $this->auth();
+        $req->merge([
+            'os' => PamAccount::REG_PLATFORM_MGR,
+        ]);
 
         if (is_post()) {
-            $Pam = new Pam();
-            try {
-                $loginSuccess = false;
-                if (!$username && !$mobile) {
-                    return Resp::error('请输入通行证账号');
+            /** @var PamLoginRequest $request */
+            $request      = app(PamLoginRequest::class, [$req]);
+            $reqPassport  = $request->scene('passport')->validated();
+            $isMobile     = UtilHelper::isMobile($reqPassport['passport']);
+            $Pam          = new Pam();
+            $loginSuccess = false;
+            if (!$isMobile) {
+                $reqPwd = $request->scene('password')->validated();
+                if ($Pam->loginCheck($reqPwd['passport'], $reqPwd['password'], PamAccount::GUARD_BACKEND)) {
+                    $auth->login($Pam->getPam(), $this->isRemember());
+                    $loginSuccess = true;
                 }
-                if ($username) {
-                    if (config('poppy.mgr-page.captcha_login')) {
-                        return Resp::error('请使用手机号+验证码登录');
-                    }
-                    if ($Pam->loginCheck($username, $password, PamAccount::GUARD_BACKEND)) {
-                        $auth->login($Pam->getPam(), $this->isRemember());
-                        $loginSuccess = true;
-                    }
-                }
-                if ($mobile) {
-                    if (!config('poppy.mgr-page.captcha_login')) {
-                        return Resp::error('请使用通行证密码登录');
-                    }
-                    if ($Pam->beCaptchaLogin($mobile, $code)) {
-                        $auth->login($Pam->getPam(), $this->isRemember());
-                        $loginSuccess = true;
-                    }
-                }
-                if ($loginSuccess) {
-                    $this->setSessionLifetime($Pam->getPam());
-                    $this->setRememberTokenExpired();
-                    return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
-                }
-                return Resp::error($Pam->getError());
-            } catch (ApplicationException $e) {
-                return Resp::error($e->getMessage());
             }
+            if ($isMobile) {
+                $reqCaptcha = $request->scene('captcha')->validated();
+                if ($Pam->beCaptchaLogin($reqCaptcha['passport'], $reqCaptcha['captcha'])) {
+                    $auth->login($Pam->getPam(), $this->isRemember());
+                    $loginSuccess = true;
+                }
+            }
+            if ($loginSuccess) {
+                $this->setSessionLifetime($Pam->getPam());
+                $this->setRememberTokenExpired();
+                return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
+            }
+            return Resp::error($Pam->getError());
         }
 
         if ($auth->check()) {
@@ -142,6 +142,7 @@ class HomeController extends BackendController
 
         event(new BePamLogoutEvent((int) $accountId));
 
+        // todo 退出后台清空 session 会导致其他用户失效
         app('session.store')->flush();
 
         return Resp::success('退出登录', '_location|' . route('py-mgr-page:backend.home.login'));

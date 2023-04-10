@@ -6,6 +6,7 @@ namespace Poppy\System\Tests\Base;
 
 use InvalidArgumentException;
 use Poppy\Framework\Application\TestCase;
+use Poppy\Framework\Helper\UtilHelper;
 
 class ConfigTest extends TestCase
 {
@@ -24,9 +25,19 @@ class ConfigTest extends TestCase
     }
 
 
+    /**
+     * 测试验证码注册的开关
+     * @return void
+     */
     public function testSystemCaptchaRegister(): void
     {
         $captchaRegister = config('poppy.system.captcha_register');
         $this->assertIsBool($captchaRegister);
+    }
+
+    public function testTrans(): void
+    {
+        // 检测 auth.throttle 是否设置了语言
+        $this->assertTrue(UtilHelper::hasChinese(trans('auth.throttle')));
     }
 }

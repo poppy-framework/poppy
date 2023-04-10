@@ -83,6 +83,11 @@ abstract class Request extends FormRequest
      */
     public function scene(string $scene): self
     {
+        // 如果已经设置验证场景, 则需要重新对数据进行校验
+        // 清空 validator
+        if ($this->scene) {
+            $this->validator = null;
+        }
         $this->scene      = $scene;
         $this->isValidate = true;
         return $this;
@@ -115,7 +120,7 @@ abstract class Request extends FormRequest
     protected function assembleRules(): array
     {
         $originRules = $this->sceneRules();
-        $rules       = [];
+        $rules = [];
         foreach ($originRules as $property => $condition) {
             if (is_array($condition)) {
                 $when = $condition['when'] ?? '';

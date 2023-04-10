@@ -40,6 +40,7 @@ return [
     ],
     'verification' => [
         'send_passport_format_error' => '无法发送验证码, 格式不正确',
+        'passport_not_support'       => '当前通行证格式不支持验证码验证',
         'check_captcha_error'        => '验证码错误',
         'verify_code_expired'        => '验证码已过期, 请重新发送',
         'verify_code_error'          => '非法请求',

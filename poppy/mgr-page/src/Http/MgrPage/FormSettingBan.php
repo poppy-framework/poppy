@@ -16,10 +16,6 @@ use Poppy\System\Models\SysConfig;
 class FormSettingBan extends FormSettingBase
 {
 
-    public $inbox = false;
-
-    public $ajax = true;
-
     protected $withContent = true;
 
     protected string $bw = PamBan::WB_TYPE_BLACK;

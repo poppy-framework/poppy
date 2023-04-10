@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Http\MgrPage;
 
+use Illuminate\Http\Request;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Pam;
+use Poppy\System\Http\Validation\PamPasswordRequest;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
 use Route;
@@ -44,7 +46,7 @@ class FormPamEstablish extends FormWidget
     /**
      * @throws Throwable
      */
-    public function handle()
+    public function handle(Request $request)
     {
         $username = input('username');
         $password = input('password');
@@ -53,10 +55,16 @@ class FormPamEstablish extends FormWidget
         if (!$role_id) {
             return Resp::error('请选择角色');
         }
+
+
         $Pam = new Pam();
         if ($this->item) {
-            if ($password && !$Pam->setPassword($this->item, $password)) {
-                return Resp::error($Pam->getError());
+            if ($password) {
+                /** @var PamPasswordRequest $reqPwd */
+                $reqPwd = app(PamPasswordRequest::class, [$request]);
+                if (!$Pam->setPassword($this->item, $reqPwd->input('password'))) {
+                    return Resp::error($Pam->getError());
+                }
             }
             $Pam->setRoles($this->item, $role_id);
             return Resp::success('用户修改成功', [

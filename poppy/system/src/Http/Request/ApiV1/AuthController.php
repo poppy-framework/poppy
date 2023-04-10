@@ -4,25 +4,26 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Http\Request\ApiV1;
 
-use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Translation\Translator;
+use Illuminate\Validation\ValidationException;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Helper\UtilHelper;
-use Poppy\Framework\Validation\Rule;
 use Poppy\System\Action\Pam;
 use Poppy\System\Action\Sso;
 use Poppy\System\Action\Verification;
 use Poppy\System\Events\LoginSuccessEvent;
 use Poppy\System\Events\LoginTokenPassedEvent;
+use Poppy\System\Http\Validation\PamLoginRequest;
+use Poppy\System\Http\Validation\PamPasswordRequest;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\Resources\PamResource;
 use Throwable;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Validator;
 
 /**
  * 认证控制器
@@ -30,6 +31,8 @@ use Validator;
 class AuthController extends JwtApiController
 {
     use ThrottlesLogins;
+
+    protected float $decayMinutes = 0.5;
 
     /**
      * @api                   {post} /api_v1/system/auth/access [Sys]检测 Token
@@ -95,73 +98,68 @@ class AuthController extends JwtApiController
      *      "is_register": "backend",
      * }
      */
-    public function login(): JsonResponse
+
+
+    /**
+     * @param Request $req
+     * @return JsonResponse
+     * @throws AuthorizationException
+     * @throws ValidationException
+     * @throws Throwable
+     */
+    public function login(Request $req): JsonResponse
     {
-        $validator = Validator::make(input(), [
-            'passport' => Rule::required(),
-        ], [
-            'passport.required' => '通行证必须填写',
+        $req->merge([
+            'os' => input('device_type', '') ?: x_header('os'),
         ]);
-        if ($validator->fails()) {
-            return Resp::error($validator->messages());
+        /** @var PamLoginRequest $request */
+        $request     = app(PamLoginRequest::class, [$req]);
+        $reqPassport = $request->scene('passport')->validated();
+
+        // 频率限制
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->sendLockoutResponse($request);
         }
 
-        $passport = PamAccount::fullFilledPassport(input('passport', ''));
-        $captcha  = input('captcha', '');
-        $password = input('password', '');
+        $this->incrementLoginAttempts($request);
 
-        if (!$captcha && !$password) {
+        // 类型拦截
+        if (!$request->input('captcha') && !$request->input('password')) {
             return Resp::error('登录密码或者验证码必须填写');
         }
 
-        /** @var ResponseFactory $response */
-        $response = app(ResponseFactory::class);
-        if ($this->hasTooManyLoginAttempts(app('request'))) {
-            $seconds = $this->limiter()->availableIn($this->throttleKey(app('request')));
-            /** @var Translator $Translator */
-            $Translator = app('translator');
-            $message    = $Translator->get('auth.throttle', ['seconds' => $seconds]);
+        // 登录类型(不支持 DEVELOP)
+        $guard = (input('guard') ?: x_header('type')) === PamAccount::TYPE_BACKEND
+            ? PamAccount::GUARD_JWT_BACKEND
+            : PamAccount::GUARD_JWT_WEB;
 
-            return $response->json([
-                'message' => $message,
-                'status'  => 401,
-            ], 401, [], JSON_UNESCAPED_UNICODE);
-        }
-
-        $type  = (input('guard') ?: x_header('type'));
-        $guard = PamAccount::GUARD_JWT_WEB;
-        if ($type === 'backend') {
-            $guard = PamAccount::GUARD_JWT_BACKEND;
-        }
-        elseif ($type === 'develop') {
-            $guard = PamAccount::GUARD_JWT_DEVELOP;
-        }
 
         $Pam = new Pam();
-        try {
-            if ($captcha) {
-                if (!$Pam->captchaLogin($passport, $captcha, $guard)) {
-                    return Resp::error($Pam->getError());
-                }
-            }
-            elseif (!$Pam->loginCheck($passport, $password, $guard)) {
+        if ($request->input('captcha')) {
+            $reqCaptcha = $request->scene('captcha')->validated();
+            if (!$Pam->captchaLogin($reqCaptcha['passport'], $reqCaptcha['captcha'], $guard, $reqCaptcha['os'])) {
                 return Resp::error($Pam->getError());
             }
-        } catch (Throwable $e) {
-            return Resp::error($e);
+        }
+        else {
+            // use password
+            $reqPwd   = $request->scene('password')->validated();
+            $passport = PamAccount::fullFilledPassport($reqPwd['passport']);
+            if (!$Pam->loginCheck($passport, $reqPwd['password'], $guard)) {
+                return Resp::error($Pam->getError());
+            }
         }
 
-        $this->clearLoginAttempts(app('request'));
-        $pam = $Pam->getPam();
+        $this->clearLoginAttempts($request);
 
+        $pam   = $Pam->getPam();
         $token = JWTAuth::fromUser($pam);
 
         /* 设备单一性登陆验证(基于 Redis + Db)
          * ---------------------------------------- */
         try {
-            $deviceId   = x_header('id') ?: input('device_id', '');
-            $deviceType = x_header('os') ?: input('device_type', '');
-            event(new LoginTokenPassedEvent($pam, $token, $deviceId, $deviceType));
+            $deviceId = x_header('id') ?: input('device_id', '');
+            event(new LoginTokenPassedEvent($pam, $token, $deviceId, $reqPassport['os']));
         } catch (Throwable $e) {
             return Resp::error($e->getMessage());
         }
@@ -184,33 +182,16 @@ class AuthController extends JwtApiController
      * @apiQuery {string}     [captcha]         验证码
      * @apiQuery {string}     password          密码
      */
-    public function resetPassword()
+    public function resetPassword(PamPasswordRequest $request)
     {
         $verify_code = input('verify_code', '');
-        $password    = input('password', '');
+        $password    = $request->input('password');
         $passport    = input('passport', '');
         $captcha     = input('captcha', '');
 
         $Verification = new Verification();
-        if (!$password) {
-            return Resp::error('密码必须填写');
-        }
-
         if ((!$verify_code && !$passport) || ($verify_code && $passport)) {
             return Resp::error('请选一种方式重设密码!');
-        }
-
-        $validator = Validator::make([
-            'password' => $password,
-        ], [
-            'password' => [
-                Rule::required(),
-                Rule::string(),
-                Rule::between(6, 20),
-            ],
-        ]);
-        if ($validator->fails()) {
-            return Resp::error($validator->messages());
         }
 
         if ($passport) {

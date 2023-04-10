@@ -286,7 +286,7 @@ class Verification
             $passportType = self::TYPE_MOBILE;
         }
         else {
-            return $this->setError(trans('py-system::action.verification.send_passport_format_error'));
+            return $this->setError(trans('py-system::action.verification.passport_not_support'));
         }
         $this->passportKey = $passportType . '-' . $passport;
         return true;

@@ -183,6 +183,17 @@ class UtilHelper
         return (bool) preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $str);
     }
 
+
+    /**
+     * 是否存在汉字
+     * @param string $str 字符串
+     * @return bool
+     */
+    public static function hasChinese(string $str): bool
+    {
+        return (bool) preg_match('/[\x{4e00}-\x{9fa5}]/u', $str);
+    }
+
     /**
      * 验证身份证号 , 身份证有效性检测
      * @param string $id_card 身份证号码
@@ -267,15 +278,16 @@ class UtilHelper
     /**
      * 修复链接地址, 如果没有 :// 则补齐
      * @param string $url string
+     * @param bool   $is_https
      * @return string
      */
-    public static function fixLink(string $url): string
+    public static function fixLink(string $url, bool $is_https = false): string
     {
         if (strlen($url) < 10) {
             return '';
         }
 
-        return strpos($url, '://') === false ? 'http://' . $url : $url;
+        return strpos($url, '://') === false ? ($is_https ? 'https://' : 'http://') . $url : $url;
     }
 
     /**
@@ -379,7 +391,7 @@ class UtilHelper
      * @deprecated 4.2
      * @removed    5.0
      */
-    public static function genSplash(string $type = 'success', string $message = '', $append = '')
+    public static function genSplash(string $type = 'success', string $message = '', $append = ''): array
     {
         if ($type === 'success' && !$message) {
             $message = '操作成功';

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Http\MgrPage;
 
+use Illuminate\Http\Request;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
@@ -11,6 +12,7 @@ use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Pam;
 use Poppy\System\Classes\Contracts\PasswordContract;
 use Poppy\System\Classes\Traits\PamTrait;
+use Poppy\System\Http\Validation\PamConfirmedPasswordRequest;
 use Poppy\System\Models\PamAccount;
 
 class FormPassword extends FormWidget
@@ -22,11 +24,10 @@ class FormPassword extends FormWidget
 
     protected $title = '修改密码';
 
-    public function handle()
+    public function handle(Request $request)
     {
 
         $old_password = input('old_password');
-        $password     = input('password');
         $id           = input('account_id');
 
         $Pam       = new Pam();
@@ -38,8 +39,9 @@ class FormPassword extends FormWidget
         if (sys_is_demo()) {
             return Resp::error('演示模式下无法修改密码');
         }
-
-        if (!$Pam->setPassword($this->pam, $password)) {
+        /** @var PamConfirmedPasswordRequest $reqPwd */
+        $reqPwd = app(PamConfirmedPasswordRequest::class, [$request]);
+        if (!$Pam->setPassword($this->pam, $reqPwd['password'])) {
             return Resp::error($Pam->getError());
         }
         app('auth')->guard(PamAccount::GUARD_BACKEND)->logout();
@@ -58,7 +60,7 @@ class FormPassword extends FormWidget
     /**
      * Build a form here.
      */
-    public function form():void
+    public function form(): void
     {
         $this->hidden('account_id', 'account_id');
         $this->password('old_password', '原密码')->rules([

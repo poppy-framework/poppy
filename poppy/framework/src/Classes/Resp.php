@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Poppy\Framework\Helper\StrHelper;
 use Poppy\Framework\Helper\UtilHelper;
 use Redirect;
@@ -192,7 +193,15 @@ class Resp
      */
     public static function web(int $type, $msg, $append = null, array $input = null)
     {
-        if ($msg instanceof Exception || $msg instanceof TypeError) {
+        if ($msg instanceof ValidationException) {
+            $messages = $msg->errors();
+            $arrMsg   = [];
+            foreach ($messages as $message) {
+                $arrMsg[] = implode(' ', $message);
+            }
+            $resp = new self(self::PARAM_ERROR, implode(', ', $arrMsg));
+        }
+        elseif ($msg instanceof Exception || $msg instanceof TypeError) {
             $code    = $msg->getCode() ?: self::ERROR;
             $message = $msg->getMessage();
             $resp    = new self($code, $message);

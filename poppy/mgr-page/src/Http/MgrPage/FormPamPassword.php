@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Http\MgrPage;
 
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 use Poppy\Framework\Classes\Resp;
-use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Action\Pam;
+use Poppy\System\Http\Validation\PamConfirmedPasswordRequest;
 use Poppy\System\Models\PamAccount;
 use Route;
 
@@ -28,25 +28,16 @@ class FormPamPassword extends FormWidget
         $this->pam = PamAccount::findOrFail($id);
     }
 
-    public function handle()
+    public function handle(Request $request)
     {
-        $validator = Validator::make(input(), [
-            'password' => [
-                Rule::required(),
-                Rule::confirmed(),
-            ],
-        ]);
-        if ($validator->fails()) {
-            return Resp::error($validator->errors());
-        }
-
-        $password = input('password');
-
         $Pam = new Pam();
         if (sys_is_demo()) {
             return Resp::error('演示模式下无法修改密码');
         }
-        if ($Pam->setPassword($this->pam, $password)) {
+
+        /** @var PamConfirmedPasswordRequest $reqPwd */
+        $reqPwd = app(PamConfirmedPasswordRequest::class, [$request]);
+        if ($Pam->setPassword($this->pam, $reqPwd['password'])) {
             return Resp::success('设置密码成功', '_top_reload|1');
         }
 

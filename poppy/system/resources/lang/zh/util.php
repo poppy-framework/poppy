@@ -8,6 +8,9 @@ return [
         'key_not_match'      => '给定的键 :key 格式不匹配',
         'value_out_of_range' => '所设定的内容超长',
     ],
+    'auth'    => [
+        'throttle' => '请求频繁, 请 :seconds 秒后重试',
+    ],
     'classes' => [
         'models' => [
             'pam_account'         => '用户账户',

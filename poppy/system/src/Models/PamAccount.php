@@ -73,14 +73,14 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
 
     /* Register Platform
      -------------------------------------------- */
-    const REG_PLATFORM_IOS     = 'ios';
-    const REG_PLATFORM_ANDROID = 'android';
-    const REG_PLATFORM_WEB     = 'web';
-    const REG_PLATFORM_PC      = 'pc';
-    const REG_PLATFORM_H5      = 'h5';
-    const REG_PLATFORM_WEAPP   = 'weapp';
-    const REG_PLATFORM_WEBAPP  = 'webapp';
-    const REG_PLATFORM_MGRAPP  = 'mgrapp';
+    public const REG_PLATFORM_IOS     = 'ios';
+    public const REG_PLATFORM_ANDROID = 'android';
+    public const REG_PLATFORM_WEB     = 'web';
+    public const REG_PLATFORM_PC      = 'pc';
+    public const REG_PLATFORM_H5      = 'h5';
+    public const REG_PLATFORM_WEAPP   = 'weapp';
+    public const REG_PLATFORM_WEBAPP  = 'webapp';
+    public const REG_PLATFORM_MGR     = 'mgr';
 
 
     public const BACKEND_MOBILE_PREFIX = '33023-';
@@ -269,7 +269,7 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
             self::REG_PLATFORM_H5      => 'h5',
             self::REG_PLATFORM_WEAPP   => 'weapp',
             self::REG_PLATFORM_WEBAPP  => 'webapp',
-            self::REG_PLATFORM_MGRAPP  => 'mgrapp',
+            self::REG_PLATFORM_MGR     => 'mgr',
         ], $platform);
         return kv($desc, $key, $check_exists);
     }

@@ -65,35 +65,15 @@ class Pam
      * @param string $passport 通行证
      * @param string $captcha  验证码
      * @param string $guard    认证 Guard
-     * @param string $platform 注册平台
+     * @param string $os       软件设备平台
      * @return bool
      * @throws Throwable
      */
-    public function captchaLogin(string $passport, string $captcha, string $guard, string $platform = ''): bool
+    public function captchaLogin(string $passport, string $captcha, string $guard, string $os = ''): bool
     {
-        $initDb = [
-            'passport' => $passport,
-            'captcha'  => $captcha,
-            'platform' => $platform ?: x_header('os'),
-        ];
-
-        // 数据验证
-        $validator = Validator::make($initDb, [
-            'passport' => Rule::required(),
-            'captcha'  => Rule::required(),
-            'platform' => [
-                Rule::required(),
-                Rule::in(PamAccount::kvPlatform()),
-            ],
-        ]);
-        if ($validator->fails()) {
-            return $this->setError($validator->messages());
-        }
-
-        // 验证账号 + 验证码
+        // 验证账号 + 验证码 + 频率拦截
         $Verification = new Verification();
-        // 频率拦截
-        if (!$Verification->isPassThrottle($passport, 2)) {
+        if (!$Verification->isPassThrottle($passport, 1)) {
             return $this->setError($Verification->getError());
         }
         if (!$Verification->checkCaptcha($passport, $captcha)) {
@@ -112,7 +92,7 @@ class Pam
                 return $this->setError('该账号不存在, 无法登录');
             }
 
-            if (!$this->register($initDb['passport'])) {
+            if (!$this->register($passport)) {
                 return false;
             }
             $this->isRegister = true;
@@ -142,24 +122,6 @@ class Pam
      */
     public function beCaptchaLogin(string $mobile, string $captcha): bool
     {
-        $guard  = PamAccount::GUARD_BACKEND;
-        $initDb = [
-            'mobile'  => $mobile,
-            'captcha' => $captcha,
-        ];
-
-        // 数据验证
-        $validator = Validator::make($initDb, [
-            'mobile'  => [
-                Rule::required(),
-                Rule::mobile(),
-            ],
-            'captcha' => Rule::required(),
-        ]);
-        if ($validator->fails()) {
-            return $this->setError($validator->messages());
-        }
-
         // 验证账号 + 验证码
         $verification = new Verification();
 
@@ -167,7 +129,7 @@ class Pam
             return $this->setError($verification->getError()->getMessage());
         }
 
-        // 判定账号是否存在, 如果不存在则进行注册
+        // 判定账号是否存在
         $beMobile  = PamAccount::beMobile($mobile);
         $this->pam = PamAccount::where('type', PamAccount::TYPE_BACKEND)->where('mobile', $beMobile)->firstOrFail();
 
@@ -177,12 +139,12 @@ class Pam
         }
 
         try {
-            event(new LoginBannedEvent($this->pam, $guard));
+            event(new LoginBannedEvent($this->pam, PamAccount::GUARD_BACKEND));
         } catch (Throwable $e) {
             return $this->setError($e);
         }
 
-        event(new LoginSuccessEvent($this->pam, $guard));
+        event(new LoginSuccessEvent($this->pam, PamAccount::GUARD_BACKEND));
         return true;
     }
 
@@ -252,7 +214,7 @@ class Pam
         // 密码不为空时候的检测
         if ($password !== '') {
             $rule['password'] += [
-                Rule::between(6, 16),
+                Rule::between(6, 20),
                 Rule::required(),
                 Rule::simplePwd(),
             ];

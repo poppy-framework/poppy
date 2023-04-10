@@ -76,6 +76,6 @@ class SysAdPlace extends Model
     {
         return SysAdContent::where('place_id', $id)
             ->orderBy('list_order')
-            ->where('status', SysConfig::YES)->select(['id', 'src', 'action', 'value', 'title'])->get()->toArray();
+            ->where('is_enable', SysConfig::YES)->select(['id', 'src', 'action', 'value', 'title'])->get()->toArray();
     }
 }

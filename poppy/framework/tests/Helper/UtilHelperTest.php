@@ -6,6 +6,7 @@ namespace Poppy\Framework\Tests\Helper;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use JsonException;
 use Poppy\Framework\Application\TestCase;
 use Poppy\Framework\Helper\UtilHelper;
 
@@ -21,7 +22,7 @@ class UtilHelperTest extends TestCase
         $this->assertEquals('3.22 MB', $format);
     }
 
-    public function testSizeToBytes():void
+    public function testSizeToBytes(): void
     {
         $size  = '3.22 K';
         $bytes = UtilHelper::sizeToBytes($size);
@@ -31,20 +32,20 @@ class UtilHelperTest extends TestCase
     /**
      * 验证身份证号
      */
-    public function testIsChid():void
+    public function testIsChid(): void
     {
         $format = UtilHelper::isChId('110101190001011009');
-        $this->assertEquals(true, $format);
+        $this->assertTrue($format);
 
         // fix 1dailian 身份认证
         $isChid = UtilHelper::isChId('110101190,,1011009');
-        $this->assertEquals(false, $isChid);
+        $this->assertFalse($isChid);
 
         $isChid = UtilHelper::isChId('11010119');
-        $this->assertEquals(false, $isChid);
+        $this->assertFalse($isChid);
 
         $isChid = UtilHelper::isChId('3622012.0508072');
-        $this->assertEquals(false, $isChid);
+        $this->assertFalse($isChid);
     }
 
     public function testIsUrl(): void
@@ -57,90 +58,96 @@ class UtilHelperTest extends TestCase
     public function testIsRobot(): void
     {
         $robot = UtilHelper::isRobot();
-        $this->assertEquals(false, $robot);
+        $this->assertFalse($robot);
     }
 
     public function testIsIp(): void
     {
         $ip = UtilHelper::isIp('127.0.0.1');
-        $this->assertEquals(true, $ip);
+        $this->assertTrue($ip);
         $ip = UtilHelper::isIp('127.0.0.1/24');
-        $this->assertEquals(false, $ip);
+        $this->assertFalse($ip);
         $ip = UtilHelper::isIp('10.148.167.1/24');
-        $this->assertEquals(false, $ip);
+        $this->assertFalse($ip);
         $ip = UtilHelper::isIp('192.168.41.*');
-        $this->assertEquals(false, $ip);
+        $this->assertFalse($ip);
     }
 
     public function testIsMd5(): void
     {
         $str = UtilHelper::isMd5(md5((string) Carbon::now()->timestamp));
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
         $this->assertFalse(UtilHelper::isMd5(Str::random()));
     }
 
     public function testIsImage(): void
     {
         $image = UtilHelper::isImage('demo.jpg');
-        $this->assertEquals(true, $image);
+        $this->assertTrue($image);
     }
 
     public function testIsUsername(): void
     {
-        $this->assertEquals(false, UtilHelper::isUsername('demo.jpg'));
-        $this->assertEquals(false, UtilHelper::isUsername('username*()'));
-        $this->assertEquals(true, UtilHelper::isUsername('username'));
-        $this->assertEquals(true, UtilHelper::isUsername('username:wolegequ', true));
+        $this->assertFalse(UtilHelper::isUsername('demo.jpg'));
+        $this->assertFalse(UtilHelper::isUsername('username*()'));
+        $this->assertTrue(UtilHelper::isUsername('username'));
+        $this->assertTrue(UtilHelper::isUsername('username:wolegequ', true));
     }
 
     public function testIsMobile(): void
     {
         $phone = UtilHelper::isMobile('15988910012');
-        $this->assertEquals(true, $phone);
+        $this->assertTrue($phone);
         $phone = UtilHelper::isMobile('86-15988910012');
-        $this->assertEquals(true, $phone);
+        $this->assertTrue($phone);
         $phone = UtilHelper::isMobile('33023-000001');
-        $this->assertEquals(false, $phone);
+        $this->assertFalse($phone);
         $phone = UtilHelper::isMobile('33023-0000001');
-        $this->assertEquals(true, $phone);
+        $this->assertTrue($phone);
         $phone = UtilHelper::isMobile('11-8181818');
-        $this->assertEquals(true, $phone);
+        $this->assertTrue($phone);
     }
 
     public function testIsTelephone(): void
     {
         $phone = UtilHelper::isTelephone('60231667');
-        $this->assertEquals(true, $phone);
+        $this->assertTrue($phone);
     }
 
     public function testIsChinese(): void
     {
         $str = UtilHelper::isChinese('交互大富科技');
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
+    }
+
+    public function testHasChinese(): void
+    {
+        $this->assertTrue(UtilHelper::hasChinese('0428 你是我的小苹果 0428'));
+        $this->assertFalse(UtilHelper::hasChinese('0428'));
     }
 
     public function testIsBankNumber(): void
     {
         $bank = UtilHelper::isBankNumber('1111000110001100');
-        $this->assertEquals(true, $bank);
+        $this->assertTrue($bank);
     }
 
     public function testHasSpace(): void
     {
         $str = UtilHelper::hasSpace(' ');
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
     }
 
     public function testIsWord(): void
     {
         $str = UtilHelper::isWord('w');
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
     }
 
     public function testHasTag(): void
     {
         $str = UtilHelper::hasTag('<xml></xml>');
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
     }
 
     public function testFormatDecimal(): void
@@ -151,15 +158,15 @@ class UtilHelperTest extends TestCase
 
     public function testFixLink(): void
     {
-        $str = UtilHelper::fixLink('www.baidu.com');
-        $this->assertEquals('http://www.baidu.com', $str);
+        $this->assertEquals('http://www.baidu.com', UtilHelper::fixLink('www.baidu.com'));
+        $this->assertEquals('https://www.baidu.com', UtilHelper::fixLink('www.baidu.com', true));
     }
 
     public function testIdCardChecksum18(): void
     {
         // todo li 验证 真实身份证号是否符合规范
         $str = UtilHelper::chidChecksum18('130428200104282123');
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
     }
 
     public function testMd5(): void
@@ -176,7 +183,7 @@ class UtilHelperTest extends TestCase
             ['id' => 4, 'pid' => 1, 'name' => '二级栏目二'],
         ];
 
-        $str    = UtilHelper::genTree($arr, 'id', 'pid');
+        $str    = UtilHelper::genTree($arr);
         $result = [
             [
                 'id'       => 1,
@@ -207,7 +214,7 @@ class UtilHelperTest extends TestCase
 
     public function testGenSplash(): void
     {
-        $str    = UtilHelper::genSplash('success');
+        $str    = UtilHelper::genSplash();
         $result = [
             'status' => 'success',
             'msg'    => '操作成功',
@@ -247,48 +254,51 @@ class UtilHelperTest extends TestCase
         $this->assertEquals(1, $result);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testIsJson(): void
     {
         $str = UtilHelper::isJson(json_encode([
             'a' => 'b', 'c' => 'd',
         ], JSON_THROW_ON_ERROR));
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
         $str = UtilHelper::isJson(json_encode([
             'a', 'b',
         ], JSON_THROW_ON_ERROR));
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
 
         $str = UtilHelper::isJson(json_encode('', JSON_THROW_ON_ERROR));
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
         $str = UtilHelper::isJson(json_encode(true, JSON_THROW_ON_ERROR));
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
         $str = UtilHelper::isJson(json_encode(false, JSON_THROW_ON_ERROR));
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
     }
 
     public function testIsDate(): void
     {
         $str = UtilHelper::isDate('2020-11-30');
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
     }
 
     public function testIsPwd(): void
     {
         $str = UtilHelper::isPwd('password');
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
 
         $isPwd = UtilHelper::isPwd('123456');
-        $this->assertEquals(true, $isPwd);
+        $this->assertTrue($isPwd);
     }
 
     public function testIsComma(): void
     {
         $str = UtilHelper::isComma('1,23');
-        $this->assertEquals(true, $str);
+        $this->assertTrue($str);
     }
 
 
-    public function testKvToIdTitle()
+    public function testKvToIdTitle():void
     {
         $kv       = [
             'a' => 'b',

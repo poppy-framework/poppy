@@ -37,7 +37,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-
         $statusCode = $this->getStatusCode($e);
 
         if ($e instanceof PostTooLargeException) {
