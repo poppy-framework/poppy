@@ -43,17 +43,9 @@ return [
 			'driver'   => 'session',
 			'provider' => 'pam_backend',
 		],
-		'develop'     => [
-			'driver'   => 'session',
-			'provider' => 'pam_develop',
-		],
 		'jwt_backend' => [
 			'driver'   => 'jwt',
 			'provider' => 'pam_backend',
-		],
-		'jwt_develop' => [
-			'driver'   => 'jwt',
-			'provider' => 'pam_develop',
 		],
 		'jwt_web'     => [
 			'driver'   => 'jwt',
@@ -88,9 +80,6 @@ return [
 		],
 		'pam_web'     => [
 			'driver' => 'pam.web',
-		],
-		'pam_develop' => [
-			'driver' => 'pam.develop',
 		],
 		'pam'         => [
 			'driver' => 'pam',

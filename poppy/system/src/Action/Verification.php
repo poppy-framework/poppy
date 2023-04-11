@@ -135,13 +135,17 @@ class Verification
     }
 
     /**
-     * 限流以及提示
-     * @param string $key
-     * @param int    $seconds
+     * 限流以及提示, 开发状态下不进行限流
+     * @param string $key     限流标识
+     * @param int    $seconds 秒数
      * @return bool
      */
     public function isPassThrottle(string $key, int $seconds = 30): bool
     {
+        if (!is_production()) {
+            return true;
+        }
+
         if (RdsStore::inLock('verification:' . $key, $seconds)) {
             return $this->setError('请勿频繁请求');
         }

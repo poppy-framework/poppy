@@ -15,14 +15,14 @@ class LoginBannedEvent
     /**
      * @var PamAccount 用户账户
      */
-    public $pam;
+    public PamAccount $pam;
 
     /**
      * @var string
      */
-    public $guard;
+    public string $guard;
 
-    public function __construct(PamAccount $pam, $guard)
+    public function __construct(PamAccount $pam, string $guard)
     {
         $this->pam   = $pam;
         $this->guard = $guard;

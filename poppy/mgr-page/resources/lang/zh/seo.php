@@ -3,17 +3,16 @@
 return [
 
     /* Web
-     * ---------------------------------------- */
-    'web_layout_index'             => '页面布局',
-    'web_res_mix'                  => '资源调用',
-    'web_res_translate'            => '翻译信息',
+* ---------------------------------------- */
+    'web_js_popup'                 => '弹出窗',
+    'web_js_location'              => '跳转',
 
     /* 开发者平台的功能
-     * ---------------------------------------- */
+    * ---------------------------------------- */
     'develop_backend_fe'           => '后台前端组件',
+    'develop_home_cp'              => '开发者平台',
     'develop_cp_api'               => 'Api控制台',
     'develop_cp_api_login'         => 'Api 登录',
-    'develop_cp_cp'                => '开发者平台',
     'develop_cp_doc'               => '文档',
     'develop_cp_graphql'           => 'GraphQl',
     'develop_cp_set_token'         => '设置Token',
@@ -39,7 +38,7 @@ return [
     'develop_api_login'            => 'API登录',
     'develop_api_index'            => 'API 首页',
     /* 后台
-     * ---------------------------------------- */
+    * ---------------------------------------- */
     'backend_home_cp'              => '控制台',
     'backend_home_index'           => '管理平台',
     'backend_home_login'           => '登录',
@@ -54,8 +53,7 @@ return [
     'backend_pam_index'            => '账号管理',
     'backend_pam_log'              => '登录日志',
     'backend_pam_password'         => '账户密码修改',
-    'backend_pam_secret_cancel'    => '取消密钥',
-    'backend_pam_secret_set'       => '设置密钥',
+    'backend_pam_setting'          => '用户设置',
     'backend_role_delete'          => '角色删除',
     'backend_role_establish'       => '角色管理',
     'backend_role_index'           => '角色列表',
@@ -80,9 +78,10 @@ return [
 
 
     /* 其他操作
-     * ---------------------------------------- */
+    * ---------------------------------------- */
     'util_captcha_send'            => '发送验证码',
     'pam_auth_access'              => '授权',
     'pam_auth_token'               => '获取Token',
     'util_image_upload'            => '上传图片',
+
 ];

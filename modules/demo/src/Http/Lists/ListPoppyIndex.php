@@ -125,7 +125,7 @@ class ListPoppyIndex extends ListBase
             });
 
             $filter->column(1, function (Filter $filter) {
-                $filter->in('type')->multipleSelect(['user' => '用户', 'backend' => '管理员', 'develop' => '开发者']);
+                $filter->in('type')->multipleSelect(['user' => '用户', 'backend' => '管理员']);
             });
             $filter->column(1, function (Filter $filter) {
                 $filter->notIn('op_group')->multipleSelect(['play' => '伙玩', 'dailian' => '代练', 'fadan' => '发单']);

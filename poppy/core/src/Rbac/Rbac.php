@@ -90,7 +90,7 @@ class Rbac
     /**
      * Filters a route for a role or set of roles.
      * If the third parameter is null then abort with status code 403.
-     * Otherwise the $result is returned.
+     * Otherwise, the $result is returned.
      * @param string       $route      Route pattern. i.e: "admin/*"
      * @param array|string $roles      The role(s) needed
      * @param mixed        $result     i.e: Redirect::to('/')

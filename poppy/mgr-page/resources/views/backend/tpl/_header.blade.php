@@ -29,6 +29,13 @@
                    lay-action="template/search.html?keywords=">
         </li>
         --}}
+        @if($_pam->capable('backend:py-system.develop.manage'))
+        <li class="layui-nav-item" lay-unselect>
+            <a href="{!! route('py-mgr-page:develop.home.cp') !!}" title="开发工具" class="J_ignore">
+                <i class="layui-icon layui-icon-find-fill"></i>
+            </a>
+        </li>
+        @endif
     </ul>
     <ul class="layui-nav layui-layout-right" data-pjax pjax-ctr="#main" style="padding-right: 4px;">
         <li class="layui-nav-item layui-hide-xs" lay-unselect>

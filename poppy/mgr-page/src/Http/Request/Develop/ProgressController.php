@@ -22,6 +22,7 @@ use Poppy\System\Classes\Traits\FixTrait;
  */
 class ProgressController extends DevelopController
 {
+
     use FixTrait;
 
     private $all;

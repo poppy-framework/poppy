@@ -29,7 +29,6 @@ class PamRole extends Model implements RbacRoleContract
 
     public const BE_ROOT  = 'root';      // admin user
     public const FE_USER  = 'user';      // web user
-    public const DEV_USER = 'develop';   // developer
 
     public $timestamps = false;
 

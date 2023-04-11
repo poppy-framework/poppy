@@ -34,7 +34,7 @@ class ModulesPath extends Repository
                 $collection->each(function ($definition, $slug) use ($collect) {
                     // slug  - poppy.mgr-app
                     collect($definition)->each(function ($menus, $type) use ($slug, $collect) {
-                        // $type - backend/develop/web
+                        // $type - backend/web
                         collect($menus)->each(function ($menu, $key) use ($type, $slug, $collect) {
                             // $key  : setting
                             if (!is_array($menu)) {

@@ -12,14 +12,6 @@ class MiddlewareServiceProvider extends ServiceProvider
     {
         $router->aliasMiddleware('py-mgr-lifetime', Middlewares\InterruptLifetime::class);
 
-        $router->middlewareGroup('develop-auth', [
-            'web',
-            'sys-site_open',
-            'sys-auth:develop',
-            'sys-auth_session',
-            'sys-rbac',
-        ]);
-
         $router->middlewareGroup('backend-auth', [
             'web',
             'sys-auth:backend',

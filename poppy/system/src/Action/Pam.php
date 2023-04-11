@@ -65,17 +65,17 @@ class Pam
      * @param string $passport 通行证
      * @param string $captcha  验证码
      * @param string $guard    认证 Guard
-     * @param string $os       软件设备平台
      * @return bool
      * @throws Throwable
      */
-    public function captchaLogin(string $passport, string $captcha, string $guard, string $os = ''): bool
+    public function captchaLogin(string $passport, string $captcha, string $guard): bool
     {
         // 验证账号 + 验证码 + 频率拦截
         $Verification = new Verification();
         if (!$Verification->isPassThrottle('login-' . $passport, 1)) {
             return $this->setError($Verification->getError());
         }
+
         if (!$Verification->checkCaptcha($passport, $captcha)) {
             return $this->setError($Verification->getError()->getMessage());
         }
@@ -83,7 +83,7 @@ class Pam
         // 判定账号是否存在, 如果不存在则进行注册
         $this->pam = PamAccount::passport($passport);
         if (!$this->pam) {
-            if (Str::contains($guard, ['develop', 'backend'])) {
+            if (Str::contains($guard, ['backend'])) {
                 return $this->setError('此类账号不允许自动注册');
             }
 
@@ -278,7 +278,7 @@ class Pam
             }
 
             // 设置默认国际手机号, 后台自动生成(Backend 用户/Develop)
-            if (!isset($initDb['mobile']) && in_array($initDb['type'], [PamAccount::TYPE_BACKEND, PamAccount::TYPE_DEVELOP], true)) {
+            if (!isset($initDb['mobile']) && $initDb['type'] === PamAccount::TYPE_BACKEND) {
                 $pam->mobile = PamAccount::dftMobile($pam->id);
             }
 
@@ -346,7 +346,7 @@ class Pam
             }
 
             try {
-                event(new LoginBannedEvent($this->pam, $guard));
+                event(new LoginBannedEvent($this->pam, $guard_name));
             } catch (Throwable $e) {
                 return $this->setError($e);
             }

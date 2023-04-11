@@ -32,6 +32,16 @@ class AuthController extends JwtApiController
 {
     use ThrottlesLogins;
 
+    /**
+     * 最大请求次数 10 次
+     * @var float|int
+     */
+    protected float $maxAttempts = 10;
+
+    /**
+     * 30 秒内, 最多 10 次请求
+     * @var float
+     */
     protected float $decayMinutes = 0.5;
 
     /**
@@ -87,7 +97,7 @@ class AuthController extends JwtApiController
      * @apiQuery {string}     [captcha]       验证码
      * @apiQuery {string}     [device_id]     设备ID(开启单一登录之后可用)
      * @apiQuery {string}     [device_type]   设备类型(开启单一登录之后可用)
-     * @apiQuery {string}     [guard]         登录类型 [web|用户(默认);backend|后台;develop|开发者]
+     * @apiQuery {string}     [guard]         登录类型 [web|用户(默认);backend|后台;]
      * @apiSuccess {string}   token           认证成功的Token
      * @apiSuccess {string}   type            账号类型
      * @apiSuccess {string}   is_register     是否是注册 [Y|N]
@@ -120,7 +130,6 @@ class AuthController extends JwtApiController
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->sendLockoutResponse($request);
         }
-
         $this->incrementLoginAttempts($request);
 
         // 类型拦截
@@ -128,7 +137,7 @@ class AuthController extends JwtApiController
             return Resp::error('登录密码或者验证码必须填写');
         }
 
-        // 登录类型(不支持 DEVELOP)
+        // 登录类型
         $guard = (input('guard') ?: x_header('type')) === PamAccount::TYPE_BACKEND
             ? PamAccount::GUARD_JWT_BACKEND
             : PamAccount::GUARD_JWT_WEB;
@@ -137,7 +146,7 @@ class AuthController extends JwtApiController
         $Pam = new Pam();
         if ($request->input('captcha')) {
             $reqCaptcha = $request->scene('captcha')->validated();
-            if (!$Pam->captchaLogin($reqCaptcha['passport'], $reqCaptcha['captcha'], $guard, $reqCaptcha['os'])) {
+            if (!$Pam->captchaLogin($reqCaptcha['passport'], $reqCaptcha['captcha'], $guard)) {
                 return Resp::error($Pam->getError());
             }
         }

@@ -7,7 +7,6 @@ use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Action\Pam;
 use Poppy\System\Action\Verification;
 use Poppy\System\Models\PamAccount;
-use Poppy\System\Models\PamRole;
 use Poppy\System\Tests\Testing\TestingPam;
 use Throwable;
 
@@ -75,61 +74,6 @@ class PamTest extends TestCase
         $Pam      = new Pam();
         try {
             if ($Pam->register($passport, $password)) {
-                $this->assertTrue(true);
-            }
-            else {
-                $this->fail($Pam->getError());
-            }
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
-    }
-
-    /**
-     * @throws ApplicationException
-     */
-    public function testRegisterDevelop(): void
-    {
-        $passport = $this->faker()->lexify('testing_dev_????????');
-        $Pam      = new Pam();
-        try {
-            if ($Pam->register($passport, '', PamRole::DEV_USER)) {
-                $this->assertTrue(true);
-            }
-            else {
-                $this->fail($Pam->getError());
-            }
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
-
-        $passport = $this->faker()->lexify('testing_dev2_????????');
-        try {
-            if ($Pam->register($passport, '', [PamRole::DEV_USER])) {
-                $this->assertTrue(true);
-            }
-            else {
-                $this->fail($Pam->getError());
-            }
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
-        $passport = $this->faker()->lexify('testing_dev3_????????');
-        $roleId   = PamRole::where('name', PamRole::DEV_USER)->value('id');
-        try {
-            if ($Pam->register($passport, '', [$roleId])) {
-                $this->assertTrue(true);
-            }
-            else {
-                $this->fail($Pam->getError());
-            }
-        } catch (Throwable $e) {
-            $this->fail($e->getMessage());
-        }
-
-        $passport = $this->faker()->lexify('testing_dev4_????????');
-        try {
-            if ($Pam->register($passport, '', $roleId)) {
                 $this->assertTrue(true);
             }
             else {

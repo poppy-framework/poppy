@@ -32,7 +32,7 @@ class ModulesMenu extends Repository
                     // slug  - module
                     // layer - module
                     return collect($definition)->map(function ($definition, $key) {
-                        // layer - backend/develop/web
+                        // layer - backend/web
                         $definition['type'] = $key;
 
                         // new groups

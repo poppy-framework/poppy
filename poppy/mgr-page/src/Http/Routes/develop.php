@@ -8,8 +8,8 @@ Route::group([
 ], function (Router $router) {
     /* Pam
      * ---------------------------------------- */
-    $router->any('logout', 'PamController@logout')
-        ->name('py-mgr-page:develop.pam.logout');
+    $router->any('/', 'HomeController@index')
+        ->name('py-mgr-page:develop.home.cp');
 
     /* Env
      * ---------------------------------------- */

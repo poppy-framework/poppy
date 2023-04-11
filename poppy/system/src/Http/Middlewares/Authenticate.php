@@ -27,10 +27,6 @@ class Authenticate extends IlluminateAuthenticate
     public static function detectLocation($guards): string
     {
         $location = '';
-        // develop
-        if (in_array(PamAccount::GUARD_DEVELOP, $guards, true) && $devLogin = config('poppy.framework.prefix', 'mgr-page') . '/develop/login') {
-            $location = $devLogin;
-        }
         if (in_array(PamAccount::GUARD_BACKEND, $guards, true) && $backendLogin = config('poppy.framework.prefix', 'mgr-page') . '/login') {
             $location = $backendLogin;
         }
@@ -78,7 +74,6 @@ class Authenticate extends IlluminateAuthenticate
         $extendGuards = [
             'backend' => 'jwt_backend',
             'web'     => 'jwt_web',
-            'develop' => 'jwt_develop',
         ];
         if (($type = x_header('type')) && isset($extendGuards[$type])) {
             $guards = array_merge($extendGuards, [$extendGuards[$type]]);

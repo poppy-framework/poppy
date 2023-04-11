@@ -24,7 +24,7 @@ class UserMobileCommand extends Command
      */
     public function handle()
     {
-        $user = PamAccount::whereIn('type', [PamAccount::TYPE_BACKEND, PamAccount::TYPE_DEVELOP])->pluck('id', 'username');
+        $user = PamAccount::where('type', PamAccount::TYPE_BACKEND)->pluck('id', 'username');
         if (!$user) {
             return;
         }

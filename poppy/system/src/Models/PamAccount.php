@@ -53,7 +53,6 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
      -------------------------------------------- */
     const TYPE_BACKEND = 'backend';
     const TYPE_USER    = 'user';
-    const TYPE_DEVELOP = 'develop';
 
     /* Register By
      -------------------------------------------- */
@@ -65,9 +64,7 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
      -------------------------------------------- */
     const GUARD_WEB         = 'web';
     const GUARD_BACKEND     = 'backend';
-    const GUARD_DEVELOP     = 'develop';
     const GUARD_JWT_BACKEND = 'jwt_backend';
-    const GUARD_JWT_DEVELOP = 'jwt_develop';
     const GUARD_JWT_WEB     = 'jwt_web';
     const GUARD_JWT         = 'jwt';
 
@@ -229,7 +226,6 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
         $desc = [
             self::TYPE_USER    => '用户',
             self::TYPE_BACKEND => '管理员',
-            self::TYPE_DEVELOP => '开发者',
         ];
 
         return kv($desc, $key, $check_key);

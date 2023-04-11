@@ -27,8 +27,8 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
     {
         // backend
         Route::group([
-            'prefix' => $this->prefix,
-            'namespace' => 'Poppy\MgrPage\Http\Request\Backend'
+            'prefix'    => $this->prefix,
+            'namespace' => 'Poppy\MgrPage\Http\Request\Backend',
         ], function (Router $router) {
             $router->any('/', 'HomeController@index')
                 ->middleware('backend-auth')
@@ -61,16 +61,11 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
             'middleware' => 'web',
             'prefix'     => $this->prefix . '/develop',
         ], function (Router $router) {
-            $router->any('login', 'Poppy\MgrPage\Http\Request\Develop\PamController@login')
-                ->name('py-mgr-page:develop.pam.login');
-            $router->get('/', 'Poppy\MgrPage\Http\Request\Develop\CpController@index')
-                ->middleware('develop-auth')
-                ->name('py-mgr-page:develop.cp.cp');
             $router->any('api/json/{type?}', 'Poppy\MgrPage\Http\Request\Develop\ApiController@json')
                 ->name('py-mgr-page:develop.api.json');
         });
         Route::group([
-            'middleware' => 'develop-auth',
+            'middleware' => 'backend-auth',
             'prefix'     => $this->prefix . '/develop',
         ], function () {
             require_once __DIR__ . '/Routes/develop.php';

@@ -136,6 +136,7 @@ return [
     */
     'captcha_register'      => env('PY_SYS_CAPTCHA_REGISTER', true),
 
+
     /*
     |--------------------------------------------------------------------------
     | 接口debug key, 当 _py_secret 和此值相等, 则不进行加密的签名验证

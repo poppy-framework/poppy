@@ -1,7 +1,7 @@
 <div id="nav" class="api--nav">
     <ul class="layui-nav" style="padding-right: 175px;">
         <li class="layui-nav-item">
-            <a class="layui-nav-item fa fa-home" href="{!! route('py-mgr-page:develop.cp.cp') !!}">
+            <a class="layui-nav-item fa fa-home" href="{!! route('py-mgr-page:develop.home.cp') !!}">
                 <small> {!! $guard !!}</small>
             </a>
         </li>

@@ -4,13 +4,10 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Commands;
 
-use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Poppy\Core\Redis\RdsDb;
 use Poppy\System\Action\Ban;
 use Poppy\System\Action\Pam;
 use Poppy\System\Action\Sso;
-use Poppy\System\Classes\PySystemDef;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamPermission;
 use Poppy\System\Models\PamRole;
@@ -83,13 +80,13 @@ class UserCommand extends Command
                 }
                 break;
             case 'auto_fill':
-                $user = PamAccount::whereIn('type', [PamAccount::TYPE_BACKEND, PamAccount::TYPE_DEVELOP])->pluck('id', 'username');
+                $user = PamAccount::where('type', PamAccount::TYPE_BACKEND)->pluck('id', 'username');
                 if (!$user) {
                     return;
                 }
                 collect($user)->map(function ($id) {
                     PamAccount::where('id', $id)->update([
-                        'mobile' => '33023-' . sprintf("%s%'.07d", '', $id),
+                        'mobile' => PamAccount::dftMobile($id),
                     ]);
                 });
                 $this->info(sys_gen_mk(self::class, 'Fill Mobile Over'));
@@ -111,12 +108,6 @@ class UserCommand extends Command
                         'name'      => PamRole::BE_ROOT,
                         'title'     => '超级管理员',
                         'type'      => PamAccount::TYPE_BACKEND,
-                        'is_system' => SysConfig::YES,
-                    ],
-                    [
-                        'name'      => PamRole::DEV_USER,
-                        'title'     => '开发者',
-                        'type'      => PamAccount::TYPE_DEVELOP,
                         'is_system' => SysConfig::YES,
                     ],
                 ];

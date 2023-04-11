@@ -7,9 +7,7 @@ namespace Poppy\System\Http\Middlewares;
 use Closure;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Action\Ban as ActBan;
-use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamBan;
-use Poppy\System\Models\PamRole;
 use Poppy\System\Models\SysConfig;
 use Request;
 
@@ -77,7 +75,6 @@ class Ban
                 $maps = [
                     'user'    => '用户',
                     'backend' => '后台',
-                    'develop' => '开发',
                 ];
                 return Resp::error('当前设备不在' . ($maps[$type] ?? '') . '白名单中, 不允许访问');
             }

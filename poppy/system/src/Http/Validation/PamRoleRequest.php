@@ -70,7 +70,6 @@ class PamRoleRequest extends Request
                 Rule::required(),
                 Rule::in([
                     PamAccount::TYPE_BACKEND,
-                    PamAccount::TYPE_DEVELOP,
                     PamAccount::TYPE_USER,
                 ]),
             ],

@@ -15,7 +15,6 @@ use Poppy\Framework\Support\PoppyServiceProvider;
 use Poppy\System\Classes\Api\Sign\DefaultApiSignProvider;
 use Poppy\System\Classes\Auth\Password\DefaultPasswordProvider;
 use Poppy\System\Classes\Auth\Provider\BackendProvider;
-use Poppy\System\Classes\Auth\Provider\DevelopProvider;
 use Poppy\System\Classes\Auth\Provider\PamProvider;
 use Poppy\System\Classes\Auth\Provider\WebProvider;
 use Poppy\System\Classes\Contracts\ApiSignContract;
@@ -183,9 +182,6 @@ class ServiceProvider extends PoppyServiceProvider
         });
         app('auth')->provider('pam.backend', function () {
             return new BackendProvider(PamAccount::class);
-        });
-        app('auth')->provider('pam.develop', function () {
-            return new DevelopProvider(PamAccount::class);
         });
         app('auth')->provider('pam', function () {
             return new PamProvider(PamAccount::class);
