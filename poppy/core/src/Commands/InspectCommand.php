@@ -149,6 +149,9 @@ class InspectCommand extends Command
         $values = [];
         foreach ($keys as $key) {
             $value = trans('validation.' . $key);
+            if (is_array($value)) {
+                continue;
+            }
             if (!preg_match('/[\x{4e00}-\x{9fa5}]/u', $value)) {
                 $values[] = [
                     'rule'    => $key,

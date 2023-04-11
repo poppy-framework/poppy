@@ -66,6 +66,7 @@ Route::group([
     $router->any('exception/validation_when', 'ExceptionController@validationWhen');
     $router->any('exception/validation_auto', 'ExceptionController@validationAuto');
     $router->any('exception/validation', 'ExceptionController@validation');
+    $router->any('exception/validation_policy', 'ExceptionController@validationPolicy');
     $router->any('exception/{type}', 'ExceptionController@index')
         ->name('demo:web.exception.index');
 });

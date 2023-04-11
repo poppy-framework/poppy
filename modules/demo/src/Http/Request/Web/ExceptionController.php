@@ -3,6 +3,7 @@
 namespace Demo\Http\Request\Web;
 
 use Demo\Http\Validation\ExceptionAutoRequest;
+use Demo\Http\Validation\ExceptionPolicyRequest;
 use Demo\Http\Validation\ExceptionRequest;
 use Demo\Http\Validation\ExceptionWhenRequest;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -102,6 +103,12 @@ class ExceptionController extends WebController
     public function query()
     {
         PamAccount::where('column_not_exist', 'some-thing')->first();
+    }
+
+
+    public function validationPolicy(ExceptionPolicyRequest $request)
+    {
+
     }
 
     /**

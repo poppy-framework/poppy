@@ -4,12 +4,19 @@ namespace Demo;
 
 use Demo\Http\RouteServiceProvider;
 use Demo\Listeners\PassportVerify\PassportVerifyListener;
+use Demo\Models\DemoWebapp;
+use Demo\Models\Policies\DemoWebappPolicy;
 use Poppy\Framework\Exceptions\ModuleNotFoundException;
 use Poppy\Framework\Support\PoppyServiceProvider;
 use Poppy\System\Events\PassportVerifyEvent;
 
 class ServiceProvider extends PoppyServiceProvider
 {
+
+    protected array $policies = [
+        DemoWebapp::class => DemoWebappPolicy::class,
+    ];
+
     protected array $listens = [
         PassportVerifyEvent::class => [
             PassportVerifyListener::class,

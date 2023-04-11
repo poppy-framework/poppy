@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\PostTooLargeException;
 use Illuminate\Http\Request;
@@ -51,8 +52,25 @@ class Handler extends ExceptionHandler
             return Resp::error($e->validator->errors());
         }
 
-        if ($e instanceof AuthorizationException || $e instanceof BaseException) {
+        if ($e instanceof AuthorizationException) {
+            if ($e->getMessage() !== 'This action is unauthorized.') {
+                return Resp::error($e->getMessage());
+            }
+            return Resp::error(trans('poppy::resp.authorization_default_exception'));
+        }
+
+        if ($e instanceof BaseException) {
             return Resp::error($e->getMessage());
+        }
+
+        if (($e instanceof QueryException) && is_production()) {
+            sys_emergency('framework.handler', [
+                'sql'     => $e->getSql(),
+                'binding' => $e->getBindings(),
+                'detail'  => $e->getMessage(),
+                'code'    => $e->getCode(),
+            ]);
+            return Resp::error(trans('poppy::resp.query_exception'));
         }
 
         if ($e instanceof ModelNotFoundException) {

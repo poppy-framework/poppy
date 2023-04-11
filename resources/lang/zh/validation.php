@@ -93,6 +93,7 @@ return [
     'multiple_of'          => ':attribute 必须是 :value 的倍数',
     'not_in'               => ':attribute 不合法',
     'not_regex'            => ':attribute 值不合法.',
+    'nullable'             => ':attribute 可以为空.',
     'numeric'              => ':attribute 必须是数字',
     'password'             => ':attribute 格式不正确',
     'present'              => ':attribute 字段必须存在',
