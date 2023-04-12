@@ -1,4 +1,4 @@
-@extends('py-mgr-page::tpl.develop')
+@extends('py-mgr-page::develop.tpl.default')
 @section('develop-main')
     <div class="row">
         <div class="col-sm-12">

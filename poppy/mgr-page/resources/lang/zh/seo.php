@@ -11,6 +11,7 @@ return [
     * ---------------------------------------- */
     'develop_backend_fe'           => '后台前端组件',
     'develop_home_cp'              => '开发者平台',
+    'develop_home_optimize'        => '数据库性能',
     'develop_cp_api'               => 'Api控制台',
     'develop_cp_api_login'         => 'Api 登录',
     'develop_cp_doc'               => '文档',

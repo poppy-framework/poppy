@@ -1,4 +1,4 @@
-<ul class="layui-nav layui-bg-cyan dev--nav">
+<ul class="layui-nav layui-bg-cyan develop-nav">
     <li class="layui-nav-item">
         <a href="{!! route('py-mgr-page:develop.home.cp') !!}">
             <i class="bi bi-house"></i>

@@ -8,8 +8,8 @@ use File;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Poppy\Framework\Classes\Resp;
 use Poppy\System\Classes\LogViewer;
-use Redirect;
 use Request;
 use Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -36,7 +36,7 @@ class LogController extends DevelopController
         if (Request::has('del')) {
             File::delete(storage_path() . '/logs/' . base64_decode(input('del')));
 
-            return Redirect::to(Request::url());
+            return Resp::success('已删除', '_reload|1');
         }
 
         $logs = LogViewer::all();

@@ -1,25 +1,29 @@
 <?php
 $_type = $_type ?? [];
 ?>
-{{--style--}}
-@if(in_array('layui', $_type, true))
-    {!! Html::style('assets/libs/layui/css/layui.css') !!}
-@endif
-@if(in_array('easy-web', $_type, true))
-    {!! Html::style('assets/libs/easy-web/module/admin.css') !!}
-@endif
+{{--js--}}
 @if (true)
-    {!! Html::style('assets/libs/boot/style.css?v=2023-04-02') !!}
-    {{--js--}}
-    {!! Html::script('assets/libs/boot/app.min.js?v=2023-04-02') !!}
+    {!! Html::script('assets/libs/boot/app.min.js?v=2023-04-12') !!}
     {!! Html::script('assets/libs/vue/vue.js') !!}
 @endif
-{{-- 加载 layui / layui.all[用于页面的模块化加载] --}}
+{{--layui--}}
 @if(in_array('layui', $_type, true))
+    {!! Html::style('assets/libs/layui/css/layui.css') !!}
     {!! Html::script('assets/libs/layui/layui.js') !!}
 @endif
+{{--easyweb--}}
 @if(in_array('easy-web', $_type, true))
+    {!! Html::style('assets/libs/easy-web/module/admin.css') !!}
     {!! Html::script('assets/libs/easy-web/js/common.js') !!}
+@endif
+{{--jquery.data-tables--}}
+@if(in_array('jquery.data-tables', $_type, true))
+    {!! Html::style('assets/libs/jquery/data-tables/jquery.data-tables.css') !!}
+    {!! Html::script('assets/libs/jquery/data-tables/jquery.data-tables.js') !!}
+@endif
+{{--last style, cover plugin--}}
+@if (true)
+    {!! Html::style('assets/libs/boot/style.css?v=2023-04-12') !!}
 @endif
 <script>
 window.POPPY = {};

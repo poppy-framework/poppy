@@ -1,9 +1,6 @@
-@extends('py-mgr-page::tpl.develop')
-@section('head-css')
-    @parent()
-@endsection
+@extends('py-mgr-page::develop.tpl.default')
 @section('develop-main')
-    @include('py-mgr-page::develop.inc.header')
+    @include('py-mgr-page::develop.tpl._header')
     <fieldset class="layui-elem-field layui-field-title">
         <legend><i class="bi bi-buildings"></i> Clockwork</legend>
     </fieldset>
@@ -28,7 +25,7 @@
                         <td class="text-info">[{{$item['method']}}]{{$item['url']}} </td>
                         <td class="date">{{round($item['duration'], 2)}}ms</td>
                         <td class="text">
-                            {{ \Carbon\Carbon::parse($item['at'])->fromNow()}}
+                            {{ Carbon\Carbon::parse($item['at'])->fromNow()}}
                         </td>
                         <td class="text">
                             <a href="{!! route_url('py-mgr-page:develop.clockwork.report', null, [

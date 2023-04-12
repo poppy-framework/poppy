@@ -22,7 +22,7 @@ class SettingServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register for service provider.
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton('poppy.system.setting', function () {
             return new SettingRepository();

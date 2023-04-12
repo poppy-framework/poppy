@@ -3,14 +3,8 @@
 @section('description', $_description ?? '')
 @section('head-content')
     @include('py-mgr-page::tpl._js_css', [
-        '_type' => ['layui']
+        '_type' => ['layui', 'jquery.data-tables']
     ])
-    <style>
-		html {
-			background: #fff;
-		}
-    </style>
-    {!! Html::style('assets/libs/jquery/data-tables/jquery.data-tables.css') !!}
 @endsection
 @section('body-class', 'develop')
 @section('body-main')

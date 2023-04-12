@@ -1,4 +1,4 @@
-@extends('py-mgr-page::tpl.develop')
+@extends('py-mgr-page::develop.tpl.default')
 @section('develop-main')
     @include('py-mgr-page::develop.api.nav')
     @if (!$data['file_exists'])

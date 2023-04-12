@@ -1,4 +1,4 @@
-<div id="nav" class="api--nav">
+<div id="nav" class="develop-api">
     <ul class="layui-nav" style="padding-right: 175px;">
         <li class="layui-nav-item">
             <a class="layui-nav-item fa fa-home" href="{!! route('py-mgr-page:develop.home.cp') !!}">
@@ -35,8 +35,8 @@
             </li>
         </ul>
     @endif
-    <div class="nav-ctr" id="quick_search">
-        <div class="nav-search">
+    <div class="develop-api__ctr" id="quick_search">
+        <div class="develop-api__search">
             <form class="layui-form">
                 <div class="form-group search">
                     <input type="search" class="layui-input" id="search" placeholder="Search ApiDoc">
@@ -62,22 +62,22 @@
 </div>
 <script>
 
-$(function() {
+$(function () {
     Util.holmes({
-        input : '#search',
-        find : '#quick_search .interface',
-        placeholder : '<h5> No Search Result!</h5>'
+        input: '#search',
+        find: '#quick_search .interface',
+        placeholder: '<h5> No Search Result!</h5>'
     });
     layui.element.init();
 });
 
 new Vue({
-    el : '#nav',
-    data : {
-        show : 'none'
+    el: '#nav',
+    data: {
+        show: 'none'
     },
-    methods : {
-        switchQuick : function() {
+    methods: {
+        switchQuick: function () {
             let display = $('#quick_search').css('display');
             if (display === 'none') {
                 $('#quick_search').css('display', 'block');

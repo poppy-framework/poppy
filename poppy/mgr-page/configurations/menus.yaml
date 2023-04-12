@@ -1,89 +1,92 @@
-backend:
-  title: 系统
-  groups:
+backend :
+  title : 系统
+  groups :
     # 这里的KEY 作为注入项目 poppy.mgr-page/backend||setting, 可以将配置注入到这个地方
-    setting:
-      title: 系统设置
-      icon: 'bi bi-gear'
-      children:
+    setting :
+      title : 系统设置
+      icon : 'bi bi-gear'
+      children :
         -
-          title: 主页
-          icon: 'bi bi-house'
-          route: py-mgr-page:backend.home.cp
+          title : 主页
+          icon : 'bi bi-house'
+          route : py-mgr-page:backend.home.cp
         -
-          title: 配置
-          icon: 'bi bi-sliders'
-          children:
+          title : 配置
+          icon : 'bi bi-sliders'
+          children :
             -
-              title: 系统配置
-              route: py-mgr-page:backend.home.setting
-              permission: backend:py-system.global.manage
+              title : 系统配置
+              route : py-mgr-page:backend.home.setting
+              permission : backend:py-system.global.manage
             -
-              title: 邮件设置
-              route: py-mgr-page:backend.mail.store
-              permission: backend:py-system.global.manage
+              title : 邮件设置
+              route : py-mgr-page:backend.mail.store
+              permission : backend:py-system.global.manage
             -
-              title: 上传设置
-              route: py-mgr-page:backend.upload.store
-              permission: backend:py-system.global.manage
+              title : 上传设置
+              route : py-mgr-page:backend.upload.store
+              permission : backend:py-system.global.manage
         -
-          title: 账号管理
-          icon: 'bi bi-person-vcard'
-          children:
+          title : 账号管理
+          icon : 'bi bi-person-vcard'
+          children :
             -
-              title: 角色管理
-              route: py-mgr-page:backend.role.index
-              param:
-                _scope: 'user'
-              permission: backend:py-system.role.manage
+              title : 角色管理
+              route : py-mgr-page:backend.role.index
+              param :
+                _scope : 'user'
+              permission : backend:py-system.role.manage
             -
-              title: 账号管理
-              route: py-mgr-page:backend.pam.index
-              param:
-                _scope: 'user'
-              permission: backend:py-system.pam.manage
+              title : 账号管理
+              route : py-mgr-page:backend.pam.index
+              param :
+                _scope : 'user'
+              permission : backend:py-system.pam.manage
             -
-              title: 登录日志
-              route: py-mgr-page:backend.pam.log
-              permission: backend:py-system.pam.log
+              title : 登录日志
+              route : py-mgr-page:backend.pam.log
+              permission : backend:py-system.pam.log
             -
-              title: 风险拦截
-              route: py-mgr-page:backend.ban.index
-              param:
-                _scope: 'user'
-              permission: backend:py-system.pam.manage
-develop:
-  title: 核心开发
-  groups:
+              title : 风险拦截
+              route : py-mgr-page:backend.ban.index
+              param :
+                _scope : 'user'
+              permission : backend:py-system.pam.manage
+develop :
+  title : 核心开发
+  groups :
     -
-      title: 文档
-      children:
+      title : 文档
+      children :
         -
-          title: Restful-前台
-          route: py-mgr-page:develop.api.index
+          title : Restful-前台
+          route : py-mgr-page:develop.api.index
         -
-          title: Restful-后台
-          route: py-mgr-page:develop.api.index
-          route_param:
+          title : Restful-后台
+          route : py-mgr-page:develop.api.index
+          route_param :
             - backend
     -
-      title: 系统信息
-      children:
+      title : 系统信息
+      children :
         -
-          title: Clockwork
-          route: py-mgr-page:develop.clockwork.index
+          title : Clockwork
+          route : py-mgr-page:develop.clockwork.index
         -
-          title: 系统日志
-          route: py-mgr-page:develop.log.index
+          title : 系统日志
+          route : py-mgr-page:develop.log.index
         -
-          title: PhpInfo
-          route: py-mgr-page:develop.env.phpinfo
+          title : PhpInfo
+          route : py-mgr-page:develop.env.phpinfo
         -
-          title: 数据库字典
-          route: py-mgr-page:develop.env.db
+          title : 数据库字典
+          route : py-mgr-page:develop.env.db
+        -
+          title : 数据库查询监控
+          route : py-mgr-page:develop.home.optimize
     -
-      title: 数据表更新
-      children:
+      title : 数据表更新
+      children :
         -
-          title: 数据表更新执行情况
-          route: py-mgr-page:develop.progress.lists
+          title : 数据表更新执行情况
+          route : py-mgr-page:develop.progress.lists

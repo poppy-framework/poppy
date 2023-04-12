@@ -6,6 +6,7 @@ namespace Poppy\System;
 
 use Illuminate\Auth\Events\Login as AuthLoginEvent;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Database\Events\QueryExecuted;
 use Poppy\Core\Events\ApidocGeneratedEvent;
 use Poppy\Core\Events\PermissionInitEvent;
 use Poppy\Framework\Classes\Traits\PoppyTrait;
@@ -22,6 +23,7 @@ use Poppy\System\Classes\Contracts\FileContract;
 use Poppy\System\Classes\Contracts\PasswordContract;
 use Poppy\System\Classes\File\DefaultFileProvider;
 use Poppy\System\Events\LoginTokenPassedEvent;
+use Poppy\System\Listeners\QueryExecuted\LogListener;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
 use Poppy\System\Models\Policies\PamAccountPolicy;
@@ -51,6 +53,9 @@ class ServiceProvider extends PoppyServiceProvider
         ],
         LoginTokenPassedEvent::class    => [
             Listeners\LoginTokenPassed\SsoListener::class,
+        ],
+        QueryExecuted::class            => [
+            LogListener::class,
         ],
 
         // system

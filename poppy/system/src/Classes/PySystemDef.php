@@ -6,6 +6,7 @@ namespace Poppy\System\Classes;
 
 class PySystemDef
 {
+
     /**
      * [user-setting-key]:账号
      * @return string
@@ -13,6 +14,16 @@ class PySystemDef
     public static function uskAccount(): string
     {
         return 'py-sys-account';
+    }
+
+    /**
+     * 数据库优化的存储 KEY
+     * @param $table
+     * @return string
+     */
+    public static function ckDbOptimize($table): string
+    {
+        return 'db-optimize:' . $table;
     }
 
     /**

@@ -10,6 +10,8 @@ Route::group([
      * ---------------------------------------- */
     $router->any('/', 'HomeController@index')
         ->name('py-mgr-page:develop.home.cp');
+    $router->any('optimize', 'HomeController@optimize')
+        ->name('py-mgr-page:develop.home.optimize');
 
     /* Env
      * ---------------------------------------- */

@@ -1,6 +1,6 @@
-@extends('py-mgr-page::tpl.develop')
+@extends('py-mgr-page::develop.tpl.default')
 @section('develop-main')
-    @include('py-mgr-page::develop.inc.header')
+    @include('py-mgr-page::develop.tpl._header')
     @if(count($all))
         <table class="layui-table">
             <tr>

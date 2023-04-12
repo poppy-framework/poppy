@@ -31,7 +31,7 @@
         --}}
         @if($_pam->capable('backend:py-system.develop.manage'))
         <li class="layui-nav-item" lay-unselect>
-            <a href="{!! route('py-mgr-page:develop.home.cp') !!}" title="开发工具" class="J_ignore">
+            <a href="{!! route('py-mgr-page:develop.home.cp') !!}" target="_blank" title="开发工具" class="J_ignore">
                 <i class="layui-icon layui-icon-find-fill"></i>
             </a>
         </li>
