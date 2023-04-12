@@ -203,21 +203,35 @@ class AuthController extends JwtApiController
             return Resp::error('请选一种方式重设密码!');
         }
 
-        if ($passport) {
-            if (!$captcha || !$Verification->checkCaptcha($passport, $captcha)) {
-                return Resp::error('请输入正确验证码');
-            }
-        }
-
-        if ($verify_code) {
-            if (!$Verification->verifyOnceCode($verify_code)) {
+        // 获取通行证
+        $useVerify = false;
+        if (!$passport) {
+            $useVerify = true;
+            if (!$Verification->verifyOnceCode($verify_code, false)) {
                 return Resp::error($Verification->getError());
             }
             $passport = $Verification->getHidden();
         }
+        else if (!$captcha || !$Verification->checkCaptcha($passport, $captcha, false)) {
+            return Resp::error('请输入正确验证码');
+        }
 
+        $pam = PamAccount::passport($passport);
+        if (!$pam) {
+            return Resp::error('此账号不存在');
+        }
         $Pam = new Pam();
-        if ($Pam->setPassword($passport, $password)) {
+        if (!$Pam->checkPwdStrength($pam->type, $password)) {
+            return Resp::error($Pam->getError());
+        }
+
+        if ($Pam->setPassword($pam, $password)) {
+            if ($useVerify) {
+                $Verification->removeOnceCode($verify_code);
+            }
+            else {
+                $Verification->removeCaptcha($passport);
+            }
             return Resp::success('密码已经重新设置');
         }
 

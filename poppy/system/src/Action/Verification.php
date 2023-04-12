@@ -87,9 +87,10 @@ class Verification
      * 验证验证码, 验证码验证成功仅有一次机会
      * @param string $passport 通行证
      * @param string $captcha  验证码
+     * @param bool   $forget
      * @return bool
      */
-    public function checkCaptcha(string $passport, string $captcha): bool
+    public function checkCaptcha(string $passport, string $captcha, bool $forget = true): bool
     {
         if (!$captcha) {
             return $this->setError('请输入验证码');
@@ -128,10 +129,28 @@ class Verification
         }
 
         if (($data = self::$db->get(PySystemDef::ckPersistVerificationCaptcha($key))) && ((string) $data['captcha']) === $captcha) {
-            self::$db->del(PySystemDef::ckPersistVerificationCaptcha($key));
+            if ($forget) {
+                self::$db->del(PySystemDef::ckPersistVerificationCaptcha($key));
+            }
             return true;
         }
         return $this->setError('验证码填写错误');
+    }
+
+    /**
+     * 移除验证码
+     * @param string $passport 通行证
+     * @return bool
+     */
+    public function removeCaptcha(string $passport): bool
+    {
+        $passport = PamAccount::fullFilledPassport($passport);
+        if (!$this->checkPassport($passport)) {
+            return false;
+        }
+        $key = $this->passportKey;
+        self::$db->del(PySystemDef::ckPersistVerificationCaptcha($key));
+        return false;
     }
 
     /**

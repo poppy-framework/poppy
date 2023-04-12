@@ -368,19 +368,12 @@ class Pam
 
     /**
      * 设置登录密码
-     * @param PamAccount|mixed $pam      用户
-     * @param string           $password 密码
+     * @param PamAccount $pam      用户
+     * @param string     $password 密码
      * @return bool
      */
-    public function setPassword($pam, string $password): bool
+    public function setPassword(PamAccount $pam, string $password): bool
     {
-        if (is_string($pam)) {
-            $pam = PamAccount::passport($pam);
-        }
-
-        if (!($pam instanceof PamAccount)) {
-            return $this->setError(trans('py-system::action.pam.pam_error'));
-        }
         $validator = Validator::make([
             'password' => $password,
         ], [

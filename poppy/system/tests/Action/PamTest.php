@@ -28,10 +28,9 @@ class PamTest extends TestCase
             $this->fail($Verification->getError());
         }
 
-        $platform = collect(array_keys(PamAccount::kvPlatform()))->random(1)[0];
         $Pam      = new Pam();
         try {
-            if ($Pam->captchaLogin($mobile, $Verification->getCaptcha(), 'user', $platform)) {
+            if ($Pam->captchaLogin($mobile, $Verification->getCaptcha(), 'user')) {
                 $this->assertTrue(true);
             }
             else {
