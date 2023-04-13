@@ -186,6 +186,9 @@ layui.form.render();
     <a href="" class="layui-btn J_request" data-confirm="确认请求?">
         Ajax 请求并解析返回的Json
     </a>
+    <a href="/demo/js?type=top-request" class="layui-btn J_request">
+        请求完成后调用 Top 回调
+    </a>
     <table class="layui-table">
         <tr>
             <td class="w240">参数</td>
@@ -247,8 +250,8 @@ layui.form.render();
     </table>
 </div>
 <fieldset class="layui-elem-field layui-field-title">
-    <legend>J_Request (请求完成后调用 Top 回调)</legend>
+    <legend>J_load_view (在 Tab 页中打开)</legend>
 </fieldset>
-<a href="/demo/js?type=top-request" class="layui-btn J_request">
-    Top 回调
+<a href="/demo/js?type=upload" class="layui-btn layui-btn-sm J_load_view" title="图片上传">
+    在 Tab 页中打开, 如果无框架, 则和标准的 a 无差别
 </a>

@@ -187,7 +187,7 @@
                     })
                 }
 
-                let index = _.findIndex(urls, function (item){
+                let index = _.findIndex(urls, function (item) {
                     return item.src === _src;
                 })
 
@@ -213,6 +213,18 @@
         // print
         $body.on('click', '.J_print', function () {
             window.print();
+        });
+
+        // load view
+        $body.on('click', '.J_load_view', function (e) {
+            let href = $(this).attr('href');
+            let title = $(this).attr('title');
+            top.layui.index.loadView({
+                menuPath: href,
+                menuName: title ? title : '无标题',
+                menuId: href
+            })
+            e.preventDefault();
         });
 
         /**

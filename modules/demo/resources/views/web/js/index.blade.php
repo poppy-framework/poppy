@@ -11,7 +11,7 @@
                 @else
                     @include('demo::web.js._type_'.input('type'))
                 @endif
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 @endsection
