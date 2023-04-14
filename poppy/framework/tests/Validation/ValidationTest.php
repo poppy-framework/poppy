@@ -68,12 +68,8 @@ class ValidationTest extends TestCase
     public function testJson(): void
     {
         $json      = '{}';
-        $validator = Validator::make([
-            'json' => $json,
-        ], [
+        $validator = Validator::make(compact('json'), [
             'json' => Rule::json(),
-        ], [], [
-            'json' => 'Json',
         ]);
         if ($validator->fails()) {
             $this->fail();
@@ -83,6 +79,31 @@ class ValidationTest extends TestCase
         }
     }
 
+
+    /**
+     * 日期范围
+     * @return void
+     */
+    public function testDateRange(): void
+    {
+        $dr        = '2011-03-21 - 2011-03-21';
+        $validator = Validator::make(compact('dr'), [
+            'dr' => Rule::dateRange(),
+        ]);
+        if ($validator->fails()) {
+            $this->fail();
+        }
+        else {
+            $this->assertTrue(true);
+        }
+        $dr        = '2011-03-22 - 2011-03-21';
+        $validator = Validator::make(compact('dr'), [
+            'dr' => Rule::dateRange(),
+        ]);
+        if ($validator->fails()) {
+            $this->assertTrue(true);
+        }
+    }
 
     public function testDate(): void
     {
