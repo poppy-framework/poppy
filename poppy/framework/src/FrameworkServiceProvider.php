@@ -7,6 +7,7 @@ namespace Poppy\Framework;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
+use Poppy\Framework\Helper\TimeHelper;
 use Poppy\Framework\Helper\UtilHelper;
 
 /**
@@ -96,6 +97,9 @@ class FrameworkServiceProvider extends ServiceProvider
         app('validator')->extend('username', function ($attribute, $value, $parameters) {
             $first = Arr::first($parameters);
             return UtilHelper::isUsername($value, $first === 'sub');
+        });
+        app('validator')->extend('date_range', function ($attribute, $value) {
+            return TimeHelper::isDateRange($value);
         });
         app('validator')->extend('urls', function ($attribute, $value) {
             if (!is_array($value)) {

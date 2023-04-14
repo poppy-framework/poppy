@@ -49,12 +49,25 @@ class TimeHelper
     }
 
     /**
+     * 是否是日期范围
+     * @param $range
+     * @return bool
+     */
+    public static function isDateRange($range): bool
+    {
+        if (preg_match('/^(\d{4}-\d{2}-\d{2}) - (\d{4}-\d{2}-\d{2})$/', trim($range), $matches)) {
+            return Carbon::parse($matches[2])->gte(Carbon::parse($matches[1]));
+        }
+        return false;
+    }
+
+    /**
      * 格式化时间
      * @param int|string $time   time
      * @param string     $format format
      * @return bool|string
      */
-    public static function datetime($time = 0, $format = '3-3')
+    public static function datetime($time = 0, string $format = '3-3')
     {
         if (!empty($time)) {
             if (!is_numeric($time)) {
@@ -93,14 +106,14 @@ class TimeHelper
      * @param bool  $more   是否返回分/秒
      * @return string
      */
-    public static function time2string($second, $more = false)
+    public static function time2string($second, bool $more = false): string
     {
         $day    = floor($second / (3600 * 24));
-        $second = $second % (3600 * 24);//除去整天之后剩余的时间
+        $second %= (3600 * 24);//除去整天之后剩余的时间
         $hour   = floor($second / 3600);
-        $second = $second % 3600;//除去整小时之后剩余的时间
+        $second %= 3600;//除去整小时之后剩余的时间
         $minute = floor($second / 60);
-        $second = $second % 60;//除去整分钟之后剩余的时间
+        $second %= 60;//除去整分钟之后剩余的时间
         //返回字符串
         if ($more) {
             return $day . '天' . $hour . '小时' . $minute . '分' . $second . '秒';
@@ -138,45 +151,46 @@ class TimeHelper
     }
 
     /**
-     * 一天的开始
+     * 一天的开始, 未传值代表今天
      * @param string $date date
      * @return string
      */
-    public static function dayStart(string $date): string
+    public static function dayStart(string $date = ''): string
     {
-        if (preg_match('/\d{4}-\d{2}-\d{2}/', $date)) {
-            $date = Carbon::createFromFormat('Y-m-d', $date)->timestamp;
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', trim($date))) {
+            return Carbon::createFromFormat('Y-m-d', $date)->startOfDay()->toDateTimeString();
         }
-
-        return date('Y-m-d', (int) $date) . ' 00:00:00';
+        return Carbon::now()->startOfDay()->toDateTimeString();
     }
 
     /**
-     * 一天的结束
-     * @param string|int $date date
+     * 一天的结束, 未传值代表今天
+     * @param string $date date
      * @return string
      */
-    public static function dayEnd($date): string
+    public static function dayEnd(string $date = ''): string
     {
-        if (preg_match('/\d{4}-\d{2}-\d{2}/', $date)) {
-            $date = Carbon::createFromFormat('Y-m-d', $date)->timestamp;
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', trim($date))) {
+            return Carbon::createFromFormat('Y-m-d', $date)->endOfDay()->toDateTimeString();
         }
-
-        return date('Y-m-d', (int) $date) . ' 23:59:59';
+        return Carbon::now()->endOfDay()->toDateTimeString();
     }
 
     /**
      * 格式化日期
      * @param int|string $time   time
      * @param string     $format format
-     * @return bool|string
+     * @return string
      */
-    public static function format($time = 0, $format = 'Y-m-d H:i')
+    public static function format($time = 0, string $format = 'Y-m-d H:i'): string
     {
-        //strtotime 强制将代入进来的时间格式都转成Unix时间戳
-        $timestamp = !empty($time) ? (is_numeric($time) ? $time : strtotime((string) $time)) : EnvHelper::time();
-
-        return date($format, (int) $timestamp);
+        if ($time === 0) {
+            return Carbon::now()->format($format);
+        }
+        if (is_numeric($time)) {
+            return Carbon::createFromTimestamp($time)->format($format);
+        }
+        return Carbon::parse($time)->format($format);
     }
 
     /**
@@ -194,7 +208,7 @@ class TimeHelper
      * @param string $datetime datetime
      * @return int
      */
-    public static function datetimeToTimestamp(string $datetime)
+    public static function datetimeToTimestamp(string $datetime): int
     {
         return Carbon::createFromFormat('Y-m-d H:i:s', $datetime)->timestamp;
     }
@@ -204,7 +218,7 @@ class TimeHelper
      * @param string $timestamp timestamp
      * @return bool|string
      */
-    public static function timestampToDatetime(string $timestamp)
+    public static function timestampToDatetime(string $timestamp): string
     {
         return self::format($timestamp, 'Y-m-d H:i:s');
     }
@@ -213,6 +227,9 @@ class TimeHelper
      * 获取今日起始时间
      * @param bool|false $unix unix
      * @return int|string
+     * @see        dayStart()
+     * @deprecated 4.2
+     * @removed    5.0
      */
     public static function todayStart($unix = false)
     {
@@ -228,6 +245,9 @@ class TimeHelper
      * 获取今日起始时间
      * @param bool|false $unix unix
      * @return int|string
+     * @see        dayEnd()
+     * @deprecated 4.2
+     * @removed    5.0
      */
     public static function todayEnd($unix = false)
     {
@@ -326,24 +346,25 @@ class TimeHelper
      * @param Carbon|PhpDateTime|string|int $value value
      * @return Carbon|null
      */
-    public static function makeCarbon($value)
+    public static function makeCarbon($value): ?Carbon
     {
+        $item = $value;
         if ($value instanceof PhpDateTime) {
-            $value = Carbon::instance($value);
+            $item = Carbon::instance($value);
         }
 
         if (is_numeric($value)) {
-            $value = Carbon::createFromTimestamp($value);
+            $item = Carbon::createFromTimestamp($value);
         }
 
         if (is_string($value)) {
             if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $value)) {
-                $value = Carbon::createFromFormat('Y-m-d', $value)->startOfDay();
+                $item = Carbon::createFromFormat('Y-m-d', $value)->startOfDay();
             }
         }
 
         try {
-            return Carbon::parse($value);
+            return Carbon::parse($item);
         } catch (Exception $ex) {
             return null;
         }
@@ -440,7 +461,7 @@ class TimeHelper
      * @param int    $start 默认以那一天作为第一天的开始
      * @return array
      */
-    public static function week(string $date, $start = Carbon::MONDAY): array
+    public static function week(string $date, int $start = Carbon::MONDAY): array
     {
         /** @var Carbon $carbon */
         $carbon = Carbon::createFromFormat('Y-m-d', $date)->startOfWeek($start);

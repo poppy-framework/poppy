@@ -204,11 +204,21 @@ class Rule extends IlluminateRule
     }
 
     /**
+     * 日期类型
      * @return string
      */
     public static function date(): string
     {
         return 'date';
+    }
+
+    /**
+     * 日期范围
+     * @return string
+     */
+    public static function dateRange(): string
+    {
+        return 'date_range';
     }
 
     /**
@@ -347,7 +357,7 @@ class Rule extends IlluminateRule
      * 多个图片地址
      * @return string
      */
-    public static function urls():string
+    public static function urls(): string
     {
         return 'urls';
     }

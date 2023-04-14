@@ -25,7 +25,7 @@ class TimeHelperTest extends TestCase
 
     public function testIsDate(): void
     {
-        $this->assertEquals(true, TimeHelper::isDate('2020-11-21', '-'));
+        $this->assertTrue(TimeHelper::isDate('2020-11-21', '-'));
     }
 
     public function testDatetime(): void
@@ -51,12 +51,18 @@ class TimeHelperTest extends TestCase
 
     public function testDayStart(): void
     {
-        $this->assertEquals('2020-11-20 00:00:00', TimeHelper::dayStart('1605859200'));
+        $this->assertEquals('2020-11-20 00:00:00', TimeHelper::dayStart('2020-11-20'));
+
+        $today = Carbon::now();
+        $this->assertEquals($today->startOfDay(), TimeHelper::dayStart());
     }
 
     public function testDayEnd(): void
     {
-        $this->assertEquals('2020-11-20 23:59:59', TimeHelper::dayEnd('1605859200'));
+        $this->assertEquals('2020-11-20 23:59:59', TimeHelper::dayEnd('2020-11-20'));
+
+        $today = Carbon::now();
+        $this->assertEquals($today->endOfDay(), TimeHelper::dayEnd());
     }
 
     public function testFormat(): void
@@ -64,11 +70,18 @@ class TimeHelperTest extends TestCase
         $this->assertEquals('2020-11-20 16:00', TimeHelper::format('1605859200'));
     }
 
+
+    public function testIsDateRange()
+    {
+        $this->assertTrue(TimeHelper::isDateRange('2020-11-20 - 2020-11-20'));
+        $this->assertFalse(TimeHelper::isDateRange('2020-11-22 - 2020-11-20'));
+    }
+
     public function testIsEmpty(): void
     {
-        $this->assertEquals(false, TimeHelper::isEmpty('1606034151'));
+        $this->assertFalse(TimeHelper::isEmpty('1606034151'));
 
-        $this->assertEquals(true, TimeHelper::isEmpty('0000-00-00 00:00:00'));
+        $this->assertTrue(TimeHelper::isEmpty('0000-00-00 00:00:00'));
     }
 
     public function testDatetimeToTimestamp(): void
