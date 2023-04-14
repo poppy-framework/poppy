@@ -50,7 +50,7 @@ class FormPamNote extends FormWidget
     public function form(): void
     {
         $this->text('username', '用户名')->readonly();
-        $this->textarea('note', '备注')->rules([
+        $this->textarea('note', '姓名')->rules([
             Rule::string(),
             Rule::max(30),
         ]);

@@ -24,18 +24,18 @@ class ListPamRole extends ListBase
      * @inheritDoc
      * @throws ApplicationException
      */
-    public function columns()
+    public function columns(): void
     {
         /** @var PamAccount $user */
         $user = Auth::user();
 
-        $this->column('id', "ID")->sortable()->width(80);
-        $this->column('title', "名称")->width(200, true);
+        $this->column('id', 'ID')->sortable()->width(80);
+        $this->column('title', '名称')->width(200, true);
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) use ($user) {
             /** @var PamRole $item */
             $item = $actions->row;
             if ($user->can('permission', $item)) {
-                $actions->iframe("权限", route('py-mgr-page:backend.role.menu', [$item->id]))->icon('x-diamond')
+                $actions->iframe('权限', route('py-mgr-page:backend.role.menu', [$item->id]))->icon('x-diamond')
                     ->widthLarge()->height(660)
                     ->tooltip("编辑 [{$item->title}] 权限")->primary();
             }

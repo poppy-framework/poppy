@@ -20,6 +20,9 @@ trait PolicyTrait
      */
     public function before(PamAccount $pam, string $ability): ?bool
     {
+        if (!property_exists($this, 'permissionMap')) {
+            return null;
+        }
         $permission = self::$permissionMap[$ability] ?? '';
         if ($permission) {
             return $pam->capable($permission) ? null : false;

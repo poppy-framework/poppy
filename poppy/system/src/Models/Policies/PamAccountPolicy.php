@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Models\Policies;
 
+use Poppy\System\Classes\Traits\PolicyTrait;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
 use Poppy\System\Models\SysConfig;
@@ -13,6 +14,13 @@ use Poppy\System\Models\SysConfig;
  */
 class PamAccountPolicy
 {
+
+    use PolicyTrait;
+
+
+    protected static array $permissionMap = [
+        'password' => 'backend:py-system.pam.password',
+    ];
 
     /**
      * 编辑
@@ -44,6 +52,12 @@ class PamAccountPolicy
     public function enable(PamAccount $pam, PamAccount $item)
     {
         return $item->is_enable === SysConfig::NO;
+    }
+
+
+    public function password(PamAccount $pam, PamAccount $item): bool
+    {
+        return true;
     }
 
 

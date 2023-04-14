@@ -27,6 +27,9 @@
           slug : manage
           description : 账号管理
         -
+          slug : password
+          description : 修改密码
+        -
           slug : log
           description : 登录日志
         -

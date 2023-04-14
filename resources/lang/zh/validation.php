@@ -128,6 +128,7 @@ return [
     'captcha'              => ':attribute 不正确',
     'urls'                 => ':attribute 必须全部是图片地址, 请等待上传完成, 或者删除未上传成功的图片',
     'date_range'           => ':attribute 不是正确的时间范围',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

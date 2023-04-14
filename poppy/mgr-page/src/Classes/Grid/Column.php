@@ -289,7 +289,7 @@ class Column
 
     public function widthAsNote(): self
     {
-        return $this->width(150);
+        return $this->width(180);
     }
 
     /**
