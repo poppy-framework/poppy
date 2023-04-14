@@ -7,38 +7,20 @@ namespace Poppy\Ad\Action;
 use Poppy\Ad\Models\SysAdContent;
 use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Framework\Classes\Traits\AppTrait;
-use Poppy\Framework\Validation\Rule;
-use Poppy\System\Classes\Traits\PamTrait;
 use Throwable;
-use Validator;
-use View;
 
 /**
  * 处理类
  */
 class Place
 {
-    use AppTrait, PamTrait;
+    use AppTrait;
 
     /**
-     * @var string
+     * @var SysAdPlace $item
      */
-    protected $placeTable;
+    private SysAdPlace $item;
 
-    /**
-     * @var SysAdPlace $adPlace
-     */
-    private $adPlace;
-
-    /**
-     * @var int $id
-     */
-    private $id;
-
-    public function __construct()
-    {
-        $this->placeTable = (new SysAdPlace())->getTable();
-    }
 
     /**
      * 编辑/创建 广告位
@@ -62,56 +44,16 @@ class Place
             'introduce' => (string) sys_get($data, 'introduce'),
         ];
 
-        $validator = Validator::make($initDb, [
-            'title'     => [
-                Rule::required(),
-                Rule::string(),
-                Rule::unique($this->placeTable, 'title')->where(function ($query) use ($id) {
-                    if ($id) {
-                        $query->where('id', '!=', $id);
-                    }
-                }),
-            ],
-            'width'     => [
-                Rule::required(),
-                Rule::integer(),
-                Rule::min(1),
-            ],
-            'height'    => [
-                Rule::required(),
-                Rule::integer(),
-                Rule::min(1),
-            ],
-            'thumb'     => [
-                Rule::string(),
-                Rule::url(),
-            ],
-            'introduce' => [
-                Rule::required(),
-                Rule::string(),
-            ],
-        ], [], [
-            'title'     => '广告位名称',
-            'width'     => '广告位宽度',
-            'height'    => '广告位高度',
-            'thumb'     => '广告位示意图',
-            'introduce' => '广告位介绍',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setError($validator->errors());
-        }
-
         // init
         $id && $this->init($id);
 
         if ($id) {
-            $this->adPlace->update($initDb);
+            $this->item->update($initDb);
         }
         else {
             /** @var SysAdPlace $adPlace */
-            $adPlace       = SysAdPlace::create($initDb);
-            $this->adPlace = $adPlace;
+            $adPlace    = SysAdPlace::create($initDb);
+            $this->item = $adPlace;
         }
 
         return true;
@@ -131,7 +73,7 @@ class Place
         }
 
         try {
-            $this->adPlace->delete();
+            $this->item->delete();
         } catch (Throwable $e) {
             return $this->setError($e->getMessage());
         }
@@ -145,18 +87,6 @@ class Place
      */
     public function init(int $id): void
     {
-        $this->adPlace = SysAdPlace::findOrFail($id);
-        $this->id      = $this->adPlace->id;
-    }
-
-    /**
-     * 共享变量
-     */
-    public function share()
-    {
-        View::share([
-            'item' => $this->adPlace,
-            'id'   => $this->adPlace->id,
-        ]);
+        $this->item = SysAdPlace::findOrFail($id);
     }
 }

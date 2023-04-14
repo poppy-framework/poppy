@@ -74,8 +74,8 @@ class SysAdPlace extends Model
      */
     public static function returnAdContent(int $id): array
     {
-        return SysAdContent::where('place_id', $id)
-            ->orderBy('list_order')
-            ->where('is_enable', SysConfig::YES)->select(['id', 'src', 'action', 'value', 'title'])->get()->toArray();
+        return SysAdContent::where('place_id', $id)->orderBy('list_order')
+            ->where('is_enable', SysConfig::YES)->select(['id', 'src', 'action', 'value', 'title'])
+            ->get()->toArray();
     }
 }

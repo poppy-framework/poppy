@@ -6,39 +6,19 @@ namespace Poppy\Ad\Action;
 
 use Poppy\Ad\Models\SysAdContent;
 use Poppy\Framework\Classes\Traits\AppTrait;
-use Poppy\Framework\Validation\Rule;
-use Poppy\System\Classes\Traits\PamTrait;
-use Poppy\System\Models\SysConfig;
 use Throwable;
-use Validator;
-use View;
 
 /**
  * 广告内容处理类
  */
 class Ad
 {
-    use AppTrait, PamTrait;
-
-    /**
-     * @var string
-     */
-    protected string $adTable;
+    use AppTrait;
 
     /**
      * @var SysAdContent $item
      */
     private SysAdContent $item;
-
-    /**
-     * @var int $id
-     */
-    private $id;
-
-    public function __construct()
-    {
-        $this->adTable = (new SysAdContent())->getTable();
-    }
 
     /**
      * 编辑/创建 广告
@@ -70,57 +50,6 @@ class Ad
         $at     = (string) sys_get($data, 'at');
         if ($at) {
             [$initDb['start_at'], $initDb['end_at']] = explode(' - ', $at);
-        }
-
-        $validator = Validator::make($initDb, [
-            'place_id'   => [
-                Rule::required(),
-                Rule::integer(),
-            ],
-            'title'      => [
-                Rule::required(),
-                Rule::string(),
-                Rule::unique($this->adTable, 'title')->where(function ($query) use ($id) {
-                    if ($id) {
-                        $query->where('id', '!=', $id);
-                    }
-                }),
-            ],
-            'introduce'  => [
-                Rule::required(),
-                Rule::string(),
-            ],
-            'start_at'   => [
-                Rule::required(),
-                Rule::string(),
-            ],
-            'end_at'     => [
-                Rule::required(),
-                Rule::string(),
-            ],
-            'src'        => [
-                Rule::url(),
-            ],
-            'action'     => [
-                Rule::required(),
-                Rule::string(),
-            ],
-            'value'      => [
-                Rule::string(),
-            ],
-            'is_enable'  => [
-                Rule::integer(),
-                Rule::in(array_keys(SysConfig::kvYn())),
-            ],
-            'list_order' => [
-                Rule::required(),
-                Rule::integer(),
-                Rule::min(1),
-            ],
-        ], [], sys_db(SysAdContent::class));
-
-        if ($validator->fails()) {
-            return $this->setError($validator->errors());
         }
 
         // init
@@ -176,17 +105,5 @@ class Ad
     public function init(int $id): void
     {
         $this->item = SysAdContent::findOrFail($id);
-        $this->id   = $this->item->id;
-    }
-
-    /**
-     * 共享变量
-     */
-    public function share()
-    {
-        View::share([
-            'item' => $this->item,
-            'id'   => $this->item->id,
-        ]);
     }
 }

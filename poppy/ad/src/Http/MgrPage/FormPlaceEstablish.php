@@ -6,6 +6,7 @@ namespace Poppy\Ad\Http\MgrPage;
 
 use Illuminate\Support\Arr;
 use Poppy\Ad\Action\Place;
+use Poppy\Ad\Http\Validation\AdPlaceRequest;
 use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Validation\Rule;
@@ -39,10 +40,12 @@ class FormPlaceEstablish extends FormWidget
     /**
      * @throws Throwable
      */
-    public function handle()
+    public function handle($request)
     {
         $Place = new Place();
-        if ($Place->establish(input(), $this->id)) {
+        /** @var AdPlaceRequest $req */
+        $req = app(AdPlaceRequest::class, [$request]);
+        if ($Place->establish($req->validated(), $this->id)) {
             return Resp::success('操作成功', [
                 '_top_reload' => 1,
             ]);

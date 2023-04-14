@@ -6,6 +6,7 @@ namespace Poppy\Ad\Http\MgrPage;
 
 use Illuminate\Support\Arr;
 use Poppy\Ad\Action\Ad;
+use Poppy\Ad\Http\Validation\AdContentRequest;
 use Poppy\Ad\Models\SysAdContent;
 use Poppy\Ad\Models\SysAdPlace;
 use Poppy\Framework\Classes\Resp;
@@ -48,10 +49,12 @@ class FormContentEstablish extends FormWidget
     /**
      * @throws Throwable
      */
-    public function handle()
+    public function handle($request)
     {
         $Ad = new Ad();
-        if ($Ad->establish(input(), $this->id)) {
+        /** @var AdContentRequest $req */
+        $req = app(AdContentRequest::class, [$request]);
+        if ($Ad->establish($req->validated(), $this->id)) {
             return Resp::success('操作成功', [
                 '_top_reload' => 1,
             ]);
