@@ -34,8 +34,11 @@ demo :
       title : Table
       children :
         -
-          title : EasyTable
+          title : 简易表格
           route : demo:web.table.easy
+        -
+          title : 手动表格
+          route : demo:web.table.manual
     -
       title : Grid
       children :

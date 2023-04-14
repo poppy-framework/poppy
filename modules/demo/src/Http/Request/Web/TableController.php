@@ -2,9 +2,14 @@
 
 namespace Demo\Http\Request\Web;
 
+use Demo\Http\Validation\ListTableManualRequest;
 use Demo\Models\DemoWebapp;
+use Illuminate\Database\Eloquent\Builder;
+use Misc\Models\OnlineLog;
+use Poppy\Framework\Helper\TimeHelper;
 use Poppy\MgrPage\Classes\Widgets\TableWidget;
 use Poppy\System\Http\Request\Web\WebController;
+use Poppy\System\Models\PamLog;
 use Throwable;
 
 /**
@@ -40,5 +45,26 @@ class TableController extends WebController
         ];
 
         return (new TableWidget($headers, $rows))->render();
+    }
+
+    public function manual(ListTableManualRequest $request)
+    {
+        $kf_id      = $request->input('kf_id');
+        $status     = $request->input('status');
+        $created_at = $request->input('created_at');
+        $items      = PamLog::orderByDesc('id')
+            ->when($kf_id, function (Builder $query) use ($kf_id) {
+                return $query->where('kf_id', $kf_id);
+            })
+            ->when($status, function (Builder $query) use ($status) {
+                return $query->where('status', $status);
+            })
+            ->when($created_at, function (Builder $query) use ($created_at) {
+                [$start_at, $end_at] = explode(' - ', $created_at);
+                return $query->where('created_at', '>=', TimeHelper::dayStart($start_at))->where('created_at', '<', TimeHelper::dayStart($end_at));
+            })
+            ->paginate($this->pagesize)
+            ->appends($request->all());
+        return view('demo::web.table.manual', compact('items'));
     }
 }

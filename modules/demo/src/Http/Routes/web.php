@@ -26,6 +26,8 @@ Route::group([
         ->name('demo:web.table.index');
     $router->any('table/easy', 'TableController@easy')
         ->name('demo:web.table.easy');
+    $router->any('table/manual', 'TableController@manual')
+        ->name('demo:web.table.manual');
 
     /* Grid
      * ---------------------------------------- */

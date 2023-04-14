@@ -17,6 +17,7 @@ use Illuminate\Validation\ValidationException;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\AjaxException;
 use Poppy\Framework\Exceptions\BaseException;
+use Poppy\System\Classes\Traits\PjaxTrait;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
@@ -24,6 +25,9 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
  */
 class Handler extends ExceptionHandler
 {
+
+    use PjaxTrait;
+
     /**
      * A list of the exception types that should not be reported.
      * @var array
@@ -49,6 +53,13 @@ class Handler extends ExceptionHandler
         }
 
         if ($e instanceof ValidationException) {
+            if ($request->pjax()) {
+                $arrMsg = [];
+                foreach ($e->validator->errors()->messages() as $message) {
+                    $arrMsg[] = implode(' ', $message);
+                }
+                return $this->pjaxError(implode(', ', $arrMsg));
+            }
             return Resp::error($e->validator->errors());
         }
 
