@@ -22,12 +22,13 @@ class ListSysContent extends ListBase
      * @inheritDoc
      * @throws ApplicationException
      */
-    public function columns()
+    public function columns(): void
     {
-        $this->column('id', "ID")->sortable()->width(80);
+        $this->column('id', 'ID')->sortable()->width(80);
         $this->column('list_order', '排序')->editable()->width(80)->sortable();
         $this->column('thumb', '缩略图')->image()->width(80);
-        $this->column('title', "标题");
+        $this->column('title', '标题');
+        $this->column('pam.note', '发布者')->widthAsIp();
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var SysContent $item */
             $item = $actions->row;

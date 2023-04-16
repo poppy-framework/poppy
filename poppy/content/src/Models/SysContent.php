@@ -7,9 +7,11 @@ namespace Poppy\Content\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 use Poppy\Framework\Http\Pagination\PageInfo;
 use Poppy\System\Classes\Traits\FilterTrait;
+use Poppy\System\Models\PamAccount;
 
 /**
  * \Poppy\Content\Models\SysContent
@@ -21,6 +23,7 @@ use Poppy\System\Classes\Traits\FilterTrait;
  * @property int         $cat_id     分类 ID
  * @property string      $thumb      缩略图
  * @property int         $list_order 排序
+ * @property int         $account_id 账号 ID
  * @property int         $is_enable  是否启用
  * @property string      $content    内容
  * @property Carbon|null $created_at
@@ -49,8 +52,18 @@ class SysContent extends Model
         'type',
         'thumb',
         'list_order',
+        'account_id',
         'content',
     ];
+
+    /**
+     * 返回用户
+     * @return HasOne
+     */
+    public function pam(): HasOne
+    {
+        return $this->hasOne(PamAccount::class, 'id', 'account_id');
+    }
 
     public static function kvType(): array
     {

@@ -4,13 +4,18 @@ declare(strict_types = 1);
 
 namespace Poppy\Content\Http\MgrPage;
 
+use Auth;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Poppy\Content\Action\Content;
+use Poppy\Content\Http\Validation\ContentRequest;
 use Poppy\Content\Models\SysContent;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Operations;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
+use Poppy\System\Models\PamAccount;
 use Route;
 
 class FormContentEstablish extends FormWidget
@@ -51,8 +56,10 @@ class FormContentEstablish extends FormWidget
     public function __construct($data = [])
     {
         parent::__construct($data);
-        $this->type    = (string) input('type');
-        $this->content = new Content();
+        $this->type = (string) input('type');
+        /** @var PamAccount $user */
+        $user          = Auth::user();
+        $this->content = (new Content())->setPam($user);
         $id            = (int) Route::input('id');
         $id && $this->content->init($id);
 
@@ -68,11 +75,18 @@ class FormContentEstablish extends FormWidget
         };
     }
 
+    /**
+     * @throws AuthorizationException
+     * @throws ValidationException
+     */
     public function handle(Request $request)
     {
-        $data = array_merge($request->all(), [
+        /** @var ContentRequest $req */
+        $req  = app(ContentRequest::class, [$request]);
+        $req  = $req->merge([
             'type' => $this->type,
         ]);
+        $data = $req->validated();
         if ($this->content->establish($data, $this->id)) {
             return Resp::success('操作成功');
         }

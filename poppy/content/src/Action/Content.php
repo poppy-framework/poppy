@@ -6,27 +6,21 @@ namespace Poppy\Content\Action;
 
 use Poppy\Content\Models\SysContent;
 use Poppy\Framework\Classes\Traits\AppTrait;
-use Poppy\Framework\Validation\Rule;
+use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Models\SysConfig;
 use Throwable;
-use Validator;
 
 /**
  * 分类管理
  */
 class Content
 {
-    use AppTrait;
+    use AppTrait, PamTrait;
 
     /**
      * @var SysContent $item
      */
     private SysContent $item;
-
-    /**
-     * @var int $id
-     */
-    private int $id;
 
     /**
      * @return SysContent
@@ -47,49 +41,31 @@ class Content
      */
     public function establish(array $data, int $id = null): bool
     {
-        $tableName = (new SysContent())->getTable();
-        $type      = (string) sys_get($data, 'type');
-        $initDb    = [
-            'type'  => $type,
+        if (!$this->checkPam()) {
+            return false;
+        }
+        $initDb = [
+            'type'  => (string) sys_get($data, 'type'),
             'title' => (string) sys_get($data, 'title'),
             'thumb' => (string) sys_get($data, 'thumb'),
             'text'  => (string) sys_get($data, 'text'),
         ];
 
-        $validator = Validator::make($initDb, [
-            'title' => [
-                Rule::required(),
-                Rule::string(),
-                Rule::unique($tableName, 'title')->where(function ($query) use ($id, $type) {
-                    $query->where('type', $type);
-                    if ($id) {
-                        $query->where('id', '!=', $id);
-                    }
-                }),
-            ],
-        ], [], sys_db(SysContent::class));
-
-        if ($validator->fails()) {
-            return $this->setError($validator->errors());
-        }
-
         // init
-        if ($id && !$this->init($id)) {
-            return false;
-        }
+        $id && $this->init($id);
 
         if ($id) {
-            $this->item->update($initDb);
-        }
-        else {
-            /** @var SysContent $item */
-            $item             = SysContent::create($initDb);
-            $item->list_order = $item->id;
-            $item->is_enable  = SysConfig::YES;
-            $item->save();
-            $this->item = $item;
-        }
 
+            $this->item->update($initDb);
+            return true;
+        }
+        /** @var SysContent $item */
+        $initDb['account_id'] = $this->pam->id;
+        $item                 = SysContent::create($initDb);
+        $item->list_order     = $item->id;
+        $item->is_enable      = SysConfig::YES;
+        $item->save();
+        $this->item = $item;
         return true;
     }
 
@@ -100,9 +76,7 @@ class Content
      */
     public function delete(int $id): bool
     {
-        if ($id && !$this->init($id)) {
-            return false;
-        }
+        $id && $this->init($id);
 
         try {
             $this->item->delete();
@@ -128,13 +102,10 @@ class Content
 
     /**
      * 初始化
-     * @param int $id 活动 ID
-     * @return bool
+     * @param int $id ID
      */
-    public function init(int $id): bool
+    public function init(int $id): void
     {
         $this->item = SysContent::findOrFail($id);
-        $this->id   = $this->item->id;
-        return true;
     }
 }
