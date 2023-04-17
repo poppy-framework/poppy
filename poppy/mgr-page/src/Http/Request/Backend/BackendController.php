@@ -17,9 +17,9 @@ abstract class BackendController extends Controller
     use PoppyTrait;
 
     /**
-     * @var PamAccount
+     * @var PamAccount|null
      */
-    protected $pam;
+    protected ?PamAccount $pam;
 
     public function __construct()
     {
@@ -40,9 +40,9 @@ abstract class BackendController extends Controller
     /**
      * 当前用户
      * 因为这里的用户也不一定有值, 而且 $this->pam 中也存在此数据, 所以这里打算废弃此引用
-     * @return PamAccount
+     * @return PamAccount|null
      */
-    public function pam()
+    public function pam(): ?PamAccount
     {
         return Auth::guard(PamAccount::GUARD_BACKEND)->user();
     }

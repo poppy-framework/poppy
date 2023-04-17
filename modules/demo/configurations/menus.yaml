@@ -1,34 +1,86 @@
-backend :
-  title : 核心Demo
-  groups :
-    setting :
-      title : 核心Demo注入
-      icon : 'bi bi-box-fill'
-      children :
-        -
-          title : 主页
-          icon : 'bi bi-box'
-          url : http://www.baidu.com
 demo :
   title : Demo
   groups :
     -
-      title : Helper(帮助)
+      title : '框架'
       children :
         -
-          title : EnvHelper
-          route : demo:web.helper.env
+          title : Helper(帮助)
+          children :
+            -
+              title : EnvHelper
+              route : demo:web.helper.env
+            -
+              title : ImageHelper
+              route : demo:web.helper.image
+            -
+              title : TreeHelper
+              route : demo:web.helper.tree
         -
-          title : ImageHelper
-          route : demo:web.helper.image
-        -
-          title : TreeHelper
-          route : demo:web.helper.tree
+          title : 地址形式
+          children :
+            -
+              title : 绝对地址
+              icon : 'bi bi-link-45deg'
+              url : https://wulicode.com/
+            -
+              title : 相对地址
+              icon : 'bi bi-link'
+              url : /demo/helper/image
+            -
+              title : 组合地址(多行)
+              icon : 'bi bi-link'
+              route : demo:web.home.output
+              route_param :
+                - multi-line
+            -
+              title : 组合地址(单行)
+              icon : 'bi bi-link'
+              route : demo:web.home.output/single-line
     -
-      title : 邮箱
+      title : 文档
       children :
         -
-          title : TestMail
+          title : 前端
+          children :
+            -
+              title : 组件
+              route : demo:web.js.index
+            -
+              title : 上传/图片/视频
+              route : demo:web.js.index?type=upload
+            -
+              title : 表单
+              route : demo:web.js.index?type=form
+            -
+              title : Pjax
+              route : demo:web.js.index?type=pjax
+            -
+              title : Pjax Error(超时)
+              route : demo:web.table.pjax_error
+        -
+          title : 三方资源
+          children :
+            -
+              title : 'Bootstrap Icons'
+              url : https://icons.getbootstrap.com/
+            -
+              title : 'Font Awesome'
+              url : https://fontawesome.com/v5/cheatsheet
+              target: '_blank'
+            -
+              title : 'Layui'
+              url : https://layui.gitee.io/v2/docs/
+              target: '_blank'
+            -
+              title : 'Layer'
+              url : https://layui.gitee.io/v2/layer/
+              target: '_blank'
+    -
+      title : 示例
+      children :
+        -
+          title : 测试邮件
           route : demo:web.mail.index
     -
       title : Table
@@ -40,6 +92,14 @@ demo :
           title : 手动表格
           route : demo:web.table.manual
     -
+      title : 搜索
+      children :
+        -
+          title : Where
+          route : demo:web.search.index
+          route_param :
+            - where
+    -
       title : Grid
       children :
         -
@@ -47,236 +107,139 @@ demo :
           route : demo:web.content.index
         -
           title : Grid Demo
-          route : demo:web.grid.index
-          route_param :
-            - demo
+          route : demo:web.grid.index/demo
         -
           title : Grid Edit
-          route : demo:web.grid.index
-          route_param :
-            - edit
+          route : demo:web.grid.index/edit
         -
           title : Grid Index
-          route : demo:web.grid.index
-          route_param :
-            - index
+          route : demo:web.grid.index/index
         -
           title : Grid User
-          route : demo:web.grid.index
-          route_param :
-            - user
+          route : demo:web.grid.index/user
         -
           title : Grid Operation
-          route : demo:web.grid.index
-          route_param :
-            - operation
+          route : demo:web.grid.index/operation
         -
           title : Grid No File
           route : demo:web.grid.no_file
     -
-      title : 前端文档
+      title : 表单
       children :
         -
-          title : 提示/对话框
-          route : demo:web.js.index
-    -
-      title : Form
-      children :
+          title : Captcha
+          route : demo:web.form.index/Captcha
         -
-          title : 表单
-          children :
-            -
-              title : Captcha
-              route : demo:web.form.index
-              route_param :
-                - Captcha
-            -
-              title : Checkbox
-              route : demo:web.form.index
-              route_param :
-                - Checkbox
-            -
-              title : Code
-              route : demo:web.form.index
-              route_param :
-                - Code
-            -
-              title : Color
-              route : demo:web.form.index
-              route_param :
-                - Color
-            -
-              title : Currency
-              route : demo:web.form.index
-              route_param :
-                - Currency
-            -
-              title : Date
-              route : demo:web.form.index
-              route_param :
-                - Date
-            -
-              title : DateRange
-              route : demo:web.form.index
-              route_param :
-                - DateRange
-            -
-              title : Datetime
-              route : demo:web.form.index
-              route_param :
-                - Datetime
-            -
-              title : DatetimeRange
-              route : demo:web.form.index
-              route_param :
-                - DatetimeRange
-            -
-              title : Decimal
-              route : demo:web.form.index
-              route_param :
-                - Decimal
-            -
-              title : Display
-              route : demo:web.form.index
-              route_param :
-                - Display
-            -
-              title : Divider
-              route : demo:web.form.index
-              route_param :
-                - Divider
-            -
-              title : Editor
-              route : demo:web.form.index
-              route_param :
-                - Editor
-            -
-              title : Email
-              route : demo:web.form.index
-              route_param :
-                - Email
-            -
-              title : Hidden
-              route : demo:web.form.index
-              route_param :
-                - Hidden
-            -
-              title : Html
-              route : demo:web.form.index
-              route_param :
-                - Html
-            -
-              title : Hook
-              route : demo:web.form.index
-              route_param :
-                - Hook
-            -
-              title : Id
-              route : demo:web.form.index
-              route_param :
-                - Id
-            -
-              title : Image
-              route : demo:web.form.index
-              route_param :
-                - Image
-            -
-              title : MultiImage
-              route : demo:web.form.index
-              route_param :
-                - MultiImage
-            -
-              title : Ip
-              route : demo:web.form.index
-              route_param :
-                - Ip
-            -
-              title : Keyword
-              route : demo:web.form.index
-              route_param :
-                - Keyword
-            -
-              title : Link
-              route : demo:web.form.index
-              route_param :
-                - Link
-            -
-              title : Mobile
-              route : demo:web.form.index
-              route_param :
-                - Mobile
-            -
-              title : Month
-              route : demo:web.form.index
-              route_param :
-                - Month
-            -
-              title : Number
-              route : demo:web.form.index
-              route_param :
-                - Number
-            -
-              title : Password
-              route : demo:web.form.index
-              route_param :
-                - Password
-            -
-              title : Radio
-              route : demo:web.form.index
-              route_param :
-                - Radio
-            -
-              title : Select
-              route : demo:web.form.index
-              route_param :
-                - Select
-            -
-              title : MultipleSelect
-              route : demo:web.form.index
-              route_param :
-                - MultipleSelect
-            -
-              title : SwitchField
-              route : demo:web.form.index
-              route_param :
-                - SwitchField
-            -
-              title : Tags
-              route : demo:web.form.index
-              route_param :
-                - Tags
-            -
-              title : Text
-              route : demo:web.form.index
-              route_param :
-                - Text
-            -
-              title : Textarea
-              route : demo:web.form.index
-              route_param :
-                - Textarea
-            -
-              title : Time
-              route : demo:web.form.index
-              route_param :
-                - Time
-            -
-              title : TimeRange
-              route : demo:web.form.index
-              route_param :
-                - TimeRange
-            -
-              title : Tips
-              route : demo:web.form.index
-              route_param :
-                - Tips
-            -
-              title : Url
-              route : demo:web.form.index
-              route_param :
-                - Url
-            -
-              title : Year
-              route : demo:web.form.index
-              route_param :
-                - Year
+          title : Checkbox
+          route : demo:web.form.index/Checkbox
+        -
+          title : Code
+          route : demo:web.form.index/Code
+        -
+          title : Color
+          route : demo:web.form.index/Color
+        -
+          title : Currency
+          route : demo:web.form.index/Currency
+        -
+          title : Date
+          route : demo:web.form.index/Date
+        -
+          title : DateRange
+          route : demo:web.form.index/DateRange
+        -
+          title : Datetime
+          route : demo:web.form.index/Datetime
+        -
+          title : DatetimeRange
+          route : demo:web.form.index/DatetimeRange
+        -
+          title : Decimal
+          route : demo:web.form.index/Decimal
+        -
+          title : Display
+          route : demo:web.form.index/Display
+        -
+          title : Divider
+          route : demo:web.form.index/Divider
+        -
+          title : Editor
+          route : demo:web.form.index/Editor
+        -
+          title : Email
+          route : demo:web.form.index/Email
+        -
+          title : Hidden
+          route : demo:web.form.index/Hidden
+        -
+          title : Html
+          route : demo:web.form.index/Html
+        -
+          title : Hook
+          route : demo:web.form.index/Hook
+        -
+          title : Id
+          route : demo:web.form.index/Id
+        -
+          title : Image
+          route : demo:web.form.index/Image
+        -
+          title : MultiImage
+          route : demo:web.form.index/MultiImage
+        -
+          title : Ip
+          route : demo:web.form.index/Ip
+        -
+          title : Keyword
+          route : demo:web.form.index/Keyword
+        -
+          title : Link
+          route : demo:web.form.index/Link
+        -
+          title : Mobile
+          route : demo:web.form.index/Mobile
+        -
+          title : Month
+          route : demo:web.form.index/Month
+        -
+          title : Number
+          route : demo:web.form.index/Number
+        -
+          title : Password
+          route : demo:web.form.index/Password
+        -
+          title : Radio
+          route : demo:web.form.index/Radio
+        -
+          title : Select
+          route : demo:web.form.index/Select
+        -
+          title : MultipleSelect
+          route : demo:web.form.index/MultipleSelect
+        -
+          title : SwitchField
+          route : demo:web.form.index/SwitchField
+        -
+          title : Tags
+          route : demo:web.form.index/Tags
+        -
+          title : Text
+          route : demo:web.form.index/Text
+        -
+          title : Textarea
+          route : demo:web.form.index/Textarea
+        -
+          title : Time
+          route : demo:web.form.index/Time
+        -
+          title : TimeRange
+          route : demo:web.form.index/TimeRange
+        -
+          title : Tips
+          route : demo:web.form.index/Tips
+        -
+          title : Url
+          route : demo:web.form.index/Url
+        -
+          title : Year
+          route : demo:web.form.index/Year

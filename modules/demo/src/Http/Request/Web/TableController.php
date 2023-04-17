@@ -5,7 +5,7 @@ namespace Demo\Http\Request\Web;
 use Demo\Http\Validation\ListTableManualRequest;
 use Demo\Models\DemoWebapp;
 use Illuminate\Database\Eloquent\Builder;
-use Misc\Models\OnlineLog;
+use Illuminate\Http\Request;
 use Poppy\Framework\Helper\TimeHelper;
 use Poppy\MgrPage\Classes\Widgets\TableWidget;
 use Poppy\System\Http\Request\Web\WebController;
@@ -67,4 +67,22 @@ class TableController extends WebController
             ->appends($request->all());
         return view('demo::web.table.manual', compact('items'));
     }
+
+
+    public function pjaxError(Request $request)
+    {
+        if ($request->pjax()) {
+            sleep(4);
+        }
+        $created_at = $request->input('created_at');
+        $items      = PamLog::orderByDesc('id')
+            ->when($created_at, function (Builder $query) use ($created_at) {
+                [$start_at, $end_at] = explode(' - ', $created_at);
+                return $query->where('created_at', '>=', TimeHelper::dayStart($start_at))->where('created_at', '<', TimeHelper::dayStart($end_at));
+            })
+            ->paginate($this->pagesize)
+            ->appends($request->all());
+        return view('demo::web.table.pjax_error', compact('items'));
+    }
+
 }

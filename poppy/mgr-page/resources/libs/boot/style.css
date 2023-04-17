@@ -1859,9 +1859,6 @@
   padding-bottom: 0;
   line-height: 44px;
 }
-.layui-layout-admin .layui-side .layui-nav .layui-nav-itemed > .layui-nav-child {
-  padding: 0;
-}
 .layui-nav-tree .layui-nav-child {
   line-height: 44px;
 }

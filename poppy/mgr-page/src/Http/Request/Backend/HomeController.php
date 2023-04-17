@@ -54,7 +54,7 @@ class HomeController extends BackendController
         $host = StrHelper::formatId(EnvHelper::host()) . '-backend';
         $name = sys_setting('py-system::site.name');
         $logo = sys_setting('py-system::site.logo');
-        $main = route('py-mgr-page:backend.home.cp');
+        $main = route('py-mgr-page:backend.home.cp', [], false);
         return view('py-mgr-page::backend.home.index', [
             'host' => $host,
             'logo' => $logo,

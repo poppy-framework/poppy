@@ -28,6 +28,8 @@ Route::group([
         ->name('demo:web.table.easy');
     $router->any('table/manual', 'TableController@manual')
         ->name('demo:web.table.manual');
+    $router->any('table/pjax_error', 'TableController@pjaxError')
+        ->name('demo:web.table.pjax_error');
 
     /* Grid
      * ---------------------------------------- */
@@ -35,6 +37,12 @@ Route::group([
         ->name('demo:web.grid.index');
     $router->any('grid/no_file', 'GridController@noFile')
         ->name('demo:web.grid.no_file');
+
+
+    /* Search(搜索)
+     * ---------------------------------------- */
+    $router->any('search/{type?}', 'SearchController@index')
+        ->name('demo:web.search.index');
 
     /* Helper 示例
      * ---------------------------------------- */

@@ -17,7 +17,6 @@
             $ele.css({
                 transform: 'translateX(0)',
                 transition: 'transform 0.5s ease-in-out'
-
             }).animate();
             $body.addClass('fixed-sn-force');
             $hideCtr.show();
@@ -90,6 +89,13 @@
                 layui.form.render();
             });
             $(document).on('pjax:error', function (event, xhr) {
+                if (xhr.statusText === 'timeout') {
+                    setTimeout(function () {
+                        layer.msg('请求超时');
+                    }, 100)
+                    event.preventDefault();
+                    return false;
+                }
                 setTimeout(function () {
                     layer.msg(xhr.responseText);
                 }, 100)

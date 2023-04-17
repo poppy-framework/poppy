@@ -32,7 +32,7 @@ class ListSysContent extends ListBase
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var SysContent $item */
             $item = $actions->row;
-            $actions->edit(route('py-content:backend.content.establish', [$item->id]));
+            $actions->page('编辑', route('py-content:backend.content.establish', [$item->id]))->icon('pen')->primary();
             $actions->delete(route('py-content:backend.content.delete', [$item->id]), $item->title);
             if ($item->is_enable) {
                 $actions->disable(route('py-content:backend.content.toggle', [$item->id]), $item->title, '展示');

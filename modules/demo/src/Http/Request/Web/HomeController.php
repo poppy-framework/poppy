@@ -27,4 +27,9 @@ class HomeController extends WebController
             ->title('标题')
             ->description('描述');
     }
+
+    public function output($title)
+    {
+        echo $title;
+    }
 }

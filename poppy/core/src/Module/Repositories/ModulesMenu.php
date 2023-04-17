@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\Core\Module\Repositories;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Poppy\Core\Classes\PyCoreDef;
 use Poppy\Core\Exceptions\PermissionException;
 use Poppy\Core\Rbac\Contracts\RbacUserContract;
@@ -19,16 +20,16 @@ class ModulesMenu extends Repository
 
     /**
      * Initialize.
-     * @param Collection $uis 集合
+     * @param Collection $collection 集合
      */
-    public function initialize(Collection $uis)
+    public function initialize(Collection $collection)
     {
         // check serve setting
         $this->items = sys_tag('py-core')->remember(
             PyCoreDef::ckModule('menu'),
             PyCoreDef::MIN_ONE_DAY * 60,
-            function () use ($uis) {
-                $uis = $uis->map(function ($definition) {
+            function () use ($collection) {
+                $collection = $collection->map(function ($definition) {
                     // slug  - module
                     // layer - module
                     return collect($definition)->map(function ($definition, $key) {
@@ -45,21 +46,19 @@ class ModulesMenu extends Repository
                             }
                         })->toArray();
                         $definition['groups'] = $parsedGroups;
-                        $definition['routes'] = collect($definition['groups'])->pluck('routes')->flatten();
-
                         return $definition;
                     })->toArray();
                 });
 
-                $collection = collect();
-                $uis->each(function ($definition, $slug) use ($collection) {
-                    $this->parse($definition, $slug, $collection);
+                $items = collect();
+                $collection->each(function ($definition, $slug) use ($items) {
+                    $this->parse($definition, $slug, $items);
                 });
 
                 /* 对 Injection 进行处理
                  * ---------------------------------------- */
                 $reCollection = collect();
-                $collection->each(function ($definition, $slug) use ($reCollection) {
+                $items->each(function ($definition, $slug) use ($reCollection) {
                     $groups = $definition['groups'] ?? [];
                     if ($groups) {
                         collect($groups)->each(function ($group, $index) use ($reCollection, &$definition) {
@@ -83,16 +82,15 @@ class ModulesMenu extends Repository
                 });
 
 
-                $collection = $reCollection;
-                $handled    = collect();
-                $collect    = collect();
-                $collection->each(function ($definition, $key) use (&$handled, $collect) {
+                $items   = $reCollection;
+                $handled = collect();
+                $collect = collect();
+                $items->each(function ($definition, $key) use (&$handled, $collect) {
                     /* 避免重复循环请求的数据错误
                      * ---------------------------------------- */
                     if ($handled->contains($key)) {
                         $definition = $collect->get($key);
                     }
-                    $definition['routes'] = collect($definition['groups'])->pluck('routes')->flatten()->unique();
                     $collect->put($key, $definition);
                 });
 
@@ -126,14 +124,13 @@ class ModulesMenu extends Repository
             collect($module['groups'])->each(function ($group) use ($pam, $groups, $is_full_permission) {
                 $children = collect();
 
-                //
-                collect($group['children'])->each(function ($url) use ($children, $pam, $is_full_permission) {
+                collect($group['children'])->each(function ($link) use ($children, $pam, $is_full_permission) {
 
                     /* 三级菜单的权限
                      * ---------------------------------------- */
-                    if ($url['children'] ?? []) {
+                    if ($link['children'] ?? []) {
                         $submenus = collect([]);
-                        collect($url['children'] ?? [])->each(function ($url) use ($submenus, $pam, $is_full_permission) {
+                        collect($link['children'] ?? [])->each(function ($url) use ($submenus, $pam, $is_full_permission) {
                             if ($url['permission'] ?? '') {
                                 // 管理员拥有所有权限
                                 if ($is_full_permission) {
@@ -148,46 +145,31 @@ class ModulesMenu extends Repository
                             }
                         });
                         if ($submenus->count()) {
-                            $url['children'] = $submenus->toArray();
-                            $children->push($url);
+                            $link['children'] = $submenus->toArray();
+                            $children->push($link);
                         }
                     }
-
-                    if ($url['route'] ?? '') {
-                        if ($url['permission'] ?? '') {
-                            // 管理员拥有所有权限
-                            if ($is_full_permission) {
-                                $children->push($url);
-                            }
-                            elseif ($pam->capable($url['permission'])) {
-                                $children->push($url);
-                            }
+                    else if (($link['route'] ?? '') && ($link['permission'] ?? '')) {
+                        // 管理员拥有所有权限
+                        if ($is_full_permission) {
+                            $children->push($link);
                         }
-                        else {
-                            $children->push($url);
+                        elseif ($pam->capable($link['permission'])) {
+                            $children->push($link);
                         }
                     }
-
+                    else {
+                        $children->push($link);
+                    }
                 });
                 $group['children'] = $children;
-                $group['routes']   = collect($group['children'])->pluck('route')->flatten();
-
-                // 重新匹配 match
-                $matches = collect($group['children'])->pluck('match')->flatten()->filter();
-                if ($matches->count()) {
-                    $group['routes'] = $group['routes']->merge($matches->toArray());
-                }
-
-                if (count($group['routes'])) {
-                    $groups->push($group);
-                }
+                $groups->push($group);
             });
             $module['groups'] = $groups;
             if (count($module['groups'])) {
                 $menu->push($module);
             }
         });
-
         return $menu;
     }
 
@@ -196,7 +178,7 @@ class ModulesMenu extends Repository
      * @param array  $perms perms
      * @return Collection
      */
-    public function withType(string $type, array $perms): Collection
+    public function withType(string $type, array $perms = []): Collection
     {
         $menus = $this->where('type', $type);
         $menu  = collect();
@@ -205,7 +187,7 @@ class ModulesMenu extends Repository
             collect($module['groups'])->each(function ($group) use ($groups, $perms) {
                 $children = collect();
                 collect($group['children'])->each(function ($url) use ($children, $perms) {
-                    if (isset($url['permission']) && $url['permission']) {
+                    if ($url['permission'] ?? '') {
                         if (in_array($url['permission'], $perms, true)) {
                             $children->push($url);
                         }
@@ -215,17 +197,7 @@ class ModulesMenu extends Repository
                     }
                 });
                 $group['children'] = $children;
-                $group['routes']   = collect($group['children'])->pluck('route')->flatten();
-
-                // 重新匹配 match
-                $matches = collect($group['children'])->pluck('match')->flatten()->filter();
-                if ($matches->count()) {
-                    $group['routes'] = $group['routes']->merge($matches->toArray());
-                }
-
-                if (count($group['routes'])) {
-                    $groups->push($group);
-                }
+                $groups->push($group);
             });
             $module['groups'] = $groups;
             if (count($module['groups'])) {
@@ -278,22 +250,34 @@ class ModulesMenu extends Repository
                 }
             }
             $group['children'] = $newGroup;
+        }
 
-            // parse match && routes
-            $matches         = collect($group['children'])->pluck('match')->flatten()->filter();
-            $group['routes'] = collect($group['children'])->pluck('route');
-            if ($matches->count()) {
-                $group['routes'] = $group['routes']->merge($matches->toArray());
+        // 兼容之前的取值
+        $url   = $group['url'] ?? '';
+        $route = $group['route'] ?? '';
+        if (!$url) {
+            $param = $group['route_param'] ?? '';
+            $query = $group['param'] ?? '';
+            if (preg_match('/([a-zA-Z0-9:_.-]*)(\/?[a-zA-Z0-9_,.]*)?(\?.*)?/', $route, $matches)) {
+                $route = $matches[1];
+                $param = (isset($matches[2]) && $matches[2]) ? trim($matches[2], '/') : $param;
+                $query = (isset($matches[3]) && $matches[3]) ? trim($matches[3], '?') : $query;
+            }
+
+            $url = $route ? route_url($route, is_array($param) ? $param : explode(',', $param), $query, false) : '';
+        }
+
+        $group['url']   = $url;
+        $group['route'] = $route;
+
+        unset($group['route_param'], $group['param']);
+
+        $routeHide = (array) config('poppy.core.route_hide');
+        foreach ($routeHide as $hr) {
+            if (Str::is($hr, $route) || Str::is($hr, $url)) {
+                return null;
             }
         }
-        $route     = $group['route'] ?? '';
-        $routeHide = (array) config('poppy.core.route_hide');
-        if (in_array($route, $routeHide, true)) {
-            return null;
-        }
-        // 值补足
-        $group['route_param'] = $group['route_param'] ?? '';
-        $group['param']       = $group['param'] ?? '';
         return $group;
     }
 }

@@ -9,10 +9,10 @@
                 @foreach($_menus as $k_menu => $v_menu)
                     @foreach($v_menu['groups'] as $k_group => $v_group)
                         @foreach($v_group['children'] as $v_link)
-                            @if (isset($v_link['route']))
+                            @if (isset($v_link['url']))
                                 <div class="search" v-on:click="switchQuick">
-                                    <span class="hide">{!! \Poppy\MgrPage\Classes\SearchCache::py($v_link['title']) !!}</span>
-                                    <a ew-href="{{ route_url($v_link['route'])}}">
+                                    <span class="hide">{!! Poppy\MgrPage\Classes\SearchCache::py($v_link['title']) !!}</span>
+                                    <a ew-href="{{ $v_link['url']}}">
                                         {!! isset($v_link['icon']) && $v_link['icon']? '<i class="'.$v_link['icon'].'"></i>' :'' !!}
                                         {{$v_link['title']}}
                                     </a>
@@ -21,8 +21,8 @@
                                 @if($v_link['children']??[])
                                     @foreach ($v_link['children'] as $c_link)
                                         <div class="search" v-on:click="switchQuick">
-                                            <span class="hide">{!! \Poppy\MgrPage\Classes\SearchCache::py($c_link['title']) !!}</span>
-                                            <a ew-href="{{ route_url($c_link['route'], $c_link['route_param']??[])}}">
+                                            <span class="hide">{!! Poppy\MgrPage\Classes\SearchCache::py($c_link['title']) !!}</span>
+                                            <a ew-href="{{ $c_link['url'] }}">
                                                 {!! isset($c_link['icon']) && $c_link['icon']? '<i class="'.$c_link['icon'].'"></i>' :'' !!}
                                                 {!! $c_link['title'] !!}
                                             </a>

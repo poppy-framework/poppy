@@ -1,7 +1,7 @@
 @extends('py-mgr-page::backend.tpl.default')
 @section('backend-main')
     <div class="layui-card-header">
-        标题
+        Pjax Error (点击搜索会触发超时)
     </div>
     <div class="layui-card-body">
         {!! Form::model(input(), ['method' => 'get', 'class' => 'layui-form', 'data-pjax', 'pjax-ctr'=>'#main']) !!}
