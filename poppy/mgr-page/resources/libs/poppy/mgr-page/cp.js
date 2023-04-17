@@ -51,12 +51,13 @@
         if ($.support.pjax) {
             $(document).on('submit', 'form[data-pjax]', function (event) {
                 var container = $(this).attr('pjax-ctr');
+                var timeout = $(this).attr('pjax-timeout');
                 if (!container) {
                     container = '#pjax-container'
                 }
                 $.pjax.submit(event, container, {
                     fragment: container,
-                    timeout: 3000
+                    timeout: timeout ? timeout: 3000
                 });
                 event.preventDefault();
             });
