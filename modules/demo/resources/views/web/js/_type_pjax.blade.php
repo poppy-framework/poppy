@@ -45,4 +45,10 @@ Pjax 请求错误, 返回提示
             <a href="{!! route_url('demo:web.js.location') !!}" class="layui-btn layui-btn-sm">打开跳转的页面</a>
         </td>
     </tr>
+    <tr>
+        <td>参数 : pjax-timeout</td>
+        <td>
+            int : 默认 3000, 定义 pjax 请求超时的超时时间(毫秒)
+        </td>
+    </tr>
 </table>
