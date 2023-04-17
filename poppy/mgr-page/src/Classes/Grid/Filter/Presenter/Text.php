@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter\Presenter;
 
 class Text extends Presenter
@@ -7,24 +9,24 @@ class Text extends Presenter
     /**
      * @var string
      */
-    protected $placeholder = '';
+    protected string $placeholder = '';
 
     /**
      * @var string
      */
-    protected $icon = 'pencil';
+    protected string $icon = 'pencil';
 
     /**
      * @var string
      */
-    protected $type = 'text';
+    protected string $type = 'text';
 
     /**
      * Text constructor.
      *
      * @param string $placeholder
      */
-    public function __construct($placeholder = '')
+    public function __construct(string $placeholder = '')
     {
         $this->placeholder($placeholder);
     }
@@ -51,7 +53,7 @@ class Text extends Presenter
      *
      * @return $this
      */
-    public function placeholder($placeholder = ''): self
+    public function placeholder(string $placeholder = ''): self
     {
         $this->placeholder = $placeholder;
 
@@ -145,7 +147,7 @@ class Text extends Presenter
      *
      * @return Text
      */
-    public function mobile($mask = '19999999999'): self
+    public function mobile(string $mask = '19999999999'): self
     {
         return $this->inputmask(compact('mask'), 'phone');
     }

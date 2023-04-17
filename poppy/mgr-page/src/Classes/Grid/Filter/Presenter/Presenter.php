@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter\Presenter;
 
 use Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter;
 use ReflectionClass;
-use ReflectionException;
 
 /**
  * 表现
@@ -30,21 +31,19 @@ abstract class Presenter
      * @see https://stackoverflow.com/questions/19901850/how-do-i-get-an-objects-unqualified-short-class-name
      *
      * @return string
-     * @throws ReflectionException
      */
     public function view(): string
     {
-        $reflect = new ReflectionClass(get_called_class());
+        $reflect = new ReflectionClass(static::class);
 
         return 'py-mgr-page::tpl.filter.' . strtolower($reflect->getShortName());
     }
 
     /**
-     * @throws \ReflectionException
      */
     public function type(): string
     {
-        $reflect = new ReflectionClass(get_called_class());
+        $reflect = new ReflectionClass(static::class);
         return strtolower($reflect->getShortName());
     }
 

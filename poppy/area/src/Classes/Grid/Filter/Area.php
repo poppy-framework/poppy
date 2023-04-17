@@ -9,7 +9,6 @@ use Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter;
 class Area extends AbstractFilter
 {
 
-
     public function render()
     {
         $this->presenter = new Presenter\Area();

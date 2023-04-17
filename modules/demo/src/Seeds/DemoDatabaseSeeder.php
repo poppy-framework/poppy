@@ -14,9 +14,7 @@ class DemoDatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            DemoUserDatabaseSeeder::class,
-            DemoWebappDatabaseSeeder::class,
-            DemoCommentDatabaseSeeder::class
+            DemoGridDatabaseSeeder::class,
         ]);
     }
 }

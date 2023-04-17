@@ -67,6 +67,7 @@
             "Poppy\\Extension\\IpStore\\Tests\\": "poppy/ext-ip_store/tests",
             "Poppy\\Extension\\Phpstan\\": "poppy/ext-phpstan/src",
             "Poppy\\Faker\\": "poppy/faker/src",
+            "Faker\\": "poppy/faker/src/Faker/",
             "Poppy\\Faker\\Tests\\": "poppy/faker/tests",
             "Poppy\\Framework\\": "poppy/framework/src",
             "Poppy\\Framework\\Tests\\": "poppy/framework/tests",

@@ -5,6 +5,7 @@ namespace Poppy\MgrPage\Classes\Grid\Filter\Layout;
 use Closure;
 use Illuminate\Support\Collection;
 use Poppy\MgrPage\Classes\Grid\Filter;
+use Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter;
 
 /**
  * 布局
@@ -12,19 +13,19 @@ use Poppy\MgrPage\Classes\Grid\Filter;
 class Layout
 {
     /**
-     * @var Collection
+     * @var Collection|Column[]
      */
-    protected $columns;
+    protected Collection $columns;
 
     /**
      * @var Column
      */
-    protected $current;
+    protected Column $current;
 
     /**
      * @var Filter
      */
-    protected $parent;
+    protected Filter $parent;
 
     /**
      * Layout constructor.
@@ -33,7 +34,7 @@ class Layout
      */
     public function __construct(Filter $filter)
     {
-        $this->parent = $filter;
+        $this->parent  = $filter;
         $this->current = new Column();
         $this->columns = new Collection();
     }
@@ -41,9 +42,9 @@ class Layout
     /**
      * Add a filter to layout column.
      *
-     * @param \Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter $filter
+     * @param AbstractFilter $filter
      */
-    public function addFilter(\Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter $filter)
+    public function addFilter(AbstractFilter $filter)
     {
         $this->current->addFilter($filter);
     }
@@ -80,5 +81,18 @@ class Layout
             $this->columns->push($this->current);
         }
         return $this->columns;
+    }
+
+    /**
+     * 过滤条件数量
+     * @return int
+     */
+    public function filterCount(): int
+    {
+        $count = 0;
+        foreach ($this->columns as $column) {
+            $count += $column->filterCount();
+        }
+        return $count;
     }
 }

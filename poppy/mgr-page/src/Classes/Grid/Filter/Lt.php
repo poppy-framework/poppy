@@ -28,6 +28,6 @@ class Lt extends AbstractFilter
 
         $this->value = $value;
 
-        return $this->buildCondition($this->column, '<=', $this->value);
+        return $this->buildCondition($this->column, '<', $this->value);
     }
 }

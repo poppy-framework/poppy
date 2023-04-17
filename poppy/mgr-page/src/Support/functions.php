@@ -99,6 +99,28 @@ if (!function_exists('mgr_actions')) {
     }
 }
 
+if (!function_exists('mgr_menu_title')) {
+    /**
+     * 菜单标题
+     * @param array $link
+     * @return string
+     */
+    function mgr_menu_title(array $link): string
+    {
+        $target = $link['target'] ?? '';
+        $url    = $link['url'];
+
+        $lk   = $target ? " href=\"{$url}\" target=\"{$target}\" " : "ew-href=\"{$url}\"";
+        $icon = isset($link['icon']) && $link['icon'] ? '<i class="' . $link['icon'] . '"></i>' : '';
+        return <<<LINK
+<a {$lk}>
+    {$icon}
+    {$link['title']}
+</a>
+LINK;
+    }
+}
+
 
 if (!function_exists('mgr_op')) {
     /**

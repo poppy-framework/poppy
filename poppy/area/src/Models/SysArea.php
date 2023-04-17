@@ -60,7 +60,7 @@ class SysArea extends Model
     public static function cityTree()
     {
         return sys_tag('py-area')->remember(PyAreaDef::ckArea('tree-level-2'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
-            $items = SysArea::selectRaw("id,title,parent_id")->where('level', '<', 4)->get()->keyBy('id')->toArray();
+            $items = SysArea::selectRaw('id,title,parent_id')->where('level', '<', 4)->get()->keyBy('id')->toArray();
             $Tree  = new TreeHelper();
             $Tree->init($items, 'id', 'parent_id', 'title');
             return $Tree->getTreeArray(0);
@@ -70,7 +70,7 @@ class SysArea extends Model
     public static function cityMgrTree()
     {
         return sys_tag('py-area')->remember(PyAreaDef::ckArea('tree-level-2-mgr'), PyCoreDef::MIN_ONE_MONTH * 60, function () {
-            $items       = SysArea::selectRaw("id,title,parent_id")->where('level', '<', 4)->get()->keyBy('id')->toArray();
+            $items       = SysArea::selectRaw('id,title,parent_id')->where('level', '<', 4)->get()->keyBy('id')->toArray();
             $Tree        = new TreeHelper();
             $Tree->space = ' ';
             $Tree->icon  = [' │', ' ├', ' └'];
@@ -101,7 +101,7 @@ class SysArea extends Model
         ];
         $level  = $levels[$type] ?? 2;
         return sys_tag('py-area')->remember(PyAreaDef::ckArea('cascader-' . $level), PyCoreDef::MIN_ONE_MONTH * 60, function () use ($level) {
-            $items = SysArea::selectRaw("id as value,title as label,parent_id, if(level<4, 0, 1) as leaf")->where('level', '<=', $level)->get()->toArray();
+            $items = SysArea::selectRaw('id as value,title as label,parent_id, if(level<4, 0, 1) as leaf')->where('level', '<=', $level)->get()->toArray();
             return UtilHelper::genTree($items, 'value', 'parent_id', 'children', false);
         });
     }

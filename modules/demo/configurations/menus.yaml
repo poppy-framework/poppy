@@ -67,15 +67,15 @@ demo :
             -
               title : 'Font Awesome'
               url : https://fontawesome.com/v5/cheatsheet
-              target: '_blank'
+              target : '_blank'
             -
               title : 'Layui'
               url : https://layui.gitee.io/v2/docs/
-              target: '_blank'
+              target : '_blank'
             -
               title : 'Layer'
               url : https://layui.gitee.io/v2/layer/
-              target: '_blank'
+              target : '_blank'
     -
       title : 示例
       children :
@@ -96,26 +96,43 @@ demo :
       children :
         -
           title : Where
-          route : demo:web.search.index
-          route_param :
-            - where
+          icon : 'bi bi-search'
+          route : demo:web.search.index/where
+        -
+          title : Query(默认查询条件)
+          route : demo:web.search.index/query
+        -
+          title : Hidden(隐藏单元)
+          route : demo:web.search.index/hidden
+        -
+          title : Like(模糊查询)
+          route : demo:web.search.index/like
+        -
+          title : Equal(相等)
+          route : demo:web.search.index/equal
     -
-      title : Grid
+      title : Content
       children :
         -
           title : Content
           route : demo:web.content.index
+    -
+      title : Grid
+      children :
+        -
+          title : Grid Index
+          route : demo:web.grid.index/index
+        -
+          title : Grid Index
+          route : demo:web.grid.index/default
         -
           title : Grid Demo
           route : demo:web.grid.index/demo
         -
           title : Grid Edit
-          route : demo:web.grid.index/edit
+          route : demo:web.grid.index/editable
         -
-          title : Grid Index
-          route : demo:web.grid.index/index
-        -
-          title : Grid User
+          title : Grid User(连表)
           route : demo:web.grid.index/user
         -
           title : Grid Operation

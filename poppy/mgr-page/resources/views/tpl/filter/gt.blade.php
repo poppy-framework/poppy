@@ -1,4 +1,4 @@
 <div class="layui-input-group">
-    <span class="layui-input-group-addon">{{$label}} <i class="fa fa-greater-than"></i></span>
+    <span class="layui-input-group-addon">{{$label}} &gt;</span>
     @include($presenter->view())
 </div>

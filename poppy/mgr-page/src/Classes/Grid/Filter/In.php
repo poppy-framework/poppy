@@ -9,7 +9,7 @@ class In extends AbstractFilter
     /**
      * @inheritDoc
      */
-    protected $query = 'whereIn';
+    protected string $query = 'whereIn';
 
     /**
      * Get condition of this filter.

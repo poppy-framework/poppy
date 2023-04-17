@@ -21,16 +21,16 @@
             <thead>
             <tr>
                 <th {!! mgr_col(100) !!}>ID</th>
-                <th {!! mgr_col() !!}>客服ID</th>
-                <th {!! mgr_col() !!}>操作时间</th>
+                <th {!! mgr_col() !!}>标题</th>
+                <th {!! mgr_col() !!}>发布时间</th>
             </tr>
             </thead>
             <tbody>
             @foreach($items as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
-                    <td>{{ $item->kf_id }}</td>
-                    <td>{{ $item->created_at }}</td>
+                    <td>{{ $item->title }}</td>
+                    <td>{{ $item->post_at }}</td>
                 </tr>
             @endforeach
             </tbody>

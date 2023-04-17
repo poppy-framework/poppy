@@ -405,7 +405,7 @@ class Column
      * @param string $default
      * @return $this
      */
-    public function using(array $values, $default = ''): self
+    public function using(array $values, string $default = ''): self
     {
         return $this->display(function ($value) use ($values, $default) {
             if (is_null($value)) {
@@ -548,7 +548,7 @@ class Column
         return $this->display(function ($value) use ($map, $default) {
             $bool = empty($map) ? (bool) $value : Arr::get($map, $value, $default);
 
-            return $bool ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-close text-danger"></i>';
+            return $bool ? '<i class="bi bi-check-lg text-success"></i>' : '<i class="bi bi-x-lg text-danger"></i>';
         });
     }
 

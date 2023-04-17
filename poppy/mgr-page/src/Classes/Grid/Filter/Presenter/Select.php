@@ -2,9 +2,11 @@
 
 namespace Poppy\MgrPage\Classes\Grid\Filter\Presenter;
 
+use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use InvalidArgumentException;
 
 class Select extends Presenter
 {
@@ -19,11 +21,6 @@ class Select extends Presenter
      * @var array
      */
     protected $config = [];
-
-    /**
-     * @var string
-     */
-    protected $script = '';
 
     /**
      * Select constructor.
@@ -53,24 +50,6 @@ class Select extends Presenter
     }
 
     /**
-     * Build options.
-     *
-     * @return array
-     */
-    protected function buildOptions(): array
-    {
-        if ($this->options instanceof \Closure) {
-            $this->options = $this->options->call($this->filter, $this->filter->getValue());
-        }
-
-        if ($this->options instanceof Arrayable) {
-            $this->options = $this->options->toArray();
-        }
-
-        return is_array($this->options) ? $this->options : [];
-    }
-
-    /**
      * Load options from current selected resource(s).
      *
      * @param string $model
@@ -82,9 +61,9 @@ class Select extends Presenter
     public function model($model, $idField = 'id', $textField = 'name')
     {
         if (!class_exists($model)
-            || !in_array(Model::class, class_parents($model))
+            || !in_array(Model::class, class_parents($model), true)
         ) {
-            throw new \InvalidArgumentException("[$model] must be a valid model class");
+            throw new InvalidArgumentException("[$model] must be a valid model class");
         }
 
         $this->options = function ($value) use ($model, $idField, $textField) {
@@ -112,9 +91,6 @@ class Select extends Presenter
         return $this;
     }
 
-
-
-
     /**
      * @return array
      */
@@ -124,6 +100,24 @@ class Select extends Presenter
             'options' => $this->buildOptions(),
             'class'   => $this->getElementClass(),
         ];
+    }
+
+    /**
+     * Build options.
+     *
+     * @return array
+     */
+    protected function buildOptions(): array
+    {
+        if ($this->options instanceof Closure) {
+            $this->options = $this->options->call($this->filter, $this->filter->getValue());
+        }
+
+        if ($this->options instanceof Arrayable) {
+            $this->options = $this->options->toArray();
+        }
+
+        return is_array($this->options) ? $this->options : [];
     }
 
     /**

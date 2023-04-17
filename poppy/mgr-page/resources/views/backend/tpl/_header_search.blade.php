@@ -12,23 +12,16 @@
                             @if (isset($v_link['url']))
                                 <div class="search" v-on:click="switchQuick">
                                     <span class="hide">{!! Poppy\MgrPage\Classes\SearchCache::py($v_link['title']) !!}</span>
-                                    <a ew-href="{{ $v_link['url']}}">
-                                        {!! isset($v_link['icon']) && $v_link['icon']? '<i class="'.$v_link['icon'].'"></i>' :'' !!}
-                                        {{$v_link['title']}}
-                                    </a>
+                                    {!! mgr_menu_title($v_link) !!}
                                 </div>
-                            @else
-                                @if($v_link['children']??[])
-                                    @foreach ($v_link['children'] as $c_link)
-                                        <div class="search" v-on:click="switchQuick">
-                                            <span class="hide">{!! Poppy\MgrPage\Classes\SearchCache::py($c_link['title']) !!}</span>
-                                            <a ew-href="{{ $c_link['url'] }}">
-                                                {!! isset($c_link['icon']) && $c_link['icon']? '<i class="'.$c_link['icon'].'"></i>' :'' !!}
-                                                {!! $c_link['title'] !!}
-                                            </a>
-                                        </div>
-                                    @endforeach
-                                @endif
+                            @endif
+                            @if($v_link['children']??[])
+                                @foreach ($v_link['children'] as $c_link)
+                                    <div class="search" v-on:click="switchQuick">
+                                        <span class="hide">{!! Poppy\MgrPage\Classes\SearchCache::py($c_link['title']) !!}</span>
+                                        {!! mgr_menu_title($c_link) !!}
+                                    </div>
+                                @endforeach
                             @endif
                         @endforeach
                     @endforeach
@@ -40,22 +33,22 @@
 </li>
 
 <script>
-$(function() {
+$(function () {
     Util.holmes({
-        input : '#search-input',
-        find : '#search-main .search',
-        placeholder : '<h5> No Search Result!</h5>'
+        input: '#search-input',
+        find: '#search-main .search',
+        placeholder: '<h5> No Search Result!</h5>'
     });
 });
 new Vue({
-    el : '#search-main',
-    data : {
-        show : 'none'
+    el: '#search-main',
+    data: {
+        show: 'none'
     },
-    methods : {
-        switchQuick : function() {
+    methods: {
+        switchQuick: function () {
             let $searchCtr = $('#search-ctr');
-            let display    = $searchCtr.css('display');
+            let display = $searchCtr.css('display');
             if (display === 'none') {
                 $searchCtr.css('display', 'block');
                 $('#bg-ctr').css('display', 'block');

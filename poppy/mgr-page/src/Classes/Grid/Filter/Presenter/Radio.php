@@ -1,36 +1,31 @@
 <?php
 
-namespace Poppy\MgrPage\Classes\Grid\Filter\Presenter;
+declare(strict_types = 1);
 
-use Illuminate\Contracts\Support\Arrayable;
+namespace Poppy\MgrPage\Classes\Grid\Filter\Presenter;
 
 class Radio extends Presenter
 {
     /**
      * @var array
      */
-    protected $options = [];
+    protected array $options = [];
 
     /**
      * Display inline.
      *
      * @var bool
      */
-    protected $inline = true;
+    protected bool $inline = true;
 
     /**
      * Radio constructor.
      *
      * @param array $options
      */
-    public function __construct($options = [])
+    public function __construct(array $options = [])
     {
-        if ($options instanceof Arrayable) {
-            $options = $options->toArray();
-        }
-
-        $this->options = (array) $options;
-
+        $this->options =  $options;
         return $this;
     }
 
@@ -42,7 +37,6 @@ class Radio extends Presenter
     public function stacked(): self
     {
         $this->inline = false;
-
         return $this;
     }
 
@@ -51,7 +45,6 @@ class Radio extends Presenter
      */
     public function variables(): array
     {
-
         return [
             'options' => $this->options,
             'inline'  => $this->inline,

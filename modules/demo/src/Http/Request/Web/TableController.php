@@ -3,13 +3,12 @@
 namespace Demo\Http\Request\Web;
 
 use Demo\Http\Validation\ListTableManualRequest;
-use Demo\Models\DemoWebapp;
+use Demo\Models\DemoGrid;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Poppy\Framework\Helper\TimeHelper;
 use Poppy\MgrPage\Classes\Widgets\TableWidget;
 use Poppy\System\Http\Request\Web\WebController;
-use Poppy\System\Models\PamLog;
 use Throwable;
 
 /**
@@ -17,16 +16,6 @@ use Throwable;
  */
 class TableController extends WebController
 {
-
-    public function index()
-    {
-        $input = input();
-        $items = DemoWebapp::paginate($this->pagesize)
-            ->appends($input);
-        return view('demo::web.table.index', [
-            'items' => $items,
-        ]);
-    }
 
     /**
      * 简易表格
@@ -52,7 +41,7 @@ class TableController extends WebController
         $kf_id      = $request->input('kf_id');
         $status     = $request->input('status');
         $created_at = $request->input('created_at');
-        $items      = PamLog::orderByDesc('id')
+        $items      = DemoGrid::orderByDesc('id')
             ->when($kf_id, function (Builder $query) use ($kf_id) {
                 return $query->where('kf_id', $kf_id);
             })
@@ -75,7 +64,7 @@ class TableController extends WebController
             sleep(4);
         }
         $created_at = $request->input('created_at');
-        $items      = PamLog::orderByDesc('id')
+        $items      = DemoGrid::orderByDesc('id')
             ->when($created_at, function (Builder $query) use ($created_at) {
                 [$start_at, $end_at] = explode(' - ', $created_at);
                 return $query->where('created_at', '>=', TimeHelper::dayStart($start_at))->where('created_at', '<', TimeHelper::dayStart($end_at));

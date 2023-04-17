@@ -6,10 +6,6 @@ namespace Poppy\MgrPage\Classes\Grid\Filter;
 
 class Hidden extends AbstractFilter
 {
-    /**
-     * @var string
-     */
-    protected $name;
 
     /**
      * @var string
@@ -17,16 +13,15 @@ class Hidden extends AbstractFilter
     protected $value;
 
     /**
-     * Hidden constructor.
-     *
-     * @param string $name
-     * @param string $value
+     * @var string
      */
-    public function __construct($name, $value)
-    {
-        $this->name = $name;
+    protected string $view = 'py-mgr-page::tpl.filter.hidden';
 
+
+    public function value($value): self
+    {
         $this->value = $value;
+        return $this;
     }
 
     /**
@@ -34,13 +29,6 @@ class Hidden extends AbstractFilter
      */
     public function condition(array $inputs)
     {
-    }
 
-    /**
-     * @inheritDoc
-     */
-    public function render()
-    {
-        return "<input type='hidden' name='$this->name' value='$this->value'>";
     }
 }

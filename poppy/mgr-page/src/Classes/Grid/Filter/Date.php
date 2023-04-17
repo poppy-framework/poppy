@@ -9,7 +9,7 @@ class Date extends AbstractFilter
     /**
      * @inheritDoc
      */
-    protected $query = 'whereDate';
+    protected string $query = 'whereDate';
 
     /**
      * @var string

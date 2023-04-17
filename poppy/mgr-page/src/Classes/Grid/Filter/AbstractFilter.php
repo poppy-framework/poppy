@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid\Filter;
 use Poppy\MgrPage\Classes\Grid\Filter\Presenter\Checkbox;
 use Poppy\MgrPage\Classes\Grid\Filter\Presenter\DateTime;
@@ -30,7 +31,7 @@ use Poppy\MgrPage\Classes\Grid\Filter\Presenter\Text;
  * @method Text inputmask($options = [], $icon = '')
  * @method Text placeholder($placeholder = '')
  */
-abstract class AbstractFilter extends Filter
+abstract class AbstractFilter
 {
     /**
      * @var Collection
@@ -49,7 +50,7 @@ abstract class AbstractFilter extends Filter
      *
      * @var string
      */
-    protected $label;
+    protected string $label;
 
     /**
      * @var array|string
@@ -64,31 +65,32 @@ abstract class AbstractFilter extends Filter
     /**
      * @var string
      */
-    protected $column;
+    protected string $column;
 
     /**
      * Presenter object.
      *
-     * @var Presenter
+     * @var Presenter|null
      */
-    protected $presenter;
+    protected ?Presenter $presenter;
 
     /**
      * Query for filter.
      *
      * @var string
      */
-    protected $query = 'where';
+    protected string $query = 'where';
 
     /**
      * @var Filter
      */
-    protected $parent;
+    protected Filter $parent;
 
     /**
      * @var string
      */
     protected string $view = 'py-mgr-page::tpl.filter.where';
+
 
     /**
      * AbstractFilter constructor.
@@ -96,7 +98,7 @@ abstract class AbstractFilter extends Filter
      * @param        $column
      * @param string $label
      */
-    public function __construct($column, $label = '')
+    public function __construct($column, string $label = '')
     {
         $this->column = $column;
         $this->label  = $this->formatLabel($label);
@@ -107,10 +109,22 @@ abstract class AbstractFilter extends Filter
 
     /**
      * @param Filter $filter
+     * @return AbstractFilter
      */
-    public function setParent(Filter $filter)
+    public function setParent(Filter $filter): self
     {
         $this->parent = $filter;
+        return $this;
+    }
+
+
+    /**
+     * 是否可以渲染
+     * @return bool
+     */
+    public function isRender(): bool
+    {
+        return !is_null($this->presenter);
     }
 
     /**
@@ -136,7 +150,7 @@ abstract class AbstractFilter extends Filter
      *
      * @return AbstractFilter[]|mixed
      */
-    public function previous($step = 1)
+    public function previous(int $step = 1)
     {
         return $this->siblings(
             array_search($this, $this->parent->filters()) - $step
@@ -150,7 +164,7 @@ abstract class AbstractFilter extends Filter
      *
      * @return AbstractFilter[]|mixed
      */
-    public function next($step = 1)
+    public function next(int $step = 1)
     {
         return $this->siblings(
             array_search($this, $this->parent->filters()) + $step
@@ -162,7 +176,7 @@ abstract class AbstractFilter extends Filter
      *
      * @param array $inputs
      *
-     * @return array|mixed|null
+     * @return array|mixed|null|void
      */
     public function condition(array $inputs)
     {
@@ -242,16 +256,6 @@ abstract class AbstractFilter extends Filter
     }
 
     /**
-     * Day filter.
-     *
-     * @return DateTime
-     */
-    public function day()
-    {
-        return $this->datetime(['layui-type' => 'date']);
-    }
-
-    /**
      * Month filter.
      *
      * @return DateTime
@@ -278,7 +282,9 @@ abstract class AbstractFilter extends Filter
      */
     public function render()
     {
-        return view($this->view, $this->variables());
+        return $this->isRender()
+            ? view($this->view, $this->variables())
+            : '';
     }
 
     /**
@@ -292,10 +298,10 @@ abstract class AbstractFilter extends Filter
     public function __call($method, $params)
     {
         if (method_exists($this->presenter, $method)) {
-            return $this->presenter()->{$method}(...$params);
+            return $this->presenter->{$method}(...$params);
         }
 
-        throw new Exception('Method "' . $method . '" not exists.');
+        throw new ApplicationException('Method "' . $method . '" not exists.');
     }
 
     /**
@@ -341,10 +347,9 @@ abstract class AbstractFilter extends Filter
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId(string $id): self
     {
         $this->id = $this->formatId($id);
-
         return $this;
     }
 
@@ -355,7 +360,7 @@ abstract class AbstractFilter extends Filter
      */
     public function getColumn()
     {
-        $parentName = $this->parent->name;
+        $parentName = $this->parent->getName();
 
         return $parentName ? "{$parentName}_{$this->column}" : $this->column;
     }
@@ -372,15 +377,12 @@ abstract class AbstractFilter extends Filter
 
     /**
      * Set presenter object of filter.
-     *
      * @param Presenter $presenter
-     *
      * @return mixed
      */
     public function setPresenter(Presenter $presenter)
     {
         $presenter->setParent($this);
-
         return $this->presenter = $presenter;
     }
 
@@ -401,7 +403,7 @@ abstract class AbstractFilter extends Filter
      *
      * @return string
      */
-    protected function formatLabel($label)
+    protected function formatLabel(string $label): string
     {
         $label = $label ?: ucfirst($this->column);
 
@@ -419,17 +421,17 @@ abstract class AbstractFilter extends Filter
     {
         $columns = explode('.', $column);
 
-        if (count($columns) == 1) {
+        if (count($columns) === 1) {
             $name = $columns[0];
         }
         else {
             $name = array_shift($columns);
-            foreach ($columns as $column) {
-                $name .= "[$column]";
+            foreach ($columns as $col) {
+                $name .= "[$col]";
             }
         }
 
-        $parenName = $this->parent->name;
+        $parenName = $this->parent->getName();
 
         return $parenName ? "{$parenName}_{$name}" : $name;
     }
@@ -447,16 +449,6 @@ abstract class AbstractFilter extends Filter
     }
 
     /**
-     * Get presenter object of filter.
-     *
-     * @return Presenter
-     */
-    protected function presenter()
-    {
-        return $this->presenter;
-    }
-
-    /**
      * Build conditions of filter.
      *
      * @return mixed
@@ -465,7 +457,7 @@ abstract class AbstractFilter extends Filter
     {
         $column = explode('.', $this->column);
 
-        if (count($column) == 1) {
+        if (count($column) === 1) {
             return [$this->query => func_get_args()];
         }
 
@@ -499,13 +491,14 @@ abstract class AbstractFilter extends Filter
      */
     protected function variables(): array
     {
+        $variables = $this->presenter ? $this->presenter->variables() : [];
         return array_merge([
             'id'        => $this->id,
             'column'    => $this->column,
             'name'      => $this->formatName($this->column),
             'label'     => $this->label,
             'value'     => $this->value ?: $this->defaultValue,
-            'presenter' => $this->presenter(),
-        ], $this->presenter()->variables());
+            'presenter' => $this->presenter,
+        ], $variables);
     }
 }

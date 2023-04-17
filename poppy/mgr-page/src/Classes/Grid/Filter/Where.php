@@ -2,32 +2,30 @@
 
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
+use Closure;
 use Illuminate\Support\Arr;
+use ReflectionException;
+use ReflectionFunction;
 
 class Where extends AbstractFilter
 {
+
     /**
      * Query closure.
      *
-     * @var \Closure
+     * @var Closure
      */
-    protected $where;
-
-    /**
-     * Input value from presenter.
-     *
-     * @var mixed
-     */
-    public $input;
+    protected Closure $where;
 
     /**
      * Where constructor.
      *
-     * @param \Closure $query
-     * @param string   $label
-     * @param string   $column
+     * @param Closure $query
+     * @param string  $label
+     * @param string  $column
+     * @throws ReflectionException
      */
-    public function __construct(\Closure $query, $label, $column = null)
+    public function __construct(Closure $query, $label, $column = null)
     {
         $this->where = $query;
 
@@ -41,15 +39,15 @@ class Where extends AbstractFilter
     /**
      * Get the hash string of query closure.
      *
-     * @param \Closure $closure
-     * @param string   $label
+     * @param Closure $closure
+     * @param string  $label
      *
      * @return string
+     * @throws ReflectionException
      */
-    public static function getQueryHash(\Closure $closure, $label = '')
+    public static function getQueryHash(Closure $closure, string $label = ''): string
     {
-        $reflection = new \ReflectionFunction($closure);
-
+        $reflection = new ReflectionFunction($closure);
         return md5($reflection->getFileName() . $reflection->getStartLine() . $reflection->getEndLine() . $label);
     }
 
@@ -59,6 +57,7 @@ class Where extends AbstractFilter
      * @param array $inputs
      *
      * @return array|mixed|void
+     * @throws ReflectionException
      */
     public function condition(array $inputs)
     {
@@ -68,7 +67,7 @@ class Where extends AbstractFilter
             return;
         }
 
-        $this->input = $this->value = $value;
+        $this->value = $value;
 
         return $this->buildCondition($this->where->bindTo($this));
     }

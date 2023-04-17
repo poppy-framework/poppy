@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
 class Year extends Date
@@ -7,7 +9,7 @@ class Year extends Date
     /**
      * @inheritDoc
      */
-    protected $query = 'whereYear';
+    protected string $query = 'whereYear';
 
     /**
      * @var string

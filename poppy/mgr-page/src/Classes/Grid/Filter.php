@@ -19,47 +19,52 @@ use Poppy\MgrPage\Classes\Grid\Filter\EndsWith;
 use Poppy\MgrPage\Classes\Grid\Filter\Equal;
 use Poppy\MgrPage\Classes\Grid\Filter\Group;
 use Poppy\MgrPage\Classes\Grid\Filter\Gt;
+use Poppy\MgrPage\Classes\Grid\Filter\Gte;
 use Poppy\MgrPage\Classes\Grid\Filter\Hidden;
 use Poppy\MgrPage\Classes\Grid\Filter\In;
 use Poppy\MgrPage\Classes\Grid\Filter\Layout\Layout;
 use Poppy\MgrPage\Classes\Grid\Filter\Like;
 use Poppy\MgrPage\Classes\Grid\Filter\Lt;
+use Poppy\MgrPage\Classes\Grid\Filter\Lte;
 use Poppy\MgrPage\Classes\Grid\Filter\Month;
 use Poppy\MgrPage\Classes\Grid\Filter\NotEqual;
 use Poppy\MgrPage\Classes\Grid\Filter\NotIn;
+use Poppy\MgrPage\Classes\Grid\Filter\Query;
 use Poppy\MgrPage\Classes\Grid\Filter\Scope;
 use Poppy\MgrPage\Classes\Grid\Filter\StartsWith;
 use Poppy\MgrPage\Classes\Grid\Filter\Where;
 use Poppy\MgrPage\Classes\Grid\Filter\Year;
-use Poppy\MgrPage\Classes\Grid\Tools\FilterButton;
 use Throwable;
 
 /**
  * 筛选器
  *
- * @method AbstractFilter equal($column, $label = '')
- * @method AbstractFilter notEqual($column, $label = '')
+ * @method Equal equal($column, $label = '')
+ * @method NotEqual notEqual($column, $label = '')
  * @method AbstractFilter leftLike($column, $label = '')
- * @method AbstractFilter like($column, $label = '')
+ * @method Like like($column, $label = '')
  * @method AbstractFilter contains($column, $label = '')
- * @method AbstractFilter startsWith($column, $label = '')
- * @method AbstractFilter endsWith($column, $label = '')
+ * @method StartsWith startsWith($column, $label = '')
+ * @method EndsWith endsWith($column, $label = '')
  * @method AbstractFilter ilike($column, $label = '')
- * @method AbstractFilter gt($column, $label = '')
- * @method AbstractFilter lt($column, $label = '')
+ * @method Gt gt($column, $label = '')
+ * @method Gte gte($column, $label = '')
+ * @method Lt lt($column, $label = '')
+ * @method Lte lte($column, $label = '')
  * @method Between between($column, $label = '')
  * @method BetweenDate betweenDate($column, $label = '')
- * @method AbstractFilter in($column, $label = '')
- * @method AbstractFilter notIn($column, $label = '')
- * @method AbstractFilter where($callback, $label = '', $column = null)
- * @method AbstractFilter date($column, $label = '')
- * @method AbstractFilter day($column, $label = '')
- * @method AbstractFilter month($column, $label = '')
- * @method AbstractFilter year($column, $label = '')
- * @method AbstractFilter hidden($name, $value)
- * @method AbstractFilter group($column, $label = '', $builder = null)
+ * @method In in($column, $label = '')
+ * @method NotIn notIn($column, $label = '')
+ * @method Where where($callback, $label = '', $column = null)
+ * @method Date date($column, $label = '')
+ * @method Day day($column, $label = '')
+ * @method Month month($column, $label = '')
+ * @method Year year($column, $label = '')
+ * @method Hidden hidden($name)
+ * @method Query query($name, $label = '')
+ * @method Group group($column, $label = '', $builder = null)
  */
-class Filter extends FilterButton
+class Filter
 {
     /**
      * @var array
@@ -68,8 +73,11 @@ class Filter extends FilterButton
         'equal'       => Equal::class,
         'notEqual'    => NotEqual::class,
         'like'        => Like::class,
+        'query'       => Query::class,
         'gt'          => Gt::class,
+        'gte'         => Gte::class,
         'lt'          => Lt::class,
+        'lte'         => Lte::class,
         'between'     => Between::class,
         'betweenDate' => BetweenDate::class,
         'group'       => Group::class,
@@ -131,9 +139,10 @@ class Filter extends FilterButton
     protected $scopes;
 
     /**
+     * 布局
      * @var Layout
      */
-    protected $layout;
+    protected Layout $layout;
 
     /**
      * Set this filter only in the layout.
@@ -228,22 +237,20 @@ class Filter extends FilterButton
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return $this
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
-
-        $this->setFilterId("$this->name-$this->filterId");
-
+        $this->setFilterId("{$this->name}-{$this->filterId}");
         return $this;
     }
 
@@ -287,7 +294,7 @@ class Filter extends FilterButton
         $conditions = [];
 
         foreach ($this->filters() as $filter) {
-            if (in_array($column = $filter->getColumn(), $this->layoutOnlyFilterColumns)) {
+            if (in_array($column = $filter->getColumn(), $this->layoutOnlyFilterColumns, true)) {
                 $filter->default(Arr::get($params, $column));
             }
             else {
@@ -505,7 +512,10 @@ class Filter extends FilterButton
     public function __call(string $method, array $arguments)
     {
         if ($filter = $this->resolveFilter($method, $arguments)) {
-            return $this->addFilter($filter);
+            $filter->setParent($this);
+            return tap($filter, function () use ($filter) {
+                return $this->addFilter($filter);
+            });
         }
 
         return $this;
@@ -605,7 +615,7 @@ class Filter extends FilterButton
         $query = $request->query();
         Arr::forget($query, $keys);
 
-        $question = $request->getBaseUrl() . $request->getPathInfo() == '/' ? '/?' : '?';
+        $question = $request->getBaseUrl() . ($request->getPathInfo() === '/' ? '/?' : '?');
 
         return count($request->query()) > 0
             ? $request->url() . $question . http_build_query($query)

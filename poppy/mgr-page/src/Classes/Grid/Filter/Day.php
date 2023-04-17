@@ -1,16 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
-class Day extends Date
+class Day extends AbstractFilter
 {
     /**
      * @inheritDoc
      */
-    protected $query = 'whereDay';
-
-    /**
-     * @var string
-     */
-    protected $fieldName = 'day';
+    protected string $query = 'whereDay';
 }

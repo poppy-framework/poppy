@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter\Layout;
 
 use Illuminate\Support\Collection;
@@ -8,32 +10,31 @@ use Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter;
 class Column
 {
     /**
-     * @var Collection
+     * @var Collection|AbstractFilter[]
      */
-    protected $filters;
+    protected Collection $filters;
 
     /**
      * @var int
      */
-    protected $width;
+    protected int $width;
 
     /**
      * Column constructor.
      *
      * @param int $width
      */
-    public function __construct($width = 12)
+    public function __construct(int $width = 12)
     {
         $this->width   = $width;
         $this->filters = new Collection();
     }
 
     /**
-     * Add a filter to this column.
-     *
+     * Add a filter item to this column.
      * @param AbstractFilter $filter
      */
-    public function addFilter(AbstractFilter $filter)
+    public function addFilter(AbstractFilter $filter): void
     {
         $this->filters->push($filter);
     }
@@ -41,21 +42,38 @@ class Column
     /**
      * Get all filters in this column.
      *
-     * @return Collection
+     * @return Collection|AbstractFilter[]
      */
-    public function filters()
+    public function filters(): Collection
     {
         return $this->filters;
     }
 
+
+    /**
+     * 过滤器数量
+     * @return int
+     */
+    public function filterCount(): int
+    {
+        $count = 0;
+        foreach ($this->filters as $filter) {
+            if ($filter->isRender()) {
+                $count += 1;
+            }
+        }
+        return $count;
+    }
+
     /**
      * Set column width.
-     *
      * @param int $width
+     * @return Column
      */
-    public function setWidth($width)
+    public function setWidth(int $width): self
     {
         $this->width = $width;
+        return $this;
     }
 
     /**
@@ -63,7 +81,7 @@ class Column
      *
      * @return int
      */
-    public function width()
+    public function width(): int
     {
         return $this->width;
     }
@@ -71,10 +89,10 @@ class Column
     /**
      * Remove filter from column by id.
      */
-    public function removeFilterByID($id)
+    public function removeFilterByID(string $id)
     {
         $this->filters = $this->filters->reject(function (AbstractFilter $filter) use ($id) {
-            return $filter->getId() == $id;
+            return $filter->getId() === $id;
         });
     }
 }
