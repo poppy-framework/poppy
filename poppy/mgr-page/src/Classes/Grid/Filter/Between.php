@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
 use Illuminate\Support\Arr;
 
-class Between extends AbstractFilter
+class Between extends FilterItem
 {
     /**
      * @inheritDoc
@@ -13,15 +15,10 @@ class Between extends AbstractFilter
 
     /**
      * Format id.
-     *
-     * @param string $column
-     *
-     * @return array|string
      */
-    public function formatId($column)
+    public function formatId(string $column): array
     {
         $id = str_replace('.', '_', $column);
-
         return ['start' => "{$id}_start", 'end' => "{$id}_end"];
     }
 
@@ -30,7 +27,7 @@ class Between extends AbstractFilter
      *
      * @param array $inputs
      *
-     * @return mixed
+     * @return void|array
      */
     public function condition(array $inputs)
     {
@@ -68,18 +65,16 @@ class Between extends AbstractFilter
      *
      * @return array
      */
-    protected function formatName($column)
+    protected function formatName($column): array
     {
         $columns = (array) explode('.', $column);
-
         if (count($columns) === 1) {
             $name = $columns[0];
         }
         else {
             $name = array_shift($columns);
-
-            foreach ($columns as $column) {
-                $name .= "[$column]";
+            foreach ($columns as $col) {
+                $name .= "[$col]";
             }
         }
 

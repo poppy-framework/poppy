@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
 use Illuminate\Support\Arr;
 
-class Lt extends AbstractFilter
+class Lt extends FilterItem
 {
     /**
      * @inheritDoc

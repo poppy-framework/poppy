@@ -206,7 +206,10 @@ class Grid
 
         /** @var ListBase $List */
         $List = new $grid_class($this);
-        $this->setTitle($List->title);
+        if ($List->title) {
+            $this->setTitle($List->title);
+        }
+
         $List->columns();
         $List->actions();
         $this->columns = $List->getColumns();
@@ -221,7 +224,7 @@ class Grid
             );
         }
 
-        if (!$List->isShowRowSelector()){
+        if (!$List->isShowRowSelector()) {
             $this->disableRowSelector();
         }
 
@@ -580,7 +583,7 @@ class Grid
     protected function callRenderingCallback()
     {
         foreach ($this->renderingCallbacks as $callback) {
-            call_user_func($callback, $this);
+            $callback($this);
         }
     }
 

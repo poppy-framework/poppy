@@ -5,7 +5,7 @@ namespace Poppy\MgrPage\Classes\Grid\Filter\Layout;
 use Closure;
 use Illuminate\Support\Collection;
 use Poppy\MgrPage\Classes\Grid\Filter;
-use Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter;
+use Poppy\MgrPage\Classes\Grid\Filter\FilterItem;
 
 /**
  * 布局
@@ -42,9 +42,9 @@ class Layout
     /**
      * Add a filter to layout column.
      *
-     * @param AbstractFilter $filter
+     * @param FilterItem $filter
      */
-    public function addFilter(AbstractFilter $filter)
+    public function addFilter(FilterItem $filter)
     {
         $this->current->addFilter($filter);
     }

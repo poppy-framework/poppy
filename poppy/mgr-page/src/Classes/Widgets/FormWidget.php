@@ -63,7 +63,8 @@ use Poppy\MgrPage\Classes\Layout\Content;
  * @method Field\Html           html($html, $arguments)
  * @method Field\Tags           tags($column, $label = '')
  * @method Field\Timezone       timezone($column, $label = '')
- * @method Field\Keyword        keyWord($column, $label = '')
+ * @method Field\Keyword        keyword($column, $label = '')
+ * @method Field\Question       question($column, $label = '')
  * @method Field\Hook           hook($column, $label = '')
  * @method mixed                handle(Request $request)
  */

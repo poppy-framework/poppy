@@ -4,7 +4,7 @@ namespace Poppy\MgrPage\Classes\Grid\Filter;
 
 use Illuminate\Support\Arr;
 
-class Gt extends AbstractFilter
+class Gt extends FilterItem
 {
     /**
      * @inheritDoc

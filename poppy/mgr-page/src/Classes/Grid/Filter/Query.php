@@ -7,7 +7,7 @@ namespace Poppy\MgrPage\Classes\Grid\Filter;
 /**
  * 加入查询默认条件(例如用于个人和全部管理的数据混用)
  */
-class Query extends AbstractFilter
+class Query extends FilterItem
 {
 
     /**

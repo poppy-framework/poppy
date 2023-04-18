@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
 class EndsWith extends Like
 {
-    protected $exprFormat = '%{value}';
+    protected string $exprFormat = '%{value}';
 }

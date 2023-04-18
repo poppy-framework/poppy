@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Classes\Grid\Filter\Presenter;
 
-use Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter;
+use Poppy\MgrPage\Classes\Grid\Filter\FilterItem;
 use ReflectionClass;
 
 /**
@@ -13,16 +13,16 @@ use ReflectionClass;
 abstract class Presenter
 {
     /**
-     * @var AbstractFilter
+     * @var FilterItem
      */
     protected $filter;
 
     /**
      * Set parent filter.
      *
-     * @param AbstractFilter $filter
+     * @param FilterItem $filter
      */
-    public function setParent(AbstractFilter $filter)
+    public function setParent(FilterItem $filter)
     {
         $this->filter = $filter;
     }

@@ -1,27 +1,24 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
 use Illuminate\Support\Arr;
 
-class Like extends AbstractFilter
+class Like extends FilterItem
 {
     /**
      * @var string
      */
-    protected $exprFormat = '%{value}%';
-
-    /**
-     * @var string
-     */
-    protected $operator = 'like';
+    protected string $exprFormat = '%{value}%';
 
     /**
      * Get condition of this filter.
      *
      * @param array $inputs
      *
-     * @return array|mixed|void
+     * @return array|void
      */
     public function condition(array $inputs)
     {
@@ -31,7 +28,7 @@ class Like extends AbstractFilter
             $value = array_filter($value);
         }
 
-        if (is_null($value) || empty($value)) {
+        if (empty($value)) {
             return;
         }
 
@@ -39,6 +36,6 @@ class Like extends AbstractFilter
 
         $expr = str_replace('{value}', $this->value, $this->exprFormat);
 
-        return $this->buildCondition($this->column, $this->operator, $expr);
+        return $this->buildCondition($this->column, 'like', $expr);
     }
 }

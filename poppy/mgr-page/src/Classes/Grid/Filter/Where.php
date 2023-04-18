@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
 use Closure;
@@ -7,7 +9,7 @@ use Illuminate\Support\Arr;
 use ReflectionException;
 use ReflectionFunction;
 
-class Where extends AbstractFilter
+class Where extends FilterItem
 {
 
     /**

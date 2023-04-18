@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Poppy\MgrPage\Classes\Grid\Filter\Layout;
 
 use Illuminate\Support\Collection;
-use Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter;
+use Poppy\MgrPage\Classes\Grid\Filter\FilterItem;
 
 class Column
 {
     /**
-     * @var Collection|AbstractFilter[]
+     * @var Collection|FilterItem[]
      */
     protected Collection $filters;
 
@@ -32,9 +32,9 @@ class Column
 
     /**
      * Add a filter item to this column.
-     * @param AbstractFilter $filter
+     * @param FilterItem $filter
      */
-    public function addFilter(AbstractFilter $filter): void
+    public function addFilter(FilterItem $filter): void
     {
         $this->filters->push($filter);
     }
@@ -42,7 +42,7 @@ class Column
     /**
      * Get all filters in this column.
      *
-     * @return Collection|AbstractFilter[]
+     * @return Collection|FilterItem[]
      */
     public function filters(): Collection
     {
@@ -91,7 +91,7 @@ class Column
      */
     public function removeFilterByID(string $id)
     {
-        $this->filters = $this->filters->reject(function (AbstractFilter $filter) use ($id) {
+        $this->filters = $this->filters->reject(function (FilterItem $filter) use ($id) {
             return $filter->getId() === $id;
         });
     }

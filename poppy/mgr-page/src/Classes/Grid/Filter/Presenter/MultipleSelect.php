@@ -1,24 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter\Presenter;
 
 class MultipleSelect extends Select
 {
-    /**
-     * Load options for other select when change.
-     *
-     * @param string $target
-     * @param string $resourceUrl
-     * @param string $idField
-     * @param string $textField
-     *
-     * @return $this
-     */
-    public function loadMore($target, $resourceUrl, $idField = 'id', $textField = 'text'): self
+    protected int $size = 8;
+
+    public function size($size = 8): self
     {
-        $column = $this->filter->getColumn();
-
-
+        $this->size = $size;
         return $this;
+    }
+
+    public function variables(): array
+    {
+        return array_merge(parent::variables(), [
+            'size' => $this->size,
+        ]);
     }
 }

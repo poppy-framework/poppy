@@ -1078,12 +1078,8 @@ HTML;
 		filterable: {$filter},
 		pageEmptyShow: false,
 		disabled: {$disabled},
-		data : []
-	});
-
-	selector_{$id}.update({
 		data : {$data}
-	})
+	});
 </script>
 HTML;
     }
@@ -1136,6 +1132,66 @@ function $funName() {
     $('.layui-form-auto-field-{$name}').append(html);
     setTimeout(function() {
         $(".layui-keywords-auto-{$name}").arrangeable({
+            //拖拽结束后执行回调
+            callback : function(e) {
+            }
+        });
+    }, 1);
+}
+</script>
+HTML;
+    }
+
+    /**
+     * 答题组件
+     * https://codepen.io/Qwghlm/pen/poJrmwx
+     * @param string       $name
+     * @param array|string $value
+     * @return string
+     * @deprecated
+     */
+    public function question(string $name, $value = []): string
+    {
+        $value     = !is_null($value) ? (array) $value : [''];
+        $strValue  = '';
+        $funName   = Str::random(6) . 'AddQuestion';
+        $textEmpty = $this->text($name . '[answer][]', '', ['class' => 'layui-input']);
+        $textEmpty .= $this->text($name . '[question][]', '', ['class' => 'layui-input']);
+        foreach ($value as $v) {
+            $text     = $this->text($name . '[]', $v, ['class' => 'layui-input']);
+            $strValue .= <<<HTML
+<div class="layui-input-inline layui-size-small layui-keywords-item layui-question-auto-{$name}">
+    {$text}
+    <i class="layui-icon layui-icon-close"></i>
+</div>
+HTML;
+        }
+        return /** @lang text */
+            <<<HTML
+<div class="layui-form-auto-field clearfix layui-form-auto-field-{$name}">
+    {$strValue}
+</div>
+<div class="layui-form-auto-field">
+    <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" onclick="$funName()">添加</button>
+</div>
+<script>
+layui.use('form', function() {
+    $(".layui-question-auto-{$name}").arrangeable({
+        //拖拽结束后执行回调
+        callback : function(e) {
+        }
+    });
+    $('body').on('click', ".layui-question-auto-{$name} .layui-icon-close", function() {
+        $(this).parent().remove();
+    });
+});
+
+function $funName() {
+    let html = '<div class="layui-input-inline layui-size-small layui-keywords-item layui-question-auto-{$name}">{$textEmpty}' +
+    '<i class="layui-icon layui-icon-close"></i></div>';
+    $('.layui-form-auto-field-{$name}').append(html);
+    setTimeout(function() {
+        $(".layui-question-auto-{$name}").arrangeable({
             //拖拽结束后执行回调
             callback : function(e) {
             }

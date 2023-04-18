@@ -10,13 +10,12 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use InvalidArgumentException;
 use Poppy\Framework\Exceptions\ApplicationException;
-use Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter;
 use Poppy\MgrPage\Classes\Grid\Filter\Between;
 use Poppy\MgrPage\Classes\Grid\Filter\BetweenDate;
 use Poppy\MgrPage\Classes\Grid\Filter\Date;
-use Poppy\MgrPage\Classes\Grid\Filter\Day;
 use Poppy\MgrPage\Classes\Grid\Filter\EndsWith;
 use Poppy\MgrPage\Classes\Grid\Filter\Equal;
+use Poppy\MgrPage\Classes\Grid\Filter\FilterItem;
 use Poppy\MgrPage\Classes\Grid\Filter\Group;
 use Poppy\MgrPage\Classes\Grid\Filter\Gt;
 use Poppy\MgrPage\Classes\Grid\Filter\Gte;
@@ -41,12 +40,9 @@ use Throwable;
  *
  * @method Equal equal($column, $label = '')
  * @method NotEqual notEqual($column, $label = '')
- * @method AbstractFilter leftLike($column, $label = '')
  * @method Like like($column, $label = '')
- * @method AbstractFilter contains($column, $label = '')
  * @method StartsWith startsWith($column, $label = '')
  * @method EndsWith endsWith($column, $label = '')
- * @method AbstractFilter ilike($column, $label = '')
  * @method Gt gt($column, $label = '')
  * @method Gte gte($column, $label = '')
  * @method Lt lt($column, $label = '')
@@ -57,7 +53,6 @@ use Throwable;
  * @method NotIn notIn($column, $label = '')
  * @method Where where($callback, $label = '', $column = null)
  * @method Date date($column, $label = '')
- * @method Day day($column, $label = '')
  * @method Month month($column, $label = '')
  * @method Year year($column, $label = '')
  * @method Hidden hidden($name)
@@ -85,7 +80,6 @@ class Filter
         'in'          => In::class,
         'notIn'       => NotIn::class,
         'date'        => Date::class,
-        'day'         => Day::class,
         'month'       => Month::class,
         'year'        => Year::class,
         'hidden'      => Hidden::class,
@@ -261,7 +255,7 @@ class Filter
      */
     public function removeFilterByID($id)
     {
-        $this->filters = array_filter($this->filters, function (AbstractFilter $filter) use ($id) {
+        $this->filters = array_filter($this->filters, function (FilterItem $filter) use ($id) {
             return $filter->getId() != $id;
         });
     }
@@ -320,11 +314,11 @@ class Filter
     /**
      * Use a custom filter.
      *
-     * @param AbstractFilter $filter
+     * @param FilterItem $filter
      *
-     * @return AbstractFilter
+     * @return FilterItem
      */
-    public function use(AbstractFilter $filter)
+    public function use(FilterItem $filter)
     {
         return $this->addFilter($filter);
     }
@@ -332,7 +326,7 @@ class Filter
     /**
      * Get all filters.
      *
-     * @return AbstractFilter[]
+     * @return FilterItem[]
      */
     public function filters(): array
     {
@@ -466,7 +460,7 @@ class Filter
 
         $groupNames = collect($this->filters)->filter(function ($filter) {
             return $filter instanceof Group;
-        })->map(function (AbstractFilter $filter) {
+        })->map(function (FilterItem $filter) {
             return "{$filter->getId()}_group";
         });
 
@@ -489,10 +483,10 @@ class Filter
      * @param string $abstract
      * @param array  $arguments
      *
-     * @return AbstractFilter
+     * @return FilterItem
      * @throws ApplicationException
      */
-    public function resolveFilter(string $abstract, array $arguments): AbstractFilter
+    public function resolveFilter(string $abstract, array $arguments): FilterItem
     {
         if (!isset(static::$supports[$abstract])) {
             throw new ApplicationException('Abstract Class `' . $abstract . '` Not Exists');
@@ -506,7 +500,7 @@ class Filter
      * @param string $method
      * @param array  $arguments
      *
-     * @return AbstractFilter|$this
+     * @return FilterItem|$this
      * @throws ApplicationException
      */
     public function __call(string $method, array $arguments)
@@ -527,8 +521,8 @@ class Filter
      */
     public static function extend($name, $filterClass)
     {
-        if (!is_subclass_of($filterClass, AbstractFilter::class)) {
-            throw new InvalidArgumentException("The class [$filterClass] must be a type of " . AbstractFilter::class . '.');
+        if (!is_subclass_of($filterClass, FilterItem::class)) {
+            throw new InvalidArgumentException("The class [$filterClass] must be a type of " . FilterItem::class . '.');
         }
 
         static::$supports[$name] = $filterClass;
@@ -563,11 +557,11 @@ class Filter
     /**
      * Add a filter to grid.
      *
-     * @param AbstractFilter $filter
+     * @param FilterItem $filter
      *
-     * @return AbstractFilter
+     * @return FilterItem
      */
-    protected function addFilter(AbstractFilter $filter)
+    protected function addFilter(FilterItem $filter)
     {
         $this->layout->addFilter($filter);
 

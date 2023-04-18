@@ -7,11 +7,11 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use Poppy\MgrPage\Classes\Actions\GridAction;
 use Poppy\MgrPage\Classes\Grid;
-use Poppy\MgrPage\Classes\Grid\Filter\AbstractFilter;
+use Poppy\MgrPage\Classes\Grid\Filter\FilterItem;
 use Poppy\MgrPage\Classes\Grid\Tools\AbstractTool;
 use Poppy\MgrPage\Classes\Grid\Tools\FilterButton;
 
-class Tools extends AbstractFilter
+class Tools extends FilterItem
 {
 
     /**

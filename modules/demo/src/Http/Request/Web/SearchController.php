@@ -22,7 +22,7 @@ class SearchController extends WebController
      */
     public function index($type)
     {
-        return (new Grid(new DemoGrid()))->setTitle('Title')
+        return (new Grid(new DemoGrid()))->setTitle(ucfirst($type))
             ->setLists('\Demo\Http\Lists\ListSearch' . ucfirst($type))
             ->render();
     }

@@ -10,7 +10,7 @@ use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid\Filter;
 use Poppy\System\Models\SysConfig;
 
-class ListSearchEqual extends ListSearchWhere
+class ListSearchIn extends ListSearchWhere
 {
 
     /**
@@ -34,13 +34,7 @@ class ListSearchEqual extends ListSearchWhere
     {
         return function (Filter $filter) {
             $filter->column(1, function (Filter $filter) {
-                $filter->equal('score', '分数');
-            });
-            $filter->column(1, function (Filter $filter) {
-                $filter->equal('status', '状态')->select(DemoGrid::kvStatus());
-            });
-            $filter->column(1, function (Filter $filter) {
-                $filter->equal('is_enable', '状态')->radio(SysConfig::kvYn());
+                $filter->in('status', '状态')->multipleSelect(DemoGrid::kvStatus());
             });
         };
     }

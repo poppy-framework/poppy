@@ -14,5 +14,5 @@ class Year extends Date
     /**
      * @var string
      */
-    protected $fieldName = 'year';
+    protected string $fieldName = 'year';
 }

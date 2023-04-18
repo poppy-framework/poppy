@@ -4,14 +4,18 @@ declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
-class BetweenDate extends AbstractFilter
+class BetweenDate extends FilterItem
 {
     /**
      * @inheritDoc
      */
     protected string $view = 'py-mgr-page::tpl.filter.between_date';
+
+
+    protected bool $withTime = false;
 
     protected array $variables = [
         'layui-range' => 'true',
@@ -23,7 +27,7 @@ class BetweenDate extends AbstractFilter
      *
      * @param array $inputs
      *
-     * @return mixed
+     * @return array|void
      */
     public function condition(array $inputs)
     {
@@ -37,7 +41,10 @@ class BetweenDate extends AbstractFilter
         }
         [$start, $end] = explode(' - ', $this->value);
 
-
+        if (!$this->withTime) {
+            $start = Carbon::parse($start)->startOfDay()->toDateTimeString();
+            $end   = Carbon::parse($end)->endOfDay()->toDateTimeString();
+        }
         return $this->buildCondition([
             [$this->column, '<=', trim($end)],
             [$this->column, '>=', trim($start)],
@@ -50,8 +57,9 @@ class BetweenDate extends AbstractFilter
         return array_merge($variables, ['variables' => $this->variables]);
     }
 
-    public function withTime()
+    public function withTime(): void
     {
+        $this->withTime                = true;
         $this->variables['layui-type'] = 'datetime';
     }
 }

@@ -4,6 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
-class Equal extends AbstractFilter
+class Equal extends FilterItem
 {
 }

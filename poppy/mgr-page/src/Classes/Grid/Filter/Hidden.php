@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
-class Hidden extends AbstractFilter
+class Hidden extends FilterItem
 {
 
     /**

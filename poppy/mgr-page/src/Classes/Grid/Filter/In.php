@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Grid\Filter;
 
 use Illuminate\Support\Arr;
 
-class In extends AbstractFilter
+class In extends FilterItem
 {
     /**
      * @inheritDoc
@@ -16,7 +18,7 @@ class In extends AbstractFilter
      *
      * @param array $inputs
      *
-     * @return mixed
+     * @return array|void
      */
     public function condition(array $inputs)
     {
@@ -26,7 +28,9 @@ class In extends AbstractFilter
             return;
         }
 
-        $this->value = (array) $value;
+        $value       = is_string($value) ? explode(',', $value) : $value;
+
+        $this->value = $value;
 
         return $this->buildCondition($this->column, $this->value);
     }

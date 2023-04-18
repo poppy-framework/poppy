@@ -1,12 +1,8 @@
-<div class="form-group">
-    <label class="col-sm-2 control-label">{{$label}}</label>
-    <div class="col-sm-8" style="width: 390px">
-        <div class="input-group input-group-sm">
-            <input type="text" class="form-control" placeholder="{{$label}}" name="{{$name['start']}}"
-                    value="{{ request()->input("{$column}.start", data_get($value, 'start')) }}">
-            <span class="input-group-addon" style="border-left: 0; border-right: 0;">-</span>
-            <input type="text" class="form-control" placeholder="{{$label}}" name="{{$name['end']}}"
-                    value="{{ request()->input("{$column}.end", data_get($value, 'end')) }}">
-        </div>
-    </div>
+<div class="layui-input-group">
+    <span class="layui-input-group-addon">{{$label}}</span>
+    <input type="text" class="layui-input" placeholder="{{$label}}" name="{{$name['start']}}"
+            value="{{ request()->input("{$column}.start", data_get($value, 'start')) }}">
+    <span class="layui-input-group-addon"> - </span>
+    <input type="text" class="layui-input" placeholder="{{$label}}" name="{{$name['end']}}"
+            value="{{ request()->input("{$column}.end", data_get($value, 'end')) }}">
 </div>

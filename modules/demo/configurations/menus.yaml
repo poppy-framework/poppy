@@ -110,6 +110,36 @@ demo :
         -
           title : Equal(相等)
           route : demo:web.search.index/equal
+        -
+          title : GT(e)
+          route : demo:web.search.index/gt
+        -
+          title : Lt(e)
+          route : demo:web.search.index/lt
+        -
+          title : With(前缀, 后缀)
+          route : demo:web.search.index/with
+        -
+          title : In
+          route : demo:web.search.index/in
+        -
+          title : Year(年份)
+          route : demo:web.search.index/year
+        -
+          title : Date(日期(天))
+          route : demo:web.search.index/date
+        -
+          title : Month
+          route : demo:web.search.index/month
+        -
+          title : Between
+          route : demo:web.search.index/between
+        -
+          title : BetweenDate
+          route : demo:web.search.index/betweenDate
+        -
+          title : BetweenDateTime
+          route : demo:web.search.index/betweenDateTime
     -
       title : Content
       children :
