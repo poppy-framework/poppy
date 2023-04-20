@@ -709,7 +709,7 @@ class Pam
      * @param PamAccount $pam 用户
      * @return bool
      */
-    private function checkIsEnable(PamAccount $pam): bool
+    public function checkIsEnable(PamAccount $pam): bool
     {
         if ($pam->is_enable === SysConfig::NO) {
             $now = Carbon::now();
