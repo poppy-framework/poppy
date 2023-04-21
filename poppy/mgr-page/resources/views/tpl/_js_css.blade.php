@@ -3,7 +3,7 @@ $_type = $_type ?? [];
 ?>
 {{--js--}}
 @if (true)
-    {!! Html::script('assets/libs/boot/app.min.js?v=2023-04-12') !!}
+    {!! Html::script('assets/libs/boot/app.min.js?v=2023-04-21') !!}
     {!! Html::script('assets/libs/vue/vue.js') !!}
 @endif
 {{--layui--}}

@@ -90,26 +90,24 @@ class PoppySeedCommand extends Command
         $rootSeeder = ucfirst(Str::camel(Str::after($module['slug'], '.'))) . 'DatabaseSeeder';
         $fullPath   = ucfirst(Str::camel($namespacePath)) . '\Seeds\\' . $rootSeeder;
 
-        if (class_exists($fullPath)) {
-            if ($this->option('class')) {
-                $params['--class'] = $this->option('class');
-            }
-            else {
-                $params['--class'] = $fullPath;
-            }
-
-            if ($option = $this->option('database')) {
-                $params['--database'] = $option;
-            }
-
-            if ($option = $this->option('force')) {
-                $params['--force'] = $option;
-            }
-
-            $this->call('db:seed', $params);
-
-            event($slug . '.seeded', [$module, $this->option()]);
+        if ($this->option('class')) {
+            $params['--class'] = $this->option('class');
         }
+        elseif (class_exists($fullPath)) {
+            $params['--class'] = $fullPath;
+        }
+
+        if ($option = $this->option('database')) {
+            $params['--database'] = $option;
+        }
+
+        if ($option = $this->option('force')) {
+            $params['--force'] = $option;
+        }
+
+        $this->call('db:seed', $params);
+
+        event($slug . '.seeded', [$module, $this->option()]);
     }
 
     /**

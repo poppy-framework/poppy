@@ -684,7 +684,7 @@ if (typeof Util !== 'object') {
             method = 'post';
         }
         $.ajax({
-            async: false,
+            async: true,
             cache: false,
             type: method,
             url: targetPhp,
