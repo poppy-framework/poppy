@@ -4,18 +4,10 @@
   description : 核心 Demo Backend 权限
   groups :
     -
-      slug : global
-      title : 全局
-      description : 管理配置内容
-      permissions :
-        -
-          slug : manage
-          description : 系统设置
-    -
-      slug : pam
-      title : 账号管理
+      slug : help
+      title : 帮助
       description : 账号管理
       permissions :
         -
           slug : manage
-          description : 账号管理
+          description : 环境帮助

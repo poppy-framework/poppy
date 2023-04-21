@@ -54,6 +54,10 @@ class JsController extends WebController
             if ($type === 'validate') {
                 return Resp::success('J_validate 提交, title:' . input('title'));
             }
+            if ($type === 'sleep') {
+                sleep(3);
+                return Resp::success('Sleep 3s:');
+            }
 
             return Resp::success('J_request 请求测试');
         }

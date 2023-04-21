@@ -9,8 +9,8 @@
             >
                 @foreach($_menus as $k_menu => $v_menu)
                     @foreach($v_menu['groups'] as $k_group => $v_group)
-                        <li data-name="{!! $k_group !!}"
-                                class="layui-nav-item">
+                        <?php if(!count($v_group['children'])): continue; endif; ?>
+                        <li data-name="{!! $k_group !!}" class="layui-nav-item">
                             <a href="#" class="collapsible-header J_ignore">
                                 {!! isset($v_group['icon']) && $v_group['icon']? '<i class="'.$v_group['icon'].'"></i>' :'' !!}
                                 <cite>{{$v_group['title']}}</cite>

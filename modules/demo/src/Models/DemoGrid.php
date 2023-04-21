@@ -73,4 +73,8 @@ class DemoGrid extends Model
         return kv($defs, $key);
     }
 
+    protected function asJson($value)
+    {
+        return json_encode($value, JSON_UNESCAPED_UNICODE);
+    }
 }
