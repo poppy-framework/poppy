@@ -12,46 +12,46 @@ use Poppy\System\Models\PamRole;
  */
 class InstallCommand extends Command
 {
-	/**
-	 * 前端部署.
-	 * @var string
-	 */
-	protected $signature = 'py-system:install';
+    /**
+     * 前端部署.
+     * @var string
+     */
+    protected $signature = 'py-system:install';
 
-	/**
-	 * 描述
-	 * @var string
-	 */
-	protected $description = 'Install system module.';
+    /**
+     * 描述
+     * @var string
+     */
+    protected $description = 'Install system module.';
 
-	/**
-	 * Execute the console command.
-	 */
-	public function handle()
-	{
-		// check
-		if (PamRole::where('name', PamRole::BE_ROOT)->exists()) {
-			$this->warn('You Already Installed!');
+    /**
+     * Execute the console command.
+     */
+    public function handle(): void
+    {
+        // check
+        if (PamRole::where('name', PamRole::BE_ROOT)->exists()) {
+            $this->warn('You Already Installed!');
 
-			return;
-		}
+            return;
+        }
 
-		$this->line('Start Install Lemon Framework!');
+        $this->line('Start Install Lemon Framework!');
 
-		/* Role
-		 -------------------------------------------- */
-		$this->warn('Init UserRole Ing...');
-		$this->call('py-system:user', [
-			'do' => 'init_role',
-		]);
-		$this->info('Install User Roles Success');
+        /* Role
+         -------------------------------------------- */
+        $this->warn('Init UserRole Ing...');
+        $this->call('py-system:user', [
+            'do' => 'init_role',
+        ]);
+        $this->info('Install User Roles Success');
 
-		/* permission
-		 -------------------------------------------- */
-		$this->warn('Init Rbac Permission...');
-		$this->call('py-core:permission', [
-			'do' => 'init',
-		]);
-		$this->info('Init Rbac Permission Success');
-	}
+        /* permission
+         -------------------------------------------- */
+        $this->warn('Init Rbac Permission...');
+        $this->call('py-core:permission', [
+            'do' => 'init',
+        ]);
+        $this->info('Init Rbac Permission Success');
+    }
 }

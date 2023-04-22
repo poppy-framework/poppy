@@ -186,8 +186,11 @@ layui.form.render();
     <a href="" class="layui-btn J_request" data-confirm="确认请求?">
         Ajax 请求并解析返回的Json
     </a>
-    <a href="/demo/js?type=top-request" class="layui-btn J_request">
+    <a href="?type=top-request" class="layui-btn J_request">
         请求完成后调用 Top 回调
+    </a>
+    <a href="?type=sleep" class="layui-btn J_request">
+        请求 3 秒后返回
     </a>
     <table class="layui-table">
         <tr>
@@ -218,6 +221,7 @@ layui.form.render();
     </div>
     <div class="layui-form-item">
         {!! Form::button('J_submit 提交', ['class'=> 'layui-btn layui-btn-sm J_submit']) !!}
+        {!! Form::button('J_submit 提交(延迟三秒)', ['class'=> 'layui-btn layui-btn-sm J_submit' , 'data-url'=> '?type=sleep']) !!}
     </div>
     {!! Form::close() !!}
 </div>

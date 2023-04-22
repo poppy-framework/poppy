@@ -24,6 +24,7 @@ use Poppy\System\Events\LoginFailedEvent;
 use Poppy\System\Events\LoginSuccessEvent;
 use Poppy\System\Events\PamDisableEvent;
 use Poppy\System\Events\PamEnableEvent;
+use Poppy\System\Events\PamLogoutEvent;
 use Poppy\System\Events\PamPasswordModifiedEvent;
 use Poppy\System\Events\PamRebindEvent;
 use Poppy\System\Events\PamRegisteredEvent;
@@ -641,6 +642,20 @@ class Pam
         }
 
         return true;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function logout(): void
+    {
+        event(new PamLogoutEvent($this->pam->id));
+        Auth::logout();
+        $token = jwt_token();
+        if ($token) {
+            $Sso = new Sso();
+            $Sso->logout($this->pam->id, $token);
+        }
     }
 
     /**

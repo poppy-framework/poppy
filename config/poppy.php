@@ -92,13 +92,6 @@ return [
                 'sign_token' => true,
                 'match'      => 'api.*/web|ApiWeb|api/web|ApiV1',
             ],
-            'dev' => [
-                'title'       => '开发平台',
-                'default_url' => 'api/mgr-dev/apidoc/json',
-                'method'      => 'post',
-                'match'       => 'api.*/dev|ApiDev|api/dev',
-
-            ],
         ],
     ],
 

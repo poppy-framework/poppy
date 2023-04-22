@@ -182,6 +182,7 @@ class AuthController extends JwtApiController
 
 
     /**
+     * @throws Throwable
      * @api                   {post} /api_v1/system/auth/reset_password [Sys]重设密码
      * @apiVersion            1.0.0
      * @apiName               SysAuthResetPassword
@@ -232,6 +233,9 @@ class AuthController extends JwtApiController
             else {
                 $Verification->removeCaptcha($passport);
             }
+
+            $Pam->setPam($pam)->logout();
+
             return Resp::success('密码已经重新设置');
         }
 
@@ -318,12 +322,7 @@ class AuthController extends JwtApiController
      */
     public function logout()
     {
-        $token = jwt_token();
-        $Sso   = new Sso();
-        if (!$Sso->logout($this->pam->id, $token)) {
-            return Resp::error($Sso->getError());
-        }
-
+        (new Pam())->setPam($this->pam())->logout();
         return Resp::success('已退出登录');
     }
 

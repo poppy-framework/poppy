@@ -264,15 +264,14 @@
             $form.attr('method', data_method);
 
             // 显示 layer 层
-            let index = layer.load(0, { shade: false });
+            let index = layer.load(0, { shade: [0.1, '#000000'] });
             let conf;
             if ((data_ajax === 'false')) {
                 conf = Util.validateConfig({}, false);
                 $form.validate(conf);
                 $form.submit();
             } else {
-                conf = Util.validateConfig({}, true);
-                console.log($form.validate(conf))
+                $form.validate(Util.validateConfig({}, true))
                 let $btn = $(this);
                 Util.buttonInteraction($btn, 5);
                 $form.ajaxSubmit({

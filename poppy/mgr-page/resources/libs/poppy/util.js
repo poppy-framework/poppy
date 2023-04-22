@@ -435,20 +435,28 @@ if (typeof Util !== 'object') {
      * @param error_submit
      */
     Util.buttonInteraction = function (btn_selector, data, error_submit) {
-        let objData;
-        if (typeof data == 'undefined' || !isNaN(parseInt(data))) {
-            $(btn_selector).attr('disabled', true);
-            if (!isNaN(parseInt(data))) {
-                let time = parseInt(data);
-                setTimeout(function () {
-                    $(btn_selector).attr('disabled', false);
-                }, time * 1000);
-            }
+        let sleepSeconds = 0;
+        if (typeof data === 'undefined') {
+            sleepSeconds = 1000;
         }
-        objData = Util.toJson(data);
-        if (objData.status !== 0) {
+        if (_.isString(data) && !isNaN(parseInt(data))) {
+            sleepSeconds = parseInt(data) * 1000;
+        }
+        if (_.isNumber(data)) {
+            sleepSeconds = data * 1000;
+        }
+        if (sleepSeconds) {
+            $(btn_selector).attr('disabled', true);
+            setTimeout(function () {
+                $(btn_selector).attr('disabled', false);
+            }, sleepSeconds * 1000);
+            return;
+        }
+
+        let obj = Util.toJson(data);
+        if (_.isNumber(obj.status)) {
             $(btn_selector).attr('disabled', false);
-            if (typeof error_submit != 'undefined') {
+            if (typeof error_submit !== 'undefined') {
                 $(btn_selector).html(error_submit);
             }
         }

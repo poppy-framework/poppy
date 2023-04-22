@@ -17,7 +17,7 @@ return [
     |--------------------------------------------------------------------------
     | 需要运行 `php artisan core:doc apidoc` 来生成技术文档
     */
-    'apidoc'     => [
+    'apidoc'  => [
         'web' => [
             'title'       => '前台接口',
             'method'      => 'post',
@@ -27,11 +27,11 @@ return [
 
     /* 维护邮箱地址
      * ---------------------------------------- */
-    'op_mail'    => env('CORE_OP_MAIL', ''),
+    'op_mail' => env('CORE_OP_MAIL', ''),
 
     /* Rbac 模型和外键设定
      * ---------------------------------------- */
-    'rbac'       => [
+    'rbac'    => [
         'role'            => PamRole::class,
         'account'         => PamAccount::class,
         'role_account'    => PamRoleAccount::class,

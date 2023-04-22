@@ -8,11 +8,10 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\System\Classes\PySystemDef;
-use Poppy\System\Events\PamLogoutEvent;
 use Poppy\System\Events\PamSsoEvent;
+use Poppy\System\Events\PamSsoLogoutEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamToken;
 use Poppy\System\Models\SysConfig;
@@ -38,12 +37,24 @@ class Sso
         'web:' . self::GROUP_UNLIMITED => ['h5', 'webapp'],
     ];
 
+    /**
+     * SSO 类型
+     * @var string
+     */
+    private string $ssoType;
+
     public function __construct()
     {
         // 自定义的分组覆盖系统默认分组
         if (config('poppy.system.sso_group')) {
             $this->groups = config('poppy.system.sso_group');
         }
+
+        $ssoType = (string) sys_setting('py-system::pam.sso_type');
+        if (!$ssoType) {
+            $ssoType = self::SSO_NONE;
+        }
+        $this->ssoType = $ssoType;
     }
 
     /**
@@ -56,7 +67,6 @@ class Sso
      */
     public function handle(PamAccount $pam, string $device_id, string $device_type, string $token): bool
     {
-        $ssoType      = (string) sys_setting('py-system::pam.sso_type');
         $maxDeviceNum = (int) (sys_setting('py-system::pam.sso_device_num') ?: 10);
         // 不启用
         if (!self::isEnable()) {
@@ -92,7 +102,7 @@ class Sso
         $expiredAt = Carbon::now()->addMinutes(config('jwt.ttl'));
 
         $logoutUsers = collect();
-        switch ($ssoType) {
+        switch ($this->ssoType) {
             // 保留最多 10 个设备, 允许同时登录, 记录设备信息, 同时登录数量受{最大设备数量}限制
             case self::SSO_DEVICE_NUM:
                 $num = PamToken::where('account_id', $pamId)->count();
@@ -223,11 +233,13 @@ class Sso
      * SSO 退出登录
      * @param int    $id    用户 ID
      * @param string $token JWT Token
-     * @return bool
      * @throws Throwable
      */
-    public function logout(int $id, string $token): bool
+    public function logout(int $id, string $token): void
     {
+        if ($this->ssoType === self::SSO_NONE) {
+            return;
+        }
         $tokenHash = md5($token);
 
         $pt = PamToken::where('token_hash', $tokenHash)->first();
@@ -235,9 +247,8 @@ class Sso
         if ($pt) {
             $this->banToken($pt);
 
-            event(new PamLogoutEvent($id, $pt));
+            event(new PamSsoLogoutEvent($id, $pt));
         }
-        return true;
     }
 
     /**

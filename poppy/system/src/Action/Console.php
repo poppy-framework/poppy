@@ -43,16 +43,12 @@ class Console
     private string $appid;
 
     /**
-     * @throws LoadConfigurationException
      */
     public function __construct()
     {
         $this->appid = (string) env('CP_APPID');
         $secret      = (string) env('CP_SECRET');
         $this->host  = (string) env('CP_URL');
-        if (!$this->appid || !$secret) {
-            throw new LoadConfigurationException('Cp 控制台密钥未设置');
-        }
         $this->client = (new AppClient())->setAppid($this->appid)->setSecret($secret);
     }
 

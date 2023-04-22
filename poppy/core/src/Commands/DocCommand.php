@@ -24,7 +24,7 @@ class DocCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $type = $this->argument('type');
         switch ($type) {
@@ -101,7 +101,7 @@ class DocCommand extends Command
     /**
      * @param string $key 需要处理的 key
      */
-    private function performTask(string $key)
+    private function performTask(string $key): void
     {
         $path = base_path();
         $aim  = base_path('public/docs/' . $key);
@@ -118,8 +118,8 @@ class DocCommand extends Command
         }
         else {
             $matches = [
-                'web'     => 'Api.*/Web|ApiWeb|ApiV1|Api.*/Web',
-                'dev'     => 'api.*/dev|ApiDev|api/dev'
+                'web' => 'Api.*/Web|ApiWeb|ApiV1|Api.*/Web',
+                'dev' => 'api.*/dev|ApiDev|api/dev',
             ];
             $type    = $def['type'] ?? 'web';
             $match   = $matches[$type] ?? $matches['web'];
