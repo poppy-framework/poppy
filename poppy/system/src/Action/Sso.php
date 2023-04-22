@@ -178,6 +178,9 @@ class Sso
      */
     public function banUser(int $pamId): void
     {
+        if ($this->ssoType === self::SSO_NONE) {
+            return;
+        }
         PamToken::where('account_id', $pamId)->delete();
         // delete from key
         sys_tag('py-system-persist')->hDel(PySystemDef::ckPersistSsoValid(), $pamId);

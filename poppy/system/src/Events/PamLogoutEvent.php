@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Events;
 
-use Poppy\System\Models\PamToken;
-
 class PamLogoutEvent
 {
     /**
@@ -14,17 +12,10 @@ class PamLogoutEvent
      */
     public int $accountId;
 
-    /**
-     * 用户登录的 Token
-     * @var null|PamToken
-     */
-    public ?PamToken $token;
 
-
-    public function __construct(int $accountId, $token = null)
+    public function __construct(int $accountId)
     {
         $this->accountId = $accountId;
-        $this->token     = $token;
     }
 
 }

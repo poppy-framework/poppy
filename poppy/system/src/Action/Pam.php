@@ -651,11 +651,6 @@ class Pam
     {
         event(new PamLogoutEvent($this->pam->id));
         Auth::logout();
-        $token = jwt_token();
-        if ($token) {
-            $Sso = new Sso();
-            $Sso->logout($this->pam->id, $token);
-        }
     }
 
     /**

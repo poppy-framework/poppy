@@ -14,7 +14,6 @@ use Illuminate\Validation\ValidationException;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Helper\UtilHelper;
 use Poppy\System\Action\Pam;
-use Poppy\System\Action\Sso;
 use Poppy\System\Action\Verification;
 use Poppy\System\Events\LoginSuccessEvent;
 use Poppy\System\Events\LoginTokenPassedEvent;
@@ -233,8 +232,6 @@ class AuthController extends JwtApiController
             else {
                 $Verification->removeCaptcha($passport);
             }
-
-            $Pam->setPam($pam)->logout();
 
             return Resp::success('密码已经重新设置');
         }
