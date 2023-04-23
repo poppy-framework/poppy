@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\System\Listeners\PamLogout;
 
 use Poppy\System\Action\Sso;
-use Poppy\System\Events\PamPasswordModifiedEvent;
+use Poppy\System\Events\PamLogoutEvent;
 use Poppy\System\Models\PamAccount;
 use Throwable;
 
@@ -15,17 +15,18 @@ use Throwable;
 class SsoListener
 {
     /**
+     * @param PamLogoutEvent $event
+     * @return void
      * @throws Throwable
      */
-    public function handle(PamPasswordModifiedEvent $event): void
+    public function handle(PamLogoutEvent $event): void
     {
         if ($event->pam->type === PamAccount::TYPE_BACKEND) {
             return;
         }
         $token = jwt_token();
         if ($token) {
-            $Sso = new Sso();
-            $Sso->logout($event->pam->id, $token);
+            (new Sso())->logout($event->pam->id, $token);
         }
     }
 }

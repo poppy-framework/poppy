@@ -649,7 +649,7 @@ class Pam
      */
     public function logout(): void
     {
-        event(new PamLogoutEvent($this->pam->id));
+        event(new PamLogoutEvent($this->pam));
         Auth::logout();
     }
 
