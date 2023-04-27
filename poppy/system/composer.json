@@ -19,7 +19,8 @@
         "mlocati/ip-lib": "1.*",
         "intervention/image": "2.*",
         "ezyang/htmlpurifier": "4.16.*",
-        "mews/captcha": "3.2.*"
+        "mews/captcha": "3.2.*",
+        "poppy/ext-app": "4.2.*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest"
