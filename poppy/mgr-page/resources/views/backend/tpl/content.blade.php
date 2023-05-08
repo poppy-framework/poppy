@@ -7,7 +7,7 @@
 @endsection
 @section('head-content')
     @include('py-mgr-page::tpl._js_css', [
-       '_type' => [ 'layui']
+       '_type' => [ 'layui'],
     ])
 @endsection
 @section('body-class')
@@ -16,11 +16,11 @@
 @section('body-main')
     @include('py-mgr-page::tpl._toastr')
     <div class="layui-fluid pd15" data-pjax pjax-ctr="#main" id="main">
-        @if ($title)
+        @if ($title ?? '')
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
                 <legend>
                     {!! $title !!}
-                    @if ($description)
+                    @if ($description ?? '')
                         <small>{!! $description !!}</small>
                     @endif
                 </legend>

@@ -9,7 +9,7 @@
                 @foreach($_menus as $k_menu => $v_menu)
                     @foreach($v_menu['groups'] as $k_group => $v_group)
                         @foreach($v_group['children'] as $v_link)
-                            @if (isset($v_link['url']))
+                            @if (isset($v_link['url']) && $v_link['url'])
                                 <div class="search" v-on:click="switchQuick">
                                     <span class="hide">{!! Poppy\MgrPage\Classes\SearchCache::py($v_link['title']) !!}</span>
                                     {!! mgr_menu_title($v_link) !!}
