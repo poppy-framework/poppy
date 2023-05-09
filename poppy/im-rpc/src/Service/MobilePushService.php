@@ -45,7 +45,7 @@ interface MobilePushService
      * @param Packer $notificationPacker
      * @param Team   $team
      * @param array  $targetUid
-     * @return void
+     * @return bool
      */
-    public function push(Packer $notificationPacker, Team $team, array $targetUid): void;
+    public function push(Packer $notificationPacker, Team $team, array $targetUid): bool;
 }
