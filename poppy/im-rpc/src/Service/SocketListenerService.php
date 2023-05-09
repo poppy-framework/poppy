@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace Poppy\Im\Rpc\Service;
 
+use Poppy\Im\Rpc\Utils\Response;
+
 interface SocketListenerService
 {
     /**
