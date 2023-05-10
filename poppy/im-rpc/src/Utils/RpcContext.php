@@ -7,6 +7,16 @@ use Hyperf\Rpc\Context;
 
 class RpcContext
 {
+    public static function setRequestId($value)
+    {
+        self::set(self::keyGenerate(__FUNCTION__), $value);
+    }
+
+    public static function getRequestId()
+    {
+        return self::get(self::keyGenerate(__FUNCTION__));
+    }
+
     public static function setUid($value): void
     {
         self::set(self::keyGenerate(__FUNCTION__), $value);
