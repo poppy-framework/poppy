@@ -343,12 +343,14 @@ class Pam
             $this->pam = $pam;
 
             if (!$this->checkIsEnable($this->pam)) {
+                $guard->logout();
                 return false;
             }
 
             try {
                 event(new LoginBannedEvent($this->pam, $guard_name));
             } catch (Throwable $e) {
+                $guard->logout();
                 return $this->setError($e);
             }
 

@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 use JsonException;
 use Poppy\Extension\App\Classes\AppClient;
 use Poppy\Framework\Classes\Traits\AppTrait;
-use Poppy\Framework\Exceptions\LoadConfigurationException;
 use Poppy\Framework\Helper\UtilHelper;
 
 /**
