@@ -23,6 +23,19 @@ abstract class BaseSms
     protected string $sign;
 
     /**
+     * @var string
+     */
+    protected string $scope = Sms::SCOPE_LOCAL;
+
+    /**
+     * @param string $scope
+     */
+    public function setScope(string $scope): void
+    {
+        $this->scope = $scope;
+    }
+
+    /**
      * 检查短信是否为空
      * @param string|array $mobile 手机号
      * @param string       $type   类型
@@ -34,12 +47,11 @@ abstract class BaseSms
         if (!$mobile) {
             return $this->setError('手机号缺失, 不进行发送!');
         }
-
         if (!$type) {
             return $this->setError('短信类型不存在, 不进行发送');
         }
-        $this->sms = Sms::smsTpl($type);
 
+        $this->sms = Sms::smsTpl($type, $this->scope);
         if (!$this->sms) {
             return $this->setError('请设置短信模板');
         }

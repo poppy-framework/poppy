@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Poppy\Sms\Tests;
 
 use Illuminate\Support\Str;
-use Poppy\Sms\Action\Sms;
 
 /**
  * 发送短信
@@ -19,7 +18,6 @@ class AliyunTest extends BaseSms
 
         // config
         config([
-            'poppy.sms.send_type'            => Sms::SCOPE_ALIYUN,
             'poppy.sms.aliyun.access_key'    => data_get($this->conf, 'aliyun_access_key'),
             'poppy.sms.aliyun.access_secret' => data_get($this->conf, 'aliyun_access_secret'),
         ]);

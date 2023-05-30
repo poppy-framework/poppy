@@ -21,4 +21,6 @@ Route::group([
         ->name('py-sms:backend.store.aliyun');
     $router->any('store/chuanglan', 'StoreController@chuanglan')
         ->name('py-sms:backend.store.chuanglan');
+    $router->any('store/lianlu', 'StoreController@lianlu')
+        ->name('py-sms:backend.store.lianlu');
 });

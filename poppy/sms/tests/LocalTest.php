@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Poppy\Sms\Tests;
 
 use Illuminate\Support\Str;
-use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Classes\Contracts\SmsContract;
 
 /**
@@ -18,7 +17,6 @@ class LocalTest extends BaseSms
     {
         parent::setUp();
         config([
-            'poppy.sms.send_type' => Sms::SCOPE_LOCAL,
         ]);
     }
 

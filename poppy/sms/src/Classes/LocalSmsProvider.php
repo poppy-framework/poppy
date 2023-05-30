@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\Sms\Classes;
 
-use Log;
+use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Classes\Contracts\SmsContract;
 
 /**
@@ -18,6 +18,7 @@ class LocalSmsProvider extends BaseSms implements SmsContract
      */
     public function send(string $type, $mobile, array $params = [], $sign = ''): bool
     {
+        $this->setScope(Sms::SCOPE_LOCAL);
         if (!$this->checkSms($mobile, $type, $sign)) {
             return false;
         }

@@ -7,20 +7,19 @@ namespace Poppy\Sms\Classes;
 use AlibabaCloud\Client\AlibabaCloud;
 use AlibabaCloud\Client\Exception\ClientException;
 use AlibabaCloud\Client\Exception\ServerException;
-use Poppy\Framework\Classes\Traits\AppTrait;
+use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Classes\Contracts\SmsContract;
 use Poppy\Sms\Exceptions\SmsException;
 use Throwable;
 
 class AliyunSmsProvider extends BaseSms implements SmsContract
 {
-    use AppTrait;
-
     /**
      * @inheritDoc
      */
     public function send(string $type, $mobile, array $params = [], $sign = ''): bool
     {
+        $this->setScope(Sms::SCOPE_ALIYUN);
         if (!$this->checkSms($mobile, $type, $sign)) {
             return false;
         }

@@ -59,27 +59,38 @@ class ServiceProvider extends PoppyServiceProvider
     private function registerConfig()
     {
         // 注册配置
-        if (sys_setting('py-sms::sms.send_type')) {
-            // config 注入
-            config([
-                'poppy.sms.send_type' => sys_setting('py-sms::sms.send_type'),
-                'poppy.sms.sign'      => sys_setting('py-sms::sms.sign'),
-            ]);
-        }
-
-        if (sys_setting('py-sms::sms.send_type') === Sms::SCOPE_ALIYUN) {
-            config([
-                'poppy.sms.aliyun.access_key'    => sys_setting('py-sms::sms.aliyun_access_key'),
-                'poppy.sms.aliyun.access_secret' => sys_setting('py-sms::sms.aliyun_access_secret'),
-            ]);
-        }
-        if (sys_setting('py-sms::sms.send_type') === Sms::SCOPE_CHUANGLAN) {
-            config([
-                'poppy.sms.chuanglan.access_key'        => sys_setting('py-sms::sms.chuanglan_access_key'),
-                'poppy.sms.chuanglan.access_secret'     => sys_setting('py-sms::sms.chuanglan_access_secret'),
-                'poppy.sms.chuanglan.cty_access_key'    => sys_setting('py-sms::sms.chuanglan_cty_access_key'),
-                'poppy.sms.chuanglan.cty_access_secret' => sys_setting('py-sms::sms.chuanglan_cty_access_secret'),
-            ]);
+        config([
+            'poppy.sms.sign' => sys_setting('py-sms::sms.sign'),
+        ]);
+        $sendTypes = array_keys(sys_hook('poppy.sms.send_type'));
+        foreach ($sendTypes as $sendType) {
+            $rate = (int) sys_setting('py-sms::sms.send_rate_' . $sendType);
+            if ($rate) {
+                if ($sendType === Sms::SCOPE_ALIYUN) {
+                    config([
+                        'poppy.sms.aliyun.access_key'    => sys_setting('py-sms::sms.aliyun_access_key'),
+                        'poppy.sms.aliyun.access_secret' => sys_setting('py-sms::sms.aliyun_access_secret'),
+                    ]);
+                }
+                if ($sendType === Sms::SCOPE_CHUANGLAN) {
+                    config([
+                        'poppy.sms.chuanglan.access_key'        => sys_setting('py-sms::sms.chuanglan_access_key'),
+                        'poppy.sms.chuanglan.access_secret'     => sys_setting('py-sms::sms.chuanglan_access_secret'),
+                        'poppy.sms.chuanglan.cty_access_key'    => sys_setting('py-sms::sms.chuanglan_cty_access_key'),
+                        'poppy.sms.chuanglan.cty_access_secret' => sys_setting('py-sms::sms.chuanglan_cty_access_secret'),
+                    ]);
+                }
+                if ($sendType === Sms::SCOPE_LIANLU) {
+                    config([
+                        'poppy.sms.lianlu.mch_id'      => sys_setting('py-sms::sms.lianlu_mch_id'),
+                        'poppy.sms.lianlu.app_id'      => sys_setting('py-sms::sms.lianlu_app_id'),
+                        'poppy.sms.lianlu.app_key'     => sys_setting('py-sms::sms.lianlu_app_key'),
+                        'poppy.sms.lianlu.cty_mch_id'  => sys_setting('py-sms::sms.lianlu_cty_mch_id'),
+                        'poppy.sms.lianlu.cty_app_id'  => sys_setting('py-sms::sms.chuanglan_cty_app_id'),
+                        'poppy.sms.lianlu.cty_app_key' => sys_setting('py-sms::sms.chuanglan_cty_app_key'),
+                    ]);
+                }
+            }
         }
     }
 }

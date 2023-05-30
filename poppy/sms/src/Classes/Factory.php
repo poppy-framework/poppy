@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\Sms\Classes;
 
 use Poppy\Framework\Classes\Traits\AppTrait;
+use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Classes\Contracts\SmsContract;
 use SimpleXMLElement;
 
@@ -22,10 +23,10 @@ class Factory
     public static function instance(): BaseSms
     {
         if (!self::$instance) {
-            $sendType = sys_setting('py-sms::sms.send_type');
+            $sendType = Sms::rateSmsType();
             $hooks    = sys_hook('poppy.sms.send_type');
             if (!$sendType) {
-                $sendType = 'local';
+                $sendType = Sms::SCOPE_LOCAL;
             }
             $sender      = $hooks[$sendType];
             $senderClass = $sender['provider'] ?? LocalSmsProvider::class;

@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\Sms\Http\MgrPage;
 
-use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
@@ -19,19 +18,18 @@ class FormSettingSms extends FormSettingBase
     public function form()
     {
         $sendTypes = sys_hook('poppy.sms.send_type');
-
-        $types['local'] = '本地';
         foreach ($sendTypes as $key => $desc) {
-            $types[$key] = $desc['title'];
+            $this->number('send_rate_' . $key, $desc['title'])
+                ->rules([
+                    Rule::min(0),
+                    Rule::max(100),
+                ])
+                ->default(0)
+                ->help('设置分流比例，未设置默认为 local 100%')
+                ->width(1);
         }
 
-        $this->radio('send_type', '发送方式')->options($types)->rules([
-            Rule::string(),
-            Rule::required(),
-        ])->default('local')->help('选择本地则文件存储在日志中, 需要自行查看');
-        $this->text('sign', '默认签名')->rules([
-            Rule::nullable(),
-        ]);
+        $this->text('sign', '默认签名')->rules([Rule::nullable()]);
 
         foreach ($sendTypes as $desc) {
             if (isset($desc['setting'])) {

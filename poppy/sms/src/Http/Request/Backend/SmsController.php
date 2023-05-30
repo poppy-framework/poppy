@@ -34,7 +34,7 @@ class SmsController extends BackendController
      */
     public function index()
     {
-        $scope = config('poppy.sms.send_type');
+        $scope = Sms::SCOPE_LOCAL;
         if (input('_scope')) {
             $scope = input('_scope');
         }

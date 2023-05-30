@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Classes\Traits\SystemTrait;
+use Throwable;
 use Validator;
 use View;
 
@@ -22,6 +23,7 @@ class Sms
     public const SCOPE_LOCAL     = 'local';
     public const SCOPE_ALIYUN    = 'aliyun';
     public const SCOPE_CHUANGLAN = 'chuanglan';
+    public const SCOPE_LIANLU    = 'lianlu';
 
     private const CACHE_TEMPLATES = 'py-sms::sms.template';
 
@@ -181,9 +183,8 @@ class Sms
      * @param string $type 类型
      * @return array [type|code|content]
      */
-    public static function smsTpl(string $type): array
+    public static function smsTpl(string $type, string $scope): array
     {
-        $scope     = config('poppy.sms.send_type', self::SCOPE_LOCAL);
         $templates = collect((new Sms())->getTemplates());
         $key       = $scope . ':' . $type;
         if ($templates->offsetExists($key)) {
@@ -202,4 +203,52 @@ class Sms
         return true;
     }
 
+    /**
+     * 获取现在配置分流的短信
+     * @return string
+     */
+    public static function rateSmsType(): string
+    {
+        $rates     = [];
+        $sendTypes = array_keys(sys_hook('poppy.sms.send_type'));
+        foreach ($sendTypes as $sendType) {
+            $rate = (int) sys_setting('py-sms::sms.send_rate_' . $sendType);
+            if ($rate) {
+                $rates[$sendType] = $rate;
+            }
+        }
+        return self::getRandType($rates);
+    }
+
+    /**
+     * @param array $rates
+     * @return string
+     */
+    private static function getRandType(array $rates): string
+    {
+        try {
+            $result = self::SCOPE_LOCAL;
+            if (!$rates) {
+                return $result;
+            }
+            if (count($rates) === 1) {
+                return (string) array_key_first($rates);
+            }
+            //概率数组的总概率精度
+            $sumRates = array_sum($rates);
+            //概率数组循环
+            foreach ($rates as $key => $rate) {
+                $randNum = random_int(1, $sumRates);
+                if ($randNum <= $rate) {
+                    $result = $key;
+                    break;
+                }
+                $sumRates -= $rate;
+            }
+
+            return (string) $result;
+        } catch (Throwable $e) {
+            return $result;
+        }
+    }
 }

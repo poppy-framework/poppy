@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\Sms\Classes;
 
 use Poppy\Framework\Helper\UtilHelper;
+use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Classes\Chuanglan\SmsApi;
 use Poppy\Sms\Classes\Contracts\SmsContract;
 
@@ -20,6 +21,7 @@ class ChuanglanSmsProvider extends BaseSms implements SmsContract
      */
     public function send(string $type, $mobile, array $params = [], $sign = ''): bool
     {
+        $this->setScope(Sms::SCOPE_CHUANGLAN);
         if (!$this->checkSms($mobile, $type, $sign)) {
             return false;
         }

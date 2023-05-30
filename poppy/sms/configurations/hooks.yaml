@@ -4,3 +4,4 @@
     - '\Poppy\Sms\Hooks\Sms\SendTypeLocal'
     - '\Poppy\Sms\Hooks\Sms\SendTypeAliyun'
     - '\Poppy\Sms\Hooks\Sms\SendTypeChuanglan'
+    - '\Poppy\Sms\Hooks\Sms\SendTypeLianLu'
