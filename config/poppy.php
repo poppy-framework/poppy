@@ -120,6 +120,42 @@ return [
                 'title' => '验证码(:code)',
             ],
             [
+                'type'  => 'captcha1',
+                'title' => '验证码1(:code)',
+            ],
+            [
+                'type'  => 'captcha2',
+                'title' => '验证码2(:code)',
+            ],
+            [
+                'type'  => 'captcha3',
+                'title' => '验证码3(:code)',
+            ],
+            [
+                'type'  => 'captcha4',
+                'title' => '验证码4(:code)',
+            ],
+            [
+                'type'  => 'captcha5',
+                'title' => '验证码5(:code)',
+            ],
+            [
+                'type'  => 'captcha6',
+                'title' => '验证码6(:code)',
+            ],
+            [
+                'type'  => 'captcha7',
+                'title' => '验证码7(:code)',
+            ],
+            [
+                'type'  => 'captcha8',
+                'title' => '验证码8(:code)',
+            ],
+            [
+                'type'  => 'captcha9',
+                'title' => '验证码9(:code)',
+            ],
+            [
                 'type'  => 'captcha-cty',
                 'title' => '国际验证码(:code)',
             ],

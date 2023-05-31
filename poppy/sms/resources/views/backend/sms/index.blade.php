@@ -3,15 +3,15 @@
     <div class="layui-card-header">
         短信模板
         <div class="pull-right">
-            {!! mgr_actions(function (\Poppy\MgrPage\Classes\Operations $operations) use ($scope){
+            {!! mgr_actions(function (Poppy\MgrPage\Classes\Operations $operations) use ($scope){
                 $operations->create(route_url('py-sms:backend.sms.establish', null, ['_scope'=> $scope]), '创建模板');
                 $operations->setting(route_url('py-sms:backend.sms.store'), '短信设置');
             }) !!}
         </div>
     </div>
     <div class="layui-card-body">
-        {!! app('poppy.mgr-page.form')->scopes(\Poppy\Sms\Action\Sms::kvPlatform(), $scope) !!}
-        <table class="layui-table" lay-filter="default">
+        {!! app('poppy.mgr-page.form')->scopes(Poppy\Sms\Action\Sms::kvPlatform(), $scope) !!}
+        <table class="layui-table" {!! mgr_table_open() !!}>
             <thead>
             <tr>
                 <th {!! mgr_col(160)  !!}>类型</th>
@@ -22,10 +22,10 @@
             <tbody>
             @foreach($items as $item)
                 <tr>
-                    <td><span class="J_tooltip" title="标识 : {{$item['type']}}">{{ \Poppy\Sms\Action\Sms::kvType($item['type'])}}</span></td>
+                    <td><span class="J_tooltip" title="标识 : {{$item['type']}}">{{ Poppy\Sms\Action\Sms::kvType($item['type'])}}</span></td>
                     <td>{{$item['code']}}</td>
                     <td>
-                        {!! mgr_actions(function (\Poppy\MgrPage\Classes\Operations $operations) use ($item){
+                        {!! mgr_actions(function (Poppy\MgrPage\Classes\Operations $operations) use ($item){
                            $operations->edit(route_url('py-sms:backend.sms.establish', [$item['scope'].':'.$item['type']]));
                            $operations->delete(route('py-sms:backend.sms.destroy', [$item['scope'].':'.$item['type']]), '确认删除');
                         }); !!}
@@ -35,5 +35,7 @@
             </tbody>
         </table>
     </div>
-    {!! mgr_table_close() !!}
+    {!! mgr_table_close('default', [
+        'limit' => 1000,
+    ]) !!}
 @endsection

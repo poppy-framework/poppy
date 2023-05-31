@@ -72,13 +72,16 @@ if (!function_exists('mgr_table_close')) {
      * Layui Table 初始化 End
      * @param string $filter
      * @return string
+     * @throws JsonException
      */
-    function mgr_table_close(string $filter = 'default'): string
+    function mgr_table_close(string $filter = 'default', $options = []): string
     {
+
+        $json = json_encode($options, JSON_THROW_ON_ERROR);
         return <<<HTML
     <script>
     $(function () {
-        layui.table.init('{$filter}');
+        layui.table.init('{$filter}', {$json});
     })
     </script>
 HTML;
