@@ -286,6 +286,9 @@ demo :
           title : Tags
           route : demo:web.form.index/Tags
         -
+          title : TableInput
+          route : demo:web.form.index/TableInput
+        -
           title : Text
           route : demo:web.form.index/Text
         -
