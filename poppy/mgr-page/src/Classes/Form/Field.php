@@ -1148,7 +1148,7 @@ class Field implements Renderable
     {
         $column = is_array($this->column) ? current($this->column) : $this->column;
 
-        $label = isset($arguments[0]) ? $arguments[0] : ucfirst($column);
+        $label = $arguments[0] ?? ucfirst($column);
 
         return str_replace(['.', '_', '->'], ' ', $label);
     }

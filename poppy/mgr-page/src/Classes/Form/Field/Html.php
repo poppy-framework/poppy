@@ -28,7 +28,7 @@ class Html extends Field
      * @param mixed $html
      * @param array $arguments
      */
-    public function __construct($html, $arguments)
+    public function __construct($html, $arguments = [])
     {
         parent::__construct();
         $this->html  = $html;

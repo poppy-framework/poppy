@@ -66,6 +66,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method Field\Tags           tags($column, $label = '')
  * @method Field\MultiImage     multipleImage($column, $label = '')
  * @method Field\Timezone       timezone($column, $label = '')
+ * @method Field\TableInput     tableInput($column, $label = '')
  * @method Field\Keyword        keyWord($column, $label = '')
  */
 class Form implements Renderable
@@ -124,6 +125,7 @@ class Form implements Renderable
         'timezone'       => Field\Timezone::class,
         'keyword'        => Field\Keyword::class,
         'question'       => Field\Question::class,
+        'tableInput'     => Field\TableInput::class,
         'hook'           => Field\Hook::class,
     ];
 

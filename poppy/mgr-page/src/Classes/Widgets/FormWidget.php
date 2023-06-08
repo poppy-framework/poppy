@@ -60,12 +60,13 @@ use Poppy\MgrPage\Classes\Layout\Content;
  * @method Field\Divider        divider($title = '')
  * @method Field\Editor         editor($name, $label = '')
  * @method Field\Decimal        decimal($column, $label = '')
- * @method Field\Html           html($html, $arguments)
+ * @method Field\Html           html($html, $arguments = [])
  * @method Field\Tags           tags($column, $label = '')
  * @method Field\Timezone       timezone($column, $label = '')
  * @method Field\Keyword        keyword($column, $label = '')
  * @method Field\Question       question($column, $label = '')
  * @method Field\Hook           hook($column, $label = '')
+ * @method Field\TableInput     tableInput($column, $label = '')
  * @method mixed                handle(Request $request)
  */
 class FormWidget implements Renderable

@@ -5,7 +5,7 @@
         <div class="pull-right">
             {!! mgr_actions(function (Poppy\MgrPage\Classes\Operations $operations) use ($scope){
                 $operations->create(route_url('py-sms:backend.sms.establish', null, ['_scope'=> $scope]), '创建模板');
-                $operations->setting(route_url('py-sms:backend.sms.store'), '短信设置');
+                $operations->iframe( '短信设置', route_url('py-sms:backend.sms.store'))->widthLarge()->icon('sliders')->sm();
             }) !!}
         </div>
     </div>

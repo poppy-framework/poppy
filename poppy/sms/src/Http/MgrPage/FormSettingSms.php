@@ -4,7 +4,11 @@ declare(strict_types = 1);
 
 namespace Poppy\Sms\Http\MgrPage;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Validation\Rule;
+use Poppy\MgrPage\Classes\Form\Field\Number;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
 class FormSettingSms extends FormSettingBase
@@ -13,22 +17,31 @@ class FormSettingSms extends FormSettingBase
 
     protected $withContent = true;
 
-    /**
-     */
-    public function form()
+    public function handle(Request $request)
+    {
+        $items = $request->all();
+        foreach ($items as $key => $item) {
+            if (Str::startsWith($key, 'send_rate_')) {
+                $value = (int) $item;
+                if ($value < 0 || $value > 100) {
+                    return Resp::error('错误的分流比例');
+                }
+            }
+        }
+        return parent::handle($request);
+    }
+
+    public function form(): void
     {
         $sendTypes = sys_hook('poppy.sms.send_type');
+        $table     = [];
         foreach ($sendTypes as $key => $desc) {
-            $this->number('send_rate_' . $key, $desc['title'])
-                ->rules([
-                    Rule::min(0),
-                    Rule::max(100),
-                ])
-                ->default(0)
-                ->help('设置分流比例，未设置默认为 local 100%')
-                ->width(1);
+            $table[] = [
+                (new Number('send_rate_' . $key, [$desc['title']]))->default((int) sys_setting($this->group . '.send_rate_' . $key)),
+            ];
         }
 
+        $this->tableInput('rate', '分流比例')->table($table)->help('设置分流比例, 未设置默认为 local');
         $this->text('sign', '默认签名')->rules([Rule::nullable()]);
 
         foreach ($sendTypes as $desc) {
