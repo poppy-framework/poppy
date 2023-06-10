@@ -6,10 +6,12 @@ namespace Poppy\Sms\Http\MgrPage;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Poppy\Core\Classes\Contracts\SettingContract;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\Field\Number;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
+use Poppy\System\Setting\Repository\SettingRepository;
 
 class FormSettingSms extends FormSettingBase
 {
@@ -20,12 +22,15 @@ class FormSettingSms extends FormSettingBase
     public function handle(Request $request)
     {
         $items = $request->all();
+        /** @var SettingRepository $Setting */
+        $Setting = app(SettingContract::class);
         foreach ($items as $key => $item) {
             if (Str::startsWith($key, 'send_rate_')) {
                 $value = (int) $item;
                 if ($value < 0 || $value > 100) {
                     return Resp::error('错误的分流比例');
                 }
+                $Setting->set($this->group . '.' . $key, $value);
             }
         }
         return parent::handle($request);
