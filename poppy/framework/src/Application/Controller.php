@@ -8,8 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Poppy\Framework\Helper\EnvHelper;
 use Poppy\Framework\Http\Pagination\PageInfo;
-use Request;
 use Route;
 use View;
 
@@ -62,7 +62,7 @@ abstract class Controller extends BaseController
     {
         $this->route    = Route::currentRouteName();
         $this->pagesize = PageInfo::pagesize();
-        $this->ip       = Request::ip();
+        $this->ip       = EnvHelper::ip();
         $this->now      = Carbon::now();
     }
 

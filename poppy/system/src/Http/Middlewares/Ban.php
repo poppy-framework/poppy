@@ -6,10 +6,10 @@ namespace Poppy\System\Http\Middlewares;
 
 use Closure;
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Helper\EnvHelper;
 use Poppy\System\Action\Ban as ActBan;
 use Poppy\System\Models\PamBan;
 use Poppy\System\Models\SysConfig;
-use Request;
 
 /**
  * 禁止访问, 对于用户访问的控制
@@ -28,7 +28,7 @@ class Ban
     public function handle($request, Closure $next, string $type = 'user')
     {
         //获取ip
-        $ip = Request::ip();
+        $ip = EnvHelper::ip();
 
         if ($appType = x_header('type')) {
             $type = $appType;

@@ -9,13 +9,13 @@ use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Poppy\Framework\Classes\Traits\AppTrait;
+use Poppy\Framework\Helper\EnvHelper;
 use Poppy\System\Classes\PySystemDef;
 use Poppy\System\Events\PamSsoEvent;
 use Poppy\System\Events\PamSsoLogoutEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamToken;
 use Poppy\System\Models\SysConfig;
-use Request;
 use Throwable;
 
 /**
@@ -150,7 +150,7 @@ class Sso
             'token_hash'  => $tokenMd5,
             'device_type' => $device_type,
             'expired_at'  => $expiredAt->toDateTimeString(),
-            'login_ip'    => Request::ip(),
+            'login_ip'    => EnvHelper::ip(),
             'created_at'  => Carbon::now(),
             'updated_at'  => Carbon::now(),
         ]);

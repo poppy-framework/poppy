@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Listeners\LoginSuccess;
 
+use Poppy\Framework\Helper\EnvHelper;
 use Poppy\System\Events\LoginSuccessEvent;
 use Poppy\System\Models\PamLog;
-use Request;
 
 /**
  * 记录登录日志
@@ -20,7 +20,7 @@ class LogListener
     {
         $pam = $event->pam;
 
-        $ip = Request::ip();
+        $ip = EnvHelper::ip();
 
         $areaText = '';
         if (app()->bound('poppy.ext.ip_store')) {

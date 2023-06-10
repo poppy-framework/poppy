@@ -14,6 +14,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Exceptions\ApplicationException;
+use Poppy\Framework\Helper\EnvHelper;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Http\MgrPage\FormSettingLog;
 use Poppy\System\Classes\Contracts\PasswordContract;
@@ -175,7 +176,7 @@ class Pam
             $type          => $passport,
             'password'     => $password,
             'reg_platform' => x_header('os'),
-            'reg_ip'       => \Request::ip(),
+            'reg_ip'       => EnvHelper::ip(),
             'parent_id'    => $this->parentId,
         ];
 
