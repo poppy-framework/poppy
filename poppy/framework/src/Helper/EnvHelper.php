@@ -14,8 +14,6 @@ class EnvHelper
     /**
      * 返回 IP 信息
      * @return string 返回IP
-     * @see        Request::ip
-     * @deprecated 4.1
      */
     public static function ip(): string
     {
