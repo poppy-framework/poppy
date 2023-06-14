@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\System\Classes\Traits;
+namespace Poppy\Framework\Classes\Traits;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -14,8 +14,6 @@ use Request;
 
 /**
  * Class Helpers.
- * @see        \Poppy\Framework\Classes\Traits\PjaxTrait
- * @deprecated 5.0
  */
 trait PjaxTrait
 {

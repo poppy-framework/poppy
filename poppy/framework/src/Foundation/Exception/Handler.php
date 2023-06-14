@@ -15,9 +15,9 @@ use Illuminate\Http\Request;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Classes\Traits\PjaxTrait;
 use Poppy\Framework\Exceptions\AjaxException;
 use Poppy\Framework\Exceptions\BaseException;
-use Poppy\System\Classes\Traits\PjaxTrait;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
