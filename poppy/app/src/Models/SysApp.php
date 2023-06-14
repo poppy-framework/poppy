@@ -73,6 +73,21 @@ class SysApp extends Model
         });
     }
 
+    /**
+     * 验证权限
+     * @param int    $appid
+     * @param string $permission
+     * @return bool
+     * @throws AppNotExistsException
+     */
+    public static function check(int $appid, string $permission): bool
+    {
+        $item = self::item($appid);
+        $pk   = array_flip($item['permissions']);
+        return isset($pk[$permission]);
+
+    }
+
     public function setPermissionsAttribute(array $permissions): void
     {
         $this->attributes['permissions'] = implode(',', $permissions);
