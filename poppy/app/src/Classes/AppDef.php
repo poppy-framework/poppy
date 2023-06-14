@@ -13,6 +13,6 @@ class AppDef
      */
     public static function ckItem(int $appid): string
     {
-        return 'app:list:app-' . $appid;
+        return 'items:app-' . $appid;
     }
 }

@@ -6,7 +6,10 @@ namespace Poppy\App\Http\MgrPage;
 
 use Illuminate\Http\Request;
 use Poppy\App\Action\App;
+use Poppy\App\Http\Validation\AppEstablishRequest;
 use Poppy\App\Models\SysApp;
+use Poppy\Core\Classes\Traits\CoreTrait;
+use Poppy\Core\Rbac\Permission\Permission;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
@@ -15,6 +18,8 @@ use Route;
 
 class FormAppEstablish extends FormWidget
 {
+
+    use CoreTrait;
 
     public $ajax = true;
 
@@ -50,8 +55,8 @@ class FormAppEstablish extends FormWidget
 
     public function handle(Request $request)
     {
-        $data = array_merge($request->all());
-        if ($this->app->establish($data, $this->id)) {
+        $validated = app(AppEstablishRequest::class, [$request])->validated();
+        if ($this->app->establish($validated, $this->id)) {
             return Resp::success('添加成功', [
                 '_top_reload' => 1,
                 'id'          => $this->app->getItem()->id,
@@ -62,19 +67,12 @@ class FormAppEstablish extends FormWidget
 
     public function data(): array
     {
-        return $this->item ? [
-            'title'        => $this->item->title,
-            'name'         => $this->item->name,
-            'secret'       => $this->item->secret,
-            'account_type' => $this->item->account_type,
-            'account_id'   => $this->item->account_id,
-            'note'         => $this->item->note,
-        ] : [
-        ];
+        return $this->item ? $this->item->toArray() : [];
     }
 
     public function form(): void
     {
+
         $this->text('title', '应用名称')->rules([
             Rule::required(),
         ]);
@@ -89,9 +87,18 @@ class FormAppEstablish extends FormWidget
         $this->select('account_type', '应用账户类型')->rules([
             Rule::nullable(),
         ])->options(PamAccount::kvType());
-        $this->text('account_id', '用户ID')->rules([
+        $this->text('account_id', '绑定用户ID')->rules([
             Rule::numeric(),
         ])->help('用户的应用, 需要绑定到用户ID 上, 并且和用户类型相匹配');
+
+        $permissions = [];
+        $this->corePermission()->permissions()->each(function (Permission $permission) use (&$permissions) {
+            if ($permission->type() === 'app') {
+                $permissions[$permission->key()] = $permission->description();
+            }
+        });
+
+        $this->checkbox('permissions', '应用权限')->options($permissions);
         $this->textarea('note', '应用备注');
     }
 }

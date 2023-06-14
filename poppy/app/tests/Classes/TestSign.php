@@ -9,7 +9,6 @@ use Poppy\App\Action\App;
 use Poppy\App\Classes\AppDef;
 use Poppy\App\Classes\Sign\DefaultAppSign;
 use Poppy\App\Models\SysApp;
-use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Application\TestCase;
 use Poppy\Framework\Exceptions\ApplicationException;
 
@@ -51,7 +50,7 @@ class TestSign extends TestCase
             $this->fail('验签失败');
         }
         // 移除
-        RdsDb::instance()->del(AppDef::ckItem($App->getItem()->id));
+        sys_tag('py-app')->del(AppDef::ckItem($App->getItem()->id));
         SysApp::whereKey($appid)->delete();
         $this->assertTrue(true);
     }

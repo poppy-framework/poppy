@@ -8,11 +8,8 @@ use Poppy\App\Classes\AppDef;
 use Poppy\App\Models\SysApp;
 use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Classes\Traits\AppTrait;
-use Poppy\Framework\Validation\Rule;
-use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\SysConfig;
 use Throwable;
-use Validator;
 
 /**
  * 应用管理
@@ -50,52 +47,15 @@ class App
      */
     public function establish(array $data, int $id = null): bool
     {
-        $initDb    = [
+        $initDb = [
             'title'        => (string) sys_get($data, 'title'),
             'secret'       => (string) sys_get($data, 'secret'),
             'account_type' => (string) sys_get($data, 'account_type'),
             'account_id'   => (int) sys_get($data, 'account_id'),
             'name'         => (string) sys_get($data, 'name'),
             'note'         => (string) sys_get($data, 'note'),
+            'permissions'  => (array) sys_get($data, 'permissions'),
         ];
-        $validator = Validator::make($initDb, [
-            'title'        => [
-                Rule::required(),
-                Rule::string(),
-                Rule::max(50),
-            ],
-            'secret'       => [
-                Rule::required(),
-                Rule::string(),
-            ],
-            'name'         => [
-                Rule::string(),
-                Rule::between(5, 16),
-                Rule::regex('/^[a-z][a-z0-9_]{4,15}$/'),
-                Rule::unique((new SysApp())->getTable(), 'name')->where(function ($query) use ($id) {
-                    if ($id) {
-                        $query->where('id', '!=', $id);
-                    }
-                }),
-            ],
-            'account_type' => [
-                Rule::in(array_keys(PamAccount::kvType())),
-            ],
-            'account_id'   => [
-                Rule::numeric(),
-            ],
-        ], [], [
-            'title'        => '标题',
-            'secret'       => '密钥',
-            'name'         => '标识',
-            'account_type' => '用户类型',
-            'account_id'   => '用户ID',
-            'note'         => '备注',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setError($validator->errors());
-        }
 
         // init
         if ($id && !$this->init($id)) {
@@ -104,7 +64,7 @@ class App
 
         if ($id) {
             $this->item->update($initDb);
-            RdsDb::instance()->del(AppDef::ckItem($this->item->id));
+            sys_tag('py-app')->del(AppDef::ckItem($this->item->id));
         }
         else {
             /** @var SysApp $item */
@@ -132,7 +92,7 @@ class App
             $this->item->is_enable = $status ? SysConfig::YES : SysConfig::NO;
             $this->item->save();
 
-            RdsDb::instance()->del(AppDef::ckItem($this->item->id));
+            sys_tag('py-app')->del(AppDef::ckItem($this->item->id));
         } catch (Throwable $e) {
             return $this->setError($e->getMessage());
         }

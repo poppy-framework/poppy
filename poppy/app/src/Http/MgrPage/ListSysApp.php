@@ -24,20 +24,22 @@ class ListSysApp extends ListBase
      * @inheritDoc
      * @throws ApplicationException
      */
-    public function columns()
+    public function columns(): void
     {
-        $this->column('id', "应用ID")->sortable()->width(100);
-        $this->column('title', "标题");
-        $this->column('account_type', "类型")->display(function ($type) {
+        $this->column('id', '应用ID')->sortable()->width(100);
+        $this->column('title', '标题')->width(200);
+        $this->column('account_type', '绑定用户')->display(function ($type) {
+            /** @var $this SysApp */
             if ($type) {
-                return PamAccount::kvType($type);
+                return PamAccount::kvType($type) . "(id: {$this->account_id})";
             }
             return '';
-        });
+        })->width(150);
+        $this->column('description', '描述');
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var SysApp $item */
             $item = $actions->row;
-            $actions->edit(route('py-app:backend.app.establish', [$item->id]));
+            $actions->iframe('编辑', route('py-app:backend.app.establish', $item->id))->icon('pen')->widthLarge()->primary();
             if ($item->is_enable) {
                 $actions->disable(route('py-app:backend.app.status', [$item->id, SysConfig::NO]), $item->title);
             }

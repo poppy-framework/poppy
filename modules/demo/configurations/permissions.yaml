@@ -11,3 +11,17 @@
         -
           slug : manage
           description : 环境帮助
+-
+  slug : app:demo
+  title : Demo
+  groups :
+    -
+      slug : demo
+      title : 帮助
+      permissions :
+        -
+          slug : permission-a
+          description : 权限 A
+        -
+          slug : permission-b
+          description : 权限 B

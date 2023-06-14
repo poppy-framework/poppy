@@ -7,7 +7,6 @@ namespace Poppy\App\Classes\Sign;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Log;
 use Poppy\App\Exceptions\AppNotExistsException;
 use Poppy\App\Models\SysApp;
 use Poppy\Framework\Classes\Resp;
@@ -65,9 +64,7 @@ class DefaultAppSign
 
         // check sign
         if ($sign !== $this->calcSign($input, $item['secret'])) {
-            Log::error('sign-error', [
-                'params' => $input,
-            ]);
+            sys_warning('poppy.app-sign_error', [], true);
             return $this->setError(new Resp(Resp::SIGN_ERROR, '签名错误'));
         }
         return true;
