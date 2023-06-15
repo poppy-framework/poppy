@@ -795,12 +795,12 @@ MULTI;
     }
 
     /**
-     * @param string $name
-     * @param string $value
-     * @param array  $options
+     * @param string      $name
+     * @param string|null $value
+     * @param array       $options
      * @return string
      */
-    public function timeRangePicker(string $name, string $value = '', array $options = []): string
+    public function timeRangePicker(string $name, $value = '', array $options = []): string
     {
         return $this->datePicker($name, $value, array_merge($options, [
             'layui-type'  => 'time',
