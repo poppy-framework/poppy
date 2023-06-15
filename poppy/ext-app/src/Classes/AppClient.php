@@ -33,9 +33,13 @@ class AppClient
      */
     private GuzzleClient $client;
 
-    public function __construct()
+
+    private string $baseUrl;
+
+    public function __construct($base_url = '')
     {
-        $this->client = new GuzzleClient();
+        $this->client  = new GuzzleClient();
+        $this->baseUrl = $base_url;
     }
 
     /**
@@ -48,7 +52,7 @@ class AppClient
     {
         $query = DefaultAppSign::sign($query, $this->appid, $this->secret);
         try {
-            $resp    = $this->client->get($url, [
+            $resp    = $this->client->get($this->url($url), [
                 'query' => $query,
             ]);
             $content = $resp->getBody()->getContents();
@@ -84,7 +88,7 @@ class AppClient
         ];
 
         try {
-            $resp    = $this->client->post($url, [
+            $resp    = $this->client->post($this->url($url), [
                 'multipart' => $multipart,
             ]);
             $content = $resp->getBody()->getContents();
@@ -113,8 +117,37 @@ class AppClient
         $form_params = DefaultAppSign::sign($form_params, $this->appid, $this->secret);
 
         try {
-            $resp    = $this->client->post($url, [
+            $resp    = $this->client->post($this->url($url), [
                 'form_params' => $form_params,
+            ]);
+            $content = $resp->getBody()->getContents();
+            return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+        } catch (GuzzleException $e) {
+            return [
+                'status'  => $e->getCode(),
+                'message' => $e->getMessage(),
+            ];
+        } catch (JsonException $e) {
+            return [
+                'status'  => self::ERR_JSON,
+                'message' => $e->getMessage(),
+            ];
+        }
+    }
+
+    /**
+     * 发送应用 JSON 请求
+     * @param string $url
+     * @param array  $params
+     * @return array|mixed
+     */
+    public function json(string $url, array $params = [])
+    {
+        $params = DefaultAppSign::sign($params, $this->appid, $this->secret);
+
+        try {
+            $resp    = $this->client->post($this->url($url), [
+                'json' => $params,
             ]);
             $content = $resp->getBody()->getContents();
             return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
@@ -149,5 +182,10 @@ class AppClient
     {
         $this->secret = $secret;
         return $this;
+    }
+
+    private function url(string $url): string
+    {
+        return filter_var($url, FILTER_VALIDATE_URL) ? $url : rtrim($this->baseUrl, '/') . '/' . ltrim($url, '/');
     }
 }
