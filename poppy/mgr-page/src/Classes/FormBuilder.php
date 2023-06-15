@@ -795,6 +795,20 @@ MULTI;
     }
 
     /**
+     * @param string $name
+     * @param string $value
+     * @param array  $options
+     * @return string
+     */
+    public function timeRangePicker(string $name, string $value = '', array $options = []): string
+    {
+        return $this->datePicker($name, $value, array_merge($options, [
+            'layui-type'  => 'time',
+            'layui-range' => 'true',
+        ]));
+    }
+
+    /**
      * 生成日期时间选择器
      * @param string $name    名字
      * @param string $value   值
