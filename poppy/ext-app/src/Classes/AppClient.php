@@ -36,6 +36,9 @@ class AppClient
 
     private string $baseUrl;
 
+
+    private bool $log = false;
+
     public function __construct($base_url = '')
     {
         $this->client  = new GuzzleClient();
@@ -56,7 +59,9 @@ class AppClient
                 'query' => $query,
             ]);
             $content = $resp->getBody()->getContents();
-            return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            $this->log($url, __METHOD__, $query, $data);
+            return $data;
         } catch (GuzzleException $e) {
             return [
                 'status'  => $e->getCode(),
@@ -92,7 +97,9 @@ class AppClient
                 'multipart' => $multipart,
             ]);
             $content = $resp->getBody()->getContents();
-            return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            $this->log($url, __METHOD__, $form_params, $data);
+            return $data;
         } catch (GuzzleException $e) {
             return [
                 'status'  => $e->getCode(),
@@ -121,7 +128,9 @@ class AppClient
                 'form_params' => $form_params,
             ]);
             $content = $resp->getBody()->getContents();
-            return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            $this->log($url, __METHOD__, $form_params, $data);
+            return $data;
         } catch (GuzzleException $e) {
             return [
                 'status'  => $e->getCode(),
@@ -150,7 +159,9 @@ class AppClient
                 'json' => $params,
             ]);
             $content = $resp->getBody()->getContents();
-            return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            $this->log($url, __METHOD__, $params, $data);
+            return $data;
         } catch (GuzzleException $e) {
             return [
                 'status'  => $e->getCode(),
@@ -182,6 +193,29 @@ class AppClient
     {
         $this->secret = $secret;
         return $this;
+    }
+
+    /**
+     * 启用日志
+     * @return $this
+     */
+    public function enableLog(): self
+    {
+        $this->log = true;
+        return $this;
+    }
+
+    private function log($url, $method, $params, $resp): void
+    {
+        if (!$this->log) {
+            return;
+        }
+        sys_info('poppy.ext-app-log', [
+            'url'    => $url,
+            'method' => $method,
+            'params' => $params,
+            'resp'   => $resp,
+        ]);
     }
 
     private function url(string $url): string
