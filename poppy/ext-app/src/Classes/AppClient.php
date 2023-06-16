@@ -62,16 +62,8 @@ class AppClient
             $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             $this->log($url, __METHOD__, $query, $data);
             return $data;
-        } catch (GuzzleException $e) {
-            return [
-                'status'  => $e->getCode(),
-                'message' => $e->getMessage(),
-            ];
-        } catch (JsonException $e) {
-            return [
-                'status'  => self::ERR_JSON,
-                'message' => $e->getMessage(),
-            ];
+        } catch (GuzzleException | JsonException $e) {
+            return $this->handleException($e, $url, __METHOD__, $query);
         }
     }
 
@@ -100,16 +92,8 @@ class AppClient
             $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             $this->log($url, __METHOD__, $form_params, $data);
             return $data;
-        } catch (GuzzleException $e) {
-            return [
-                'status'  => $e->getCode(),
-                'message' => $e->getMessage(),
-            ];
-        } catch (JsonException $e) {
-            return [
-                'status'  => self::ERR_JSON,
-                'message' => $e->getMessage(),
-            ];
+        } catch (GuzzleException | JsonException $e) {
+            return $this->handleException($e, $url, __METHOD__, $params);
         }
     }
 
@@ -131,16 +115,8 @@ class AppClient
             $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             $this->log($url, __METHOD__, $form_params, $data);
             return $data;
-        } catch (GuzzleException $e) {
-            return [
-                'status'  => $e->getCode(),
-                'message' => $e->getMessage(),
-            ];
-        } catch (JsonException $e) {
-            return [
-                'status'  => self::ERR_JSON,
-                'message' => $e->getMessage(),
-            ];
+        } catch (GuzzleException | JsonException $e) {
+            return $this->handleException($e, $url, __METHOD__, $form_params);
         }
     }
 
@@ -162,16 +138,8 @@ class AppClient
             $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             $this->log($url, __METHOD__, $params, $data);
             return $data;
-        } catch (GuzzleException $e) {
-            return [
-                'status'  => $e->getCode(),
-                'message' => $e->getMessage(),
-            ];
-        } catch (JsonException $e) {
-            return [
-                'status'  => self::ERR_JSON,
-                'message' => $e->getMessage(),
-            ];
+        } catch (GuzzleException | JsonException $e) {
+            return $this->handleException($e, $url, __METHOD__, $params);
         }
     }
 
@@ -216,6 +184,28 @@ class AppClient
             'params' => $params,
             'resp'   => $resp,
         ]);
+    }
+
+    /**
+     * @param GuzzleException|JsonException $e
+     * @param string                        $url
+     * @param string                        $method
+     * @param array                         $params
+     * @return array
+     */
+    private function handleException($e, string $url, string $method, array $params): array
+    {
+        $data = [
+            'status'  => $e instanceof JsonException ? self::ERR_JSON : $e->getCode(),
+            'message' => $e->getMessage(),
+        ];
+        sys_error('poppy.ext-app-log', [
+            'url'       => $url,
+            'method'    => $method,
+            'params'    => $params,
+            'exception' => $data,
+        ]);
+        return $data;
     }
 
     private function url(string $url): string
