@@ -2017,6 +2017,24 @@
   background: #faf7f7;
   color: #666666 !important;
 }
+.text-08r {
+  font-size: 0.8rem !important;
+}
+.text-1r {
+  font-size: 1rem !important;
+}
+.text-1a2r {
+  font-size: 1.2rem !important;
+}
+.text-1a5r {
+  font-size: 1.5rem !important;
+}
+.text-1a8r {
+  font-size: 1.8rem !important;
+}
+.text-2r {
+  font-size: 2rem !important;
+}
 .alert-info {
   border-color: #5fb878;
 }
