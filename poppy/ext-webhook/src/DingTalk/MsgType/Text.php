@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace Poppy\Extension\Webhook\DingTalk\MsgType;
+
+
+/**
+ * text类型
+ */
+class Text extends Message
+{
+    /**
+     * 消息内容
+     *
+     * @var string
+     */
+    private string $content;
+
+    /**
+     * Text constructor.
+     *
+     * @param string $content 消息内容,可以在其中添加{key}的形式便捷填充@信息
+     *                        例如
+     *                        $msg = new Text('text{zhangsan},text{lisi}');
+     *                        $msg->setAt(['zhangsan'=>'188xxxxxxxx','lisi'=>'188xxxxxxxx']);
+     *                        最终消息内容为 text@188xxxxxxxx,text@188xxxxxxxx
+     */
+    public function __construct(string $content)
+    {
+        $this->type    = 'text';
+        $this->content = $content;
+    }
+
+    /**
+     * @inerhitDoc
+     */
+    public function toJson(): string
+    {
+        $this->message['text']['content'] = $this->formatContent($this->content);
+        return parent::toJson();
+    }
+
+}

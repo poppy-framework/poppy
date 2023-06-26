@@ -13,7 +13,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Poppy\\Extension\\IpStore\\": "src/",
+            "Poppy\\Extension\\IpStore\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Poppy\\Extension\\IpStore\\Tests\\": "src/"
         }
     },
