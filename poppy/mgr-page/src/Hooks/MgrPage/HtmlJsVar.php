@@ -11,7 +11,7 @@ class HtmlJsVar implements ServiceHtml
 
     public function output(): string
     {
-        $rules = preg_replace('/\s+/', ';', sys_setting('py-system::picture.preview_rule'));
+        $rules = preg_replace('/\s+/', ';', sys_setting('py-system::picture.preview_rule', ''));
         return <<<JS
 window.POPPY.MGRPAGE = {
     'picturePreviewRule' : '{$rules}'
