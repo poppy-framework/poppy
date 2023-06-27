@@ -1,658 +1,658 @@
 @charset "utf-8";
 
 .text-08r {
-  font-size: 0.8rem !important;
+    font-size: 0.8rem !important;
 }
 
 .text-1r {
-  font-size: 1rem !important;
+    font-size: 1rem !important;
 }
 
 .text-1a2r {
-  font-size: 1.2rem !important;
+    font-size: 1.2rem !important;
 }
 
 .text-1a5r {
-  font-size: 1.5rem !important;
+    font-size: 1.5rem !important;
 }
 
 .text-1a8r {
-  font-size: 1.8rem !important;
+    font-size: 1.8rem !important;
 }
 
 .text-2r {
-  font-size: 2rem !important;
+    font-size: 2rem !important;
 }
 
 .alert-info {
-  border-color: #5fb878;
+    border-color: #5fb878;
 }
 
 .alert-danger {
-  border-color: #ff5722;
+    border-color: #ff5722;
 }
 
 .cursor-pointer {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .alert-warning {
-  border-color: #ffb800;
+    border-color: #ffb800;
 }
 
 .text-primary {
-  color: #009688;
+    color: #009688;
 }
 
 .text-danger {
-  color: #ff5722;
+    color: #ff5722;
 }
 
 .text-success {
-  color: #5fb878;
+    color: #5fb878;
 }
 
 .text-disable {
-  color: #ccc;
+    color: #ccc;
 }
 
 .text-warning, .text-warm {
-  color: #ffb800;
+    color: #ffb800;
 }
 
 .text-info, .text-normal {
-  color: #1E9FFF;
+    color: #1E9FFF;
 }
 
 
 /* 系统的缩略图组件
  * ---------------------------------------- */
 .layui-form-thumb {
-  width: 120px;
-  height: 120px;
-  position: relative;
-
-  .layui-btn {
-    background: #fff;
-    color: @color-highlight;
-    border: 1px solid @color-border;
-  }
-
-  .layui-icon-upload-drag {
-    font-size: 16px !important;
-  }
-
-  &.form_thumb-small {
-    width: 60px;
-    height: 60px;
-
-    .form_thumb-upload {
-      font-size: 24px;
-    }
-
-    .form_thumb-ctr {
-      width: 60px;
-      height: 60px;
-
-      img {
-        max-width: 59px;
-        max-height: 59px;
-      }
-    }
-  }
-
-  &.form_thumb-normal {
-    width: 85px;
-    height: 85px;
-
-    .layui-icon-upload-drag {
-      font-size: 22px !important;
-    }
-
-    .form_thumb-upload {
-      font-size: 28px;
-    }
-
-    .form_thumb-ctr {
-      width: 86px;
-      height: 86px;
-
-      img {
-        max-width: 83px;
-        max-height: 83px;
-        border-radius: 3px;
-      }
-    }
-  }
-
-  .form_thumb-upload {
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    font-size: 30px;
-    border-radius: 5px;
-  }
-
-  .form_thumb-ctr {
-    display: none;
-    z-index: 3;
-    position: absolute;
-    border: 1px solid #ccc;
-    top: 0;
-    left: 0;
     width: 120px;
     height: 120px;
-    font-size: 24px;
-    border-radius: 5px;
+    position: relative;
 
-    .form_thumb-url {
-      width: 1px;
-      height: 1px;
-      opacity: 1;
-      border: none;
-      position: absolute;
-      top: 0;
-      left: 0;
+    .layui-btn {
+        background: #fff;
+        color: @color-highlight;
+        border: 1px solid @color-border;
     }
 
-    img {
-      cursor: pointer;
-      max-width: 118px;
-      max-height: 118px;
-      position: relative;
-      top: 50%;
-      left: 50%;
-      transform: translateX(-50%) translateY(-50%);
+    .layui-icon-upload-drag {
+        font-size: 16px !important;
     }
 
-    i {
-      color: #ff5722;
-      position: absolute;
-      right: -5px;
-      top: -5px;
-      box-shadow: 1px 1px 3px 1px rgba(33, 33, 33, .2);
-      background: #fff;
-      border: 1px solid #fff;
-      cursor: pointer;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      line-height: 20px;
-      text-align: center;
-      font-size: 19px !important;
+    &.form_thumb-small {
+        width: 60px;
+        height: 60px;
 
-      &:hover {
-        color: red;;
-      }
+        .form_thumb-upload {
+            font-size: 24px;
+        }
+
+        .form_thumb-ctr {
+            width: 60px;
+            height: 60px;
+
+            img {
+                max-width: 59px;
+                max-height: 59px;
+            }
+        }
     }
-  }
 
-  &.form_thumb-success {
+    &.form_thumb-normal {
+        width: 85px;
+        height: 85px;
+
+        .layui-icon-upload-drag {
+            font-size: 22px !important;
+        }
+
+        .form_thumb-upload {
+            font-size: 28px;
+        }
+
+        .form_thumb-ctr {
+            width: 86px;
+            height: 86px;
+
+            img {
+                max-width: 83px;
+                max-height: 83px;
+                border-radius: 3px;
+            }
+        }
+    }
+
     .form_thumb-upload {
-      opacity: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        font-size: 30px;
+        border-radius: 5px;
     }
 
     .form_thumb-ctr {
-      display: block;
+        display: none;
+        z-index: 3;
+        position: absolute;
+        border: 1px solid #ccc;
+        top: 0;
+        left: 0;
+        width: 120px;
+        height: 120px;
+        font-size: 24px;
+        border-radius: 5px;
+
+        .form_thumb-url {
+            width: 1px;
+            height: 1px;
+            opacity: 1;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        img {
+            cursor: pointer;
+            max-width: 118px;
+            max-height: 118px;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+        i {
+            color: #ff5722;
+            position: absolute;
+            right: -5px;
+            top: -5px;
+            box-shadow: 1px 1px 3px 1px rgba(33, 33, 33, .2);
+            background: #fff;
+            border: 1px solid #fff;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            line-height: 20px;
+            text-align: center;
+            font-size: 19px !important;
+
+            &:hover {
+                color: red;;
+            }
+        }
     }
-  }
+
+    &.form_thumb-success {
+        .form_thumb-upload {
+            opacity: 0;
+        }
+
+        .form_thumb-ctr {
+            display: block;
+        }
+    }
 }
 
 .layui-form-upload {
-  .form_thumb-ctr {
-    display: inline-block;
-    font-size: 18px;
+    .form_thumb-ctr {
+        display: inline-block;
+        font-size: 18px;
 
-    .layui-icon {
-      cursor: pointer;
-      position: relative;
-      top: 3px;
-    }
+        .layui-icon {
+            cursor: pointer;
+            position: relative;
+            top: 3px;
+        }
 
-    .layui-icon-close-fill {
-      color: #ff5722;
-      margin-left: 5px;
+        .layui-icon-close-fill {
+            color: #ff5722;
+            margin-left: 5px;
+        }
     }
-  }
 }
 
 .layui-card {
-  border: 1px solid #e6e6e6;
+    border: 1px solid #e6e6e6;
 }
 
 .layui-card-footer {
-  position: relative;
-  height: 42px;
-  line-height: 42px;
-  padding: 0 15px;
-  border-top: 1px solid #f6f6f6;
-  color: #333333;
-  border-radius: 2px 2px 0 0;
-  font-size: 14px;
+    position: relative;
+    height: 42px;
+    line-height: 42px;
+    padding: 0 15px;
+    border-top: 1px solid #f6f6f6;
+    color: #333333;
+    border-radius: 2px 2px 0 0;
+    font-size: 14px;
 }
 
 .layui-card-pager {
-  float: right;
+    float: right;
 }
 
 
 .layui-form-label {
-  padding: 5px;
-  font-size: 12px;
-  width: auto;
-  height: 20px;
-  display: inline-block;
+    padding: 5px;
+    font-size: 12px;
+    width: auto;
+    height: 20px;
+    display: inline-block;
 }
 
 .layui-form-select dl {
-  top: 30px;
-  font-size: 12px;
+    top: 30px;
+    font-size: 12px;
 }
 
 i {
-  font-size: 14px !important;
+    font-size: 14px !important;
 }
 
 .develop--log {
-  li {
-    line-height: 30px;
-  }
+    li {
+        line-height: 30px;
+    }
 }
 
 label.validation:before {
-  content: '* ';
-  color: red;
-  font-weight: bold;
-  font-style: normal;
+    content: '* ';
+    color: red;
+    font-weight: bold;
+    font-style: normal;
 }
 
 .layui-upload.upload--multi {
-  position: relative;
-
-  .layui-elem-quote {
-    padding: 0 15px;
-  }
-
-  .multi-img {
     position: relative;
-    display: inline-block;
-    overflow: hidden;
-    width: 100px;
-    height: 100px;
-    margin: 15px 10px 10px 0;
-    transition: box-shadow .25s;
-    border-radius: 2px;
-    box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);
-    border: 2px solid #eee;
-    text-align: center;
-    float: left;
 
-    &:hover {
-      cursor: pointer;
-      box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
-      border: 2px solid #ccc;
+    .layui-elem-quote {
+        padding: 0 15px;
     }
 
-    &.multi-checked {
-      cursor: pointer;
-      box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
-      border: 2px solid red;
-    }
+    .multi-img {
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+        width: 100px;
+        height: 100px;
+        margin: 15px 10px 10px 0;
+        transition: box-shadow .25s;
+        border-radius: 2px;
+        box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);
+        border: 2px solid #eee;
+        text-align: center;
+        float: left;
 
-    &.multi-uploaded {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-
-      .layui-icon {
-        position: absolute;
-        color: #009688;
-      }
-
-      .layui-icon-ok-circle {
-        position: absolute;
-        right: 5px;
-        top: 5px;
-        display: block !important;
-        font-size: 20px !important;
-        border-radius: 50%;
-        background: #ffffff;
-        height: 20px;
-        line-height: 20px;
-      }
-
-      &:hover {
-        .layui-icon-search {
-          position: absolute;
-          right: 5px;
-          bottom: 5px;
-          display: block !important;
-          font-size: 42px !important;
-          font-weight: bold;
-          color: #afafaf;
-          opacity: 0.8;
-          width: 42px;
-          height: 42px;
-          line-height: 42px;
+        &:hover {
+            cursor: pointer;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+            border: 2px solid #ccc;
         }
-      }
+
+        &.multi-checked {
+            cursor: pointer;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+            border: 2px solid red;
+        }
+
+        &.multi-uploaded {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+
+            .layui-icon {
+                position: absolute;
+                color: #009688;
+            }
+
+            .layui-icon-ok-circle {
+                position: absolute;
+                right: 5px;
+                top: 5px;
+                display: block !important;
+                font-size: 20px !important;
+                border-radius: 50%;
+                background: #ffffff;
+                height: 20px;
+                line-height: 20px;
+            }
+
+            &:hover {
+                .layui-icon-search {
+                    position: absolute;
+                    right: 5px;
+                    bottom: 5px;
+                    display: block !important;
+                    font-size: 42px !important;
+                    font-weight: bold;
+                    color: #afafaf;
+                    opacity: 0.8;
+                    width: 42px;
+                    height: 42px;
+                    line-height: 42px;
+                }
+            }
+        }
+
+        input[type=checkbox] {
+            position: absolute;
+            left: -20px;
+            top: 0;
+        }
+
+        input[type=input] {
+            right: 0;
+            bottom: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            border-radius: 6px;
+        }
     }
 
-    input[type=checkbox] {
-      position: absolute;
-      left: -20px;
-      top: 0;
+    .layui-upload-img {
+        height: 100px;
+        border-radius: 2px;
+        max-width: 100px;
+        max-height: 100px;
+        object-fit: cover;
     }
-
-    input[type=input] {
-      right: 0;
-      bottom: 0;
-      width: 30px;
-      height: 30px;
-    }
-
-    button {
-      position: absolute;
-      right: 0;
-      top: 0;
-      border-radius: 6px;
-    }
-  }
-
-  .layui-upload-img {
-    height: 100px;
-    border-radius: 2px;
-    max-width: 100px;
-    max-height: 100px;
-    object-fit: cover;
-  }
 }
 
 .layadmin-side-shrink {
-  .layui-side {
-    .layui-nav-item {
-      .fa {
-        display: block !important;
-        position: absolute;
-        top: 70%;
-        left: 20px;
-        margin-top: -19px;
-        font-size: 16px;
-      }
+    .layui-side {
+        .layui-nav-item {
+            .fa {
+                display: block !important;
+                position: absolute;
+                top: 70%;
+                left: 20px;
+                margin-top: -19px;
+                font-size: 16px;
+            }
+        }
     }
-  }
 }
 
 /* 侧边栏
  * ---------------------------------------- */
 .layui-side-menu {
-  .layui-nav-tree {
-    a {
-      cite {
-        padding-left: 10px;
-      }
+    .layui-nav-tree {
+        a {
+            cite {
+                padding-left: 10px;
+            }
+        }
     }
-  }
 }
 
 select[lay-ignore] {
-  border: 1px solid #e6e6e6;
-  background-color: #fff;
-  border-radius: 2px;
-  height: 30px;
-  line-height: 30px;
-  padding: 0 10px;
-  font-size: 12px;
-  cursor: pointer;
-  //display: block;
-  width: 100%;
+    border: 1px solid #e6e6e6;
+    background-color: #fff;
+    border-radius: 2px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    font-size: 12px;
+    cursor: pointer;
+    //display: block;
+    width: 100%;
 }
 
 div.layui-input.layui-input-inline {
-  padding-left: 8px !important;
+    padding-left: 8px !important;
 }
 
 
 /* 输入错误的信息提示
  * ---------------------------------------- */
 .layui-control-label {
-  color: red;
-  font-size: 12px;
+    color: red;
+    font-size: 12px;
 }
 
 
 .layui-form-checkbox-label {
-  .layui-form-checkbox {
-    margin-top: -1px !important;
-  }
+    .layui-form-checkbox {
+        margin-top: -1px !important;
+    }
 }
 
 .layui-form-item .layui-inline {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 /* 样式表单
  * ---------------------------------------- */
 .layui-form {
-  background: #fff;
+    background: #fff;
 
-  select {
-    height: 34px;
-    font-size: 14px;
-  }
+    select {
+        height: 34px;
+        font-size: 14px;
+    }
 
-  .layui-field-checkbox-stack {
+    .layui-field-checkbox-stack {
+        .layui-field-checkbox-item {
+            display: block;
+        }
+
+        .layui-field-checkbox-label {
+            margin-bottom: 0 !important;
+        }
+    }
+
     .layui-field-checkbox-item {
-      display: block;
-    }
-
-    .layui-field-checkbox-label {
-      margin-bottom: 0 !important;
-    }
-  }
-
-  .layui-field-checkbox-item {
-    display: inline-block;
-  }
-
-  .layui-field-checkbox {
-    opacity: 0;
-    position: absolute;
-
-    + .layui-field-checkbox-label {
-      display: inline-block;
-      vertical-align: middle;
-      margin: 5px 5px 5px 0;
-      cursor: pointer;
-      position: relative;
-
-      &:before {
-        content: "\F26D";
-        font-family: "bootstrap-icons";
         display: inline-block;
-        vertical-align: middle;
-        width: 18px;
-        height: 18px;
-        padding: 0;
-        margin-right: 10px;
-        text-align: center;
-        position: relative;
-        font-size: 18px;
-        color: #e1e1e1;
-      }
     }
 
-    &:checked + .layui-field-checkbox-label:before {
-      color: #1E9FFF;
+    .layui-field-checkbox {
+        opacity: 0;
+        position: absolute;
+
+        + .layui-field-checkbox-label {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 5px 5px 5px 0;
+            cursor: pointer;
+            position: relative;
+
+            &:before {
+                content: "\F26D";
+                font-family: "bootstrap-icons";
+                display: inline-block;
+                vertical-align: middle;
+                width: 18px;
+                height: 18px;
+                padding: 0;
+                margin-right: 10px;
+                text-align: center;
+                position: relative;
+                font-size: 18px;
+                color: #e1e1e1;
+            }
+        }
+
+        &:checked + .layui-field-checkbox-label:before {
+            color: #1E9FFF;
+        }
+
+        &:focus + .layui-field-checkbox-label {
+            outline: none;
+        }
     }
 
-    &:focus + .layui-field-checkbox-label {
-      outline: none;
+    .layui-field-radio-stack {
+        .layui-field-radio-item {
+            display: block;
+        }
     }
-  }
 
-  .layui-field-radio-stack {
     .layui-field-radio-item {
-      display: block;
-    }
-  }
-
-  .layui-field-radio-item {
-    display: inline-block;
-  }
-
-  .layui-field-radio {
-    opacity: 0;
-    position: absolute;
-
-    + .layui-field-radio-label {
-      display: inline-block;
-      vertical-align: middle;
-      margin: 5px;
-      cursor: pointer;
-      position: relative;
-
-      &:before {
-        content: "\e643";
-        font-family: "layui-icon";
         display: inline-block;
-        vertical-align: top;
-        width: 18px;
-        height: 18px;
-        padding: 0;
-        margin-right: 10px;
-        text-align: center;
-        position: relative;
-        font-size: 18px;
-        color: #e1e1e1;
-      }
     }
 
-    &:checked + .layui-field-radio-label:before {
-      color: @color-highlight;
-    }
+    .layui-field-radio {
+        opacity: 0;
+        position: absolute;
 
-    &:focus + .layui-field-radio-label {
-      outline: none;
-    }
+        + .layui-field-radio-label {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 5px;
+            cursor: pointer;
+            position: relative;
 
-  }
+            &:before {
+                content: "\e643";
+                font-family: "layui-icon";
+                display: inline-block;
+                vertical-align: top;
+                width: 18px;
+                height: 18px;
+                padding: 0;
+                margin-right: 10px;
+                text-align: center;
+                position: relative;
+                font-size: 18px;
+                color: #e1e1e1;
+            }
+        }
+
+        &:checked + .layui-field-radio-label:before {
+            color: @color-highlight;
+        }
+
+        &:focus + .layui-field-radio-label {
+            outline: none;
+        }
+
+    }
 }
 
 /**
  * 表单上边的过滤器
  */
 .layui-filter-inline-input, .layui-filter-inline {
-  display: inline-block;
+    display: inline-block;
 }
 
 
 .layui-iframe {
-  background: #fff;
+    background: #fff;
 }
 
 .layui-size-small {
-  width: 80px !important;
+    width: 80px !important;
 }
 
 .layui-size-normal {
-  width: 120px;
+    width: 120px;
 }
 
 .layui-btn-normal {
-  background: @color-highlight;
+    background: @color-highlight;
 }
 
 .layui-btn-sm i {
-  font-size: 12px !important;
+    font-size: 12px !important;
 }
 
 .layui-size-large {
-  width: 160px;
+    width: 160px;
 }
 
 .layui-form-pane .layui-form-label {
-  height: 34px;
-  padding: 0 15px;
-  line-height: 34px;
+    height: 34px;
+    padding: 0 15px;
+    line-height: 34px;
 }
 
 /* 表单分页
  * ---------------------------------------- */
 .layui-table-page {
-  .layui-laypage input {
-    font-size: 12px;
-  }
-
-  .layui-laypage-limits {
-    select[lay-ignore] {
-      line-height: 26px;
-      font-size: 12px;
-      height: 26px;
+    .layui-laypage input {
+        font-size: 12px;
     }
-  }
+
+    .layui-laypage-limits {
+        select[lay-ignore] {
+            line-height: 26px;
+            font-size: 12px;
+            height: 26px;
+        }
+    }
 }
 
 
 .layui-input-group {
-  position: relative;
-  display: table;
-  border-collapse: separate;
+    position: relative;
+    display: table;
+    border-collapse: separate;
 
-  .layui-input-group-addon {
-    padding: 6px 10px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1;
-    color: #555;
-    text-align: center;
-    border: 1px solid #e6e6e6;
-    white-space: nowrap;
-    vertical-align: middle;
-    display: table-cell;
-    border-radius: 2px;
+    .layui-input-group-addon {
+        padding: 6px 10px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1;
+        color: #555;
+        text-align: center;
+        border: 1px solid #e6e6e6;
+        white-space: nowrap;
+        vertical-align: middle;
+        display: table-cell;
+        border-radius: 2px;
 
-    &:first-child {
-      border-right: 0;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+        &:first-child {
+            border-right: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        &:last-child {
+            border-left: 0;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
     }
 
-    &:last-child {
-      border-left: 0;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
+    input.layui-input {
+        float: left;
+        display: table-cell;
 
-  input.layui-input {
-    float: left;
-    display: table-cell;
+        &:first-child {
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+        }
 
-    &:first-child {
-      border-bottom-left-radius: 0;
-      border-top-left-radius: 0;
-    }
+        &:last-child {
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+        }
 
-    &:last-child {
-      border-bottom-left-radius: 0;
-      border-top-left-radius: 0;
+        &:not(:first-child):not(:last-child) {
+            border-radius: 0;
+        }
     }
 
-    &:not(:first-child):not(:last-child) {
-      border-radius: 0;
+    &.layui-input-inline {
+        display: inline-table;
+        vertical-align: middle;
     }
-  }
 
-  &.layui-input-inline {
-    display: inline-table;
-    vertical-align: middle;
-  }
-
-  &.layui-input-inline .layui-input-group-addon {
-    width: auto;
-  }
+    &.layui-input-inline .layui-input-group-addon {
+        width: auto;
+    }
 }
 
 /* Layui 改写展示表格的下拉框
@@ -660,174 +660,193 @@ div.layui-input.layui-input-inline {
 .layui-table td[data-field='_actions_'],
 .layui-card-header .pull-right,
 .layui-table-view td[data-field='_actions_'] {
-  .layui-table-cell {
-    overflow: inherit;
-  }
-
-  .layui-btn-xs {
-    line-height: 20px;
-
-    .layui-icon {
-      font-size: 13px !important;
-      font-weight: bold;
-      padding: 0;
+    .layui-table-cell {
+        overflow: inherit;
     }
-  }
 
-  .layui-btn-sm {
-    font-size: 13px;
+    .layui-btn-xs {
+        line-height: 20px;
 
-    .layui-icon {
-      font-size: 14px !important;
-      font-weight: bold;
-      padding: 0;
+        .layui-icon {
+            font-size: 13px !important;
+            font-weight: bold;
+            padding: 0;
+        }
     }
-  }
+
+    .layui-btn-sm {
+        font-size: 13px;
+
+        .layui-icon {
+            font-size: 14px !important;
+            font-weight: bold;
+            padding: 0;
+        }
+    }
 }
 
 .dropdown-menu .dropdown-item {
-  padding: 0 10px;
+    padding: 0 10px;
 }
 
 /* bootstrap 增加 xs
  * ---------------------------------------- */
 .btn-group-xs > .btn {
-  height: 22px;
-  padding: 0 5px;
-  font-size: 12px;
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
+    height: 22px;
+    padding: 0 5px;
+    font-size: 12px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
 }
 
 .layui-btn + .btn-group {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
 .btn-group + .btn-group {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
 .btn-group + .layui-btn {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
 
 /* Filter
  * ---------------------------------------- */
 .py-layui-filter .py-handle {
-  .layui-btn {
-    padding: 0 8px;
-    height: 34px;
-    line-height: 34px;
-  }
+    .layui-btn {
+        padding: 0 8px;
+        height: 34px;
+        line-height: 34px;
+    }
 }
 
 /* 表格的最小高度, 目的是为了对下拉框进行展示
  * ---------------------------------------- */
 .layui-table-view .layui-table-main {
-  min-height: 428px;
+    min-height: 428px;
 }
 
 
 .login-pane {
-  background: rgba(1, 1, 1, 0.1);
-  padding: 20px;
-  border-radius: 5px;
-  margin-top: calc((100vh - 330px) / 2);
-  min-height: 300px;
+    background: rgba(1, 1, 1, 0.1);
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: calc((100vh - 330px) / 2);
+    min-height: 300px;
 
-  .layui-form-label {
-    color: #C7CFDA;
-  }
-
-  .login-captcha {
-    .captcha-input {
-      width: 80px;
-      display: inline-block;
+    .layui-form-label {
+        color: #C7CFDA;
     }
 
-    .code-input {
-      width: 250px;
-      display: inline-block;
-    }
+    .login-captcha {
+        .captcha-input {
+            width: 80px;
+            display: inline-block;
+        }
 
-    .captcha-send {
-      width: 84px;
-      height: 36px;
-      line-height: 36px;
+        .code-input {
+            width: 250px;
+            display: inline-block;
+        }
+
+        .captcha-send {
+            width: 84px;
+            height: 36px;
+            line-height: 36px;
+        }
     }
-  }
 }
 
 @media screen and (max-width: 768px) {
-  .login-pane {
-    .login-captcha {
-      .code-input {
-        width: 100%;
-      }
+    .login-pane {
+        .login-captcha {
+            .code-input {
+                width: 100%;
+            }
+        }
     }
-  }
 }
 
 .poppy--tip {
-  height: 38px;
-  top: 0;
-  background: #ffee83;
-  color: #7c6045;
-  width: 100%;
-  margin: 0 auto;
-  padding: 8px 0;
-  border-bottom: 1px solid #ecca82;
-  font-size: 14px;
-  text-align: center;
-  line-height: 1.5;
+    height: 38px;
+    top: 0;
+    background: #ffee83;
+    color: #7c6045;
+    width: 100%;
+    margin: 0 auto;
+    padding: 8px 0;
+    border-bottom: 1px solid #ecca82;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
 }
 
 .grid-quick-wrapper {
-  .bi-menu-button {
-    display: none;
-    cursor: pointer;
-  }
-
-  .grid-quick-button {
-    &.open {
-      width: 200px;
-      max-width: 100%;
-      background: #fff;
-      border: 1px solid #e5e5e5;
-      z-index: 2;
-      padding: 5px 8px 3px;
-
-      a {
-        display: block;
-        margin-left: 0;
-        margin-bottom: 5px;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .grid-quick-wrapper {
     .bi-menu-button {
-      display: block;
-
-      &:hover {
-        color: #00A65A;
-      }
+        display: none;
+        cursor: pointer;
     }
 
     .grid-quick-button {
-      &.open {
-        display: block;
-      }
+        &.open {
+            width: 200px;
+            max-width: 100%;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            z-index: 2;
+            padding: 5px 8px 3px;
 
-      position: absolute;
-      top: 42px;
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-      display: none;
-      right: 0;
+            a {
+                display: block;
+                margin-left: 0;
+                margin-bottom: 5px;
+            }
+        }
     }
-  }
 }
+
+@media screen and (max-width: 768px) {
+    .grid-quick-wrapper {
+        .bi-menu-button {
+            display: block;
+
+            &:hover {
+                color: #00A65A;
+            }
+        }
+
+        .grid-quick-button {
+            &.open {
+                display: block;
+            }
+
+            position: absolute;
+            top: 42px;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+            display: none;
+            right: 0;
+        }
+    }
+}
+
+/* layui - icon
+ * ---------------------------------------- */
+.layui-btn-icon{
+    height: 22px;
+    line-height: 22px;
+    font-size: 1rem!important;
+    text-align: center;
+    background: rgba(204, 204, 204, 0.15);
+    vertical-align: middle;
+    border-radius: 50%;
+    width: 22px;
+    display: inline-block;
+    cursor: pointer;
+    &:hover{
+        background: rgba(204, 204, 204, 0.42);
+    }
+}
+

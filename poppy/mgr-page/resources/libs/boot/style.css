@@ -2675,6 +2675,23 @@ div.layui-input.layui-input-inline {
     display: block;
   }
 }
+/* layui - icon
+ * ---------------------------------------- */
+.layui-btn-icon {
+  height: 22px;
+  line-height: 22px;
+  font-size: 1rem!important;
+  text-align: center;
+  background: rgba(204, 204, 204, 0.15);
+  vertical-align: middle;
+  border-radius: 50%;
+  width: 22px;
+  display: inline-block;
+  cursor: pointer;
+}
+.layui-btn-icon:hover {
+  background: rgba(204, 204, 204, 0.42);
+}
 .develop {
   background: #fff;
 }
