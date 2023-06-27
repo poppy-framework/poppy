@@ -1,6 +1,5 @@
 {
     "/assets/_temp/css/_mgr-page.css": "/assets/_temp/css/_mgr-page.css",
-    "/assets/_temp/css/_bootstrap.css": "/assets/_temp/css/_bootstrap.css",
     "/assets/libs/boot/style.css": "/assets/libs/boot/style.css",
     "/assets/libs/boot/app.min.js": "/assets/libs/boot/app.min.js",
     "/assets/font/bootstrap-icons/bootstrap-icons.woff": "/assets/font/bootstrap-icons/bootstrap-icons.woff",
@@ -122,5 +121,6 @@
     "/assets/libs/layui/plugin/xm-select/xm-select.js": "/assets/libs/layui/plugin/xm-select/xm-select.js",
     "/assets/libs/vue/README.md": "/assets/libs/vue/README.md",
     "/assets/libs/vue/vue.js": "/assets/libs/vue/vue.js",
-    "/assets/libs/vue/vue.min.js": "/assets/libs/vue/vue.min.js"
+    "/assets/libs/vue/vue.min.js": "/assets/libs/vue/vue.min.js",
+    "/assets/_temp/css/_bootstrap.css": "/assets/_temp/css/_bootstrap.css"
 }

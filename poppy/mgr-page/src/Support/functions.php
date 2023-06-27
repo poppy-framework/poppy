@@ -25,6 +25,10 @@ if (!function_exists('mgr_col')) {
             $arrData[] = trim($append, ',');
         }
 
+        if (!Str::contains($append, 'escape')) {
+            $arrData[] = 'escape:false';
+        }
+
         if ($width) {
             $arrData[] = "width:{$width}";
         }
@@ -32,7 +36,7 @@ if (!function_exists('mgr_col')) {
             $arrData[] = "fixed:'{$fixed}'";
         }
         $strData = implode(', ', array_filter($arrData, fn($item) => trim($item)));
-        return "lay-data=\"{{$strData}}\"";
+        return "lay-options=\"{{$strData}}\"";
     }
 }
 

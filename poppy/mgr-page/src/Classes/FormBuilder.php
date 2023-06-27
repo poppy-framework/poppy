@@ -409,25 +409,25 @@ CONTENT;
             case 'images':
             default:
                 $template = '<!--图片-->
-                        <img style="position: relative;top: 2px;" alt="" height="30" class="J_image_preview" src="___VALUE___">
-                    ';
+                    <img style="position: relative;top: 2px;" alt="" height="30" class="J_image_preview" src="___VALUE___">
+                ';
                 break;
             case 'audio':
                 $template = '<!--音频-->
-                        <audio style="height: 30px;position: relative;top: 11px;" controls>
-                            <source src="___VALUE___" type="audio/mp3">
-                        </audio>';
+                    <audio style="height: 30px;position: relative;top: 11px;" controls>
+                        <source src="___VALUE___" type="audio/mp3">
+                    </audio>';
                 break;
             case 'video':
                 $template = '<!--视频-->
                     <a href="___VALUE___" target="_blank">
-                        <i class="layui-icon layui-icon-video"></i>
+                        <i class="bi bi-file-earmark-play"></i>
                     </a>';
                 break;
             case 'file':
                 $template = '<!--文件-->
                     <a target="_blank" href="___VALUE___">
-                        <i class="layui-icon layui-icon-file"></i>
+                        <i class="bi bi-file-earmark-medical-fill"></i>
                     </a>';
                 break;
         }
@@ -447,7 +447,7 @@ CONTENT;
             <span id="{$id}_content">
                 {$content}
             </span>
-            <span id="{$id}_del" class="layui-icon layui-icon-close-fill"></span>
+            <span id="{$id}_del" class="bi bi-x-circle text-danger ml-1"></span>
         </span>
     </div>
 </div>

@@ -48,7 +48,7 @@ mix
             'poppy/mgr-page/resources/libs/lodash/lodash.min.js',
             'poppy/mgr-page/resources/libs/easytimer/easytimer.min.js',
             // bootstrap
-            'poppy/mgr-page/resources/libs/bootstrap@5.2/bootstrap.bundle.min.js',
+            'poppy/mgr-page/resources/libs/bootstrap@5.3/bootstrap.bundle.min.js',
 
             // mgr-page
             'poppy/mgr-page/resources/libs/poppy/util.js',

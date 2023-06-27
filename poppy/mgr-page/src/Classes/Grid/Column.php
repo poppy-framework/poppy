@@ -187,6 +187,13 @@ class Column
      */
     private $editable = false;
 
+
+    /**
+     * 是否转义
+     * @var bool
+     */
+    private bool $escape = false;
+
     /**
      * 列定位
      * @var string
@@ -226,6 +233,20 @@ class Column
         $this->editable = true;
         return $this;
     }
+
+
+    public function disableEscape(): self
+    {
+        $this->escape = false;
+        return $this;
+    }
+
+    public function enableEscape(): self
+    {
+        $this->escape = true;
+        return $this;
+    }
+
 
     /**
      * Set model for column.
@@ -604,10 +625,11 @@ class Column
     public function lay(): array
     {
         $defines = [
-            'field' => $this->name,
-            'title' => $this->label,
-            'sort'  => $this->sortable,
-            'style' => $this->style,
+            'field'  => $this->name,
+            'title'  => $this->label,
+            'sort'   => $this->sortable,
+            'style'  => $this->style,
+            'escape' => $this->escape,
         ];
 
         if ($width = $this->width) {
