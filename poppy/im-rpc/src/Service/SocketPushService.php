@@ -16,12 +16,13 @@ interface SocketPushService
 
     /**
      * 发送信息
-     * @param string $event event
-     * @param array  $users 目标用户
-     * @param array  $data  发送信息
+     * @param string $event     event
+     * @param array  $users     目标用户
+     * @param array  $data      发送信息
+     * @param string $namespace nsp
      * @return mixed
      */
-    public function emit(string $event, array $users, array $data);
+    public function emit(string $event, array $users, array $data, string $namespace = '');
 
     /**
      * 是否有客户端
