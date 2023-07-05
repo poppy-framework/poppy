@@ -11,7 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Poppy\Framework\Classes\Resp;
-use Poppy\System\Classes\Traits\PjaxTrait;
+use Poppy\Framework\Classes\Traits\PjaxTrait;
 use Poppy\System\Http\Request\Web\WebController;
 
 /**

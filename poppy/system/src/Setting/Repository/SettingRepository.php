@@ -12,6 +12,8 @@ use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Classes\Traits\KeyParserTrait;
 use Poppy\System\Classes\PySystemDef;
+use Poppy\System\Exceptions\SettingKeyNotMatchException;
+use Poppy\System\Exceptions\SettingValueOutOfRangeException;
 use Poppy\System\Models\SysConfig;
 use Throwable;
 
@@ -24,9 +26,9 @@ class SettingRepository implements SettingContract
     use KeyParserTrait, AppTrait;
 
     /**
-     * @var RdsDb
+     * @var RdsDb|null
      */
-    private static $rds;
+    private static ?RdsDb $rds = null;
 
 
     /**
@@ -44,35 +46,31 @@ class SettingRepository implements SettingContract
 
     /**
      * @inheritDoc
+     * @throws SettingKeyNotMatchException
+     * @throws Exception
      */
     public function delete(string $key): bool
     {
         if (!$this->keyParserMatch($key)) {
-            return $this->setError(trans('py-system::util.setting.key_not_match', [
-                'key' => $key,
-            ]));
+            throw (new SettingKeyNotMatchException($key))->setContext(compact('key'));
         }
         $record = $this->findRecord($key);
         if ($record) {
-            try {
-                self::$rds->hSet(PySystemDef::ckSetting(), $this->convertKey($key), $record->value);
-                $record->delete();
-            } catch (Exception $e) {
-                return false;
-            }
+            self::$rds->hDel(PySystemDef::ckSetting(), $this->convertKey($key));
+            $record->delete();
         }
         return true;
     }
 
     /**
      * @inheritDoc
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
      */
     public function get(string $key, $default = '')
     {
         if (!$this->keyParserMatch($key)) {
-            return $this->setError(trans('py-system::util.setting.key_not_match', [
-                'key' => $key,
-            ]));
+            return $default;
         }
 
         if ($val = self::$rds->hGet(PySystemDef::ckSetting(), $this->convertKey($key), false)) {
@@ -103,28 +101,26 @@ class SettingRepository implements SettingContract
 
     /**
      * @inheritDoc
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
      */
     public function set($key, $value = ''): bool
     {
         if (is_array($key)) {
             foreach ($key as $_key => $_value) {
-                if (!$this->set($_key, $_value)) {
-                    return false;
-                }
+                $this->set($_key, $_value);
             }
             return true;
         }
 
         if (!$this->keyParserMatch($key)) {
-            return $this->setError(trans('py-system::util.setting.key_not_match', [
-                'key' => $key,
-            ]));
+            throw (new SettingKeyNotMatchException($key))->setContext(compact('key'));
         }
 
         $record         = $this->findRecord($key);
         $serializeValue = serialize($value);
         if (strlen($serializeValue) >= 65535) {
-            return $this->setError(trans('py-system::util.setting.value_out_of_range'));
+            throw (new SettingValueOutOfRangeException($key))->setContext(compact('key'));
         }
         if (!$record) {
             [$namespace, $group, $item] = $this->parseKey($key);

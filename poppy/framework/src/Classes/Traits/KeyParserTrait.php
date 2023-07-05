@@ -17,16 +17,17 @@ trait KeyParserTrait
      * 所以这里的缓存的命名前面加上了 trait 的前缀 keyParser
      * @var array $keyParserCache
      */
-    protected $keyParserCache = [];
+    protected array $keyParserCache = [];
 
     /**
      * 根据 key 设置值
      * @param string $key    key
      * @param array  $parsed parsed
      */
-    public function setParsedKey($key, $parsed)
+    public function setParsedKey(string $key, array $parsed): self
     {
         $this->keyParserCache[$key] = $parsed;
+        return $this;
     }
 
     /**
@@ -34,9 +35,9 @@ trait KeyParserTrait
      * @param string $key key
      * @return bool
      */
-    public function keyParserMatch(string $key)
+    public function keyParserMatch(string $key): bool
     {
-        if (preg_match('/[^0-9]?[a-z_\-0-9]{1,}::[^0-9]?[a-z_\/\-0-9]{1,}\.[^0-9]?[a-z\-0-9]{1,}/', $key)) {
+        if (preg_match('/^[a-z][a-z_\-0-9]*::[a-z_][a-z_\-0-9]*\.[a-z][a-z_\-0-9]*$/', $key)) {
             return true;
         }
 
@@ -48,7 +49,7 @@ trait KeyParserTrait
      * @param string $key key
      * @return array
      */
-    public function parseKey($key)
+    public function parseKey(string $key): array
     {
         // 如果我们已经解析了给定的键，那么我们将返回已经拥有的缓存版本，因为这会节省我们一些处理
         // 我们缓存我们解析的每一个键，以便在以后的所有请求中快速返回
@@ -77,13 +78,13 @@ trait KeyParserTrait
      * @param array $segments segments
      * @return array
      */
-    protected function keyParserParseBasicSegments(array $segments)
+    protected function keyParserParseBasicSegments(array $segments): array
     {
         // 基本数组中的第一个部分将永远是这个组，因此我们可以继续获取该部分
         // 如果只有一个完整的片段，我们只是把整个组从数组中拉出来，而不是一个单独的项。
         $group = $segments[0];
 
-        if (count($segments) == 1) {
+        if (count($segments) === 1) {
             return [null, $group, null];
         }
         // 如果这个组中有不止一个段，这意味着我们将从组中提取一个特定的项
@@ -99,7 +100,7 @@ trait KeyParserTrait
      * @param string $key key
      * @return array
      */
-    protected function keyParserParseSegments($key)
+    protected function keyParserParseSegments(string $key): array
     {
         [$namespace, $item] = explode('::', $key);
 

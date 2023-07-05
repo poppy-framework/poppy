@@ -1,17 +1,13 @@
 <?php
 
 return [
-    'captcha' => [
+    'captcha'   => [
         'send_success' => '发送验证码成功',
     ],
-    'setting' => [
-        'key_not_match'      => '给定的键 :key 格式不匹配',
-        'value_out_of_range' => '所设定的内容超长',
-    ],
-    'auth'    => [
+    'auth'      => [
         'throttle' => '请求频繁, 请 :seconds 秒后重试',
     ],
-    'classes' => [
+    'classes'   => [
         'models' => [
             'pam_account'         => '用户账户',
             'pam_role'            => '用户角色',
@@ -24,7 +20,11 @@ return [
             'sys_config'          => '系统设置',
         ],
     ],
-    'policy'  => [
+    'exception' => [
+        'setting_key_not_match'      => '设置给定的键 :key 格式不匹配',
+        'setting_value_out_of_range' => '设置给定的键 :key 设定内容超长'
+    ],
+    'policy'    => [
         'pam_role'    => [
             'create'     => '角色创建',
             'edit'       => '角色编辑',

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Demo\Http\Request\Web;
 
+use Curl\Curl;
 use Demo\Http\Validation\ExceptionAutoRequest;
 use Demo\Http\Validation\ExceptionPolicyRequest;
 use Demo\Http\Validation\ExceptionRequest;
@@ -30,7 +31,7 @@ class ExceptionController extends WebController
 {
 
     /**
-     * @api               {get} demo/exception/first_or_fail [Demo]FirstOrFail 异常
+     * @api               {get} demo/exception/{type} [Demo]FirstOrFail 异常
      * @apiVersion        1.0.0
      * @apiName           DemoWebExceptionFirstOrFail
      * @apiGroup          Demo
@@ -54,6 +55,29 @@ class ExceptionController extends WebController
         PamAccount::findOrFail(PamAccount::max('id') + 1);
     }
 
+
+    /**
+     * 此 curl 应该报错并应该搜集异常
+     * @return void
+     */
+    public function curl()
+    {
+        $curl = new Curl();
+        $curl->setHeaders([
+            'x-exception' => null
+        ]);
+        $curl->get('https://www.baidu.com');
+    }
+
+    public function settingKeyNotMatch()
+    {
+        app('poppy.system.setting')->set('1::a.c', 'a');
+    }
+
+    public function settingValueOutOfRange()
+    {
+        app('poppy.system.setting')->set('a::b.c', str_pad('1', 65536));
+    }
 
     /**
      * @throws TokenMismatchException

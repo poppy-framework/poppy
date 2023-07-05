@@ -1,5 +1,8 @@
 <?php
 
+
+declare(strict_types = 1);
+
 namespace Demo\Http\Request\Web;
 
 use Demo\Classes\Layout\Demo;

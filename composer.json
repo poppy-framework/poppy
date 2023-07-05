@@ -49,7 +49,8 @@
         "ezyang/htmlpurifier": "^4.16",
         "psr/http-factory-implementation": "*",
         "mews/captcha": "3.2.*",
-        "twbs/bootstrap-icons": "^1.10"
+        "twbs/bootstrap-icons": "^1.10",
+        "php-curl-class/php-curl-class": "^9.17"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

@@ -1,15 +1,24 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\System\Tests\Setting;
 
 use Exception;
 use Poppy\Framework\Application\TestCase;
+use Poppy\Framework\Exceptions\ApplicationException;
+use Poppy\System\Exceptions\SettingKeyNotMatchException;
+use Poppy\System\Exceptions\SettingValueOutOfRangeException;
 use Poppy\System\Setting\Repository\SettingRepository;
 
 class SettingTest extends TestCase
 {
 
-    public function testItem()
+    /**
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException|ApplicationException
+     */
+    public function testItem(): void
     {
         $key     = $this->randKey();
         $setting = new SettingRepository();
@@ -19,7 +28,10 @@ class SettingTest extends TestCase
         $this->assertTrue($setting->delete($key));
     }
 
-    public function testGet()
+    /**
+     * @throws ApplicationException
+     */
+    public function testGet(): void
     {
         $item = sys_setting($this->randKey('set'));
         $this->assertNull($item);
@@ -29,7 +41,12 @@ class SettingTest extends TestCase
         $this->assertEquals('testing', $item);
     }
 
-    public function testGetGn()
+    /**
+     * @throws SettingValueOutOfRangeException
+     * @throws SettingKeyNotMatchException
+     * @throws ApplicationException
+     */
+    public function testGetGn(): void
     {
         app('poppy.system.setting')->removeNG('testing::set');
 
@@ -52,6 +69,25 @@ class SettingTest extends TestCase
     }
 
     /**
+     * @throws SettingKeyNotMatchException
+     * @throws ApplicationException
+     */
+    public function testOutOfRange(): void
+    {
+        $this->expectException(SettingValueOutOfRangeException::class);
+        app('poppy.system.setting')->set($this->randKey(), str_pad('3', 65536));
+    }
+
+    /**
+     * @throws SettingValueOutOfRangeException
+     */
+    public function testKeyNotMatch(): void
+    {
+        $this->expectException(SettingKeyNotMatchException::class);
+        app('poppy.system.setting')->set('testing::set.name.name', 'some value');
+    }
+
+    /**
      * @throws Exception
      */
     public function tearDown(): void
@@ -59,6 +95,9 @@ class SettingTest extends TestCase
         app('poppy.system.setting')->removeNG('testing::set');
     }
 
+    /**
+     * @throws ApplicationException
+     */
     private function randKey($group = ''): string
     {
         $faker = $this->faker();
