@@ -337,7 +337,7 @@ class DefaultFileProvider implements FileContract
         $Disk             = $this->storage();
         $fileRelativePath = $this->genRelativePath($extension);
 
-        if (UtilHelper::isUrl($content)) {
+        if (is_string($content) && UtilHelper::isUrl($content)) {
             $extension = FileHelper::ext($content);
             if (!$extension) {
                 $extension = 'png';

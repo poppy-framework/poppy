@@ -97,8 +97,8 @@ class ListPamAccount extends ListBase
             });
             $filter->column(1 / 12, function (Filter $column) use ($roles) {
                 $column->where(function ($query) {
-                    $roleId      = data_get($this, 'input');
-                    $account_ids = PamRoleAccount::where('role_id', $roleId)->pluck('account_id');
+                    $roleId      = input('role_id');
+                    $account_ids = PamRoleAccount::where('role_id', $roleId)->limit(200)->pluck('account_id');
                     $query->whereIn('id', $account_ids);
                 }, '用户角色', 'role_id')->select($roles);
             });
