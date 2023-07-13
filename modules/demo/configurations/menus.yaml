@@ -81,10 +81,6 @@ demo :
               title : 'Bootstrap Icons'
               url : https://icons.getbootstrap.com/
             -
-              title : 'Font Awesome'
-              url : https://fontawesome.com/v5/cheatsheet
-              target : '_blank'
-            -
               title : 'Layui'
               url : https://layui.gitee.io/v2/docs/
               target : '_blank'

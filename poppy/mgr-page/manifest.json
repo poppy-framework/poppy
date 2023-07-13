@@ -1,8 +1,8 @@
 {
-	"name": "管理(Page)",
-	"slug": "mgr-page",
-	"type": "poppy",
-	"version": "1.0",
-	"order": 15,
-	"description": "页面管理模块(Layui)+开发平台"
+    "name" : "管理(Page)",
+    "slug" : "mgr-page",
+    "type" : "poppy",
+    "version" : "1.0",
+    "order" : 15,
+    "description" : "页面管理模块(Layui)+开发平台"
 }
