@@ -18,6 +18,7 @@ use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Classes\Traits\PjaxTrait;
 use Poppy\Framework\Exceptions\AjaxException;
 use Poppy\Framework\Exceptions\BaseException;
+use Poppy\Framework\Exceptions\HintException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
@@ -32,12 +33,14 @@ class Handler extends ExceptionHandler
      * A list of the exception types that should not be reported.
      * @var array
      */
-    protected $dontReport = [];
+    protected $dontReport = [
+        HintException::class
+    ];
 
     /**
      * Render an exception into an HTTP response.
      * @param Request   $request request
-     * @param Exception $e       exception
+     * @param Exception $e exception
      * @throws Exception
      */
     public function render($request, Exception $e)

@@ -12,6 +12,7 @@ use Illuminate\View\View;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 use Poppy\Sms\Action\Sms;
+use Poppy\Sms\Http\MgrPage\FormEstablishSms;
 use Poppy\Sms\Http\MgrPage\FormSettingSms;
 
 /**
@@ -49,29 +50,11 @@ class SmsController extends BackendController
 
     /**
      * 短信模板c2e
-     * @param null|string $id
      * @return Factory|JsonResponse|RedirectResponse|Response|View
      */
-    public function establish(string $id = null)
+    public function establish()
     {
-        $Sms = $this->action();
-        if (is_post()) {
-            if (!$Sms->establish(input())) {
-                return Resp::error($Sms->getError());
-            }
-
-            return Resp::success('操作成功!~', '_reload_opener|1');
-        }
-
-        if ($id) {
-            $Sms->init($id) && $Sms->share();
-        }
-        else {
-            view()->share([
-                'scope' => input('_scope'),
-            ]);
-        }
-        return view('py-sms::backend.sms.establish');
+        return (new FormEstablishSms())->render();
     }
 
     /**
@@ -86,7 +69,7 @@ class SmsController extends BackendController
             return Resp::error($Sms->getError());
         }
 
-        return Resp::success('操作成功', '_reload|1');
+        return Resp::success('操作成功', '_parent_reload|1');
     }
 
 

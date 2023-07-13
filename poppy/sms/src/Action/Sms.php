@@ -7,11 +7,12 @@ namespace Poppy\Sms\Action;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Poppy\Framework\Classes\Traits\AppTrait;
-use Poppy\Framework\Validation\Rule;
+use Poppy\Framework\Exceptions\HintException;
+use Poppy\Sms\Classes\PySmsDef;
 use Poppy\System\Classes\Traits\SystemTrait;
+use Poppy\System\Exceptions\SettingKeyNotMatchException;
+use Poppy\System\Exceptions\SettingValueOutOfRangeException;
 use Throwable;
-use Validator;
-use View;
 
 /**
  * 短信模板
@@ -24,8 +25,6 @@ class Sms
     public const SCOPE_ALIYUN    = 'aliyun';
     public const SCOPE_CHUANGLAN = 'chuanglan';
     public const SCOPE_LIANLU    = 'lianlu';
-
-    private const CACHE_TEMPLATES = 'py-sms::sms.template';
 
 
     /**
@@ -42,117 +41,12 @@ class Sms
 
     public function __construct()
     {
-        $this->templates = collect(sys_setting(self::CACHE_TEMPLATES, []) ?: []);
-    }
-
-
-    /**
-     * 获取所有的模版
-     * @return Collection
-     */
-    public function getTemplates(): Collection
-    {
-        return $this->templates;
-    }
-
-    /**
-     * @return array
-     */
-    public function getItem(): array
-    {
-        return $this->item;
-    }
-
-    /**
-     * 新增和编辑
-     * @param array $data    data <br />
-     *                       type     类型 <br />
-     *                       code     代码 <br />
-     *                       content  内容
-     * @return bool
-     */
-    public function establish(array $data): bool
-    {
-
-        $input = sys_get($data, ['type', 'code', 'content', 'scope']);
-
-        $validator = Validator::make($input, [
-            'type'  => [
-                Rule::required(),
-                Rule::in(array_keys(self::kvType())),
-            ],
-            'code'  => [
-                Rule::required(),
-            ],
-            'scope' => [
-                Rule::required(),
-            ],
-        ], [], [
-            'type'  => '类型',
-            'code'  => '短信内容/短信代码',
-            'scope' => '平台类型',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setError($validator->messages());
-        }
-
-        $scope = $input['scope'];
-        $type  = $input['type'];
-
-        $this->templates->offsetSet($scope . ':' . $type, $input);
-
-        return $this->save();
-    }
-
-    /**
-     * 初始化
-     * @param string $id ID
-     * @return bool
-     */
-    public function init(string $id): bool
-    {
-        if (!Str::contains($id, ':')) {
-            return $this->setError('ID 类型错误');
-        }
-        $items = collect($this->templates);
-        if ($items->offsetExists($id)) {
-            $this->item = $items->offsetGet($id);
-            return true;
-        }
-        else {
-            return $this->setError('短信ID不存在');
-        }
-    }
-
-    /**
-     * 分享
-     */
-    public function share(): void
-    {
-        View::share([
-            'item'  => $this->item,
-            'scope' => $this->item['scope'] ?? self::SCOPE_LOCAL,
-        ]);
-    }
-
-    /**
-     * 刪除
-     * @param string $id id
-     * @return bool
-     */
-    public function destroy(string $id): bool
-    {
-        if (isset($this->templates[$id])) {
-            unset($this->templates[$id]);
-        }
-
-        return $this->save();
+        $this->templates = collect(sys_setting(PySmsDef::ckTemplate(), []) ?: []);
     }
 
     /**
      * 短信类型
-     * @param string|null $key       key
+     * @param string|null $key key
      * @param bool        $check_key 检测key是否存在
      * @return array|string
      */
@@ -194,16 +88,6 @@ class Sms
     }
 
     /**
-     * 保存模板
-     * @return bool
-     */
-    private function save(): bool
-    {
-        $this->sysSetting()->set(self::CACHE_TEMPLATES, $this->templates->toArray());
-        return true;
-    }
-
-    /**
      * 获取现在配置分流的短信
      * @return string
      */
@@ -212,12 +96,91 @@ class Sms
         $rates     = [];
         $sendTypes = array_keys(sys_hook('poppy.sms.send_type'));
         foreach ($sendTypes as $sendType) {
-            $rate = (int) sys_setting('py-sms::sms.send_rate_' . $sendType);
+            $rate = (int)sys_setting('py-sms::sms.send_rate_' . $sendType);
             if ($rate) {
                 $rates[$sendType] = $rate;
             }
         }
         return self::getRandType($rates);
+    }
+
+    /**
+     * 获取所有的模版
+     * @return Collection
+     */
+    public function getTemplates(): Collection
+    {
+        return $this->templates;
+    }
+
+    /**
+     * @return array
+     */
+    public function getItem(): array
+    {
+        return $this->item;
+    }
+
+    /**
+     * 新增和编辑
+     * @param array  $data data <br>
+     *                     type   类型 <br>
+     *                     code   代码
+     * @param string $id
+     * @return bool
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
+     */
+    public function establish(array $data, $id = ''): bool
+    {
+        $input = sys_get($data, ['type', 'code', 'scope']);
+        $scope = $input['scope'];
+        $type  = $input['type'];
+
+        $key = "{$data['scope']}:{$data['type']}";
+        if (!$id && $this->templates->offsetExists($key)) {
+            return $this->setError('此模板已存在, 不得重复创建');
+        }
+
+        $this->templates->offsetSet($scope . ':' . $type, $input);
+
+        return $this->save();
+    }
+
+    /**
+     * 初始化
+     * @param string $id ID
+     * @return bool
+     * @throws HintException
+     */
+    public function init(string $id): bool
+    {
+        if (!Str::contains($id, ':')) {
+            throw new HintException('ID 类型错误, ID 格式应当为 type:id');
+        }
+        $items = collect($this->templates);
+        if ($items->offsetExists($id)) {
+            $this->item = $items->offsetGet($id);
+            return true;
+        }
+        throw new HintException('短信ID不存在');
+    }
+
+
+    /**
+     * 刪除
+     * @param string $id id
+     * @return bool
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
+     */
+    public function destroy(string $id): bool
+    {
+        if (isset($this->templates[$id])) {
+            unset($this->templates[$id]);
+        }
+
+        return $this->save();
     }
 
     /**
@@ -232,7 +195,7 @@ class Sms
                 return $result;
             }
             if (count($rates) === 1) {
-                return (string) array_key_first($rates);
+                return (string)array_key_first($rates);
             }
             //概率数组的总概率精度
             $sumRates = array_sum($rates);
@@ -246,9 +209,21 @@ class Sms
                 $sumRates -= $rate;
             }
 
-            return (string) $result;
+            return (string)$result;
         } catch (Throwable $e) {
             return $result;
         }
+    }
+
+    /**
+     * 保存模板
+     * @return bool
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
+     */
+    private function save(): bool
+    {
+        $this->sysSetting()->set(PySmsDef::ckTemplate(), $this->templates->toArray());
+        return true;
     }
 }

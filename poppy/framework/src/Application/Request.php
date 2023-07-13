@@ -120,7 +120,7 @@ abstract class Request extends FormRequest
     protected function assembleRules(): array
     {
         $originRules = $this->sceneRules();
-        $rules = [];
+        $rules       = [];
         foreach ($originRules as $property => $condition) {
             if (is_array($condition)) {
                 $when = $condition['when'] ?? '';
@@ -161,6 +161,7 @@ abstract class Request extends FormRequest
 
     /**
      * 检测权限
+     * @throws AuthorizationException
      */
     protected function can($policy, $model): bool
     {

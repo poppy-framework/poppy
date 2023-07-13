@@ -672,13 +672,13 @@ class Field implements Renderable
      *
      * @return $this
      */
-    public function attribute($attribute, $value = null)
+    public function attribute($attribute, $value = null): self
     {
         if (is_array($attribute)) {
             $this->attributes = array_merge($this->attributes, $attribute);
         }
         else {
-            $this->attributes[$attribute] = (string) $value;
+            $this->attributes[$attribute] = (string)$value;
         }
 
         return $this;
@@ -721,7 +721,7 @@ class Field implements Renderable
 
     /**
      * Set the field as readonly mode.
-     *
+     * 此属性不适用于 select
      * @return $this
      */
     public function readonly()
@@ -733,8 +733,21 @@ class Field implements Renderable
      * Set field as disabled.
      *
      * @return $this
+     * @deprecated 4.2
+     * @removed    5.0
+     * @see disabled()
      */
-    public function disable()
+    public function disable(): self
+    {
+        return $this->disabled();
+    }
+
+    /**
+     * Set field as disabled.html 标准属性
+     *
+     * @return $this
+     */
+    public function disabled(): self
     {
         return $this->attribute('disabled', true);
     }
@@ -826,7 +839,7 @@ class Field implements Renderable
      */
     public function setElementClass($class)
     {
-        $this->elementClass = array_merge($this->elementClass, (array) $class);
+        $this->elementClass = array_merge($this->elementClass, (array)$class);
 
         return $this;
     }
@@ -841,7 +854,7 @@ class Field implements Renderable
     public function addElementClass($class)
     {
         if (is_array($class) || is_string($class)) {
-            $this->elementClass = array_unique(array_merge($this->elementClass, (array) $class));
+            $this->elementClass = array_unique(array_merge($this->elementClass, (array)$class));
         }
 
         return $this;
@@ -859,7 +872,7 @@ class Field implements Renderable
         $delClass = [];
 
         if (is_string($class) || is_array($class)) {
-            $delClass = (array) $class;
+            $delClass = (array)$class;
         }
 
         foreach ($delClass as $del) {
@@ -1206,7 +1219,7 @@ class Field implements Renderable
             $rules = array_filter(explode('|', $rules));
         }
 
-        return array_filter((array) $rules);
+        return array_filter((array)$rules);
     }
 
     /**
@@ -1265,7 +1278,7 @@ class Field implements Renderable
     {
         if ($this instanceof \Poppy\MgrPage\Classes\Form\Field\MultipleSelect) {
             $value = Arr::get($input, $column);
-            Arr::set($input, $column, array_filter((array) $value));
+            Arr::set($input, $column, array_filter((array)$value));
         }
 
         return $input;

@@ -62,7 +62,7 @@ class Operations implements Renderable
      */
     public function delete(string $url, string $confirm = '', string $title = '删除'): void
     {
-        $this->iframe($title, $url)->confirm($confirm)->icon('trash')->danger()->xs();
+        $this->request($title, $url)->confirm($confirm)->icon('trash')->danger()->xs();
     }
 
     /**
