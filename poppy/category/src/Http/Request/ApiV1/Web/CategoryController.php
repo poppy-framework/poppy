@@ -18,11 +18,11 @@ class CategoryController extends JwtApiController
      * @api                 {post} api_v1/category/category/sort [Category]排序
      * @apiDescription      这里的目标结果是 id {before|after} aim_id
      * @apiVersion          1.0.0
-     * @apiName             CategoryStsTempOss
+     * @apiName             CategoryListOrderSort
      * @apiGroup            Poppy
-     * @apiQuery   {int}     type         分类分组
+     * @apiQuery   {int}    type        分类分组
      * @apiQuery  {int}     id           ID
-     * @apiQuery  {string}  position     ID [前|后]于 目标 ID [before:前;after:后;inner:不排序]
+     * @apiQuery  {string}  position     ID [>|<]于 目标 ID [gt:大于;lt:小于]
      * @apiQuery  {string}  aim_id       目标ID
      */
     public function sort()
