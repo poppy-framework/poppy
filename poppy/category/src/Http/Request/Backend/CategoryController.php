@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\Category\Http\Request\Backend;
 
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -49,22 +50,19 @@ class CategoryController extends BackendController
      */
     public function establish()
     {
-        $form = new FormCategoryEstablish();
-        return $form->render();
+        return (new FormCategoryEstablish())->render();
     }
 
     /**
      * 删除分类
      * @param int $id 分类ID
      * @return JsonResponse|RedirectResponse|Response
+     * @throws Exception
      */
     public function delete(int $id)
     {
         $Category = new Category();
-        if ($Category->delete($id)) {
-            return Resp::success('删除分类成功', '_reload|1');
-        }
-
-        return Resp::error($Category->getError());
+        $Category->delete($id);
+        return Resp::success('删除分类成功', '_parent_reload|1');
     }
 }

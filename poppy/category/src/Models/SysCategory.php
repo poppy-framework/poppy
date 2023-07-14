@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Poppy\Category\Classes\PyCategoryDef;
 use Poppy\Framework\Helper\TreeHelper;
 use Poppy\Framework\Http\Pagination\PageInfo;
 use Poppy\System\Classes\Traits\FilterTrait;
@@ -16,6 +17,7 @@ use Poppy\System\Classes\Traits\FilterTrait;
  * 分类管理
  * @property int         $id         id
  * @property string      $title      标题
+ * @property string      $name       标识
  * @property string      $parent_id  上级 ID
  * @property string      $type       类型
  * @property string      $list_order 排序
@@ -34,16 +36,17 @@ class SysCategory extends Model
 {
     use FilterTrait;
 
-    const TYPE_DEFAULT = 'default';
+    public const TYPE_DEFAULT = 'default';
 
-    const POSITION_BEFORE = 'before';
-    const POSITION_AFTER  = 'after';
+    public const SORT_GT = 'gt';
+    public const SORT_LT = 'lt';
 
     protected $table = 'sys_category';
 
     protected $fillable = [
         'title',
         'type',
+        'name',
         'list_order',
         'parent_id',
         'top_id',
@@ -61,9 +64,25 @@ class SysCategory extends Model
             ->pluck('title', 'type')->toArray();
     }
 
+
+    /**
+     * 名称和 ID 的映射
+     * @param string $key
+     * @return int
+     */
+    public static function kvNameRefId(string $key): int
+    {
+        if ($ref = sys_tag('py-category')->hGetAll(PyCategoryDef::ckNameRefKey())) {
+            return $ref[$key] ?? 0;
+        }
+        $ref = self::where('name', '!=', '')->selectRaw("CONCAT(type, '-', name) as tn,id")->pluck('id', 'tn')->toArray();
+        sys_tag('py-category')->hMSet(PyCategoryDef::ckNameRefKey(), $ref);
+        return $ref[$key] ?? 0;
+    }
+
     /**
      * 树型
-     * @param string $type          类型
+     * @param string $type 类型
      * @param bool   $replace_space 空格
      * @return array
      */

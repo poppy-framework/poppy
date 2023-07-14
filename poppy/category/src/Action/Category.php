@@ -4,12 +4,11 @@ declare(strict_types = 1);
 
 namespace Poppy\Category\Action;
 
+use Exception;
+use Poppy\Category\Classes\PyCategoryDef;
 use Poppy\Category\Events\SysCategoryDeleteEvent;
 use Poppy\Category\Models\SysCategory;
 use Poppy\Framework\Classes\Traits\AppTrait;
-use Poppy\Framework\Validation\Rule;
-use Throwable;
-use Validator;
 
 /**
  * 分类管理
@@ -42,44 +41,21 @@ class Category
      *                       {string}  title       名称 <br>
      *                       {int}     parent_id   父级 ID <br>
      *                       {string}  type        类型
-     * @param null|int $id   ID
+     * @param null|int $id ID
      * @return bool
      */
     public function establish(array $data, int $id = null): bool
     {
-        $tableName = (new SysCategory())->getTable();
-        $type      = (string) sys_get($data, 'type');
-        $initDb    = [
+        $type   = (string) sys_get($data, 'type');
+        $initDb = [
             'title'     => (string) sys_get($data, 'title'),
+            'name'      => (string) sys_get($data, 'name'),
             'parent_id' => (int) sys_get($data, 'parent_id'),
             'type'      => $type,
         ];
 
-        $validator = Validator::make($initDb, [
-            'title' => [
-                Rule::required(),
-                Rule::string(),
-                Rule::unique($tableName, 'title')->where(function ($query) use ($id, $type) {
-                    $query->where('type', $type);
-                    if ($id) {
-                        $query->where('id', '!=', $id);
-                    }
-                }),
-            ],
-        ], [], [
-            'title'     => '标题',
-            'parent_id' => '上一级',
-            'type'      => '类型',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setError($validator->errors());
-        }
-
         // init
-        if ($id && !$this->init($id)) {
-            return false;
-        }
+        $id && $this->init($id);
 
         if ($id) {
             $this->item->update($initDb);
@@ -92,6 +68,9 @@ class Category
             $this->item = $item;
         }
 
+        // 移除 Ref 缓存
+        sys_tag('py-category')->del(PyCategoryDef::ckNameRefKey());
+
         return true;
     }
 
@@ -101,10 +80,10 @@ class Category
      * @param string $type
      * @param int    $id
      * @param int    $aim_id
-     * @param string $position
+     * @param string $compare
      * @return bool
      */
-    public function sort(string $type, int $id, string $position, int $aim_id): bool
+    public function sort(string $type, int $id, string $compare, int $aim_id): bool
     {
 
         $Db = SysCategory::where('type', $type);
@@ -120,17 +99,18 @@ class Category
             return $this->setError('请传入本尊位置');
         }
 
-        if (!in_array($position, [SysCategory::POSITION_BEFORE, SysCategory::POSITION_AFTER])) {
-            return $this->setError('错误的位置信息');
+        if (!in_array($compare, [SysCategory::SORT_GT, SysCategory::SORT_LT], true)) {
+            return $this->setError('错误的对比信息');
         }
 
+        // 获取目标的排序值
         $aimListOrder = (int) SysCategory::whereKey($aim_id)->value('list_order');
-        // id before aim id , desc,  id list_order > aim id list_order
-        if ($position === SysCategory::POSITION_BEFORE) {
-            // aim and less aim_order , decrement 1
+        // id 排序值 > aim 排序值
+        if ($compare === SysCategory::SORT_GT) {
+            // 小于等于目标排序值的 -1
             SysCategory::where('type', $type)->where('list_order', '<=', $aimListOrder)->decrement('list_order');
 
-            // current id to aim order
+            // 当前的 ID 的排序值设置为目标排序值
             SysCategory::whereKey($id)->update(['list_order' => $aimListOrder]);
 
             // 取 list_order 最小值 -1 存储, 如果最小值小于1 , 整体 +1
@@ -139,10 +119,8 @@ class Category
                 $diff = abs(1 - $min);
                 SysCategory::where('type', $type)->increment('list_order', $diff);
             }
-            return true;
         }
-
-        if ($position === SysCategory::POSITION_AFTER) {
+        else {
             // id after aim id
             SysCategory::where('type', $type)->where('list_order', '>=', $aimListOrder)->increment('list_order');
 
@@ -150,39 +128,32 @@ class Category
             SysCategory::whereKey($id)->update(['list_order' => $aimListOrder]);
         }
         return true;
-
     }
 
     /**
      * 删除数据
      * @param int $id 活动ID
-     * @return bool
+     * @throws Exception
      */
-    public function delete(int $id): bool
+    public function delete(int $id): void
     {
-        if ($id && !$this->init($id)) {
-            return false;
-        }
+        $id && $this->init($id);
 
-        try {
-            event(new SysCategoryDeleteEvent($this->item));
-            $this->item->delete();
-        } catch (Throwable $e) {
-            return $this->setError($e->getMessage());
-        }
+        SysCategory::whereKey($id)->delete();
 
-        return true;
+        // 移除 Ref 缓存
+        sys_tag('py-category')->del(PyCategoryDef::ckNameRefKey());
+
+        event(new SysCategoryDeleteEvent($this->item));
     }
 
     /**
      * 初始化
      * @param int $id 活动 ID
-     * @return bool
      */
-    public function init(int $id): bool
+    public function init(int $id): void
     {
         $this->item = SysCategory::findOrFail($id);
         $this->id   = $this->item->id;
-        return true;
     }
 }

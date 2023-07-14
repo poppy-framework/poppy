@@ -22,10 +22,15 @@ class ListSysCategory extends ListBase
      * @inheritDoc
      * @throws ApplicationException
      */
-    public function columns()
+    public function columns(): void
     {
-        $this->column('id', "ID")->sortable()->width(80);
-        $this->column('title', "标题");
+        $this->column('id', 'ID')->sortable()->width(80);
+        $this->column('list_order', '排序')->editable()->sortable()->width(80);
+        $this->column('name', '标识')->display(function ($value) {
+            /** @var $this SysCategory */
+            return $value ? $this->type . '-' . $value : '';
+        })->width(150);
+        $this->column('title', '标题');
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var SysCategory $item */
             $item = $actions->row;
@@ -45,11 +50,9 @@ class ListSysCategory extends ListBase
             $filter->column(1 / 12, function (Filter $ft) {
                 $ft->like('title', '标题');
             });
-            // todo 这里需要默认选择为空的上级 ID
             $filter->column(1 / 12, function (Filter $ft) use ($type) {
                 $ft->equal('parent_id', '上级 ID')->select(SysCategory::tree($type, true));
             });
-
             $types = SysCategory::kvType();
             foreach ($types as $t => $v) {
                 $filter->scope($t, $v)->where('type', $t);

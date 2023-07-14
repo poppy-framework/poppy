@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\Category\Tests\Action;
 
 use Exception;
@@ -35,7 +37,11 @@ class CategoryTest extends TestCase
         $this->act = new Category();
     }
 
-    public function testSort()
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function testSort(): void
     {
         try {
             SysCategory::where('type', self::$type)->delete();
@@ -44,15 +50,15 @@ class CategoryTest extends TestCase
         }
 
         $cats = [
-            'testing-title-a',
-            'testing-title-b',
+            'testing-title-' . py_faker()->words(3, true),
+            'testing-title-' . py_faker()->words(3, true),
         ];
         foreach ($cats as $cat) {
             if (!$this->act->establish([
                 'title' => $cat,
                 'type'  => self::$type,
             ])) {
-                $this->fail($this->act->getError());
+                $this->fail($this->act->getError()->getMessage());
             }
             else {
                 $this->ids[] = $this->act->getItem()->id;
@@ -66,26 +72,24 @@ class CategoryTest extends TestCase
             'other' => $otherId,
         ]);
         $this->enableQueryLog();
-        if ($this->act->sort(self::$type, $oneId, SysCategory::POSITION_BEFORE, $otherId)) {
-            // one < other
+        if ($this->act->sort(self::$type, $oneId, SysCategory::SORT_GT, $otherId)) {
+            // one > other
             $this->assertTrue(
-                SysCategory::whereKey($oneId)->value('list_order') < SysCategory::whereKey($otherId)->value('list_order')
+                SysCategory::whereKey($oneId)->value('list_order') >
+                SysCategory::whereKey($otherId)->value('list_order')
             );
         }
-        if ($this->act->sort(self::$type, $oneId, SysCategory::POSITION_AFTER, $otherId)) {
+        if ($this->act->sort(self::$type, $oneId, SysCategory::SORT_LT, $otherId)) {
             // other > one
-            $this->assertGreaterThan(
+            $this->assertTrue(
+                SysCategory::whereKey($oneId)->value('list_order') <
                 SysCategory::whereKey($otherId)->value('list_order'),
-                SysCategory::whereKey($oneId)->value('list_order'),
             );
         }
 
-        if (!$this->act->delete($oneId)) {
-            $this->fail($this->act->getError());
-        }
-        if (!$this->act->delete($otherId)) {
-            $this->fail($this->act->getError());
-        }
+        $this->act->delete($oneId);
+
+        $this->act->delete($otherId);
 
         $this->assertTrue(true);
     }
