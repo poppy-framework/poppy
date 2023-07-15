@@ -12,6 +12,7 @@ use Poppy\Category\Classes\PyCategoryDef;
 use Poppy\Framework\Helper\TreeHelper;
 use Poppy\Framework\Http\Pagination\PageInfo;
 use Poppy\System\Classes\Traits\FilterTrait;
+use Poppy\System\Models\SysConfig;
 
 /**
  * 分类管理
@@ -20,7 +21,8 @@ use Poppy\System\Classes\Traits\FilterTrait;
  * @property string      $name       标识
  * @property string      $parent_id  上级 ID
  * @property string      $type       类型
- * @property string      $list_order 排序
+ * @property int         $list_order 排序
+ * @property int         $is_enable  排序
  * @property Carbon|null $created_at 创建时间
  * @property Carbon|null $updated_at 修改时间
  * @method static Builder|SysCategory filter($input = [], $filter = null)
@@ -90,6 +92,7 @@ class SysCategory extends Model
     {
         $categories = self::select(['id', 'title', 'parent_id'])
             ->where('type', $type)
+            ->where('is_enable', SysConfig::ENABLE)
             ->orderBy('list_order', 'desc')
             ->get()->keyBy('id')->toArray();
 

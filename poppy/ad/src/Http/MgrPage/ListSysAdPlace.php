@@ -23,16 +23,16 @@ class ListSysAdPlace extends ListBase
      * @inheritDoc
      * @throws ApplicationException
      */
-    public function columns()
+    public function columns(): void
     {
-        $this->column('id', "ID")->sortable()->width(80);
-        $this->column('title', "标题")->width(130);
-        $this->column('size', "尺寸")->width(100)->display(function () {
+        $this->column('id', 'ID')->sortable()->width(80);
+        $this->column('title', '标题')->width(130);
+        $this->column('size', '尺寸')->width(100)->display(function () {
             /** @var SysAdPlace $this */
             return "{$this->width}x{$this->height}";
         });
-        $this->column('thumb', "示意图")->width(100)->image();
-        $this->column('introduce', "说明");
+        $this->column('thumb', '示意图')->width(100)->image();
+        $this->column('introduce', '说明');
 
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var SysAdPlace $item */

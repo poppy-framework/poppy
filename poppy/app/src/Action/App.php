@@ -6,10 +6,8 @@ namespace Poppy\App\Action;
 
 use Poppy\App\Classes\AppDef;
 use Poppy\App\Models\SysApp;
-use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\System\Models\SysConfig;
-use Throwable;
 
 /**
  * 应用管理
@@ -42,7 +40,7 @@ class App
      *                       {string}  title       名称 <br>
      *                       {int}     secret      密钥 <br>
      *                       {string}  type        类型
-     * @param null|int $id   ID
+     * @param null|int $id ID
      * @return bool
      */
     public function establish(array $data, int $id = null): bool
@@ -58,9 +56,7 @@ class App
         ];
 
         // init
-        if ($id && !$this->init($id)) {
-            return false;
-        }
+        $id && $this->init($id);
 
         if ($id) {
             $this->item->update($initDb);
@@ -77,38 +73,27 @@ class App
     }
 
     /**
-     * 删除数据
+     * 切换状态
      * @param int $id 活动ID
      * @param int $status
-     * @return bool
      */
-    public function status(int $id, int $status): bool
+    public function status(int $id, int $status): void
     {
-        if ($id && !$this->init($id)) {
-            return false;
-        }
+        $id && $this->init($id);
 
-        try {
-            $this->item->is_enable = $status ? SysConfig::YES : SysConfig::NO;
-            $this->item->save();
+        $this->item->is_enable = $status ? SysConfig::YES : SysConfig::NO;
+        $this->item->save();
 
-            sys_tag('py-app')->del(AppDef::ckItem($this->item->id));
-        } catch (Throwable $e) {
-            return $this->setError($e->getMessage());
-        }
-
-        return true;
+        sys_tag('py-app')->del(AppDef::ckItem($this->item->id));
     }
 
     /**
      * 初始化
      * @param int $id 活动 ID
-     * @return bool
      */
-    public function init(int $id): bool
+    public function init(int $id): void
     {
         $this->item = SysApp::findOrFail($id);
         $this->id   = $this->item->id;
-        return true;
     }
 }

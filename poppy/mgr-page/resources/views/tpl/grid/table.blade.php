@@ -27,7 +27,7 @@
 
         {{-- 首选范围 --}}
         @if($scopes->count())
-            <div class="layui-tab" style="margin-bottom: 10px;">
+            <div class="layui-tab mb10 {!! Illuminate\Support\Str::contains(input('_hide'), 'scope') ? 'hide': '' !!}">
                 <ul class="layui-tab-title">
                     @foreach($scopes as $scope)
                         {!! $scope->render() !!}

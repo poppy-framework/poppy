@@ -23,14 +23,14 @@ class ListSysAdContent extends ListBase
      * @inheritDoc
      * @throws ApplicationException
      */
-    public function columns()
+    public function columns():void
     {
-        $this->column('id', "ID")->sortable()->width(80);
-        $this->column('title', "标题");
-        $this->column('list_order', "排序")->width(130);
-        $this->column('src', "图片")->width(130)->image();
-        $this->column('start_at', "展示开始时间")->widthAsDatetime();
-        $this->column('end_at', "展示结束时间")->widthAsDatetime();
+        $this->column('id', 'ID')->sortable()->width(80);
+        $this->column('title', '标题');
+        $this->column('list_order', '排序')->width(130);
+        $this->column('src', '图片')->width(130)->image();
+        $this->column('start_at', '展示开始时间')->widthAsDatetime();
+        $this->column('end_at', '展示结束时间')->widthAsDatetime();
 
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var SysAdContent $item */

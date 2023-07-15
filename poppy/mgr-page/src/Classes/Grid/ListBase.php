@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Classes\Grid;
@@ -44,7 +43,7 @@ abstract class ListBase implements ListContract
      *
      * @var Collection
      */
-    protected $columns;
+    protected Collection $columns;
 
     /**
      * @var PamAccount

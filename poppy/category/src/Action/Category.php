@@ -9,6 +9,7 @@ use Poppy\Category\Classes\PyCategoryDef;
 use Poppy\Category\Events\SysCategoryDeleteEvent;
 use Poppy\Category\Models\SysCategory;
 use Poppy\Framework\Classes\Traits\AppTrait;
+use Poppy\System\Models\SysConfig;
 
 /**
  * 分类管理
@@ -146,6 +147,19 @@ class Category
 
         event(new SysCategoryDeleteEvent($this->item));
     }
+
+    /**
+     * 删除数据
+     * @param int $id 活动ID
+     * @param int $status
+     */
+    public function status(int $id, int $status): void
+    {
+        $id && $this->init($id);
+        $this->item->is_enable = $status ? SysConfig::YES : SysConfig::NO;
+        $this->item->save();
+    }
+
 
     /**
      * 初始化

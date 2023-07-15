@@ -26,6 +26,9 @@ class FormHook extends FormBaseWidget
      */
     public function form(): void
     {
-        $this->hook('place_id', '选择占位')->service('poppy.ad.form_place_selection');
+        $this->hook('place_id', '选择占位')->service('poppy.ad.form_place_select');
+        $this->hook('category_id', '选择类别')->service('poppy.category.form_category_select', [
+            'type' => 'default'
+        ]);
     }
 }

@@ -11,7 +11,7 @@
     <div class="layui-row layui-col-space10">
         <div class="layui-col-md4 layui-col-md-offset4">
             <fieldset class="layui-elem-field layui-field-title">
-                <legend class="@if ($code == 0 )  text-success @else text-danger  @endif">
+                <legend class="@if ($code === 0 )  text-success @else text-danger  @endif">
                     @if ($code === 0 )
                         <h3 class="panel-title"><i class="fa fa-check-circle-o"></i> 提示</h3>
                     @endif
@@ -25,20 +25,18 @@
                     </div>
                     @if (isset($to))
                         <p class="text-center">
-                            @if ($to == 'back')
-                                @if ($to != 'message')
-                                    <a href="javascript:window.history.go(-1);">返回上级</a>
-                                @endif
+                            @if ($to === 'back')
+                                <a href="javascript:window.history.go(-1);">返回上级</a>
                             @elseif(!$time)
                                 <meta http-equiv="refresh" content="0;URL='{!! $to !!}'"/>
                             @else
-                                您将在 <span id="clock">0</span>秒内跳转至目标页面, 如果不想等待, <a
-                                        href="{!! $to !!}">点此立即跳转</a>!
+                                您将在 <span id="clock">0</span>秒内跳转至目标页面, 如果不想等待,
+                                <a href="{!! $to !!}">点此立即跳转</a>!
                                 <script>
                                 $(function () {
                                     let t = {!! $time !!};//设定跳转的时间
                                     setInterval(function (){
-                                        if (t == 0) {
+                                        if (t === 0) {
                                             window.location.href = "{!! $to !!}"; //设定跳转的链接地址
                                         }
                                         $('#clock').text(Math.ceil(t / 1000)); // 显示倒计时

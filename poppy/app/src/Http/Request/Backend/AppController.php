@@ -49,8 +49,7 @@ class AppController extends BackendController
      */
     public function establish()
     {
-        $form = new FormAppEstablish();
-        return $form->render();
+        return (new FormAppEstablish())->render();
     }
 
     /**
@@ -61,10 +60,7 @@ class AppController extends BackendController
     public function status(int $id, int $status)
     {
         $App = new App();
-        if ($App->status($id, $status)) {
-            return Resp::success('更改应用状态成功', '_reload|1');
-        }
-
-        return Resp::error($App->getError());
+        $App->status($id, $status);
+        return Resp::success('更改应用状态成功', '_reload|1');
     }
 }

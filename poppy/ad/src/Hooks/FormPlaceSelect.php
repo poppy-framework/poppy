@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\Ad\Hooks\FormPlaceSelection;
+namespace Poppy\Ad\Hooks;
 
 use Illuminate\Support\HtmlString;
 use Poppy\Ad\Models\SysAdPlace;
@@ -11,7 +11,7 @@ use Poppy\Core\Services\Contracts\ServiceForm;
 /**
  * 选择广告位
  */
-class Place implements ServiceForm
+class FormPlaceSelect implements ServiceForm
 {
     /**
      * @param array $params 参数

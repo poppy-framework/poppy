@@ -8,10 +8,10 @@
     <div class="{{$viewClass['field']}}">
         <div class="layui-form-auto-field">
             <div class="layui-inline">
-                {!! sys_hook($service, [
+                {!! sys_hook($service, array_merge([
                     'name' => $name,
                     'value' => old($column, $value)
-                ]) !!}
+                ], $params)) !!}
             </div>
         </div>
         @include('py-mgr-page::tpl.form.help-block')

@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Poppy\App\Action\App;
 use Poppy\Category\Action\Category;
 use Poppy\Category\Http\MgrPage\FormCategoryEstablish;
 use Poppy\Category\Http\MgrPage\ListSysCategory;
@@ -64,5 +65,18 @@ class CategoryController extends BackendController
         $Category = new Category();
         $Category->delete($id);
         return Resp::success('删除分类成功', '_parent_reload|1');
+    }
+
+
+    /**
+     * 更新状态
+     * @param int $id 分类ID
+     * @return JsonResponse|RedirectResponse|Response
+     */
+    public function status(int $id, int $status)
+    {
+        $App = new Category();
+        $App->status($id, $status);
+        return Resp::success('状态已修改', '_parent_reload|1');
     }
 }
