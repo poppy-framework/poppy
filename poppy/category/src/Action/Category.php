@@ -6,7 +6,7 @@ namespace Poppy\Category\Action;
 
 use Exception;
 use Poppy\Category\Classes\PyCategoryDef;
-use Poppy\Category\Events\SysCategoryDeleteEvent;
+use Poppy\Category\Events\SysCategoryBeforeDeleteEvent;
 use Poppy\Category\Models\SysCategory;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\System\Models\SysConfig;
@@ -140,12 +140,14 @@ class Category
     {
         $id && $this->init($id);
 
+        event(new SysCategoryBeforeDeleteEvent($this->item));
+
         SysCategory::whereKey($id)->delete();
 
         // 移除 Ref 缓存
         sys_tag('py-category')->del(PyCategoryDef::ckNameRefKey());
 
-        event(new SysCategoryDeleteEvent($this->item));
+
     }
 
     /**

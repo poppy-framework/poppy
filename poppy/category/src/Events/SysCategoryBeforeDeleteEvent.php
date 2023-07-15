@@ -7,7 +7,7 @@ namespace Poppy\Category\Events;
 use Poppy\Category\Models\SysCategory;
 use Poppy\Framework\Application\Event;
 
-class SysCategoryDeleteEvent extends Event
+class SysCategoryBeforeDeleteEvent extends Event
 {
     public SysCategory $category;
 
