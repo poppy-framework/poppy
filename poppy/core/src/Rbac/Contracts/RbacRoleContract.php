@@ -29,27 +29,28 @@ interface RbacRoleContract
      * @return void
      * @deprecated
      */
-    public function savePermissions($permissions);
+    public function savePermissions($permissions): void;
+
     /**
      * Save the inputted permissions.
      * @param mixed $id 需要保存的权限
      * @return void
      */
-    public function syncPermission($id);
+    public function syncPermission($id): void;
 
     /**
      * Attach permission to current role.
      * @param object|array $id 权限
      * @return void
      */
-    public function attachPermission($id);
+    public function attachPermission($id): void;
 
     /**
      * Detach permission form current role.
      * @param object|array $id 权限
      * @return void
      */
-    public function detachPermission($id);
+    public function detachPermission($id): void;
 
     /**
      * Attach multiple permissions to current role.
@@ -57,7 +58,7 @@ interface RbacRoleContract
      * @return void
      * @deprecated 4.1
      */
-    public function attachPermissions($permissions);
+    public function attachPermissions(array $permissions): void;
 
     /**
      * Detach multiple permissions from current role
@@ -65,5 +66,5 @@ interface RbacRoleContract
      * @return void
      * @deprecated 4.1
      */
-    public function detachPermissions($permissions);
+    public function detachPermissions(array $permissions): void;
 }

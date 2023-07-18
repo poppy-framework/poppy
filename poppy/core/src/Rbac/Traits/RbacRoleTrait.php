@@ -162,7 +162,7 @@ trait RbacRoleTrait
     /**
      * @inheritDoc
      */
-    public function attachPermissions($permissions): void
+    public function attachPermissions(array $permissions): void
     {
         foreach ($permissions as $permission) {
             $this->attachPermission($permission);
@@ -172,7 +172,7 @@ trait RbacRoleTrait
     /**
      * @inheritDoc
      */
-    public function detachPermissions($permissions): void
+    public function detachPermissions(array $permissions): void
     {
         foreach ($permissions as $permission) {
             $this->detachPermission($permission);
@@ -181,7 +181,7 @@ trait RbacRoleTrait
 
     /**
      * Checks if the role has a permission by its name.
-     * @param string|array $name        permission name or array of permission names
+     * @param string|array $name permission name or array of permission names
      * @param bool         $require_all all permissions in the array are required
      * @return bool
      */
