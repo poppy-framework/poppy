@@ -8,6 +8,7 @@ use Closure;
 use Poppy\MgrPage\Classes\Operation\CopyOperation;
 use Poppy\MgrPage\Classes\Operation\DropdownOperation;
 use Poppy\MgrPage\Classes\Operation\IframeOperation;
+use Poppy\MgrPage\Classes\Operation\LoadViewOperation;
 use Poppy\MgrPage\Classes\Operation\PageOperation;
 use Poppy\MgrPage\Classes\Operation\RequestOperation;
 use Poppy\MgrPage\Classes\Operation\ToolbarOperation;
@@ -16,7 +17,7 @@ trait UseInteraction
 {
 
     /**
-     * 请求
+     * 地址弹窗
      * @param string $title
      * @param string $url
      * @return IframeOperation
@@ -24,6 +25,21 @@ trait UseInteraction
     public function iframe(string $title, string $url): IframeOperation
     {
         $action = new IframeOperation($title, $url);
+        return tap($action, function () use ($action) {
+            $this->add($action);
+        });
+    }
+
+
+    /**
+     * 加载Tab
+     * @param string $title
+     * @param string $url
+     * @return LoadViewOperation
+     */
+    public function loadView(string $title, string $url): LoadViewOperation
+    {
+        $action = new LoadViewOperation($title, $url);
         return tap($action, function () use ($action) {
             $this->add($action);
         });
