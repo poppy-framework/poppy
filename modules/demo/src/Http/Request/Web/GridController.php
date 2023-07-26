@@ -49,4 +49,9 @@ class GridController extends WebController
         },])->fixed()->width(120);
         return $grid->render();
     }
+
+    public function iframe()
+    {
+        dump(input());
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Demo\Http\Lists;
 
+use Closure;
 use Demo\Classes\DemoDef;
 use Demo\Models\DemoGrid;
 use Poppy\Framework\Exceptions\ApplicationException;
@@ -14,6 +15,9 @@ use Poppy\MgrPage\Classes\Operations;
 
 class ListGridOperation extends ListBase
 {
+
+    protected bool $showRowSelector = true;
+
     /**
      * @inheritDoc
      * @throws ApplicationException
@@ -57,5 +61,13 @@ class ListGridOperation extends ListBase
             }
         },
         ])->fixed();
+    }
+
+    public function batchAction(): Closure
+    {
+        return function (Operations $operations) {
+            $operations->batchDelete(route_url('py-sensitive-word:backend.word.delete'));
+            $operations->batchIframe('测试', route('demo:web.grid.iframe'))->widthLarge()->sm();
+        };
     }
 }

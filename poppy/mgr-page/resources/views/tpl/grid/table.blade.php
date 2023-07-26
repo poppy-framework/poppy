@@ -148,11 +148,43 @@ layui.table.on('toolbar({!! $id !!}-filter)', function (obj) {
         ids.push(data[i]['{!! $model_pk !!}']);
     }
 
-    Util.makeRequest(url, {
-        {!! $model_pk !!} : ids
-    }, function (data) {
-        Util.splash(data);
-    });
+    // 处理请求的问题
+    if ($(this).attr('class').indexOf('J_request') !== -1) {
+        Util.makeRequest(url, {
+            {!! $model_pk !!} : ids
+        }, function (data) {
+            Util.splash(data);
+        });
+        return false;
+    }
+
+    // 处理 iframe 弹窗的问题
+    if ($(this).attr('class').indexOf('J_iframe') !== -1) {
+        let title = $(this).attr('data-title') ? $(this).attr('data-title') : $(this).text();
+        let windowWidth = $(window).width();
+        let windowHeight = $(window).height();
+        let width = parseInt($(this).attr('data-width')) ? parseInt($(this).attr('data-width')) : '500';
+        let height = parseInt($(this).attr('data-height')) ? parseInt($(this).attr('data-height')) : '500';
+        if (width > windowWidth) {
+            width = windowWidth * 0.9;
+        }
+        if (height > windowHeight) {
+            height = windowHeight * 0.9;
+        }
+        let shade_close = $(this).attr('data-shade_close') !== 'false';
+        let sp = new URLSearchParams({
+            {!! $model_pk !!} : ids,
+            _iframe: 'poppy'
+        })
+        layer.open({
+            type: 2,
+            content: url + '?' + sp.toString(),
+            area: [width + 'px', height + 'px'],
+            title: title,
+            shadeClose: shade_close
+        });
+        return false;
+    }
 });
 
 // 注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"

@@ -25,8 +25,8 @@ class ListSysSensitiveWord extends ListBase
      */
     public function columns()
     {
-        $this->column('id', "ID")->sortable()->width(80);
-        $this->column('word', "敏感词");
+        $this->column('id', 'ID')->sortable()->width(80);
+        $this->column('word', '敏感词');
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var SysSensitiveWord $item */
             $item = $actions->row;
@@ -49,7 +49,7 @@ class ListSysSensitiveWord extends ListBase
     public function batchAction(): Closure
     {
         return function (Operations $operations) {
-            $operations->toolbarDelete(route_url('py-sensitive-word:backend.word.delete'));
+            $operations->batchDelete(route_url('py-sensitive-word:backend.word.delete'));
         };
     }
 

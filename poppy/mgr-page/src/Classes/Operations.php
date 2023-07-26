@@ -93,11 +93,23 @@ class Operations implements Renderable
      * 工具栏删除
      * @param $url
      * @return void
+     * @deprecated 4.2 使用单独的函数
      */
     public function toolbarDelete($url): void
     {
-        $this->toolbar('批量删除', $url)->icon('trash')->danger()
-            ->confirm("确认删除选中数据 ?")->sm();
+        $this->batchRequest('批量删除', $url)->icon('trash')->danger()
+            ->confirm('确认删除选中数据 ?')->sm();
+    }
+
+    /**
+     * 批量删除
+     * @param string $url
+     * @return void
+     */
+    public function batchDelete(string $url): void
+    {
+        $this->batchRequest('批量删除', $url)->icon('trash')->danger()
+            ->confirm('确认删除选中数据 ?')->sm();
     }
 
     /**

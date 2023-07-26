@@ -35,6 +35,8 @@ Route::group([
         ->name('demo:web.grid.index');
     $router->any('grid/no_file', 'GridController@noFile')
         ->name('demo:web.grid.no_file');
+    $router->any('grid/iframe', 'GridController@iframe')
+        ->name('demo:web.grid.iframe');
 
 
     /* Search(搜索)

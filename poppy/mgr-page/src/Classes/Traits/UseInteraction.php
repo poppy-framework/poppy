@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Poppy\MgrPage\Classes\Traits;
 
 use Closure;
+use Poppy\MgrPage\Classes\Operation\BatchIframeOperation;
+use Poppy\MgrPage\Classes\Operation\BatchRequestOperation;
 use Poppy\MgrPage\Classes\Operation\CopyOperation;
 use Poppy\MgrPage\Classes\Operation\DropdownOperation;
 use Poppy\MgrPage\Classes\Operation\IframeOperation;
@@ -83,6 +85,34 @@ trait UseInteraction
     public function toolbar(string $title, string $url): ToolbarOperation
     {
         $action = new ToolbarOperation($title, $url);
+        return tap($action, function () use ($action) {
+            $this->add($action);
+        });
+    }
+
+    /**
+     * 请求
+     * @param string $title
+     * @param string $url
+     * @return BatchRequestOperation
+     */
+    public function batchRequest(string $title, string $url): BatchRequestOperation
+    {
+        $action = new BatchRequestOperation($title, $url);
+        return tap($action, function () use ($action) {
+            $this->add($action);
+        });
+    }
+
+    /**
+     * 请求
+     * @param string $title
+     * @param string $url
+     * @return BatchIframeOperation
+     */
+    public function batchIframe(string $title, string $url): BatchIframeOperation
+    {
+        $action = new BatchIframeOperation($title, $url);
         return tap($action, function () use ($action) {
             $this->add($action);
         });
