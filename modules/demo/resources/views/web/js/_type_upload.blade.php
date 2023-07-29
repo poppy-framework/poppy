@@ -20,8 +20,8 @@
 </fieldset>
 <div>
 	{!! Form::multiThumb('images', [
-		'https://oss.wulicode.com/static/demo/dabai.jpg',
-		'https://oss.wulicode.com/static/demo/holiday.mp4',
+		'https://test-oss.iliexiang.com/static/demo/dabai.jpg',
+		'https://test-oss.iliexiang.com/static/demo/holiday.mp4',
 	], [
 		'type' => 'picture',
 		'sequence' => true,
@@ -33,15 +33,15 @@
 </fieldset>
 <div>
 	{!! Form::showThumb([
-		'https://oss.wulicode.com/static/demo/dabai.jpg',
-		'https://oss.wulicode.com/static/demo/holiday.mp4',
+		'https://test-oss.iliexiang.com/static/demo/dabai.jpg',
+		'https://test-oss.iliexiang.com/static/demo/holiday.mp4',
 	], [
 		'size' => 'xl',
 	]) !!}
 </div>
 <pre class="layui-code"><?php echo '{!! ' ?> Form::showThumb([
-    'https://oss.wulicode.com/static/demo/dabai.jpg',
-    'https://oss.wulicode.com/static/demo/holiday.mp4',
+    'https://test-oss.iliexiang.com/static/demo/dabai.jpg',
+    'https://test-oss.iliexiang.com/static/demo/holiday.mp4',
 ], [
     'size' => 'xl',
 ]) !!}</pre>
@@ -49,11 +49,11 @@
 	<legend>资源上传</legend>
 </fieldset>
 <div>
-	{!! Form::upload('files', 'https://oss.wulicode.com/static/demo/dev.rp', [
+	{!! Form::upload('files', 'https://test-oss.iliexiang.com/static/demo/dev.rp', [
 		'type' => 'file'
 	]) !!}
 </div>
-<pre class="layui-code"><?php echo '{!! ' ?> Form::upload('files', 'https://oss.wulicode.com/static/demo/dev.rp', [
+<pre class="layui-code"><?php echo '{!! ' ?> Form::upload('files', 'https://test-oss.iliexiang.com/static/demo/dev.rp', [
     'type' => 'file'
 ]) !!}</pre>
 {!! Form::close() !!}

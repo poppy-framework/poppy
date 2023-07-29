@@ -58,6 +58,10 @@ class JsController extends WebController
                 sleep(3);
                 return Resp::success('Sleep 3s:');
             }
+            if ($type === 'sleep-500') {
+                sleep(500);
+                return Resp::success('Sleep 500s:');
+            }
 
             return Resp::success('J_request 请求测试');
         }
