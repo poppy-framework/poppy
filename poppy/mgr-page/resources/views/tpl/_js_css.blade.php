@@ -3,7 +3,7 @@ $_type = $_type ?? [];
 ?>
 {{--js--}}
 @if (true)
-    {!! Html::script('assets/libs/boot/app.min.js?v=2023-04-22') !!}
+    {!! Html::script('assets/libs/boot/app.min.js?v=2023-07-29') !!}
     {!! Html::script('assets/libs/vue/vue.js') !!}
 @endif
 {{--layui--}}
@@ -23,7 +23,7 @@ $_type = $_type ?? [];
 @endif
 {{--last style, cover plugin--}}
 @if (true)
-    {!! Html::style('assets/libs/boot/style.css?v=2023-04-12') !!}
+    {!! Html::style('assets/libs/boot/style.css?v=2023-07-29') !!}
 @endif
 <script>
 window.POPPY = {};

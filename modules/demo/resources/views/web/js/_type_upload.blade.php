@@ -56,6 +56,15 @@
 <pre class="layui-code"><?php echo '{!! ' ?> Form::upload('files', 'https://test-oss.iliexiang.com/static/demo/dev.rp', [
     'type' => 'file'
 ]) !!}</pre>
+
+<div>
+	{!! Form::upload('video', 'https://test-oss.iliexiang.com/static/demo/holiday.mp4', [
+		'type' => 'video'
+	]) !!}
+</div>
+<pre class="layui-code"><?php echo '{!! ' ?> Form::upload('video', 'https://test-oss.iliexiang.com/static/demo/holiday.mp4', [
+    'type' => 'video'
+]) !!}</pre>
 {!! Form::close() !!}
 <script>
 layui.form.render();

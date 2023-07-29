@@ -477,8 +477,9 @@ layui.upload.render({
         }
         $("#{$id}_preview_ctr").show();
     },
-    error: function(){
-      //请求异常回调
+    error: function(index, upload){
+        console.log(index, upload)
+        // 请求异常回调
     }
 });
     $("#{$id}_del").click(function () {
@@ -502,7 +503,6 @@ CONTENT;
         $number    = $options['number'] ?? 3;
         $pop_size  = $options['pop_size'] ?? '300';
         $type      = $options['type'] ?? 'image';
-        $sequence  = $options['sequence'] ?? false;
         $imageType = $options['image_type'] ?? 'default';
         $pam       = $options['pam'] ?? false;
         if (!$pam) {
@@ -562,10 +562,6 @@ SORT;
             }
 HAHA;
         }
-        $sequenceStr = '';
-        if ($sequence) {
-            $sequenceStr = '<input type="text" name="_multi_sequence[]" class="layui-input w36">';
-        }
         $uploadUrl  = route('py-system:api_v1.upload.image');
         $autoUpload = $auto ? '' : '<button type="button" class="layui-btn layui-btn-sm" id="' . $id . '_upload" disabled>开始上传</button>';
         $autoDoUpload = $auto ? 'obj.upload(index, file);' : '';
@@ -596,7 +592,6 @@ HAHA;
             <source src="{{  d.result }}" type="video/mp4">
         </video>
         {{#  } }} 
-        {$sequenceStr}
     </div>
 </script>
 <script>
