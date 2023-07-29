@@ -536,8 +536,7 @@ CONTENT;
         $autoEnable = $auto ? 'true' : 'false';
 
         $sortStr = <<<SORT
-     var el{$id} = document.getElementById('{$id}_container');
-     var sort{$id} = new Sortable(el{$id})
+     var el{$id} = document.getElementById('{$id}_container'); var sort{$id} = new Sortable(el{$id})
 SORT;
 
         $renderStr = '';
@@ -569,6 +568,7 @@ HAHA;
         }
         $uploadUrl  = route('py-system:api_v1.upload.image');
         $autoUpload = $auto ? '' : '<button type="button" class="layui-btn layui-btn-sm" id="' . $id . '_upload" disabled>开始上传</button>';
+        $autoDoUpload = $auto ? 'obj.upload(index, file);' : '';
         $data       = /** @lang text */
             <<<MULTI
 <div class="layui-upload upload--multi">
@@ -589,7 +589,7 @@ HAHA;
         <input type="checkbox" name="________mark" lay-ignore>
         <input type="checkbox" class="j_img_value" checked name="{$name}" style="display:none" value="{{  d.result }}" lay-ignore>
         {{#  if(d.type === 'image'){ }}
-        <img src="{{  d.preview }}" alt="{{ d.name }}" class="layui-upload-img" data-width="{{ $pop_size }}px" data-height="{{ $pop_size }}px">
+        <img src="{{  d.result }}" alt="{{ d.name }}" class="layui-upload-img" data-width="{{ $pop_size }}px" data-height="{{ $pop_size }}px">
         <i class="layui-icon layui-icon-search J_image_preview" data-parents=".j_multi-img" data-src="{{  d.result }}" style="display:none;"></i>
         {{# } else { }}
         <video controls class="layui-upload-img">
@@ -645,11 +645,11 @@ $(function(){
             timestamp : '{$timestamp}',
             image_type: '{$imageType}',
         },
-        choose: function (obj) {  //选择图片后事件
-            var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+        choose: function (obj) {  // 选择图片后事件
+            var files = obj.pushFile(); // 将每次选择的文件追加到文件队列
             {$id}_files = files;
             $('#{$id}_upload').prop('disabled',false);
-            // 预读本地文件示例，不支持ie8
+            // 预读本地文件示例，不支持ie8/9
             obj.preview(function (index, file, result) {
                 var data = {
                     index: index,
@@ -659,10 +659,12 @@ $(function(){
                     classname : ''
                 };
                 var length = $('#{$id}_container div').length;
-                if (length>={$number}){
+                if (length >= {$number}){
                     delete {$id}_files[index];
                     top.layer.msg('添加的图片不能多于 {$number} 张');
                     return;
+                } else {
+                    {$autoDoUpload}
                 }
                 if ($('#{$id}_container').html()=== '请选择图片') {
                     $('#{$id}_container').html('');
@@ -671,7 +673,6 @@ $(function(){
                 //将预览 html 追加
                 layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
                     $('#{$id}_container').append(html);
-                    
                     {$sortStr}
                 });
             });

@@ -471,6 +471,7 @@ class DefaultFileProvider implements FileContract
             $width  = $Image->width();
             $height = $Image->height();
             $min    = min($width, $height);
+            // horizontal [----], vertical []
             $type   = $min === $height ? 'horizontal' : 'vertical';
 
             if ($min >= $this->resizeDistrict) {

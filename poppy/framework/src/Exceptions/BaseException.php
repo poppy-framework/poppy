@@ -22,8 +22,8 @@ abstract class BaseException extends Exception
 
     /**
      * BaseException constructor.
-     * @param string         $message  message
-     * @param int            $code     code
+     * @param string         $message message
+     * @param int            $code code
      * @param Throwable|null $previous previous
      */
     public function __construct($message = '', $code = 0, Throwable $previous = null)

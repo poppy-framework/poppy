@@ -65,7 +65,7 @@ class UploadController extends JwtApiController
             $Image->enableWatermark();
         }
 
-        /* 图片上传大小限制,过大则需要手都进行缩放
+        /* 图片上传大小限制,过大则需要手动进行缩放
          * ---------------------------------------- */
         $district = config('poppy.system.upload_image_district');
         if (isset($district[$image_type]) && (int) $district[$image_type] > 0) {

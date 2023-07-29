@@ -5,8 +5,9 @@ declare(strict_types = 1);
 namespace Poppy\Framework\Exceptions;
 
 /**
- * ParamException
+ * 告警类型
  */
-class ParamException extends BaseException implements Warningable
+interface Warningable
 {
+
 }

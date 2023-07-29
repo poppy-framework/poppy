@@ -131,7 +131,6 @@ class ExceptionController extends WebController
         PamAccount::where('column_not_exist', 'some-thing')->first();
     }
 
-
     public function validationPolicy(ExceptionPolicyRequest $request)
     {
 

@@ -2,6 +2,7 @@
 
 namespace Demo\Forms;
 
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Models\PamAccount;
 
@@ -11,6 +12,9 @@ class FormMultiImage extends FormBaseWidget
     protected $title = 'MultiImage';
 
 
+    /**
+     * @throws ApplicationException
+     */
     public function data(): array
     {
         return [
@@ -42,6 +46,17 @@ class FormMultiImage extends FormBaseWidget
     public function form()
     {
         $token = app('tymon.jwt.auth')->fromUser(PamAccount::first());
+
+        $this->multiImage('images-3', '3张图限制')->rules([
+            Rule::required(),
+            Rule::urls(),
+        ])->number(3)->token($token)->auto(true)->help('多个图片');
+        $this->divider();
+        $this->multiImage('images-3-auto', '3张手动上传')->rules([
+            Rule::required(),
+            Rule::urls(),
+        ])->number(3)->token($token)->help('多个图片');
+        $this->divider();
         $this->multiImage('images', '图片, 默认, 可上传')->rules([
             Rule::required(),
         ])->token($token)->auto(true);
@@ -64,6 +79,7 @@ CODE;
             Rule::urls(),
         ])->number(50)->token($token)->auto(true)->help('多个图片');
         $this->divider();
+
 
     }
 }

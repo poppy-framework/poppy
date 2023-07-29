@@ -19,6 +19,7 @@ use Poppy\Framework\Classes\Traits\PjaxTrait;
 use Poppy\Framework\Exceptions\AjaxException;
 use Poppy\Framework\Exceptions\BaseException;
 use Poppy\Framework\Exceptions\HintException;
+use Poppy\Framework\Exceptions\Warningable;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
@@ -34,7 +35,8 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        HintException::class
+        HintException::class,
+        Warningable::class
     ];
 
     /**
@@ -73,6 +75,16 @@ class Handler extends ExceptionHandler
             return Resp::error(trans('poppy::resp.authorization_default_exception'));
         }
 
+        /* Warningable 异常不进行上报, 进行记录
+         * ---------------------------------------- */
+        if ($e instanceof Warningable) {
+            sys_warning('framework.handler', [
+                'trace'   => debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 10),
+                'message' => $e->getMessage(),
+                'code'    => $e->getCode(),
+            ]);
+        }
+
         if ($e instanceof BaseException) {
             return Resp::error($e->getMessage());
         }
@@ -81,7 +93,7 @@ class Handler extends ExceptionHandler
             sys_emergency('framework.handler', [
                 'sql'     => $e->getSql(),
                 'binding' => $e->getBindings(),
-                'detail'  => $e->getMessage(),
+                'message' => $e->getMessage(),
                 'code'    => $e->getCode(),
             ]);
             return Resp::error(trans('poppy::resp.query_exception'));
