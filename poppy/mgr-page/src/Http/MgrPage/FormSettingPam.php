@@ -62,7 +62,6 @@ class FormSettingPam extends FormSettingBase
         /* 密码策略
          * ---------------------------------------- */
         $this->divider('密码策略');
-        $this->checkbox('develop_pwd_strength', '开发者密码策略')->options(PamAccount::kvPwdStrength());
         $this->checkbox('backend_pwd_strength', '后台密码策略')->options(PamAccount::kvPwdStrength());
         $this->checkbox('user_pwd_strength', '用户密码策略')->options(PamAccount::kvPwdStrength())
             ->help('密码策略: 系统默认密码长度 6-20, 可选范围是 0-9, a-z, A-Z, 特殊字符(*.[]-!@#$%^&()~]+)');
