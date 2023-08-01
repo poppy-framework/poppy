@@ -658,8 +658,6 @@ $(function(){
                     delete {$id}_files[index];
                     top.layer.msg('添加的图片不能多于 {$number} 张');
                     return;
-                } else {
-                    {$autoDoUpload}
                 }
                 if ($('#{$id}_container').html()=== '请选择图片') {
                     $('#{$id}_container').html('');
