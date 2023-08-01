@@ -228,6 +228,9 @@ demo :
           title : Email
           route : demo:web.form.index/Email
         -
+          title : File
+          route : demo:web.form.index/File
+        -
           title : Hidden
           route : demo:web.form.index/Hidden
         -
