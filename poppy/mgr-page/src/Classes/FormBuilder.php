@@ -472,8 +472,7 @@ layui.upload.render({
         } else {
             $('#{$id}_url').val(obj_resp.data.url[0]);
             $('#{$id}_preview_ctr').removeClass('hidden');
-            {$id}_tpl = {$id}_tpl.replace(/___VALUE___/g, obj_resp.data.url[0]);
-            $('#{$id}_content').html({$id}_tpl);
+            $('#{$id}_content').html({$id}_tpl.replace(/___VALUE___/g, obj_resp.data.url[0]));
         }
         $("#{$id}_preview_ctr").show();
     },

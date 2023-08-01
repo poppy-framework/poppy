@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\MgrPage\Classes\Form\Field;
 
 use Poppy\MgrPage\Classes\Form\Field;
+use Poppy\System\Models\PamAccount;
 
 class File extends Field
 {
@@ -40,6 +41,17 @@ class File extends Field
     public function exts(array $exts = []): self
     {
         $this->options['exts'] = $exts;
+        return $this;
+    }
+
+    /**
+     * 设置独立的Pam
+     * @param PamAccount $pam
+     * @return $this
+     */
+    public function pam(PamAccount $pam): self
+    {
+        $this->options['pam'] = $pam;
         return $this;
     }
 }
