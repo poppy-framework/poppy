@@ -34,6 +34,13 @@ class OssFileProvider extends DefaultFileProvider
      */
     private string $bucket;
 
+
+    /**
+     * Oss 限制最长边不会超过 30000 像素
+     * @var int|null
+     */
+    protected ?int $resizeLongDistrict = 30000;
+
     /**
      * OssDefaultUploadProvider constructor.
      * @throws LoadConfigurationException
@@ -133,7 +140,7 @@ class OssFileProvider extends DefaultFileProvider
     /**
      * @throws LoadConfigurationException
      */
-    private function reWatermark()
+    private function reWatermark(): void
     {
         if (!$this->watermark) {
             return;

@@ -5,12 +5,8 @@ declare(strict_types = 1);
 namespace Poppy\System\Classes\File;
 
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Filesystem\FilesystemAdapter;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Imagick;
-use ImagickException;
 use Intervention\Image\Constraint;
 use Intervention\Image\Exception\NotReadableException;
 use Intervention\Image\Image;
@@ -21,7 +17,6 @@ use Poppy\Framework\Helper\FileHelper;
 use Poppy\Framework\Helper\UtilHelper;
 use Poppy\System\Classes\Contracts\FileContract;
 use Psr\Http\Message\StreamInterface;
-use RuntimeException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -48,12 +43,6 @@ class DefaultFileProvider implements FileContract
     protected bool $watermark = false;
 
     /**
-     * heic转jpg格式上传路径及文件名
-     * @var string
-     */
-    protected string $heic2jpgPathName = '';
-
-    /**
      * @var string 文件夹
      */
     private string $folder;
@@ -74,21 +63,23 @@ class DefaultFileProvider implements FileContract
     private int $quality = 70;
 
     /**
-     * 重新设置大小时候的阈值
+     * 短边限制
      * @var int
      */
     private int $resizeDistrict = 1920;
+
+
+    /**
+     * 长边限制
+     * @var int|null
+     */
+    protected ?int $resizeLongDistrict = null;
 
     /**
      * @var string 图片mime类型
      */
     private string $mimeType = '';
 
-    /**
-     * Heic 的转换中间路径
-     * @var string
-     */
-    private string $heic2JpgPathName;
 
     public function __construct()
     {
@@ -97,9 +88,10 @@ class DefaultFileProvider implements FileContract
     }
 
 
-    public function setFolder($folder = 'uploads')
+    public function setFolder($folder = 'uploads'): self
     {
         $this->folder = (is_production() ? '' : 'dev/') . $folder;
+        return $this;
     }
 
     /**
@@ -188,42 +180,6 @@ class DefaultFileProvider implements FileContract
         $Disk      = $this->storage();
         $extension = $file->getClientOriginalExtension();
 
-        $this->setHeic2JpgPathName();
-
-        // 如果是heic转成jpg
-        if (strtolower($extension) === 'heic') {
-            if (!extension_loaded('imagick')) {
-                return $this->setError('暂不支持heic格式图片');
-            }
-            try {
-                $extension   = 'jpg';
-                $filename    = $file->getFilename() . '.' . $extension;
-                $heic2jpgDir = 'heic2jpg/';
-                if (!app('filesystem')->disk('storage')->has($heic2jpgDir)) {
-                    app('filesystem')->disk('storage')->makeDirectory($heic2jpgDir);
-                }
-                $pathName = $heic2jpgDir . $filename;
-                $this->setHeic2JpgPathName($pathName);
-                $fullPathName = storage_path($pathName);
-                $Imagick      = new Imagick();
-                $Imagick->readImage($file->getPathname());
-                if ($Imagick->count() > 1) {
-                    throw new RuntimeException('不支持上传hiec实况图');
-                }
-                $Imagick->setImageFormat($extension);
-                $Imagick->writeImage($fullPathName);
-                $file = new UploadedFile($fullPathName, $filename);
-            } catch (ImagickException $e) {
-                Log::emergency('图片转换错误', [
-                    'file'    => $e->getFile(),
-                    'line'    => $e->getLine(),
-                    'message' => $e->getMessage(),
-                ]);
-                return $this->setError('图片转换错误');
-            } catch (Exception $e) {
-                return $this->setError($e->getMessage());
-            }
-        }
 
         $fileRelativePath = $this->genRelativePath($extension);
         $zipContent       = file_get_contents($file->getPathname());
@@ -255,31 +211,7 @@ class DefaultFileProvider implements FileContract
 
         $this->destination = $fileRelativePath;
 
-        if ($this->getHeic2JpgPathName()) {
-            // 删除heic转jpg的临时图片
-            app('filesystem')->disk('storage')->delete($this->getHeic2JpgPathName());
-        }
-
         return true;
-    }
-
-    /**
-     * 获取heic转jpg的路径加文件名
-     * @return string
-     */
-    public function getHeic2JpgPathName(): string
-    {
-        return $this->heic2JpgPathName;
-    }
-
-    /**
-     * 设置heic转jpg的路径加文件名（用于之后删除）
-     * @param string $heic2JpgPathName
-     * @return void
-     */
-    public function setHeic2JpgPathName(string $heic2JpgPathName = ''): void
-    {
-        $this->heic2JpgPathName = $heic2JpgPathName;
     }
 
     /**
@@ -459,7 +391,7 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 重设内容
-     * @param string $extension  扩展
+     * @param string $extension 扩展
      * @param mixed  $img_stream 压缩内容
      * @return bool|StreamInterface
      */
@@ -470,20 +402,15 @@ class DefaultFileProvider implements FileContract
             $Image  = $this->imageManager()->make($img_stream);
             $width  = $Image->width();
             $height = $Image->height();
-            $min    = min($width, $height);
-            // horizontal [----], vertical []
-            $type   = $min === $height ? 'horizontal' : 'vertical';
 
-            if ($min >= $this->resizeDistrict) {
-                $r_width  = $type === 'horizontal' ? null : $this->resizeDistrict;
-                $r_height = $type === 'horizontal' ? $this->resizeDistrict : null;
-                return $this->resize($Image, $r_width, $r_height);
+            $resize = FileManager::resizedSize($width, $height, $this->resizeDistrict, $this->resizeLongDistrict);
+            if ($resize['resize']) {
+                return $this->resize($Image, $resize['width'], $resize['height']);
             }
         }
         else {
             return $img_stream;
         }
-
         return $img_stream;
     }
 

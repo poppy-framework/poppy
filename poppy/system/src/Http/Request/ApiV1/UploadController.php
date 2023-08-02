@@ -191,13 +191,13 @@ class UploadController extends JwtApiController
      * @apiQuery {string}     type        上传类型[audio|音频;video|视频;images|图片;file|文件上传]
      * @apiQuery {string}     [folder]    [4.0]文件存储目录
      * @apiQuery {string}     [ext]       上传限制扩展(后台进行限制), 多个使用 ',' 分隔, 默认是 后台进行限制
-     * @apiQuery {string}     [district]  图片大小限制(最高边, 默认是 1440)
+     * @apiQuery {string}     [district]  图片大小限制(最短边, 默认是 1080)
      */
     public function file()
     {
         $type     = input('type', 'audio');
         $ext      = input('ext', '');
-        $district = (int) input('district', 1440);
+        $district = (int) input('district', 1080);
         $folder   = input('folder', '');
 
         $input = input();
@@ -228,7 +228,7 @@ class UploadController extends JwtApiController
             $Uploader->setExtension($extensions);
         }
 
-        // 默认图片压缩到 1440 宽度
+        // 默认图片压缩到 1080 短边压缩
         if ($type === 'images') {
             $Uploader->setResizeDistrict($district);
         }

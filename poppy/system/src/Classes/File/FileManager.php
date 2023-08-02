@@ -96,7 +96,7 @@ class FileManager
     {
         $strRules = preg_replace('/\s+/', ';', sys_setting('py-system::picture.preview_rule'));
         $arrRules = explode(';', $strRules);
-        $platform     = '';
+        $platform = '';
         if (count($arrRules)) {
             foreach ($arrRules as $rule) {
                 if ($platform) {
@@ -112,13 +112,13 @@ class FileManager
         }
         switch ($platform) {
             case 'aliyun':
-                if (!Str::contains($url, "?x-oss-process")) {
+                if (!Str::contains($url, '?x-oss-process')) {
                     $url = "{$url}?x-oss-process=image/resize,l_{$size}";
                 }
                 break;
             case 'tencent':
             case 'qiniu':
-                if (!Str::contains($url, "?imageView2")) {
+                if (!Str::contains($url, '?imageView2')) {
                     $url = "{$url}?imageView2/0/w/{$size}";
                 }
                 break;
@@ -129,5 +129,62 @@ class FileManager
                 break;
         }
         return $url;
+    }
+
+
+    /**
+     * 重新定义大小
+     * @param int      $width 原始宽度
+     * @param int      $height 原始高度
+     * @param int      $min_district 最小限制值
+     * @param int|null $max_district 最大限制值
+     * @return array
+     */
+    public static function resizedSize(int $width, int $height, int $min_district, ?int $max_district): array
+    {
+        $min    = min($width, $height);
+        $max    = max($width, $height);
+        $resize = true;
+        // horizontal [----], vertical []
+        $direction = $min === $height ? 'horizontal' : 'vertical';
+
+        // 短边需要压缩或者长边需要压缩
+        $compressMin = $min >= $min_district;
+        $compressMax = ($max_district && $max > $max_district);
+
+        // 长短均需要压缩
+        if ($compressMin && $compressMax) {
+            $rateMin = $min_district / $min;
+            $rateMax = $max_district / $max;
+            $minRate = min($rateMax, $rateMin);
+            if ($direction === 'horizontal') {
+                // 以小的比值作为伸缩比
+                $r_height = $min_district;
+                $r_width  = (int) round($max * $minRate);
+            }
+            else {
+                // 以小的比值作为伸缩比
+                $r_width  = $min_district;
+                $r_height = (int) round($max * $minRate);
+            }
+        }
+
+        // 压缩短边
+        else if ($compressMin) {
+            $r_width  = $direction === 'horizontal' ? null : $min_district;
+            $r_height = $direction === 'vertical' ? null : $min_district;
+        }
+
+        // 压缩长边
+        else if ($compressMax) {
+            $r_width  = $direction === 'horizontal' ? $max_district : null;
+            $r_height = $direction === 'vertical' ? $max_district : null;
+        }
+        else {
+            $r_width  = $width;
+            $r_height = $height;
+            $resize   = false;
+        }
+        return ['width' => $r_width, 'height' => $r_height, 'resize' => $resize];
     }
 }
