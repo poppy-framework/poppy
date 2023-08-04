@@ -79,4 +79,9 @@ Route::group([
     $router->any('exception/validation_policy', 'ExceptionController@validationPolicy');
     $router->any('exception/{type}', 'ExceptionController@index')
         ->name('demo:web.exception.index');
+
+    /* log
+     * ---------------------------------------- */
+    $router->any('log', 'LogController@index')
+        ->name('demo:web.log.index');
 });

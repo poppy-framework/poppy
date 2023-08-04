@@ -22,6 +22,7 @@ use Poppy\System\Classes\Contracts\ApiSignContract;
 use Poppy\System\Classes\Contracts\FileContract;
 use Poppy\System\Classes\Contracts\PasswordContract;
 use Poppy\System\Classes\File\DefaultFileProvider;
+use Poppy\System\Classes\Logger\DefaultConfig;
 use Poppy\System\Events\LoginTokenPassedEvent;
 use Poppy\System\Events\PamLogoutEvent;
 use Poppy\System\Events\PamPasswordModifiedEvent;
@@ -217,6 +218,11 @@ class ServiceProvider extends PoppyServiceProvider
         config([
             'poppy.framework.title'       => sys_setting('py-system::site.name'),
             'poppy.framework.description' => sys_setting('py-system::site.description'),
+        ]);
+
+        // logging
+        config([
+            'poppy.logging' => DefaultConfig::get()
         ]);
     }
 }

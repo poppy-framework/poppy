@@ -8,6 +8,7 @@ use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Poppy\System\Http\Middlewares\CrossRequest;
+use Poppy\System\Http\Middlewares\RequestIdMiddleware;
 
 class MiddlewareServiceProvider extends ServiceProvider
 {
@@ -77,6 +78,11 @@ class MiddlewareServiceProvider extends ServiceProvider
 
 
         // cors for api
-        $this->app->make(KernelContract::class)->prependMiddleware(CrossRequest::class);
+        /** @var \Illuminate\Foundation\Http\Kernel $kernelContract */
+        $kernelContract = $this->app->make(KernelContract::class);
+        $kernelContract->prependMiddleware(CrossRequest::class);
+
+        // request id
+        $kernelContract->pushMiddleware(RequestIdMiddleware::class);
     }
 }
