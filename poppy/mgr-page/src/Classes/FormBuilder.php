@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes;
 
 use Carbon\Carbon;
 use Collective\Html\FormBuilder as CollectiveFormBuilder;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Poppy\Core\Classes\Traits\CoreTrait;
 use Poppy\Framework\Helper\FileHelper;
@@ -21,16 +24,16 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 生成树选择
-     * @param string $name     名称
-     * @param array  $tree     需要生成的树
+     * @param string $name 名称
+     * @param array  $tree 需要生成的树
      * @param string $selected 选择
-     * @param array  $options  选项
-     * @param string $id       ID KEY
-     * @param string $title    Title KEY
-     * @param string $pid      PID KEY
-     * @return string
+     * @param array  $options 选项
+     * @param string $id ID KEY
+     * @param string $title Title KEY
+     * @param string $pid PID KEY
+     * @return HtmlString
      */
-    public function tree(string $name, array $tree, $selected = '', $options = [], $id = 'id', $title = 'title', $pid = 'pid'): string
+    public function tree(string $name, array $tree, $selected = '', $options = [], $id = 'id', $title = 'title', $pid = 'pid'): HtmlString
     {
         $formatTree = [];
         foreach ($tree as $tr) {
@@ -45,9 +48,9 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * radio 选择器(支持后台)
-     * @param string      $name    名字
-     * @param array       $lists   列表
-     * @param string|null $value   值
+     * @param string      $name 名字
+     * @param array       $lists 列表
+     * @param string|null $value 值
      * @param array       $options 选项
      * @return string
      */
@@ -68,9 +71,9 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 选择器
-     * @param string $name    名字
-     * @param array  $lists   数组
-     * @param null   $value   值
+     * @param string $name 名字
+     * @param array  $lists 数组
+     * @param null   $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -104,11 +107,11 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 代码编辑器
-     * @param string $name  名字
+     * @param string $name 名字
      * @param string $value 值
-     * @return string
+     * @return HtmlString
      */
-    public function code(string $name, $value = ''): string
+    public function code(string $name, $value = ''): HtmlString
     {
         $value = htmlentities($value);
         return $this->textarea($name, $value, [
@@ -122,22 +125,22 @@ class FormBuilder extends CollectiveFormBuilder
      * 代码编辑器
      * @param string $name 名字
      * @param string $type 类型
-     * @return string
+     * @return HtmlString
      */
-    public function captcha(string $name, string $type = 'default'): string
+    public function captcha(string $name, string $type = 'default'): HtmlString
     {
         $src = captcha_src($type);
         return $this->image(captcha_src($type), $name, [
             'onclick' => "this.src='" . $src . "'+Math.random()",
-            'class'   => "J_captcha",
-            'style'   => "cursor: pointer;",
+            'class'   => 'J_captcha',
+            'style'   => 'cursor: pointer;',
         ]);
     }
 
     /**
      * 编辑器
-     * @param string $name    名字
-     * @param string $value   值
+     * @param string $name 名字
+     * @param string $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -163,8 +166,11 @@ class FormBuilder extends CollectiveFormBuilder
             'timestamp' => $timestamp,
         ]);
         $value = (string) $this->getValueAttribute($name, $value);
-        $value = str_replace([PHP_EOL, "\r", "\n", "\r\n"], '', $value);
-        $value = str_replace('\'', '\\\'', $value);
+        $value = str_replace(
+            [PHP_EOL, "\r", "\n", "\r\n", '\''],
+            ['', '', '', '', '\\\''],
+            $value
+        );
 
         return /** @lang text */
             <<<Editor
@@ -232,10 +238,10 @@ Editor;
 
     /**
      * 生成排序链接
-     * @param string $name       名字
-     * @param string $value      值
+     * @param string $name 名字
+     * @param string $value 值
      * @param string $route_name 路由名字
-     * @param bool   $pjax       是否是 Pjax 请求
+     * @param bool   $pjax 是否是 Pjax 请求
      * @return string
      */
     public function order(string $name, $value = '', $route_name = '', $pjax = false): string
@@ -278,7 +284,7 @@ HTML;
     /**
      * 提示组件
      * @param string      $description 描述
-     * @param string|null $name        名字
+     * @param string|null $name 名字
      * @return string
      */
     public function tip(string $description, $name = null): string
@@ -300,8 +306,8 @@ TIP;
 
     /**
      * 上传缩略图
-     * @param string $name    名字
-     * @param null   $value   值
+     * @param string $name 名字
+     * @param null   $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -384,8 +390,8 @@ CONTENT;
 
     /**
      * 上传缩略图
-     * @param string $name    名字
-     * @param null   $value   值
+     * @param string $name 名字
+     * @param null   $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -491,8 +497,8 @@ CONTENT;
 
     /**
      * 多图上传组件
-     * @param string $name    form 名称
-     * @param null   $value   值
+     * @param string $name form 名称
+     * @param null   $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -531,8 +537,7 @@ CONTENT;
             'timestamp' => $timestamp,
         ]);
 
-        $auto       = (bool) ($options['auto'] ?? false);
-        $autoEnable = $auto ? 'true' : 'false';
+        $auto = (bool) ($options['auto'] ?? false);
 
         $sortStr = <<<SORT
      var el{$id} = document.getElementById('{$id}_container'); var sort{$id} = new Sortable(el{$id})
@@ -561,10 +566,10 @@ SORT;
             }
 HAHA;
         }
-        $uploadUrl  = route('py-system:api_v1.upload.image');
-        $autoUpload = $auto ? '' : '<button type="button" class="layui-btn layui-btn-sm" id="' . $id . '_upload" disabled>开始上传</button>';
+        $uploadUrl    = route('py-system:api_v1.upload.image');
+        $autoUpload   = $auto ? '' : '<button type="button" class="layui-btn layui-btn-sm" id="' . $id . '_upload" disabled>开始上传</button>';
         $autoDoUpload = $auto ? 'obj.upload(index, file);' : '';
-        $data       = /** @lang text */
+        return /** @lang text */
             <<<MULTI
 <div class="layui-upload upload--multi">
     <div class="layui-btn-group">
@@ -627,7 +632,7 @@ $(function(){
         url: '{$uploadUrl}' ,
         multiple: true,
         number : {$number},
-        auto: {$autoEnable},
+        auto: false,
         bindAction: '#{$id}_upload',
         accept : 'file',
         field : 'image',
@@ -645,6 +650,7 @@ $(function(){
             $('#{$id}_upload').prop('disabled',false);
             // 预读本地文件示例，不支持ie8/9
             obj.preview(function (index, file, result) {
+                console.log('preview', index, file)
                 var data = {
                     index: index,
                     name: file.name,
@@ -654,9 +660,11 @@ $(function(){
                 };
                 var length = $('#{$id}_container div').length;
                 if (length >= {$number}){
-                    delete {$id}_files[index];
-                    top.layer.msg('添加的图片不能多于 {$number} 张');
-                    return;
+                     delete {$id}_files[index];
+                     top.layer.msg('添加的图片不能多于 {$number} 张');
+                     return;
+                } else {
+                    {$autoDoUpload}
                 }
                 if ($('#{$id}_container').html()=== '请选择图片') {
                     $('#{$id}_container').html('');
@@ -670,14 +678,6 @@ $(function(){
             });
          }, 
         before: function (obj) { //上传前回函数
-           if ($('#{$id}_container div').length>={$number}){
-                top.layer.msg('添加的图片不能多于 {$number} 张');
-                return false;
-            }
-            if (!Object.keys({$id}_files).length){
-                 top.layer.msg("无可以上传文件, 请选择文件！");
-                 return;
-            }
             layer.load(); //上传loading
         },
         done: function (res,index,upload) {    //上传完毕后事件
@@ -687,7 +687,6 @@ $(function(){
                 return;
             }
             var ctr = $('#{$id}_container').find('[filename='+index+']');
-            
             ctr.find('img').attr('src', res.data.url[0]);
             ctr.find('.j_img_value').attr('value', res.data.url[0]);
             ctr.find('.layui-icon-search').attr('data-src', res.data.url[0]);
@@ -715,13 +714,11 @@ $(function(){
 })
 </script>
 MULTI;
-
-        return $data;
     }
 
     /**
      * 显示上传的单图
-     * @param string|array $url     需要显示的地址
+     * @param string|array $url 需要显示的地址
      * @param array        $options 选项
      * @return string
      */
@@ -775,8 +772,8 @@ MULTI;
 
     /**
      * 日期选择器
-     * @param string $name    名字
-     * @param string $value   值
+     * @param string $name 名字
+     * @param string $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -803,8 +800,8 @@ MULTI;
 
     /**
      * 生成日期时间选择器
-     * @param string $name    名字
-     * @param string $value   值
+     * @param string $name 名字
+     * @param string $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -818,8 +815,8 @@ MULTI;
 
     /**
      * 日期选择器
-     * @param string $name    名字
-     * @param string $value   值
+     * @param string $name 名字
+     * @param string $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -833,8 +830,8 @@ MULTI;
 
     /**
      * 生成日期选择器
-     * @param string $name    名字
-     * @param string $value   值
+     * @param string $name 名字
+     * @param string $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -866,8 +863,8 @@ HTML;
 
     /**
      * 生成日期选择器
-     * @param string $name    名字
-     * @param string $value   值
+     * @param string $name 名字
+     * @param string $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -880,8 +877,8 @@ HTML;
 
 
     /**
-     * @param string $name    名字
-     * @param string $value   值
+     * @param string $name 名字
+     * @param string $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -893,8 +890,8 @@ HTML;
     }
 
     /**
-     * @param string $name    名字
-     * @param string $value   值
+     * @param string $name 名字
+     * @param string $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -906,8 +903,8 @@ HTML;
     }
 
     /**
-     * @param string $name    名字
-     * @param string $value   值
+     * @param string $name 名字
+     * @param string $value 值
      * @param array  $options 选项
      * @return string
      */
@@ -1032,7 +1029,7 @@ HTML;
                 $items['children'] = collect($items['children'])->map(function ($item) use ($value) {
                     // var_dump($item);
                     return array_merge($item, [
-                        'selected' => in_array($item['value'] ?? '', $value, false),
+                        'selected' => in_array($item['value'] ?? '', $value, true),
                     ]);
                 });
                 return $items;
@@ -1042,7 +1039,7 @@ HTML;
             // kv 模式
             $data = collect($lists)->map(function ($item, $key) use ($value) {
                 $selected = false;
-                if ($value && in_array($key, $value, false)) {
+                if ($value && in_array($key, $value, true)) {
                     $selected = true;
                 }
                 return [
