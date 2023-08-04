@@ -17,15 +17,18 @@ class DefaultConfig
      */
     public static function get(): array
     {
-        return self::$config ?: self::defaultConfig();
+        return self::$config ?: self::default();
     }
 
-    public static function config(array $config)
+    public static function config(array $config): void
     {
         static::$config = $config;
     }
 
-    public static function defaultConfig(): array
+    /**
+     * @return array[]
+     */
+    public static function default(): array
     {
         return [
             'handlers'   => [

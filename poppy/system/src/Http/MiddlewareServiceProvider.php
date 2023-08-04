@@ -81,8 +81,5 @@ class MiddlewareServiceProvider extends ServiceProvider
         /** @var \Illuminate\Foundation\Http\Kernel $kernelContract */
         $kernelContract = $this->app->make(KernelContract::class);
         $kernelContract->prependMiddleware(CrossRequest::class);
-
-        // request id
-        $kernelContract->pushMiddleware(RequestIdMiddleware::class);
     }
 }

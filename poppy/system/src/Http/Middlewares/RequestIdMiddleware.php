@@ -7,10 +7,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
-use Poppy\Core\Redis\RdsDb;
-use Poppy\Framework\Classes\Resp;
-use Poppy\Framework\Helper\EnvHelper;
-
 
 class RequestIdMiddleware
 {
