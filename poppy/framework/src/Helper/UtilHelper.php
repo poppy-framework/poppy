@@ -15,8 +15,8 @@ class UtilHelper
 {
     /**
      * 计算某个经纬度的周围某段距离的正方形的四个点
-     * @param float $lng      经度
-     * @param float $lat      纬度
+     * @param float $lng 经度
+     * @param float $lat 纬度
      * @param float $distance 该点所在圆的半径，该圆与此正方形内切，默认值为0.5千米
      * @return array 正方形的四个点的经纬度坐标
      */
@@ -65,7 +65,7 @@ class UtilHelper
      * 是否是用户名, 子用户比主用户多一个英文版本的 `:`
      * @url https://regex101.com/r/otDXQG/1/
      * @param string $username 用户名
-     * @param false  $is_sub   是否是子用户
+     * @param false  $is_sub 是否是子用户
      * @return bool
      */
     public static function isUsername(string $username, bool $is_sub = false): bool
@@ -251,17 +251,17 @@ class UtilHelper
     /**
      * 检测代码中是否含有 html 标签
      * @param string $content string
-     * @return int
+     * @return bool
      */
-    public static function hasTag(string $content)
+    public static function hasTag(string $content): bool
     {
-        return preg_match('/<[^>]+>/', $content, $matches);
+        return (bool) preg_match('/<[^>]+>/', $content);
     }
 
     /**
      * 格式化小数, 也可以用于货币的格式化
-     * @param string $input     value
-     * @param bool   $sprinft   是否格式化
+     * @param string $input value
+     * @param bool   $sprinft 是否格式化
      * @param int    $precision 保留小数
      * @return float|string
      */
@@ -322,9 +322,9 @@ class UtilHelper
     /**
      * 生成递归数列
      * @param array|object $items 条目
-     * @param string       $id    id键
-     * @param string       $pid   父级元素
-     * @param string       $son   子元素
+     * @param string       $id id键
+     * @param string       $pid 父级元素
+     * @param string       $son 子元素
      * @return array        返回的排序好的数组
      */
     public static function genTree($items, string $id = 'id', string $pid = 'pid', string $son = 'children', $reserve_pid = true): array
@@ -384,9 +384,9 @@ class UtilHelper
 
     /**
      * 生成 提示信息, 当前已经不使用字符串来生成提示信息
-     * @param string       $type    type
+     * @param string       $type type
      * @param string       $message message
-     * @param string|array $append  append
+     * @param string|array $append append
      * @return array
      * @deprecated 4.2
      * @removed    5.0
@@ -450,7 +450,7 @@ class UtilHelper
     /**
      * 转换成小时
      * @param int $hour hour
-     * @param int $day  day num
+     * @param int $day day num
      * @return int
      */
     public static function toHour(int $hour, int $day = 0): int
@@ -460,7 +460,7 @@ class UtilHelper
 
     /**
      * 格式化文件大小
-     * @param int $bytes     长度
+     * @param int $bytes 长度
      * @param int $precision 分数
      * @return string
      */

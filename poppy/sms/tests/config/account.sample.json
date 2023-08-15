@@ -1,8 +1,8 @@
 {
-    "aliyun_access_key": "",
-    "aliyun_access_secret": "",
-    "chuanglan_access_key": "",
-    "chuanglan_access_secret": "",
-    "chuanglan_sign": "",
-    "mobile": ""
+    "aliyun_access_key" : "",
+    "aliyun_access_secret" : "",
+    "chuanglan_access_key" : "",
+    "chuanglan_access_secret" : "",
+    "chuanglan_sign" : "",
+    "mobile" : ""
 }

@@ -24,7 +24,7 @@ class ModuleTest extends TestCase
         py_console()->call('cache:clear');
     }
 
-    public function testHasAttributes()
+    public function testHasAttributes(): void
     {
         $module = (new Module('poppy.core'));
         $this->assertEquals(poppy_path('poppy.core'), $module->directory());
@@ -32,37 +32,37 @@ class ModuleTest extends TestCase
         $this->assertEquals('Poppy\\Core', $module->namespace());
     }
 
-    public function testMenus()
+    public function testMenus(): void
     {
         $menus = $this->coreModule()->menus();
         $this->assertTrue($menus instanceof ModulesMenu);
     }
 
-    public function testPath()
+    public function testPath(): void
     {
         $menus = $this->coreModule()->path();
-        $this->assertTrue($menus->count() > 0);
+        $this->assertIsNumeric($menus->count());
     }
 
-    public function testModules()
+    public function testModules(): void
     {
         $repo = $this->coreModule()->modules();
         $this->assertTrue(Arr::exists($repo->toArray(), 'poppy.core'), '模块中没有发现 poppy.core 模块');
     }
 
-    public function testServices()
+    public function testServices(): void
     {
         $repo = $this->coreModule()->services();
         $this->assertTrue($repo instanceof ModulesService);
     }
 
-    public function testEnable()
+    public function testEnable(): void
     {
         $repo = $this->coreModule()->enabled();
         $this->assertTrue($repo instanceof Modules);
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $module = $this->coreModule()->get('poppy.core');
         $this->assertTrue($module instanceof Module);

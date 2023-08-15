@@ -18,10 +18,10 @@ class OpCommand extends Command
      * @var string 名称
      */
     protected $signature = 'py-core:op
-        {do: Maintain type}
-        {--title=: Mail title}
-        {--content=: Mail content}
-        {--file=: Mail attachment file}
+        {do : Maintain type}
+        {--title= : Mail title}
+        {--content= : Mail content}
+        {--file= : Mail attachment file}
     ';
 
     /**

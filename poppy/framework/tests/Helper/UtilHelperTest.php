@@ -298,7 +298,7 @@ class UtilHelperTest extends TestCase
     }
 
 
-    public function testKvToIdTitle():void
+    public function testKvToIdTitle(): void
     {
         $kv       = [
             'a' => 'b',

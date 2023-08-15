@@ -14,7 +14,7 @@ class OpTest extends TestCase
         parent::setUp();
     }
 
-    public function testMail()
+    public function testMail(): void
     {
         $result = py_console()->call('py-core:op', [
             'do' => 'mail',

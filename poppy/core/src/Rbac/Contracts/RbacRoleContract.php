@@ -33,7 +33,7 @@ interface RbacRoleContract
 
     /**
      * Save the inputted permissions.
-     * @param mixed $id 需要保存的权限
+     * @param mixed $id 需要保存的权限, 如果是空数组, 默认 detach = true
      * @return void
      */
     public function syncPermission($id): void;

@@ -247,6 +247,7 @@ class NumberTest extends TestCase
             $result = (new Number(2))->powMod(2, 2);
             $this->assertEquals('0.00', $result->getValue());
         } catch (Throwable $e) {
+            dump($e);
             $this->fail($e->getMessage());
         }
     }

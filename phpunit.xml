@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
     bootstrap="storage/bootstrap/autoload.php"
     cacheResultFile="storage/phpunit/.phpunit.cache/test-results"
     executionOrder="depends,defects"
@@ -40,6 +40,7 @@
             <file>modules/**/src/Http/RouteServiceProvider.php</file>
             <directory suffix=".php">poppy/**/src/Http/Routes</directory>
             <file>poppy/**/src/Http/RouteServiceProvider.php</file>
+            <directory suffix=".php">poppy/im-rpc/src/</directory>
         </exclude>
         <report>
             <html outputDirectory="storage/phpunit/coverage-html" lowUpperBound="50" highLowerBound="90"/>

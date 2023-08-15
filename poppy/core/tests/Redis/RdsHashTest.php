@@ -6,6 +6,7 @@ namespace Poppy\Core\Tests\Redis;
 
 
 use Illuminate\Support\Str;
+use Poppy\Framework\Exceptions\ApplicationException;
 
 class RdsHashTest extends RdsBaseTest
 {
@@ -207,7 +208,10 @@ class RdsHashTest extends RdsBaseTest
         $this->rds->del($key);
     }
 
-    public function testHScan()
+    /**
+     * @throws ApplicationException
+     */
+    public function testHScan(): void
     {
         $key = $this->key('h-scan');
         $this->rds->del($key);

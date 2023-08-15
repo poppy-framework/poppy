@@ -61,7 +61,6 @@ trait RbacRoleTrait
                 self::clearCachedPermissions();
             });
         }
-
     }
 
     /**
@@ -121,10 +120,13 @@ trait RbacRoleTrait
     public function syncPermission($id): void
     {
         $this->perms()->sync($id);
+
+        // clear current role id cache
+        self::clearCachedPivotPermissions($this->{$this->primaryKey});
     }
 
     /**
-     * Attach permission to current role.
+     * 给角色添加权限, 并且清空角色缓存
      * @param object|array|Permission $id 权限
      * @return void
      */
@@ -139,11 +141,14 @@ trait RbacRoleTrait
         }
 
         $this->perms()->attach($id);
+
+        // clear current role id cache
+        self::clearCachedPivotPermissions($this->{$this->primaryKey});
     }
 
     /**
      * Detach permission from current role.
-     * @param object|array $id 权限
+     * @param object|array $id 权限ID
      * @return void
      */
     public function detachPermission($id): void
@@ -157,6 +162,9 @@ trait RbacRoleTrait
         }
 
         $this->perms()->detach($id);
+
+        // clear current role id cache
+        self::clearCachedPivotPermissions($this->{$this->primaryKey});
     }
 
     /**
@@ -218,6 +226,11 @@ trait RbacRoleTrait
     protected static function clearCachedPermissions(): void
     {
         sys_tag('py-core-rbac')->clear(PyCoreDef::rbacCkRolePermissions('*'));
+    }
+
+    protected static function clearCachedPivotPermissions($role_id): void
+    {
+        sys_tag('py-core-rbac')->clear(PyCoreDef::rbacCkRolePermissions($role_id));
     }
 
     /**

@@ -23,7 +23,7 @@ class FormSettingVersion extends FormSettingBase
         return $data;
     }
 
-    public function form()
+    public function form(): void
     {
         $this->text('path', '路径')->rules([
             Rule::required(),

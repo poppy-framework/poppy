@@ -2,10 +2,13 @@
 
 namespace Poppy\System\Tests\Action;
 
+use Carbon\Carbon;
 use Poppy\Framework\Application\TestCase;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Action\Pam;
 use Poppy\System\Action\Verification;
+use Poppy\System\Exceptions\SettingKeyNotMatchException;
+use Poppy\System\Exceptions\SettingValueOutOfRangeException;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Tests\Testing\TestingPam;
 use Throwable;
@@ -28,7 +31,7 @@ class PamTest extends TestCase
             $this->fail($Verification->getError());
         }
 
-        $Pam      = new Pam();
+        $Pam = new Pam();
         try {
             if ($Pam->captchaLogin($mobile, $Verification->getCaptcha(), 'user')) {
                 $this->assertTrue(true);
@@ -47,7 +50,7 @@ class PamTest extends TestCase
      */
     public function testRegisterWithEmptyPassword(): void
     {
-        // 一个虚拟手机号
+        // 使用一个虚拟手机号注册, 在用手机号登录
         $mobile = $this->faker()->phoneNumber;
 
         $Pam = new Pam();
@@ -61,6 +64,26 @@ class PamTest extends TestCase
         } catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
+
+        // 设置密码
+        $pam      = $Pam->getPam();
+        $password = $this->faker()->bothify('H%?#?#?#');
+        if ($Pam->setPassword($pam, $password)) {
+            $this->assertTrue(true);
+            try {
+                if (!$Pam->loginCheck($pam->mobile, $password)) {
+                    $this->fail($Pam->getError());
+                }
+                else {
+                    $this->assertTrue(true);
+                }
+            } catch (ApplicationException $e) {
+                $this->fail($e->getMessage());
+            }
+        }
+        else {
+            $this->fail($Pam->getError());
+        }
     }
 
     /**
@@ -68,8 +91,8 @@ class PamTest extends TestCase
      */
     public function testRegisterWithUsername(): void
     {
-        $passport = $this->faker()->lexify('testing_username_????????');
-        $password = $this->faker()->lexify('????????');
+        $passport = $this->faker()->lexify('testing_' . Carbon::now()->format('Ymd') . '_????????');
+        $password = $this->faker()->lexify('H#???#?????%');
         $Pam      = new Pam();
         try {
             if ($Pam->register($passport, $password)) {
@@ -100,34 +123,11 @@ class PamTest extends TestCase
         }
     }
 
+
     /**
-     * 设置密码
-     * @throws ApplicationException
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
      */
-    public function testSetPassword(): void
-    {
-        $pam      = TestingPam::randUser();
-        $Pam      = new Pam();
-        $password = $this->faker()->bothify('?#?#?#');
-        if ($Pam->setPassword($pam, $password)) {
-            $this->assertTrue(true);
-            try {
-                if (!$Pam->loginCheck($pam->mobile, $password)) {
-                    $this->fail($Pam->getError());
-                }
-                else {
-                    $this->assertTrue(true);
-                }
-            } catch (ApplicationException $e) {
-                $this->fail($e->getMessage());
-            }
-        }
-        else {
-            $this->fail($Pam->getError());
-        }
-    }
-
-
     public function testCheckPwdStrength(): void
     {
         $Pam  = new Pam();

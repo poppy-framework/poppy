@@ -53,7 +53,7 @@ class SysAppVersion extends Model
     {
         $desc = [
             self::PLATFORM_ANDROID => '安卓',
-            self::PLATFORM_IOS     => 'IOS',
+            self::PLATFORM_IOS     => 'iOS',
         ];
 
         return kv($desc, $key, $check_key);
@@ -102,7 +102,7 @@ class SysAppVersion extends Model
                 if ($isUpgrade) {
                     continue;
                 }
-                if (version_compare($ver['title'], $version, '>') && $ver['is_upgrade']) {
+                if ($ver['is_upgrade'] && version_compare($ver['title'], $version, '>')) {
                     $isUpgrade = true;
                 }
             }

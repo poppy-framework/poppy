@@ -6,19 +6,12 @@ namespace Poppy\Version\Tests\Models;
 
 use Poppy\Framework\Application\TestCase;
 use Poppy\Framework\Exceptions\ApplicationException;
-use Poppy\System\Classes\Traits\DbTrait;
 use Poppy\Version\Action\Version;
 use Poppy\Version\Models\SysAppVersion;
 
 class SysAppVersionTest extends TestCase
 {
-    use DbTrait;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->enableQueryLog();
-    }
 
     /**
      * 测试 Android 数据

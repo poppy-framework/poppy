@@ -19,7 +19,7 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
      * Define your route model bindings, pattern filters, etc.
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
     }
@@ -28,7 +28,7 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
      * Define the routes for the module.
      * @return void
      */
-    public function map()
+    public function map(): void
     {
         $this->mapWebRoutes();
 
@@ -40,7 +40,7 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
      * These routes all receive session state, CSRF protection, etc.
      * @return void
      */
-    protected function mapWebRoutes()
+    protected function mapWebRoutes(): void
     {
         // backend web
         Route::group([
@@ -56,7 +56,7 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
      * These routes are typically stateless.
      * @return void
      */
-    protected function mapApiRoutes()
+    protected function mapApiRoutes(): void
     {
         Route::group([
             'middleware' => 'api-sign',

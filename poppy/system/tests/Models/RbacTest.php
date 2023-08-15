@@ -5,11 +5,9 @@ declare(strict_types = 1);
 namespace Poppy\System\Tests\Models;
 
 use Poppy\Core\Classes\PyCoreDef;
-use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Application\TestCase;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Action\Pam;
-use Poppy\System\Action\Role;
 use Poppy\System\Classes\Traits\DbTrait;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
@@ -26,7 +24,7 @@ class RbacTest extends TestCase
      * @throws ApplicationException
      * @throws Throwable
      */
-    public function testCachedRoles()
+    public function testCachedRoles(): void
     {
         // 创建后台用户
         $pam           = new Pam();
@@ -49,12 +47,15 @@ class RbacTest extends TestCase
         $pam->detachRole([$role]);
         $pam->attachRole([$role->id]);
         $pam->detachRole([$role->id]);
+
         // 缓存不存在
-        $this->assertTrue(!RdsDb::instance()->exists($key));
-        // 获取成功
+        $this->assertNotTrue(sys_tag('py-core-rbac')->exists($key));
+
+        // 缓存成功
         $pam->cachedRoles();
+
         // 缓存存在
-        $this->assertTrue(RdsDb::instance()->exists($key));
+        $this->assertTrue(sys_tag('py-core-rbac')->exists($key));
     }
 
 

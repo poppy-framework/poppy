@@ -2,26 +2,38 @@
 
 namespace Poppy\System\Tests\Models;
 
+use Exception;
 use Poppy\Framework\Application\TestCase;
-use Poppy\System\Classes\Traits\DbTrait;
+use Poppy\Framework\Exceptions\ApplicationException;
+use Poppy\System\Action\Role;
+use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamPermission;
 use Poppy\System\Models\PamPermissionRole;
-use Poppy\System\Models\PamRole;
 
 class PamPermissionTest extends TestCase
 {
-    use DbTrait;
 
-    public function testSync()
+    /**
+     * @throws ApplicationException
+     * @throws Exception
+     */
+    public function testSync(): void
     {
-        $this->enableQueryLog();;
+        // 创建权限
         $permission = PamPermission::firstOrCreate([
             'name' => 'testing:a.b.c',
         ], [
-            'title' => 'testing-abc',
+            'title' => 'testing-sync-' . $this->faker()->bothify('???###'),
         ]);
-        /** @var PamRole $role */
-        $role = PamRole::inRandomOrder()->first();
+
+        $Role = new Role();
+        if ($Role->establish([
+            'title' => $this->faker()->lexify('testing-back-sync-????'),
+            'type'  => PamAccount::TYPE_BACKEND,
+        ])) {
+            $this->assertTrue(true);
+        }
+        $role = $Role->getRole();
 
         PamPermissionRole::create([
             'role_id'       => $role->id,
@@ -29,7 +41,7 @@ class PamPermissionTest extends TestCase
         ]);
 
         $permission->delete();
-
-        $this->printQueryLog();
+        $role->delete();
+        $this->assertCount(0, PamPermissionRole::where('role_id', $role->id)->get());
     }
 }

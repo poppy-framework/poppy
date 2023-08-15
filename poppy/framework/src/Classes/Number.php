@@ -25,6 +25,7 @@ namespace Poppy\Framework\Classes;
  * @license   http://alphabase.moontoast.com/licenses/apache-2.0.txt Apache 2.0
  */
 
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Poppy\Framework\Exceptions\ArithmeticException;
 
@@ -55,7 +56,7 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
-     * @param int   $scale  (optional) Specifies the default number of digits after the decimal
+     * @param int   $scale (optional) Specifies the default number of digits after the decimal
      *                      place to be used in operations for this BigNumber
      */
     public function __construct($number, $scale = 2)
@@ -465,8 +466,9 @@ class Number
             throw new ArithmeticException('The value is expected to be an integer');
         }
 
+        // fix 2.00 error : bcpowmod(): non-zero scale in base
         $this->numberValue = bcpowmod(
-            $this->numberValue,
+            Str::before($this->numberValue, '.'),
             $this->filterNumber($pow),
             $mod,
             $this->getScale()
@@ -632,9 +634,9 @@ class Number
      * 进制转换
      * Converts a number between arbitrary bases (from 2 to 36)
      *
-     * @param string|int $number   The number to convert
+     * @param string|int $number The number to convert
      * @param int        $fromBase (optional) The base $number is in; defaults to 10
-     * @param int        $toBase   (optional) The base to convert $number to; defaults to 16
+     * @param int        $toBase (optional) The base to convert $number to; defaults to 16
      * @return string
      */
     public static function baseConvert($number, $fromBase = 10, $toBase = 16)
@@ -683,7 +685,7 @@ class Number
      * 转换成 10 进制
      * Converts a number from an arbitrary base (from 2 to 36) to base 10
      *
-     * @param string|int $number   The number to convert
+     * @param string|int $number The number to convert
      * @param int        $fromBase The base $number is in
      * @return string
      * @throws InvalidArgumentException if $fromBase is outside the range 2 to 36

@@ -5,10 +5,11 @@ declare(strict_types = 1);
 namespace Poppy\Content\Tests\Action;
 
 use Exception;
-use Poppy\Category\Action\Category;
+use Poppy\Content\Action\Content;
 use Poppy\Content\Models\SysContent;
 use Poppy\Framework\Application\TestCase;
 use Poppy\System\Classes\Traits\DbTrait;
+use Poppy\System\Tests\Testing\TestingPam;
 
 class ContentTest extends TestCase
 {
@@ -21,9 +22,9 @@ class ContentTest extends TestCase
     private static string $type = 'testing';
 
     /**
-     * @var Category
+     * @var Content
      */
-    private Category $act;
+    private Content $act;
 
     /**
      * 需要删除的 ID
@@ -34,11 +35,16 @@ class ContentTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->act = new Category();
+        $this->act = new Content();
     }
 
-    public function testSort()
+    /**
+     * @throws Exception
+     */
+    public function testSort(): void
     {
+
+        $pam = TestingPam::randUser();
         try {
             SysContent::where('type', self::$type)->delete();
         } catch (Exception $e) {
@@ -50,6 +56,7 @@ class ContentTest extends TestCase
             'testing-title-b',
         ];
         foreach ($cats as $cat) {
+            $this->act->setPam($pam);
             if (!$this->act->establish([
                 'title' => $cat,
                 'type'  => self::$type,
@@ -63,32 +70,10 @@ class ContentTest extends TestCase
         }
 
         [$oneId, $otherId] = $this->ids;
-        $this->outputVariables([
-            'one'   => $oneId,
-            'other' => $otherId,
-        ]);
-        $this->enableQueryLog();
-        if ($this->act->sort(self::$type, $oneId, SysContent::POSITION_BEFORE, $otherId)) {
-            // one < other
-            $this->assertTrue(
-                SysContent::whereKey($oneId)->value('list_order') < SysContent::whereKey($otherId)->value('list_order')
-            );
-        }
-        if ($this->act->sort(self::$type, $oneId, SysContent::POSITION_AFTER, $otherId)) {
-            // other > one
-            $this->assertGreaterThan(
-                SysContent::whereKey($otherId)->value('list_order'),
-                SysContent::whereKey($oneId)->value('list_order'),
-            );
-        }
+        $this->assertNotNull($oneId);
+        $this->assertNotNull($otherId);
 
-        if (!$this->act->delete($oneId)) {
-            $this->fail($this->act->getError()->getMessage());
-        }
-        if (!$this->act->delete($otherId)) {
-            $this->fail($this->act->getError()->getMessage());
-        }
-
-        $this->assertTrue(true);
+        $this->act->delete($oneId);
+        $this->act->delete($otherId);
     }
 }

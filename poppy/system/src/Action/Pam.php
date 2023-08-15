@@ -65,8 +65,8 @@ class Pam
     /**
      * 验证验登录
      * @param string $passport 通行证
-     * @param string $captcha  验证码
-     * @param string $guard    认证 Guard
+     * @param string $captcha 验证码
+     * @param string $guard 认证 Guard
      * @return bool
      * @throws Throwable
      */
@@ -118,7 +118,7 @@ class Pam
 
     /**
      * 后台验证码登录
-     * @param string $mobile  通行证
+     * @param string $mobile 通行证
      * @param string $captcha 验证码
      * @return bool
      */
@@ -161,8 +161,8 @@ class Pam
 
     /**
      * 用户注册
-     * @param string           $passport  passport
-     * @param string           $password  密码
+     * @param string           $passport passport
+     * @param string           $password 密码
      * @param string|array|int $role_name 用户角色名称
      * @return bool
      * @throws Throwable
@@ -259,6 +259,11 @@ class Pam
         $initDb['type']      = (string) $role->first()->type;
         $initDb['is_enable'] = SysConfig::ENABLE;
 
+        // 注册时候检测密码强度
+        if ($password !== '' && !$this->checkPwdStrength($initDb['type'], $password)) {
+            return false;
+        }
+
         // 处理数据库
         DB::transaction(function () use ($initDb, $role, $password, $hasAccountName, $prefix, $type) {
 
@@ -305,8 +310,8 @@ class Pam
 
     /**
      * 密码登录
-     * @param string $passport   passport
-     * @param string $password   密码
+     * @param string $passport passport
+     * @param string $password 密码
      * @param string $guard_name 类型
      * @return bool
      * @throws ApplicationException
@@ -372,7 +377,7 @@ class Pam
 
     /**
      * 设置登录密码
-     * @param PamAccount $pam      用户
+     * @param PamAccount $pam 用户
      * @param string     $password 密码
      * @return bool
      */
@@ -428,7 +433,7 @@ class Pam
 
     /**
      * 设置后台登录用户的手机通行证
-     * @param PamAccount $pam    用户
+     * @param PamAccount $pam 用户
      * @param string     $mobile 密码
      * @return bool
      */
@@ -480,7 +485,7 @@ class Pam
 
     /**
      * 设置角色
-     * @param PamAccount|mixed $pam   账号数据
+     * @param PamAccount|mixed $pam 账号数据
      * @param array            $roles 角色名
      * @return bool
      */
@@ -552,8 +557,8 @@ class Pam
 
     /**
      * 后台用户禁用
-     * @param int    $id     用户id
-     * @param string $to     解禁时间
+     * @param int    $id 用户id
+     * @param string $to 解禁时间
      * @param string $reason 禁用原因
      * @return bool
      */
@@ -604,7 +609,7 @@ class Pam
 
     /**
      * 后台用户启用
-     * @param int    $id     用户Id
+     * @param int    $id 用户Id
      * @param string $reason 原因
      * @return bool
      */
@@ -677,7 +682,7 @@ class Pam
     /**
      * 修改密码
      * @param string $old_password 老密码
-     * @param string $password     新密码
+     * @param string $password 新密码
      * @return bool
      */
     public function changePassword(string $old_password, string $password): bool

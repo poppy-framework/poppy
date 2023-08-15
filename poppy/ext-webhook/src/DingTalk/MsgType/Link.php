@@ -27,7 +27,7 @@ class Link extends Message
     /**
      * @var string
      */
-    private string $picUrl;
+    private string $picUrl = '';
 
     public function __construct(string $title, string $text, string $messageUrl)
     {

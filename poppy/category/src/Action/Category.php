@@ -146,8 +146,6 @@ class Category
 
         // 移除 Ref 缓存
         sys_tag('py-category')->del(PyCategoryDef::ckNameRefKey());
-
-
     }
 
     /**

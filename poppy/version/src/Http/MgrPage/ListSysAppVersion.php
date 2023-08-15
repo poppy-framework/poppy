@@ -25,16 +25,16 @@ class ListSysAppVersion extends ListBase
      */
     public function columns()
     {
-        $this->column('id', "ID")->sortable()->width(80);
-        $this->column('title', "版本号");
-        $this->column('description', "版本描述");
-        $this->column('download_url', "下载地址")->downloadable();
-        $this->column('created_at', "创建时间");
+        $this->column('id', 'ID')->sortable()->width(80);
+        $this->column('title', '版本号');
+        $this->column('description', '版本描述');
+        $this->column('download_url', '下载地址')->downloadable();
+        $this->column('created_at', '创建时间');
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var SysAppVersion $item */
             $item = $actions->row;
             $actions->edit(route('py-version:backend.version.establish', [$item->id]));
-            $actions->delete(route('py-version:backend.version.delete', [$item->id .'1']), "版本:{$item->title}");
+            $actions->delete(route('py-version:backend.version.delete', [$item->id . '1']), "版本:{$item->title}");
         },])->fixed()->width(140);
     }
 
