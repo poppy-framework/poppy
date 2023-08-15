@@ -55,7 +55,7 @@ class AuthController extends JwtApiController
      * @apiSuccess {string}   mobile          手机号
      * @apiSuccess {string}   email           邮箱
      * @apiSuccess {string}   type            类型
-     * @apiSuccess {string}   is_enable       是否启用[Y|N]
+     * @apiSuccess {string}   is_enable       是否启用(Y|N)
      * @apiSuccess {string}   disable_reason  禁用原因
      * @apiSuccess {string}   created_at      创建时间
      * @apiSuccessExample {json} data:
