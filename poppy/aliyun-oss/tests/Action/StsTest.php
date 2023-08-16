@@ -13,18 +13,18 @@ class StsTest extends TestCase
     /**
      * 测试授权KEY以及是否可以上传URL
      */
-    public function testTempKey()
+    public function testTempKey(): void
     {
         $Sts    = new Sts();
         $config = TestingAliyunOss::config();
         $Sts->setConfig($config['temp_app_key'], $config['temp_app_secret'], $config['bucket'], $config['endpoint'], $config['role_arn'], $config['url_prefix']);
         if ($Sts->tempOss()) {
-            $temp = $Sts->getTempKey();
+            $temp = $Sts->tempOss();
             $this->outputVariables($temp);
             $this->assertIsArray($temp);
-            $this->assertArrayHasKey("security_token", $temp);
-            $this->assertArrayHasKey("access_key_id", $temp);
-            $this->assertArrayHasKey("expiration", $temp);
+            $this->assertArrayHasKey('security_token', $temp);
+            $this->assertArrayHasKey('access_key_id', $temp);
+            $this->assertArrayHasKey('expiration', $temp);
             // test upload
 
             $accessKeyId     = $temp['access_key_id'];

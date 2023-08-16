@@ -18,7 +18,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Poppy\\Extension\\Alipay\\": "src/",
+            "Poppy\\Extension\\Alipay\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Poppy\\Extension\\Alipay\\Tests\\": "tests/"
         }
     },

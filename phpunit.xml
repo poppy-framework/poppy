@@ -23,6 +23,9 @@
         <testsuite name="poppy-core">
             <directory>./poppy/core/tests/</directory>
         </testsuite>
+        <testsuite name="poppy-sms">
+            <directory>./poppy/sms/tests/</directory>
+        </testsuite>
         <testsuite name="config">
             <directory>./poppy/system/tests/Configuration</directory>
         </testsuite>

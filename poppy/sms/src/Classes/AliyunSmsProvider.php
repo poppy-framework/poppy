@@ -4,13 +4,12 @@ declare(strict_types = 1);
 
 namespace Poppy\Sms\Classes;
 
-use AlibabaCloud\Client\AlibabaCloud;
-use AlibabaCloud\Client\Exception\ClientException;
-use AlibabaCloud\Client\Exception\ServerException;
+use AlibabaCloud\SDK\Dysmsapi\V20170525\Dysmsapi;
+use AlibabaCloud\SDK\Dysmsapi\V20170525\Models\SendSmsRequest;
+use Darabonba\OpenApi\Models\Config;
 use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Classes\Contracts\SmsContract;
 use Poppy\Sms\Exceptions\SmsException;
-use Throwable;
 
 class AliyunSmsProvider extends BaseSms implements SmsContract
 {
@@ -31,32 +30,20 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
         }, '');
 
         try {
-            if (!class_exists('AlibabaCloud\Dysmsapi\Dysmsapi')) {
-                throw new SmsException('你需要手动安装 `alibabacloud/dysmsapi` 组件');
-            }
-
-            $this->initClient();
+            $client = $this->initClient();
 
             /**
              * @url https://help.aliyun.com/document_detail/101414.htm
              */
-            $result = AlibabaCloud::rpc()
-                ->product('Dysmsapi')
-                ->scheme('https') // https | http
-                ->version('2017-05-25')
-                ->action('SendSms')
-                ->method('POST')
-                ->host('dysmsapi.aliyuncs.com')
-                ->options([
-                    'query' => array_merge([
-                        'PhoneNumbers' => $mobile,
-                        'SignName'     => $this->sign,
-                        'TemplateCode' => $this->sms['code'],
-                    ], $params ? [
-                        'TemplateParam' => json_encode($params, JSON_UNESCAPED_UNICODE),
-                    ] : []),
-                ])
-                ->request();
+
+            $request               = new SendSmsRequest();
+            $request->phoneNumbers = $mobile;
+            $request->signName     = $this->sign;
+            $request->templateCode = $this->sms['code'];
+            if ($params) {
+                $request->templateParam = json_encode($params, JSON_UNESCAPED_UNICODE);
+            }
+            $resp = $client->sendSms($request);
 
             /**
              * 返回的信息如下所示, 如果失败 Message 中是错误的信息
@@ -67,13 +54,11 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
              *    "Code":"OK"
              * }
              */
-            $resp = $result->toArray();
-            if ($resp['Code'] === 'OK') {
+
+            if ($resp->body->code === 'OK') {
                 return true;
             }
-            return $this->setError('Aliyun:' . $resp['Message']);
-        } catch (ClientException|ServerException $e) {
-            return $this->setError($e->getErrorMessage());
+            return $this->setError('Aliyun:' . $resp->body->message);
         } catch (SmsException $e) {
             return $this->setError($e->getMessage());
         }
@@ -83,19 +68,19 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
      * 初始化
      * @throws SmsException
      */
-    private function initClient()
+    private function initClient(): Dysmsapi
     {
         $accessKeyId     = config('poppy.sms.aliyun.access_key');
         $accessKeySecret = config('poppy.sms.aliyun.access_secret');
-        try {
-            if (!class_exists('AlibabaCloud\Client\AlibabaCloud')) {
-                throw new SmsException('你需要手动安装 `alibabacloud/client` 组件');
-            }
-            AlibabaCloud::accessKeyClient($accessKeyId, $accessKeySecret)
-                ->regionId('cn-hangzhou')
-                ->asDefaultClient();
-        } catch (Throwable $e) {
-            throw new SmsException($e->getMessage());
+        if (!class_exists(Dysmsapi::class)) {
+            throw new SmsException('你需要手动安装 `alibabacloud/dysmsapi-20170525` 组件');
         }
+
+        $config           = new Config([
+            'accessKeyId'     => $accessKeyId,
+            'accessKeySecret' => $accessKeySecret
+        ]);
+        $config->endpoint = 'dysmsapi.aliyuncs.com';
+        return new Dysmsapi($config);
     }
 }

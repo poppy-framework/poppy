@@ -18,12 +18,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Poppy\\Framework\\": "src/",
-            "Poppy\\Framework\\Tests\\": "tests/"
+            "Poppy\\Framework\\": "src/"
         },
         "files": [
             "src/Support/functions.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Poppy\\Framework\\Tests\\": "tests/"
+        }
     },
     "bin": [
         "bin/poppy"

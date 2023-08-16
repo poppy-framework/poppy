@@ -30,12 +30,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Poppy\\System\\": "src/",
-            "Poppy\\System\\Tests\\": "tests/"
+            "Poppy\\System\\": "src/"
         },
         "files": [
             "src/Support/functions.php"
         ]
+    },
+    "autoload-dev" : {
+        "psr-4" : {
+            "Poppy\\System\\Tests\\": "tests/"
+        }
     },
     "config": {
         "preferred-install": "dist"

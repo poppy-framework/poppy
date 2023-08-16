@@ -4,14 +4,9 @@ declare(strict_types = 1);
 
 namespace Poppy\AliyunPush\Classes\Sender;
 
-use AlibabaCloud\Client\AlibabaCloud;
-use AlibabaCloud\Client\Credentials\Providers\CredentialsProvider;
-use AlibabaCloud\Client\Exception\ClientException;
-use AlibabaCloud\Client\Request\RpcRequest;
+use AlibabaCloud\SDK\Push\V20160801\Push;
 use Poppy\AliyunPush\Classes\Config\Config;
-use Poppy\AliyunPush\Exceptions\PushException;
 use Poppy\Framework\Classes\Traits\AppTrait;
-use Throwable;
 
 /**
  * @url https://help.aliyun.com/document_detail/30082.html
@@ -83,13 +78,14 @@ abstract class BaseClient
 
     }
 
-    public function setAppConfig($ak, $sk, $android_app_id, $android_channel = '', $ios_key = '')
+    public function setAppConfig($ak, $sk, $android_app_id, $android_channel = '', $ios_key = ''): self
     {
         $this->accessKey      = $ak;
         $this->accessSecret   = $sk;
         $this->androidAppKey  = $android_app_id;
         $this->androidChannel = $android_channel;
         $this->iosAppKey      = $ios_key;
+        return $this;
     }
 
     public function getResult()
@@ -98,42 +94,17 @@ abstract class BaseClient
     }
 
     /**
-     * 获取推送RPC
-     * @return RpcRequest
-     * @throws ClientException
-     */
-    protected function rpc(): RpcRequest
-    {
-        return AlibabaCloud::rpc()
-            ->client($this->getClientName())
-            ->product('Push')
-            ->scheme('https')
-            ->version('2016-08-01')
-            ->method('POST')
-            ->host('cloudpush.aliyuncs.com');
-    }
-
-    /**
      * 初始化
-     * @throws PushException
      */
-    protected function initClient()
+    protected function initClient(): Push
     {
-        try {
-            AlibabaCloud::accessKeyClient($this->accessKey, $this->accessSecret)
-                ->regionId('cn-hangzhou')
-                ->name($this->getClientName());
-        } catch (Throwable $e) {
-            throw new PushException($e->getMessage());
-        }
-    }
-
-    /**
-     * @return array|false|string
-     * @throws ClientException
-     */
-    protected function getClientName()
-    {
-        return $this->clientName ?: CredentialsProvider::getDefaultName();
+        $config           = new \Darabonba\OpenApi\Models\Config([
+            // 必填，您的 AccessKey ID
+            'accessKeyId'     => $this->accessKey,
+            // 必填，您的 AccessKey Secret
+            'accessKeySecret' => $this->accessSecret
+        ]);
+        $config->endpoint = 'cloudpush.aliyuncs.com';
+        return new Push($config);
     }
 }

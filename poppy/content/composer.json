@@ -14,7 +14,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Poppy\\Content\\": "src/",
+            "Poppy\\Content\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Poppy\\Content\\Tests\\": "tests/"
         }
     },

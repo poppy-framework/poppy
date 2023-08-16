@@ -14,12 +14,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Poppy\\Core\\": "src/",
-            "Poppy\\Core\\Tests\\": "tests/"
+            "Poppy\\Core\\": "src/"
         },
         "files": [
             "src/Support/functions.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Poppy\\Core\\Tests\\": "tests/"
+        }
     },
     "config": {
         "preferred-install": "dist"

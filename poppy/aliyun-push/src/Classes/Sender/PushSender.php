@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\AliyunPush\Classes\Sender;
 
-use AlibabaCloud\Client\Exception\ClientException;
-use AlibabaCloud\Client\Exception\ServerException;
+use AlibabaCloud\SDK\Push\V20160801\Models\PushRequest;
 use Poppy\AliyunPush\Exceptions\PushException;
 
 /**
@@ -22,23 +21,25 @@ class PushSender extends BaseClient
     /**
      * 发送 Android 信息
      * @param PushMessage $message
-     * @throws ClientException
      * @throws PushException
-     * @throws ServerException
      */
-    public function send(PushMessage $message)
+    public function send(PushMessage $message): void
     {
         $this->message = $message;
 
         $this->checkEnv();
+
+        $client = $this->initClient();
+
+
         $query = [
-            'AppKey'      => $this->isAndroid() ? $this->androidAppKey : $this->iosAppKey,
-            'PushType'    => $message->getPushType(),
-            'DeviceType'  => $this->isAndroid() ? 'ANDROID' : "iOS",
-            'Title'       => $message->getTitle(),
-            'Body'        => $message->getBody(),
-            'Target'      => $message->getTarget(),
-            'TargetValue' => $message->getTargetValue(),
+            'appKey'      => $this->isAndroid() ? $this->androidAppKey : $this->iosAppKey,
+            'pushType'    => $message->getPushType(),
+            'deviceType'  => $this->isAndroid() ? 'ANDROID' : 'iOS',
+            'title'       => $message->getTitle(),
+            'body'        => $message->getBody(),
+            'target'      => $message->getTarget(),
+            'targetValue' => $message->getTargetValue(),
         ];
 
         $queryExtend = $message->getQuery();
@@ -54,31 +55,28 @@ class PushSender extends BaseClient
 
         if ($this->isAndroid() && $this->isNotice()) {
             $query = array_merge($query, [
-                'AndroidExtParameters'             => $message->getExtParameters(),
-                'AndroidNotificationChannel'       => $this->androidChannel,
-                'AndroidNotificationHuaweiChannel' => 'NORMAL',//NORMAL：服务与通讯类消息LOW：资讯营销类消息
-                'AndroidNotificationHonorChannel'  => 'NORMAL',//NORMAL：服务与通讯类消息LOW：资讯营销类消息
-                'AndroidNotificationVivoChannel'   => '1',//1：系统类消息0：运营类消息（默认）
+                'androidExtParameters'             => $message->getExtParameters(),
+                'androidNotificationChannel'       => $this->androidChannel,
+                'androidNotificationHuaweiChannel' => 'NORMAL',//NORMAL：服务与通讯类消息LOW：资讯营销类消息
+                'androidNotificationHonorChannel'  => 'NORMAL',//NORMAL：服务与通讯类消息LOW：资讯营销类消息
+                'androidNotificationVivoChannel'   => '1',//1：系统类消息0：运营类消息（默认）
             ]);
             if ($this->androidActivity) {
                 $query += [
-                    'AndroidOpenType'      => 'ACTIVITY',
-                    'AndroidActivity'      => $this->androidActivity,
-                    'AndroidPopupActivity' => $this->androidActivity,
-                    'AndroidPopupTitle'    => $message->getTitle(),
-                    'AndroidPopupBody'     => $message->getBody(),
-                    'StoreOffline'         => true,
+                    'androidOpenType'      => 'ACTIVITY',
+                    'androidActivity'      => $this->androidActivity,
+                    'androidPopupActivity' => $this->androidActivity,
+                    'androidPopupTitle'    => $message->getTitle(),
+                    'androidPopupBody'     => $message->getBody(),
+                    'storeOffline'         => true,
                 ];
             }
             $query = array_merge($query, $queryExtend['android'] ?? []);
         }
-        $this->initClient();
-        $this->result = $this->rpc()
-            ->action('Push')
-            ->options([
-                'query' => $query,
-            ])
-            ->request();
+        $request = new PushRequest($query);
+
+        $response     = $client->push($request);
+        $this->result = $response->body->toMap();
     }
 
     /**
@@ -95,10 +93,8 @@ class PushSender extends BaseClient
                 throw new PushException('Android 应用通知频道未设置');
             }
         }
-        if ($this->isIos()) {
-            if (!$this->iosAppKey) {
-                throw new PushException('IOS 应用KEY 未设置');
-            }
+        if (!$this->iosAppKey && $this->isIos()) {
+            throw new PushException('IOS 应用KEY 未设置');
         }
     }
 

@@ -96,7 +96,7 @@ class Sms
         $rates     = [];
         $sendTypes = array_keys(sys_hook('poppy.sms.send_type'));
         foreach ($sendTypes as $sendType) {
-            $rate = (int)sys_setting('py-sms::sms.send_rate_' . $sendType);
+            $rate = (int) sys_setting('py-sms::sms.send_rate_' . $sendType);
             if ($rate) {
                 $rates[$sendType] = $rate;
             }
@@ -123,27 +123,20 @@ class Sms
 
     /**
      * 新增和编辑
-     * @param array  $data data <br>
-     *                     type   类型 <br>
-     *                     code   代码
      * @param string $id
+     * @param string $code
      * @return bool
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
      */
-    public function establish(array $data, $id = ''): bool
+    public function establish(string $id, string $code): bool
     {
-        $input = sys_get($data, ['type', 'code', 'scope']);
-        $scope = $input['scope'];
-        $type  = $input['type'];
-
-        $key = "{$data['scope']}:{$data['type']}";
-        if (!$id && $this->templates->offsetExists($key)) {
-            return $this->setError('此模板已存在, 不得重复创建');
-        }
-
-        $this->templates->offsetSet($scope . ':' . $type, $input);
-
+        [$scope, $type] = explode(':', $id);
+        $this->templates->offsetSet($id, [
+            'scope' => $scope,
+            'type'  => $type,
+            'code'  => $code
+        ]);
         return $this->save();
     }
 
@@ -195,7 +188,7 @@ class Sms
                 return $result;
             }
             if (count($rates) === 1) {
-                return (string)array_key_first($rates);
+                return (string) array_key_first($rates);
             }
             //概率数组的总概率精度
             $sumRates = array_sum($rates);
@@ -209,7 +202,7 @@ class Sms
                 $sumRates -= $rate;
             }
 
-            return (string)$result;
+            return (string) $result;
         } catch (Throwable $e) {
             return $result;
         }

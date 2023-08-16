@@ -14,6 +14,8 @@ use Poppy\MgrPage\Http\Request\Backend\BackendController;
 use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Http\MgrPage\FormEstablishSms;
 use Poppy\Sms\Http\MgrPage\FormSettingSms;
+use Poppy\System\Exceptions\SettingKeyNotMatchException;
+use Poppy\System\Exceptions\SettingValueOutOfRangeException;
 
 /**
  * 短信控制器
@@ -61,6 +63,8 @@ class SmsController extends BackendController
      * 删除短信模板
      * @param null|string $id id
      * @return JsonResponse|RedirectResponse|Response
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
      */
     public function destroy(string $id = null)
     {

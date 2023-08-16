@@ -16,8 +16,7 @@ class LocalTest extends BaseSms
     public function setUp(): void
     {
         parent::setUp();
-        config([
-        ]);
+        config([]);
     }
 
     /**

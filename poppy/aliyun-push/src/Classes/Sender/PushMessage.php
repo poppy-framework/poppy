@@ -10,20 +10,19 @@ namespace Poppy\AliyunPush\Classes\Sender;
 class PushMessage
 {
 
+    public const DEVICE_TYPE_ANDROID = 'ANDROID';
+    public const DEVICE_TYPE_IOS     = 'IOS';
 
-    const DEVICE_TYPE_ANDROID = 'ANDROID';
-    const DEVICE_TYPE_IOS     = 'IOS';
+    public const PUSH_TYPE_MESSAGE = 'MESSAGE';
+    public const PUSH_TYPE_NOTICE  = 'NOTICE';
 
-    const PUSH_TYPE_MESSAGE = 'MESSAGE';
-    const PUSH_TYPE_NOTICE  = 'NOTICE';
+    public const TARGET_DEVICE  = 'DEVICE';
+    public const TARGET_ACCOUNT = 'ACCOUNT';
+    public const TARGET_ALIAS   = 'ALIAS';
+    public const TARGET_TAG     = 'TAG';
+    public const TARGET_ALL     = 'ALL';
 
-    const TARGET_DEVICE  = 'DEVICE';
-    const TARGET_ACCOUNT = 'ACCOUNT';
-    const TARGET_ALIAS   = 'ALIAS';
-    const TARGET_TAG     = 'TAG';
-    const TARGET_ALL     = 'ALL';
-
-    const TARGET_VALUE_ALL = 'ALL';
+    public const TARGET_VALUE_ALL = 'ALL';
 
 
     /**

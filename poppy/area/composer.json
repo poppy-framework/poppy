@@ -13,8 +13,12 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Poppy\\Area\\": "src/",
-			"Poppy\\Area\\Tests\\": "tests/"
+			"Poppy\\Area\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Poppy\\Area\\Tests\\" : "tests/"
 		}
 	},
 	"config": {

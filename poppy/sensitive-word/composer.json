@@ -14,12 +14,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Poppy\\SensitiveWord\\": "src/",
-            "Poppy\\SensitiveWord\\Tests\\": "tests/"
+            "Poppy\\SensitiveWord\\": "src/"
         },
         "files": [
             "src/Support/functions.php"
         ]
+    },
+    "autoload-dev" : {
+        "psr-4" : {
+            "Poppy\\SensitiveWord\\Tests\\": "tests/"
+        }
     },
     "config": {
         "preferred-install": "dist"

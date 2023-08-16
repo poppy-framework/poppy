@@ -19,7 +19,7 @@ class FormSettingAliyunOss extends FormSettingBase
     /**
      * Build a form here.
      */
-    public function form()
+    public function form(): void
     {
         $this->text('access_key', 'AccessKey')->rules([
             Rule::nullable(),

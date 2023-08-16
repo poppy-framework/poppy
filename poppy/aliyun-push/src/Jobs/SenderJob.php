@@ -5,8 +5,6 @@ declare(strict_types = 1);
 
 namespace Poppy\AliyunPush\Jobs;
 
-use AlibabaCloud\Client\Exception\ClientException;
-use AlibabaCloud\Client\Exception\ServerException;
 use Poppy\AliyunPush\Classes\Config\Config;
 use Poppy\AliyunPush\Classes\Sender\PushMessage;
 use Poppy\AliyunPush\Classes\Sender\PushSender;
@@ -42,8 +40,6 @@ class SenderJob
      *
      * @return void
      * @throws PushException
-     * @throws ClientException
-     * @throws ServerException
      */
     public function handle()
     {

@@ -71,9 +71,10 @@ class FormEstablishSms extends FormWidget
                 'scope' => $this->scope
             ]);
         }
-        /** @var SmsEstablishRequest $req */
-        $req = app(SmsEstablishRequest::class, [$request]);
-        if (!$this->sms->establish($req->validated(), $this->id)) {
+
+        $data = app(SmsEstablishRequest::class, [$request])->validated();
+        $id   = $data['scope'] . ':' . $data['type'];
+        if (!$this->sms->establish($this->id ?: $id, $data['code'])) {
             return Resp::error($this->sms->getError());
         }
         return Resp::success('操作成功', [

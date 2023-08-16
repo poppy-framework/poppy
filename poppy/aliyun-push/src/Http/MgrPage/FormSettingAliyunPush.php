@@ -17,7 +17,7 @@ class FormSettingAliyunPush extends FormSettingBase
     /**
      * Build a form here.
      */
-    public function form()
+    public function form(): void
     {
         $this->text('access_key', 'AccessKey(阿里云)')->rules([
             Rule::nullable(),

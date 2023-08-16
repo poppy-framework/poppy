@@ -4,15 +4,15 @@ declare(strict_types = 1);
 
 namespace Poppy\AliyunOss\Action;
 
-use AlibabaCloud\Client\AlibabaCloud;
-use AlibabaCloud\Client\Exception\ClientException;
-use AlibabaCloud\Client\Exception\ServerException;
+use AlibabaCloud\SDK\Sts\V20150401\Models\AssumeRoleRequest;
 use Carbon\Carbon;
+use Darabonba\OpenApi\Models\Config;
 use Illuminate\Support\Str;
 use Poppy\Framework\Classes\Traits\AppTrait;
 
 /**
  * Reviewed 阿里临时授权
+ * https://next.api.aliyun.com/api-tools/sdk/Sts?version=2015-04-01&language=php-tea#doc-step-intro
  */
 class Sts
 {
@@ -83,7 +83,7 @@ class Sts
      * @param string $url_prefix
      * @return void
      */
-    public function setConfig(string $app_key, string $app_secret, string $bucket, string $endpoint, string $role_arn, string $url_prefix = '')
+    public function setConfig(string $app_key, string $app_secret, string $bucket, string $endpoint, string $role_arn, string $url_prefix = ''): self
     {
         $this->tempAppKey    = $app_key;
         $this->tempAppSecret = $app_secret;
@@ -91,18 +91,18 @@ class Sts
         $this->endpoint      = $endpoint;
         $this->roleArn       = $role_arn;
         $this->url           = $url_prefix;
+        return $this;
     }
 
-    public function setSubDirectory($directory = '')
+    public function setSubDirectory($directory = ''): self
     {
         $this->subDirectory = $directory;
+        return $this;
     }
 
     /**
      * 返回 Ali 授权key
      * @return array
-     * @throws ClientException
-     * @throws ServerException
      */
     public function tempOss(): array
     {
@@ -136,34 +136,39 @@ class Sts
 	]
 }
 POLICY;
+        
         /**
          * https://api.aliyun.com/#/?product=Sts&version=2015-04-01&api=AssumeRole&params={}&tab=DEMO&lang=PHP
          * 你需要操作的资源所在的region，STS服务目前只有杭州节点可以签发Token，签发出的Token在所有Region都可用
          */
-        AlibabaCloud::accessKeyClient($this->tempAppKey, $this->tempAppSecret)->regionId('cn-hangzhou')->asDefaultClient();
-        $result             = AlibabaCloud::rpc()
-            ->product('Sts')
-            ->scheme('https') // https | http
-            ->version('2015-04-01')
-            ->action('AssumeRole')
-            ->method('POST')
-            ->host('sts.aliyuncs.com')
-            ->options([
-                'query' => [
-                    'RegionId'        => "cn-hangzhou",
-                    'RoleArn'         => $this->roleArn,
-                    'RoleSessionName' => 'app',  // 您可以使用您的客户的ID作为会话名称
-                    'DurationSeconds' => 3600,
-                    'Policy'          => $policy,
-                ],
-            ])
-            ->request();
-        $respObj            = $result->toArray();
-        $resp               = $respObj['Credentials'];
-        $resp['directory']  = $dir;
-        $resp['prefix_url'] = $this->url;
-        $resp['bucket']     = $bucket;
-        $resp['endpoint']   = $this->endpoint;
+        $config                  = new Config([
+            // 必填，您的 AccessKey ID
+            'accessKeyId'     => $this->tempAppKey,
+            // 必填，您的 AccessKey Secret
+            'accessKeySecret' => $this->tempAppSecret
+        ]);
+        $config->accessKeyId     = $this->tempAppKey;
+        $config->accessKeySecret = $this->tempAppSecret;
+        $config->regionId        = 'cn-hangzhou';
+
+
+        $client                   = new \AlibabaCloud\SDK\Sts\V20150401\Sts($config);
+        $request                  = new AssumeRoleRequest();
+        $request->roleArn         = $this->roleArn;
+        $request->roleSessionName = 'app';
+        $request->durationSeconds = 3600;
+        $request->policy          = $policy;
+
+        $response = $client->assumeRole($request);
+
+        $credentials = $response->body->credentials;
+        $resp        = array_merge([
+            'directory'  => $dir,
+            'prefix_url' => $this->url,
+            'bucket'     => $bucket,
+            'endpoint'   => $this->endpoint,
+        ], $credentials->toMap());
+
         foreach ($resp as $k => $v) {
             $sk = Str::snake($k);
             if ($sk !== $k) {

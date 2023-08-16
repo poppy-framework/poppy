@@ -36,7 +36,7 @@ class UploadTest extends TestCase
         ]);
     }
 
-    public function testUpload()
+    public function testUpload(): void
     {
         try {
             $file   = poppy_path('poppy.aliyun-oss', 'tests/files/demo.jpg');
@@ -45,7 +45,7 @@ class UploadTest extends TestCase
 
             $Upload->setExtension(['jpg']);
             if (!$Upload->saveFile($image)) {
-                $this->fail($Upload->getError());
+                $this->fail($Upload->getError()->getMessage());
             }
 
             // 检测文件存在

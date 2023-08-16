@@ -13,8 +13,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Poppy\\Extension\\App\\": "src/",
-            "Poppy\\Extension\\App\\Tests\\": "src/"
+            "Poppy\\Extension\\App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Poppy\\Extension\\App\\Tests\\": "tests/"
         }
     },
     "extra": {

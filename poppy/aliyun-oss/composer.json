@@ -1,30 +1,35 @@
 {
-    "name": "poppy/aliyun-oss",
-    "description": "Poppy Aliyun Oss Extension.",
-    "license": "MIT",
-    "type": "poppy",
-    "authors": [
+    "name" : "poppy/aliyun-oss",
+    "description" : "Poppy Aliyun Oss Extension.",
+    "license" : "MIT",
+    "type" : "poppy",
+    "authors" : [
         {
-            "name": "Mark Zhao",
-            "email": "zhaody901@126.com"
+            "name" : "Mark Zhao",
+            "email" : "zhaody901@126.com"
         }
     ],
-    "require": {
-        "php": ">=7.4",
-        "aliyuncs/oss-sdk-php": "2.*",
-        "poppy/system": "4.2.*"
+    "require" : {
+        "php" : ">=7.4",
+        "aliyuncs/oss-sdk-php" : "2.*",
+        "alibabacloud/sts-20150401" : "^1.1",
+        "poppy/system" : "4.2.*"
     },
-    "require-dev": {
-        "guzzlehttp/guzzle": "^7.3"
+    "require-dev" : {
+        "guzzlehttp/guzzle" : "^7.3"
     },
-    "autoload": {
-        "psr-4": {
-            "Poppy\\AliyunOss\\": "src/",
-            "Poppy\\AliyunOss\\Tests\\": "tests/"
+    "autoload" : {
+        "psr-4" : {
+            "Poppy\\AliyunOss\\" : "src/"
         }
     },
-    "config": {
-        "preferred-install": "dist"
+    "autoload-dev": {
+        "psr-4": {
+            "Poppy\\AliyunOss\\Tests\\" : "tests/"
+        }
     },
-    "minimum-stability": "dev"
+    "config" : {
+        "preferred-install" : "dist"
+    },
+    "minimum-stability" : "dev"
 }

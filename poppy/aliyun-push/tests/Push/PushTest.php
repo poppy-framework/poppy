@@ -3,13 +3,10 @@
 namespace Poppy\AliyunPush\Tests\Push;
 
 
-use AlibabaCloud\Client\Exception\ClientException;
-use AlibabaCloud\Client\Exception\ServerException;
 use Notification;
 use Poppy\AliyunPush\Classes\BindTag;
 use Poppy\AliyunPush\Classes\Config\Config;
 use Poppy\AliyunPush\Classes\Sender\PushMessage;
-use Poppy\AliyunPush\Exceptions\PushException;
 use Poppy\AliyunPush\Tests\Sample\AndroidAllNoticeNotification;
 use Poppy\AliyunPush\Tests\Sample\AndroidMessageNotification;
 use Poppy\AliyunPush\Tests\Sample\AndroidNoticeNotification;
@@ -88,11 +85,8 @@ class PushTest extends TestCase
     /**
      * 绑定倩倩的设备号设定标签为 girl
      * @return void
-     * @throws ClientException
-     * @throws ServerException
-     * @throws PushException
      */
-    public function testBindGirl()
+    public function testBindGirl(): void
     {
 
         $Bind = new BindTag(Config::default());

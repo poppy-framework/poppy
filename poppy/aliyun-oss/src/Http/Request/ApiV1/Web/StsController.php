@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\AliyunOss\Http\Request\ApiV1\Web;
 
-use AlibabaCloud\Client\Exception\ClientException;
-use AlibabaCloud\Client\Exception\ServerException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -52,8 +50,6 @@ class StsController extends JwtApiController
 
     /**
      * @return JsonResponse|RedirectResponse|Response
-     * @throws ClientException
-     * @throws ServerException
      */
     public function tempOss()
     {
