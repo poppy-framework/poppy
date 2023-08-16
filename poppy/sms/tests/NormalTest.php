@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Poppy\Sms\Tests;
 
 use Illuminate\Support\Str;
-use Poppy\Sms\Classes\LocalSmsProvider;
+use Poppy\Sms\Classes\Contracts\SmsContract;
 
 /**
  * 发送短信
  */
-class LocalTest extends BaseSms
+class NormalTest extends BaseSms
 {
 
     /**
@@ -18,9 +18,22 @@ class LocalTest extends BaseSms
      */
     public function testCaptcha(): void
     {
-        $Sms = new LocalSmsProvider();
+        $Sms = app('poppy.sms');
         if ($Sms->send('captcha', $this->mobile, [
             'code' => 'Test_' . Str::random(4),
+        ])) {
+            $this->assertTrue(true);
+        }
+        else {
+            $this->fail($Sms->getError()->getMessage());
+        }
+    }
+
+    public function testContract(): void
+    {
+        $Sms = app(SmsContract::class);
+        if ($Sms->send('captcha', $this->mobile, [
+            'code' => 'Test_' . Str::random(4)
         ])) {
             $this->assertTrue(true);
         }

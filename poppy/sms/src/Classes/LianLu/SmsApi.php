@@ -161,7 +161,7 @@ class SmsApi
         $buff      = '';
         $noSignKey = ['Signature', 'ContextParamSet', 'TemplateParamSet', 'SessionContextSet', 'PhoneNumberSet', 'SessionContext', 'PhoneList', 'phoneSet'];
         foreach ($params as $k => $v) {
-            if (!in_array($k, $noSignKey) && $v != '' && !is_array($v)) {
+            if ($v !== '' && !is_array($v) && !in_array($k, $noSignKey, true) ) {
                 $buff .= $k . '=' . $v . '&';
             }
         }

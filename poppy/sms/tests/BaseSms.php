@@ -9,7 +9,7 @@ use Poppy\Framework\Application\TestCase;
 /**
  * 发送短信
  */
-class BaseSms extends TestCase
+abstract class BaseSms extends TestCase
 {
 
     /**

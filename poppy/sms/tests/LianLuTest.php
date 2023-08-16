@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Poppy\Sms\Tests;
 
-use Poppy\Framework\Classes\Traits\AppTrait;
-use Poppy\Sms\Classes\Contracts\SmsContract;
+use Poppy\Sms\Action\Sms;
+use Poppy\Sms\Classes\LianLuSmsProvider;
+use Poppy\System\Exceptions\SettingKeyNotMatchException;
+use Poppy\System\Exceptions\SettingValueOutOfRangeException;
 
 /**
  * 发送短信
@@ -28,11 +30,16 @@ class LianLuTest extends BaseSms
     /**
      * 发送普通短信
      * @return void
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
      */
-    public function testSendSms()
+    public function testSendSms(): void
     {
-        /** @var SmsContract|AppTrait $Sms */
-        $Sms = app('poppy.sms');
+
+        $Sms = new Sms();
+        $Sms->establish('lianlu:cash_over', data_get($this->conf, 'lianlu_cash_over_code'));
+
+        $Sms = new LianLuSmsProvider();
         if ($Sms->send('cash_over', $this->mobile, ['type' => 'normal'])) {
             $this->assertTrue(true);
         }
@@ -42,13 +49,18 @@ class LianLuTest extends BaseSms
     }
 
     /**
-     * 发送模板短信
+     * 发送带有参数的模板短信
+     * @return void
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
      */
     public function testTemplateSms(): void
     {
-        /** @var SmsContract|AppTrait $Sms */
-        $Sms = app('poppy.sms');
-        if ($Sms->send('goods_fail', $this->mobile, ['type' => 'template', 'params' => ['11', '失败原因']])) {
+        $Sms = new Sms();
+        $Sms->establish('lianlu:goods_fail', data_get($this->conf, 'lianlu_goods_fail_code'));
+
+        $Sms = new LianLuSmsProvider();
+        if ($Sms->send('goods_fail', $this->mobile, ['高级原神账号', '商品价值'])) {
             $this->assertTrue(true);
         }
         else {

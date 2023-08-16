@@ -4,5 +4,10 @@
     "chuanglan_access_key" : "",
     "chuanglan_access_secret" : "",
     "chuanglan_sign" : "",
+    "lianlu_sign" : "",
+    "lianlu_mch_id" : "",
+    "lianlu_app_id" : "",
+    "lianlu_app_key" : "",
+    "lianlu_cash_over_code" : "",
     "mobile" : ""
 }
