@@ -11,11 +11,6 @@ use Poppy\MgrPage\Classes\Form\Field;
 class TableInput extends Field
 {
 
-    /**
-     * @inheritDoc
-     */
-    protected $view = 'py-mgr-page::tpl.form.table_input';
-
     private array $table = [];
 
     /**

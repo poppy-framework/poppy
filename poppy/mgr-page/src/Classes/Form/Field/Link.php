@@ -12,7 +12,7 @@ class Link extends Field
     /**
      * @var string
      */
-    protected $class = 'layui-btn-primary';
+    protected string $class = 'layui-btn-primary';
 
     /**
      * @var mixed|string
@@ -26,7 +26,7 @@ class Link extends Field
     }
 
 
-    public function info()
+    public function info(): self
     {
         $this->class = str_replace('layui-btn-primary', ' layui-btn-info ', $this->class);
 
@@ -34,14 +34,14 @@ class Link extends Field
     }
 
 
-    public function warn()
+    public function warn(): self
     {
         $this->class = str_replace('layui-btn-primary', ' layui-btn-info ', $this->class);
 
         return $this;
     }
 
-    public function iframe($width = 500, $height = 500)
+    public function iframe($width = 500, $height = 500): self
     {
         $this->class .= ' J_iframe';
         $this->attribute([
@@ -51,13 +51,13 @@ class Link extends Field
         return $this;
     }
 
-    public function small()
+    public function small(): self
     {
         $this->class .= ' layui-btn-sm';
         return $this;
     }
 
-    public function url($url)
+    public function url($url): self
     {
         $this->url = $url;
         return $this;

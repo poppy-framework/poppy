@@ -276,6 +276,9 @@ demo :
           title : Select
           route : demo:web.form.index/Select
         -
+          title : SelectDo
+          route : demo:web.form.index/SelectDo
+        -
           title : MultipleSelect
           route : demo:web.form.index/MultipleSelect
         -

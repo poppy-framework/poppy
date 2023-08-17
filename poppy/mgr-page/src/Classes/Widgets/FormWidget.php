@@ -17,7 +17,7 @@ use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Classes\Traits\PoppyTrait;
 use Poppy\Framework\Helper\ArrayHelper;
 use Poppy\Framework\Validation\Rule;
-use Poppy\MgrPage\Classes\Form as BaseForm;
+use Poppy\MgrPage\Classes\Form;
 use Poppy\MgrPage\Classes\Form\Field;
 use Poppy\MgrPage\Classes\Form\Field\Checkbox;
 use Poppy\MgrPage\Classes\Layout\Content;
@@ -32,6 +32,7 @@ use Poppy\MgrPage\Classes\Layout\Content;
  * @method Field\Checkbox       checkbox($name, $label = '')
  * @method Field\Radio          radio($name, $label = '')
  * @method Field\Select         select($name, $label = '')
+ * @method Field\SelectDo       selectDo($name, $label = '')
  * @method Field\MultipleSelect multipleSelect($name, $label = '')
  * @method Field\Textarea       textarea($name, $label = '')
  * @method Field\Hidden         hidden($name, $label = '')
@@ -321,28 +322,15 @@ class FormWidget implements Renderable
     }
 
     /**
-     * Determine if the form has field type.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasField($name)
-    {
-        return isset(BaseForm::$availableFields[$name]);
-    }
-
-    /**
      * Add a form field to form.
      *
      * @param Field $field
      *
      * @return $this
      */
-    public function pushField(Field &$field)
+    public function pushField(Field $field): self
     {
-        array_push($this->fields, $field);
-
+        $this->fields[] = $field;
         return $this;
     }
 
@@ -351,7 +339,7 @@ class FormWidget implements Renderable
      *
      * @return Field[]
      */
-    public function fields()
+    public function fields(): array
     {
         return $this->fields;
     }
@@ -361,7 +349,7 @@ class FormWidget implements Renderable
      *
      * @return bool
      */
-    public function hasFile()
+    public function hasFile(): bool
     {
         foreach ($this->fields as $field) {
             if ($field instanceof Field\File) {
@@ -473,11 +461,11 @@ class FormWidget implements Renderable
      */
     public function __call($method, $arguments)
     {
-        if (!$this->hasField($method)) {
+        $class = Form::findFieldClass($method);
+
+        if (!$class) {
             return $this;
         }
-
-        $class = BaseForm::$availableFields[$method];
 
         $name   = Arr::get($arguments, 0);
         $params = array_slice($arguments, 1);

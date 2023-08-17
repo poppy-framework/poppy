@@ -20,7 +20,7 @@
 				@endforeach
 			@endif
 
-			{!! app('form')->select($name, $options, old($column, $value), $attributes) !!}
+			{!! app('poppy.mgr-page.form')->select($name, $options, old($column, $value), $attributes) !!}
 		</div>
 		@include('py-mgr-page::tpl.form.help-block')
 		@include('py-mgr-page::tpl.form.error')

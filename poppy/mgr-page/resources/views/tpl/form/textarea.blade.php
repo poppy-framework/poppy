@@ -9,7 +9,7 @@
 
 	<div class="{{$viewClass['field']}}">
 		<div class="layui-form-auto-field">
-			{!! app('form')->textarea($name, old($column, $value), $attributes + [
+			{!! app('poppy.mgr-page.form')->textarea($name, old($column, $value), $attributes + [
 				'class' => 'layui-textarea '. $class,
 				'rows' => $rows,
 				'placeholder' => $placeholder,

@@ -9,7 +9,7 @@
     <div class="{{$viewClass['field']}} ">
         <div class="layui-form-auto-field">
             <div class="layui-field-tag-tokenize">
-                {!! app('form')->select($name.'[]', $options, $value, $attributes + [
+                {!! app('poppy.mgr-page.form')->select($name.'[]', $options, $value, $attributes + [
                     'multiple',
                     'id' => $id,
                     'lay-ignore' => 'lay-ignore',

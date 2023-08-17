@@ -9,7 +9,7 @@
     <div class="{{$viewClass['field']}} layui-field-radio-ctr">
         @foreach($options as $option => $label)
             <div class="layui-field-radio-item">
-                {!! app('form')->radio($name, $option, ($option == old($column, $value)) || ($value === null && in_array($label, $checked, false)),
+                {!! app('poppy.mgr-page.form')->radio($name, $option, ($option == old($column, $value)) || ($value === null && in_array($label, $checked, false)),
                         array_merge($attributes , [
                             'class' => 'layui-field-radio',
                             'id' => $column.'-'.$option,
@@ -17,7 +17,7 @@
                         ])
                     )
                 !!}
-                {!! app('form')->label($column.'-'.$option, $label, [
+                {!! app('poppy.mgr-page.form')->label($column.'-'.$option, $label, [
                     'class' => 'layui-field-radio-label'
                 ]) !!}
             </div>

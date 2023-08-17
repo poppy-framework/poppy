@@ -12,7 +12,7 @@ final class Area extends Field
     /**
      * @inheritDoc
      */
-    protected $view = 'py-area::tpl.form.area';
+    protected string $view = 'py-area::tpl.form.area';
 
     public function render()
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Widgets;
 
 use Illuminate\Support\Fluent;
@@ -7,7 +9,7 @@ use Illuminate\Support\Fluent;
 abstract class Widget extends Fluent
 {
 
-    public const TYPE_STAITC_TABLE = 'static-table';
+    public const TYPE_STATIC_TABLE = 'static-table';
 
     /**
      * @var string
@@ -39,7 +41,7 @@ abstract class Widget extends Fluent
         $html = [];
         foreach ($this->getAttributes() as $key => $value) {
             $element = $this->attributeElement($key, $value);
-            if (!is_null($element)) {
+            if ($element) {
                 $html[] = $element;
             }
         }
@@ -67,12 +69,12 @@ abstract class Widget extends Fluent
     /**
      * Build a single attribute element.
      *
-     * @param string $key
-     * @param string $value
+     * @param string      $key
+     * @param string|null $value
      *
      * @return string
      */
-    protected function attributeElement(string $key, string $value): string
+    protected function attributeElement(string $key, string $value = null): string
     {
         if (!is_null($value)) {
             return $key . '="' . htmlentities($value, ENT_QUOTES, 'UTF-8') . '"';

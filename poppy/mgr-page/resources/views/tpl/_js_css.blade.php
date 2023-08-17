@@ -8,8 +8,8 @@ $_type = $_type ?? [];
 @endif
 {{--layui--}}
 @if(in_array('layui', $_type, true))
-    {!! Html::style('assets/libs/layui/css/layui.css?v=2.8.11') !!}
-    {!! Html::script('assets/libs/layui/layui.js?v=2.8.11') !!}
+    {!! Html::style('assets/libs/layui/css/layui.css?v=2.8.15') !!}
+    {!! Html::script('assets/libs/layui/layui.js?v=2.8.15') !!}
 @endif
 {{--easyweb--}}
 @if(in_array('easy-web', $_type, true))

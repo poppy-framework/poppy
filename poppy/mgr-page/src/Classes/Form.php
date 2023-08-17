@@ -83,50 +83,8 @@ class Form implements Renderable
      *
      * @var array
      */
-    public static $availableFields = [
-        'link'           => Field\Link::class,
-        'code'           => Field\Code::class,
-        'captcha'        => Field\Captcha::class,
-        'checkbox'       => Field\Checkbox::class,
-        'color'          => Field\Color::class,
-        'currency'       => Field\Currency::class,
-        'date'           => Field\Date::class,
-        'dateRange'      => Field\DateRange::class,
-        'datetime'       => Field\Datetime::class,
-        'dateTimeRange'  => Field\DatetimeRange::class,
-        'datetimeRange'  => Field\DatetimeRange::class,
-        'decimal'        => Field\Decimal::class,
-        'display'        => Field\Display::class,
-        'divider'        => Field\Divider::class,
-        'email'          => Field\Email::class,
-        'editor'         => Field\Editor::class,
-        'file'           => Field\File::class,
-        'hidden'         => Field\Hidden::class,
-        'id'             => Field\Id::class,
-        'image'          => Field\Image::class,
-        'multiImage'     => Field\MultiImage::class,
-        'ip'             => Field\Ip::class,
-        'mobile'         => Field\Mobile::class,
-        'month'          => Field\Month::class,
-        'multipleSelect' => Field\MultipleSelect::class,
-        'number'         => Field\Number::class,
-        'password'       => Field\Password::class,
-        'radio'          => Field\Radio::class,
-        'select'         => Field\Select::class,
-        'switch'         => Field\SwitchField::class,
-        'text'           => Field\Text::class,
-        'textarea'       => Field\Textarea::class,
-        'time'           => Field\Time::class,
-        'timeRange'      => Field\TimeRange::class,
-        'url'            => Field\Url::class,
-        'year'           => Field\Year::class,
-        'html'           => Field\Html::class,
-        'tags'           => Field\Tags::class,
-        'timezone'       => Field\Timezone::class,
-        'keyword'        => Field\Keyword::class,
-        'question'       => Field\Question::class,
-        'tableInput'     => Field\TableInput::class,
-        'hook'           => Field\Hook::class,
+    public static array $availableFields = [
+        'switch' => Field\SwitchField::class
     ];
 
     /**
@@ -135,13 +93,6 @@ class Form implements Renderable
      * @var array
      */
     public static $fieldAlias = [];
-
-    /**
-     * Collected field assets.
-     *
-     * @var array
-     */
-    protected static $collectedAssets = [];
 
     /**
      * Initialization closure array.
@@ -912,6 +863,12 @@ class Form implements Renderable
             $method = static::$fieldAlias[$method];
         }
 
+        $ucFirstMethod = ucfirst($method);
+        $className     = "\\Poppy\\MgrPage\\Classes\\Form\\Field\\{$ucFirstMethod}";
+        if (class_exists($className)) {
+            return $className;
+        }
+
         $class = Arr::get(static::$availableFields, $method);
 
         if (class_exists($class)) {
@@ -919,37 +876,6 @@ class Form implements Renderable
         }
 
         return false;
-    }
-
-    /**
-     * Collect assets required by registered field.
-     *
-     * @return array
-     */
-    public static function collectFieldAssets()
-    {
-        if (!empty(static::$collectedAssets)) {
-            return static::$collectedAssets;
-        }
-
-        $css = collect();
-        $js  = collect();
-
-        foreach (static::$availableFields as $field) {
-            if (!method_exists($field, 'getAssets')) {
-                continue;
-            }
-
-            $assets = call_user_func([$field, 'getAssets']);
-
-            $css->push(Arr::get($assets, 'css'));
-            $js->push(Arr::get($assets, 'js'));
-        }
-
-        return static::$collectedAssets = [
-            'css' => $css->flatten()->unique()->filter()->toArray(),
-            'js'  => $js->flatten()->unique()->filter()->toArray(),
-        ];
     }
 
     /**

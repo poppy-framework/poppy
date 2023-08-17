@@ -7,7 +7,6 @@ use Poppy\Framework\Validation\Rule;
 class FormCode extends FormBaseWidget
 {
 
-
     /**
      * 表单标题
      * @var string
@@ -17,7 +16,7 @@ class FormCode extends FormBaseWidget
     /**
      * Build a form here.
      */
-    public function form()
+    public function form(): void
     {
         $this->code('code', 'Code')->help('代码输入框')->rules([
             Rule::required(),

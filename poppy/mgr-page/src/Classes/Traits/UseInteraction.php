@@ -80,14 +80,13 @@ trait UseInteraction
      * 请求
      * @param string $title
      * @param string $url
-     * @return ToolbarOperation
+     * @return BatchRequestOperation
+     * @deprecated
+     * @see batchRequest
      */
-    public function toolbar(string $title, string $url): ToolbarOperation
+    public function toolbar(string $title, string $url): BatchRequestOperation
     {
-        $action = new ToolbarOperation($title, $url);
-        return tap($action, function () use ($action) {
-            $this->add($action);
-        });
+        return $this->batchRequest($title, $url);
     }
 
     /**

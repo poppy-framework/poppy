@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Demo\Forms;
 
 class FormSelect extends FormBaseWidget
@@ -15,23 +17,37 @@ class FormSelect extends FormBaseWidget
     /**
      * Build a form here.
      */
-    public function form()
+    public function form(): void
     {
         $this->select('select', 'Select')
             ->options([
                 'a' => 'apple',
                 'b' => 'pear',
                 'orange',
-            ])->help('选择一项');
-        // 添加 code 代码
-        $code = <<<CODE
+            ]);
+
+        $this->code('select-code', '选择代码')->default(<<<CODE
 \$this->select('select', 'Select')
     ->options([
         'a' => 'apple',
         'b' => 'pear',
-        'orange',
-    ])->help('选择一项');
-CODE;
-        $this->code('select-code', 'Code@Select')->default($code);
+        'c' => 'orange',
+    ]);
+CODE);
+        $this->select('select-search', 'Select')
+            ->options([
+                'a' => 'apple',
+                'b' => 'pear',
+                'orange',
+            ])->help('支持搜索')->searchable();
+        $this->code('select-search-code', '支持搜索')->default(<<<CODE
+\$this->select('select', 'Select')
+    ->options([
+        'a' => 'apple',
+        'b' => 'pear',
+        'c' => 'orange',
+    ])->searchable();
+CODE);
+
     }
 }

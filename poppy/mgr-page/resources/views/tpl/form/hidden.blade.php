@@ -1,1 +1,1 @@
-{!! app('form')->hidden($name, $value, $attributes) !!}
+{!! app('poppy.mgr-page.form')->hidden($name, $value, $attributes) !!}

@@ -10,7 +10,7 @@ use Illuminate\View\View;
 class Color extends Text
 {
 
-    protected $view = 'py-mgr-page::tpl.form.color';
+    protected string $view = 'py-mgr-page::tpl.form.color';
 
     /**
      * Render this filed.

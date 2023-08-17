@@ -147,6 +147,18 @@ class Select extends Field
     }
 
     /**
+     * 使用 layui 自带的 lay-search 来对搜索进行支持
+     * @return $this
+     */
+    public function searchable(): self
+    {
+        $this->attribute([
+            'lay-search',
+        ]);
+        return $this;
+    }
+
+    /**
      * Set config for select2.
      *
      * all configurations see https://select2.org/configuration/options-api

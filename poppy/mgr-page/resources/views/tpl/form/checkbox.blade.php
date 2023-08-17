@@ -3,7 +3,7 @@
         <label for="{{$id}}" class=" layui-form-checkbox-label layui-form-auto-label {{$viewClass['label_element']}}">
             @include('py-mgr-page::tpl.form.help-tip')
             @if($canCheckAll)
-                {!! app('form')->checkbox('_check_all_'. $name,	1,	false, [
+                {!! app('poppy.mgr-page.form')->checkbox('_check_all_'. $name,	1,	false, [
                     'lay-skin'=> 'primary',
                     'lay-filter' => '_check_all_'.$name
                 ]) !!}
@@ -22,7 +22,7 @@
         <div class="layui-form-auto-field {!! !$inline ? 'layui-field-checkbox-stack' : '' !!}">
             @foreach($options as $option => $label)
                 <div class="layui-field-checkbox-item">
-                    {!! app('form')->checkbox(
+                    {!! app('poppy.mgr-page.form')->checkbox(
                     $name.'[]',
                     $option,
                     in_array($option, $value),
@@ -31,7 +31,7 @@
                         'id' => $column.'-'.$option,
                         'lay-ignore',
                     ])) !!}
-                    {!! app('form')->label($column.'-'.$option, $label, [
+                    {!! app('poppy.mgr-page.form')->label($column.'-'.$option, $label, [
                         'class' => 'layui-field-checkbox-label'
                     ]) !!}
                 </div>

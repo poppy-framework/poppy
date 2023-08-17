@@ -10,11 +10,6 @@ final class MultiImage extends Field
 {
 
     /**
-     * @inheritDoc
-     */
-    protected $view = 'py-mgr-page::tpl.form.multi_image';
-
-    /**
      * Token
      * @var string
      */

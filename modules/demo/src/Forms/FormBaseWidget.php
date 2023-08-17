@@ -44,7 +44,6 @@ abstract class FormBaseWidget extends FormWidget
      */
     public function data(): array
     {
-        return [
-        ];
+        return input();
     }
 }

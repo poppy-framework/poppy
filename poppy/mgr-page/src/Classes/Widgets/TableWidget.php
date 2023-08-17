@@ -91,7 +91,7 @@ class TableWidget extends Widget implements Renderable
     {
         if ($this->isSkeleton()) {
             return Resp::success('获取数据成功', [
-                'type'   => Widget::TYPE_STAITC_TABLE,
+                'type'   => Widget::TYPE_STATIC_TABLE,
                 'fields' => [
                     'headers' => $this->headers,
                     'rows'    => $this->rows,

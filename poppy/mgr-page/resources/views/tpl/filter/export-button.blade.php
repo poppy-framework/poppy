@@ -1,5 +1,5 @@
 <div class="pull-right ml8">
-	{!! app('form')->select('_export_', [
+	{!! app('poppy.mgr-page.form')->select('_export_', [
 	'all' => '导出所有',
 	'current' => '导出当前页',
 	'select' => '导出选中行',

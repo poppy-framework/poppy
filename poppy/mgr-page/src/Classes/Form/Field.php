@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Form;
 
 use Closure;
@@ -167,7 +169,7 @@ class Field implements Renderable
      *
      * @var string
      */
-    protected $view = '';
+    protected string $view = '';
 
     /**
      * Help block.
@@ -201,7 +203,7 @@ class Field implements Renderable
      *
      * @var array
      */
-    protected $width = [
+    protected array $width = [
         'label' => 2,
         'field' => 6,
     ];
@@ -587,7 +589,7 @@ class Field implements Renderable
      * @param bool   $show_help
      * @return $this
      */
-    public function help(string $text = '', string $icon = 'layui-icon-about', bool $show_help = true): self
+    public function help(string $text = '', bool $show_help = true, string $icon = 'bi-info-circle'): self
     {
         $this->help     = compact('text', 'icon');
         $this->showHelp = $show_help;
@@ -678,7 +680,7 @@ class Field implements Renderable
             $this->attributes = array_merge($this->attributes, $attribute);
         }
         else {
-            $this->attributes[$attribute] = (string)$value;
+            $this->attributes[$attribute] = (string) $value;
         }
 
         return $this;
@@ -839,7 +841,7 @@ class Field implements Renderable
      */
     public function setElementClass($class)
     {
-        $this->elementClass = array_merge($this->elementClass, (array)$class);
+        $this->elementClass = array_merge($this->elementClass, (array) $class);
 
         return $this;
     }
@@ -854,7 +856,7 @@ class Field implements Renderable
     public function addElementClass($class)
     {
         if (is_array($class) || is_string($class)) {
-            $this->elementClass = array_unique(array_merge($this->elementClass, (array)$class));
+            $this->elementClass = array_unique(array_merge($this->elementClass, (array) $class));
         }
 
         return $this;
@@ -872,7 +874,7 @@ class Field implements Renderable
         $delClass = [];
 
         if (is_string($class) || is_array($class)) {
-            $delClass = (array)$class;
+            $delClass = (array) $class;
         }
 
         foreach ($delClass as $del) {
@@ -957,9 +959,9 @@ class Field implements Renderable
             return $this->view;
         }
 
-        $class = explode('\\', get_called_class());
+        $class = explode('\\', static::class);
 
-        return 'py-mgr-page::tpl.form.' . strtolower(end($class));
+        return 'py-mgr-page::tpl.form.' . Str::kebab(end($class));
     }
 
     /**
@@ -1096,7 +1098,7 @@ class Field implements Renderable
                 $name = explode('.', $column);
             }
 
-            if (count($name) == 1) {
+            if (count($name) === 1) {
                 return $name[0];
             }
 
@@ -1157,9 +1159,9 @@ class Field implements Renderable
      *
      * @return string
      */
-    protected function formatLabel($arguments = [])
+    protected function formatLabel(array $arguments = []): string
     {
-        $column = is_array($this->column) ? current($this->column) : $this->column;
+        $column = (string) (is_array($this->column) ? current($this->column) : $this->column);
 
         $label = $arguments[0] ?? ucfirst($column);
 
@@ -1184,7 +1186,7 @@ class Field implements Renderable
      */
     protected function addRequiredAttribute($rules)
     {
-        if (is_array($rules) && in_array('required', $rules)) {
+        if (is_array($rules) && in_array('required', $rules, true)) {
             $this->setLabelClass(['validation']);
         }
     }
@@ -1219,7 +1221,7 @@ class Field implements Renderable
             $rules = array_filter(explode('|', $rules));
         }
 
-        return array_filter((array)$rules);
+        return array_filter((array) $rules);
     }
 
     /**
@@ -1262,7 +1264,7 @@ class Field implements Renderable
             return;
         }
 
-        $pattern     = "/{$rule}[^\|]?(\||$)/";
+        $pattern     = "/{$rule}[^|]?(\||$)/";
         $this->rules = preg_replace($pattern, '', $this->rules, -1);
     }
 
@@ -1278,7 +1280,7 @@ class Field implements Renderable
     {
         if ($this instanceof \Poppy\MgrPage\Classes\Form\Field\MultipleSelect) {
             $value = Arr::get($input, $column);
-            Arr::set($input, $column, array_filter((array)$value));
+            Arr::set($input, $column, array_filter((array) $value));
         }
 
         return $input;
@@ -1370,7 +1372,7 @@ class Field implements Renderable
             $this->groupClass = array_merge($this->groupClass, $class);
         }
         else {
-            array_push($this->groupClass, $class);
+            $this->groupClass[] = $class;
         }
 
         return $this;

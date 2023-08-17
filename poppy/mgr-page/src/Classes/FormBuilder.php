@@ -107,13 +107,13 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 代码编辑器
-     * @param string $name 名字
-     * @param string $value 值
+     * @param string      $name 名字
+     * @param string|null $value 值
      * @return HtmlString
      */
-    public function code(string $name, $value = ''): HtmlString
+    public function code(string $name, string $value = null): HtmlString
     {
-        $value = htmlentities($value);
+        $value = htmlentities((string) $value);
         return $this->textarea($name, $value, [
             'class' => 'layui-textarea layui-textarea-code',
             'style' => 'font-family: monospace;',
@@ -287,13 +287,13 @@ HTML;
      * @param string|null $name 名字
      * @return string
      */
-    public function tip(string $description, $name = null): string
+    public function tip(string $description, string $name = null): string
     {
         if (!$name) {
-            $icon = '<i class="layui-icon layui-icon-about">&nbsp;</i>';
+            $icon = '<i class="bi bi-info-circle">&nbsp;</i>';
         }
         else {
-            $icon = '<i class="layui-icon ' . $name . '">&nbsp;</i>';
+            $icon = '<i class="bi ' . $name . '">&nbsp;</i>';
         }
         $trim_description = strip_tags($description);
 
@@ -919,19 +919,20 @@ HTML;
 <div class="layui-inline">
     <input type="text" id="input_{$options['id']}" name="{$name}" readonly value="{$value}" placeholder="请选择颜色" {$attr}>
 </div>
-<div class="layui-inline">
-    <div style="display: inline-block;" id="{$options['id']}"></div>
+<div class="layui-inline" style="left:-11px;">
+    <div id="{$options['id']}"></div>
 </div>
 <script>
-    $(function(){
-        layui.colorpicker.render({
-            elem  : '#{$options['id']}',
-            color : '{$value}',
-            done  : function(color){
-                $('#input_{$options['id']}').val(color);
-            }
-        })
-    });
+layui.use(function(){
+    let colorpicker = layui.colorpicker;
+    layui.colorpicker.render({
+        elem  : '#{$options['id']}',
+        color : '{$value}',
+        done  : function(color){
+            $('#input_{$options['id']}').val(color);
+        }
+    })
+})
 </script>
 HTML;
     }
@@ -1087,6 +1088,12 @@ HTML;
 </script>
 HTML;
     }
+
+    public function selectJump($name, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [], array $optgroupsAttributes = [])
+    {
+        $html = $this->select($name, $list, $selected, $selectAttributes, $optionsAttributes, $optgroupsAttributes);
+    }
+
 
     /**
      * 可以拖拽的关键词

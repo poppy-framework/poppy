@@ -49,6 +49,6 @@ class ActionButton
      */
     public function render(): string
     {
-        return ' ' . app('form')->button($this->title, $this->attribute) . ' ';
+        return ' ' . app('poppy.mgr-page.form')->button($this->title, $this->attribute) . ' ';
     }
 }

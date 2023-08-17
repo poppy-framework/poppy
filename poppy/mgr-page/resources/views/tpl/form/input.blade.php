@@ -10,13 +10,13 @@
 	<div class="{{$viewClass['field']}}">
 		<div class="layui-form-auto-field">
 			@if($type === 'text')
-				{!! app('form')->text($name, $value, $attributes) !!}
+				{!! app('poppy.mgr-page.form')->text($name, $value, $attributes) !!}
 			@endif
 			@if($type === 'number')
-				{!! app('form')->number($name, $value, $attributes) !!}
+				{!! app('poppy.mgr-page.form')->number($name, $value, $attributes) !!}
 			@endif
 			@if($type === 'password')
-				{!! app('form')->password($name, $attributes) !!}
+				{!! app('poppy.mgr-page.form')->password($name, $attributes) !!}
 			@endif
 
 		</div>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Poppy\MgrPage\Classes\Traits;
 
 use Illuminate\Support\Collection;
@@ -39,19 +41,7 @@ trait UseScopes
     }
 
     /**
-     * 范围结构
-     * @return Collection
-     */
-    public function getScopesStruct(): Collection
-    {
-        return $this->scopes->map(function (Scope $scope) {
-            return $scope->struct();
-        });
-    }
-
-    /**
-     * 获取当前的Scope,
-     * 支持未传入
+     * 获取当前的Scope, 未设定返回首个
      * @return Scope|null
      */
     public function getCurrentScope(): ?Scope
@@ -59,7 +49,7 @@ trait UseScopes
         $key = request(Scope::QUERY_NAME);
         if ($key) {
             return $this->scopes->first(function ($scope) use ($key) {
-                return $scope->value == $key;
+                return (string) $scope->value === (string) $key;
             });
         }
 

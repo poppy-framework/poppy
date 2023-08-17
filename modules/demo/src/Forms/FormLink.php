@@ -19,6 +19,7 @@ class FormLink extends FormBaseWidget
     public function form()
     {
         $this->link('kaka')->url('https://www.baidu.com/')->help('链接地址');
+        $this->link('小按钮')->iframe()->url('https://www.baidu.com/')->small()->help('弹窗打开');
         // 添加 code 代码
         $code = <<<CODE
 \$this->link('kaka')->url('https://www.baidu.com/')->help('链接地址');
