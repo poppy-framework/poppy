@@ -998,10 +998,10 @@ HTML;
 
     /**
      * 下拉复选框
-     * @param string $name
-     * @param array  $lists
-     * @param null   $value
-     * @param array  $options
+     * @param string                $name
+     * @param array                 $lists
+     * @param null|int|string|array $value
+     * @param array                 $options
      * @return string
      */
     public function multiSelect(string $name, array $lists = [], $value = null, array $options = []): string
@@ -1019,8 +1019,20 @@ HTML;
         $disabled    = ($options['disabled'] ?? false) ? 'true' : 'false';         //是否禁用
         $autoRow     = ($options['auto_row'] ?? true) ? 'true' : 'false';          //是否换行
 
+        if (is_array($value) && count($value)) {
+            $items = [];
+            foreach ($value as $v) {
+                $items[] = (string) $v;
+            }
+            $value = $items;
+        }
+
         if (is_string($value)) {
             $value = explode(',', $value);
+        }
+
+        if (is_int($value)) {
+            $value = [(string) $value];
         }
 
         // 带分组模式
@@ -1028,9 +1040,8 @@ HTML;
         if (isset($lists[0]['children'])) {
             $data = collect($lists)->map(function ($items) use ($value) {
                 $items['children'] = collect($items['children'])->map(function ($item) use ($value) {
-                    // var_dump($item);
                     return array_merge($item, [
-                        'selected' => in_array($item['value'] ?? '', $value, true),
+                        'selected' => in_array((string) ($item['value'] ?? ''), $value, true),
                     ]);
                 });
                 return $items;
@@ -1040,7 +1051,7 @@ HTML;
             // kv 模式
             $data = collect($lists)->map(function ($item, $key) use ($value) {
                 $selected = false;
-                if ($value && in_array($key, $value, true)) {
+                if ($value && in_array((string) $key, $value, true)) {
                     $selected = true;
                 }
                 return [

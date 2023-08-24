@@ -16,7 +16,10 @@ class FormMultipleSelect extends FormBaseWidget
     public function data(): array
     {
         return [
-            'data' => [1],
+            'integer'      => 1,
+            'array'        => [1],
+            'array-string' => ['1'],
+            'string'       => '1',
         ];
     }
 
@@ -27,15 +30,26 @@ class FormMultipleSelect extends FormBaseWidget
     {
         $this->divider('select 多选');
 
-        $this->multipleSelect('data', 'Fill')
-            ->options([
-                1 => 'Name',
-                2 => 'Name2',
-                3 => 'Name3',
-            ])->attribute([
-                'paging' => true,
-                'size'   => 2,
-                'filter' => true,
-            ]);
+        $options = [
+            1 => 'Name',
+            2 => 'Name2',
+            3 => 'Name3',
+        ];
+
+        $conf = [
+            'paging' => true,
+            'size'   => 2,
+            'filter' => true,
+        ];
+
+        $this->multipleSelect('integer', '数值')
+            ->options($options)->attribute($conf);
+        $this->multipleSelect('array', '数值')
+            ->options($options)->attribute($conf);
+        $this->multipleSelect('array-string', '字符数组')
+            ->options($options)->attribute($conf);
+        $this->multipleSelect('string', '字符')
+            ->options($options)->attribute($conf);
+
     }
 }

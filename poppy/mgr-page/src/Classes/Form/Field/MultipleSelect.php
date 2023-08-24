@@ -27,6 +27,9 @@ class MultipleSelect extends Select
         if (is_string($relations)) {
             $this->value = explode(',', $relations);
         }
+        if (is_int($relations)) {
+            $this->value = [$relations];
+        }
 
         if (!is_array($relations)) {
             return;
