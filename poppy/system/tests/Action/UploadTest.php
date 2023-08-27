@@ -58,13 +58,14 @@ class UploadTest extends TestCase
             $Upload = new DefaultFileProvider();
 
             $Upload->setExtension(['jpg']);
-            $Upload->setDestination('dev/testing/upload-dest.jpg');
+            $path = 'dev/testing/upload-dest.jpg';
+            $Upload->setDestination($path);
             if (!$Upload->saveFile($image)) {
                 $this->fail($Upload->getError());
             }
 
             // 检测文件存在
-            $url = $Upload->getUrl();
+            $url = $Upload->getReturnUrl() . $path;
             if (file_get_contents($url)) {
                 $this->assertTrue(true);
                 $path = base_path('public/' . $Upload->getDestination());
