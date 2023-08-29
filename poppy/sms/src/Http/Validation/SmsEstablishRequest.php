@@ -22,8 +22,7 @@ class SmsEstablishRequest extends Request
                 Rule::required(),
             ],
             'code'  => [
-                Rule::required(),
-                Rule::regex('/[a-z_]{4,}/')
+                Rule::required()
             ],
         ];
     }
