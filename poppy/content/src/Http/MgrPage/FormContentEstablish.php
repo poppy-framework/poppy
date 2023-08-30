@@ -8,6 +8,7 @@ use Auth;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Poppy\Category\Models\SysCategory;
 use Poppy\Content\Action\Content;
 use Poppy\Content\Http\Validation\ContentRequest;
 use Poppy\Content\Models\SysContent;
@@ -107,8 +108,13 @@ class FormContentEstablish extends FormWidget
             Rule::nullable(),
             Rule::required(),
         ]);
+        $this->text('slug', 'SEO 标题');
+        if ($this->type) {
+            $this->select('cat_id', '分类')->options(SysCategory::tree($this->type));
+        }
         $this->image('thumb', '封面图');
         $this->editor('content', '详情');
-        $this->text('list_order', '排序');
+        $this->text('author', '作者')->help('用于作者的展示');
+        $this->datetime('create_at', '创建时间')->help('此创建时间仅仅用于展示, 和系统的添加时间是两个概念');
     }
 }

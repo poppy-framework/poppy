@@ -4,11 +4,15 @@ declare(strict_types = 1);
 
 namespace Poppy\Content\Action;
 
+use Carbon\Carbon;
+use Carbon\Traits\Test;
+use Exception;
+use Overtrue\Pinyin\Pinyin;
 use Poppy\Content\Models\SysContent;
 use Poppy\Framework\Classes\Traits\AppTrait;
+use Poppy\MgrPage\Classes\PyMgrPageDef;
 use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Models\SysConfig;
-use Throwable;
 
 /**
  * 分类管理
@@ -36,7 +40,7 @@ class Content
      *                       {string}  title       名称 <br>
      *                       {int}     parent_id   父级 ID <br>
      *                       {string}  type        类型
-     * @param null|int $id   ID
+     * @param null|int $id ID
      * @return bool
      */
     public function establish(array $data, int $id = null): bool
@@ -44,26 +48,26 @@ class Content
         if (!$this->checkPam()) {
             return false;
         }
-        $initDb = [
-            'type'  => (string) sys_get($data, 'type'),
-            'title' => (string) sys_get($data, 'title'),
-            'thumb' => (string) sys_get($data, 'thumb'),
-            'text'  => (string) sys_get($data, 'text'),
-        ];
+        $initDb = $data;
 
         // init
         $id && $this->init($id);
 
         if ($id) {
-
             $this->item->update($initDb);
             return true;
         }
         /** @var SysContent $item */
         $initDb['account_id'] = $this->pam->id;
-        $item                 = SysContent::create($initDb);
-        $item->list_order     = $item->id;
-        $item->is_enable      = SysConfig::YES;
+
+        $item             = SysContent::create($initDb);
+        $item->list_order = $item->id;
+        $item->is_enable  = SysConfig::YES;
+
+
+        if (!$initDb['create_at']) {
+            $item->create_at = Carbon::now()->toDateTimeString();
+        }
         $item->save();
         $this->item = $item;
         return true;
@@ -72,19 +76,12 @@ class Content
     /**
      * 删除数据
      * @param int $id 活动ID
-     * @return bool
+     * @throws Exception
      */
-    public function delete(int $id): bool
+    public function delete(int $id): void
     {
         $id && $this->init($id);
-
-        try {
-            $this->item->delete();
-        } catch (Throwable $e) {
-            return $this->setError($e->getMessage());
-        }
-
-        return true;
+        $this->item->delete();
     }
 
     /**

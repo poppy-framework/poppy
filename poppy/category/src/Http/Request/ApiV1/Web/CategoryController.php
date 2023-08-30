@@ -9,7 +9,7 @@ use Poppy\Framework\Classes\Resp;
 use Poppy\System\Http\Request\ApiV1\JwtApiController;
 
 /**
- * Sts 配置
+ * 类别排序
  */
 class CategoryController extends JwtApiController
 {

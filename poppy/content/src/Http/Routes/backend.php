@@ -15,4 +15,6 @@ Route::group([
         ->name('py-content:backend.content.delete');
     $router->any('content/toggle/{id}', 'ContentController@toggle')
         ->name('py-content:backend.content.toggle');
+    $router->any('content/pinyin', 'ContentController@pinyin')
+        ->name('py-content:backend.content.pinyin');
 });

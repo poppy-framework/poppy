@@ -30,16 +30,26 @@ class ContentRequest extends Request
         $id     = Route::input('id');
         $type   = input('type');
         return [
-            'type'  => [
+            'type'      => [
                 Rule::string(),
             ],
-            'thumb'  => [
+            'thumb'     => [
                 Rule::string(),
             ],
-            'text'  => [
+            'slug'      => [
+                Rule::string(),
+                Rule::regex('/^[a-z][a-z0-9-]{9,}/'),
+            ],
+            'cat_id'    => [
+                Rule::nullable(),
+            ],
+            'content'   => [
+                Rule::nullable(),
+            ],
+            'text'      => [
                 Rule::string(),
             ],
-            'title' => [
+            'title'     => [
                 Rule::required(),
                 Rule::string(),
                 Rule::unique($tbName, 'title')->where(function ($query) use ($id, $type) {
@@ -48,6 +58,12 @@ class ContentRequest extends Request
                         $query->where('id', '!=', $id);
                     }
                 }),
+            ],
+            'author'    => [
+                Rule::string(),
+            ],
+            'create_at' => [
+                Rule::dateFormat('Y-m-d H:i:s')
             ],
         ];
     }

@@ -4,18 +4,22 @@ declare(strict_types = 1);
 
 namespace Poppy\Content\Http\Request\Backend;
 
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Overtrue\Pinyin\Pinyin;
 use Poppy\Content\Action\Content;
-use Poppy\Content\Http\MgrPage\FormContentEstablish;
 use Poppy\Content\Http\MgrPage\ListSysContent;
+use Poppy\Content\Http\Validation\ContentRequest;
 use Poppy\Content\Models\SysContent;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
+use Request;
 use Throwable;
+use View;
 
 /**
  * 内容管理
@@ -45,24 +49,50 @@ class ContentController extends BackendController
      * Show the form for creating a new resource.
      * @throws Throwable
      */
-    public function establish()
+    public function establish(Request $request, $id = null)
     {
-        return (new FormContentEstablish())->render();
+        if (is_post()) {
+            /** @var ContentRequest $req */
+            $req  = app(ContentRequest::class, [$request]);
+            $req  = $req->merge([
+                'type' => input('type'),
+            ]);
+            $data = $req->validated();
+
+            if ($this->action()->establish($data, (int) $id)) {
+                return Resp::success('操作成功');
+            }
+            return Resp::error($this->action()->getError());
+        }
+        $type = input('type');
+        if ($id && $item = SysContent::findOrFail($id)) {
+            View::share('item', $item);
+            $type = $item->type;
+        }
+        return view('py-content::backend.content.establish', [
+            'type' => $type
+        ]);
     }
 
     /**
      * 删除分类
      * @param int $id 分类ID
      * @return JsonResponse|RedirectResponse|Response
+     * @throws Exception
      */
     public function delete(int $id)
     {
         $Content = $this->action();
-        if ($Content->delete($id)) {
-            return Resp::success('删除成功', '_reload|1');
-        }
+        $Content->delete($id);
+        return Resp::success('删除成功', '_reload|1');
+    }
 
-        return Resp::error($Content->getError());
+    public function pinyin()
+    {
+        $title = input('title');
+        return Resp::success('已解析', [
+            'pinyin' => (new Pinyin())->permalink($title)
+        ]);
     }
 
     /**
@@ -82,6 +112,6 @@ class ContentController extends BackendController
 
     private function action(): Content
     {
-        return (new Content());
+        return (new Content())->setPam($this->pam());
     }
 }

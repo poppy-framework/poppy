@@ -1,29 +1,30 @@
 {
-    "name": "poppy/content",
-    "description": "An Simple Content Management.",
-    "license": "Apache-2.0",
-    "type": "poppy",
-    "authors": [
+    "name" : "poppy/content",
+    "description" : "An Simple Content Management.",
+    "license" : "Apache-2.0",
+    "type" : "poppy",
+    "authors" : [
         {
-            "name": "Mark Zhao",
-            "email": "zhaody901@126.com"
+            "name" : "Mark Zhao",
+            "email" : "zhaody901@126.com"
         }
     ],
-    "require": {
-        "php": ">=7.4"
+    "require" : {
+        "php" : ">=7.4",
+        "poppy/category" : "4.2.*"
     },
-    "autoload": {
-        "psr-4": {
-            "Poppy\\Content\\": "src/"
+    "autoload" : {
+        "psr-4" : {
+            "Poppy\\Content\\" : "src/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Poppy\\Content\\Tests\\": "tests/"
+    "autoload-dev" : {
+        "psr-4" : {
+            "Poppy\\Content\\Tests\\" : "tests/"
         }
     },
-    "config": {
-        "preferred-install": "dist"
+    "config" : {
+        "preferred-install" : "dist"
     },
-    "minimum-stability": "dev"
+    "minimum-stability" : "dev"
 }

@@ -69,8 +69,7 @@ class Category
             $this->item = $item;
         }
 
-        // 移除 Ref 缓存
-        sys_tag('py-category')->del(PyCategoryDef::ckNameRefKey());
+        $this->clearRefCache();
 
         return true;
     }
@@ -144,8 +143,7 @@ class Category
 
         SysCategory::whereKey($id)->delete();
 
-        // 移除 Ref 缓存
-        sys_tag('py-category')->del(PyCategoryDef::ckNameRefKey());
+        $this->clearRefCache();
     }
 
     /**
@@ -169,5 +167,22 @@ class Category
     {
         $this->item = SysCategory::findOrFail($id);
         $this->id   = $this->item->id;
+    }
+
+
+    /**
+     * 移除 Clear Ref Cache
+     * @return void
+     */
+    private function clearRefCache(): void
+    {
+        // 移除 ID -> Title 缓存
+        sys_tag('py-category')->del(PyCategoryDef::ckIdRefTitle());
+
+        // 移除 ID -> Name 映射
+        sys_tag('py-category')->del(PyCategoryDef::ckIdRefName());
+
+        // 移除 Ref 缓存
+        sys_tag('py-category')->del(PyCategoryDef::ckNameRefKey());
     }
 }
