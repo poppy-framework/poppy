@@ -19,7 +19,7 @@ use Poppy\System\Models\PamAccount;
  * @mixin Eloquent
  * @property int                  $id
  * @property string               $title      标题
- * @property string               $slug       友好访问名称
+ * @property string|null          $slug       友好访问名称
  * @property string               $type       分类[简易分类标识]
  * @property int                  $cat_id     分类 ID
  * @property string               $thumb      缩略图
