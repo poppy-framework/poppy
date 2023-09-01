@@ -111,7 +111,7 @@ class ContentController extends JwtApiController
 
         $item = SysContent::where('slug', $slug)->firstOrFail();
 
-        $Db     = SysContent::select(['cat_id', 'id', 'title']);
+        $Db     = SysContent::select(['cat_id', 'id', 'title', 'slug']);
         $DbNext = (clone $Db)->where('id', '>', $item->id)->orderBy('id');
         $DbPrev = (clone $Db)->where('id', '<', $item->id)->orderBy('id', 'desc');
 
@@ -139,7 +139,7 @@ class ContentController extends JwtApiController
             'next'      => $next ? [
                 'path'  => $next->cat_id ? SysCategory::kvSlug($next->cat_id) : 'content',
                 'slug'  => (string) $next->slug,
-                'title' => $prev->title,
+                'title' => $next->title,
             ] : (object) [],
         ]);
     }
