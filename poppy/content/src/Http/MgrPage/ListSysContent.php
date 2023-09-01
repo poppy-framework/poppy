@@ -76,7 +76,7 @@ class ListSysContent extends ListBase
     {
         $scope = input(Scope::QUERY_NAME);
         return function (Operations $operations) use ($scope) {
-            $operations->page('新建文章', route_url('py-content:backend.content.establish', null, ['type' => $scope]))
+            $operations->loadView('新建文章', route_url('py-content:backend.content.establish', null, ['type' => $scope]))
                 ->icon('plus-circle')->sm();
         };
     }
