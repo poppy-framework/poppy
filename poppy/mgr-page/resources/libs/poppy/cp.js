@@ -45,7 +45,7 @@
             let tip = $(this).attr('data-tip');
             let element = $(this).attr('data-element');
             let title = $(this).attr('data-title') ? $(this).attr('data-title') : $(this).html();
-            let width = parseInt($(this).attr('data-width')) ? parseInt($(this).attr('data-width')) : 400;
+            let width = parseInt($(this).attr('data-width')) ? parseInt($(this).attr('data-width')) : 700;
             let height = parseInt($(this).attr('data-height')) ? parseInt($(this).attr('data-height')) : '';
             let area = height ? [width + 'px', height + 'px'] : width + 'px';
 
