@@ -382,7 +382,7 @@ class DefaultFileProvider implements FileContract
             if ($ext !== $extension) {
                 throw new ApplicationException('指定文件的扩展类型不符, 可能导致图片无法展示');
             }
-            return $this->destination;
+            // return $this->destination;
         }
         $now      = Carbon::now();
         $fileName = $now->format('is') . Str::random(8) . '.' . $extension;

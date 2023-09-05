@@ -109,6 +109,7 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
         'password_key',
         'reg_ip',
         'reg_platform',
+        'note',
         'disable_reason',
         'disable_start_at',
         'disable_end_at',
