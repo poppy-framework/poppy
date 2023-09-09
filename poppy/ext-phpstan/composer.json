@@ -23,9 +23,7 @@
         "ext-json": "*",
         "symfony/process": "^4.3 || ^5.0 || ^6.0",
         "hamcrest/hamcrest-php": "^2.0.1",
-        "mockery/mockery": "^1.5.1"
-    },
-    "require-dev" : {
+        "mockery/mockery": "^1.5.1",
         "phpstan/phpstan": "^1.8"
     },
     "autoload-dev": {
