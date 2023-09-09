@@ -25,6 +25,9 @@
         "hamcrest/hamcrest-php": "^2.0.1",
         "mockery/mockery": "^1.5.1"
     },
+    "require-dev" : {
+        "phpstan/phpstan": "^1.8"
+    },
     "autoload-dev": {
         "classmap": [
             "tests/"
