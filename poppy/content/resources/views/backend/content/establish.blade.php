@@ -50,6 +50,25 @@
             </div>
         </div>
         <div class="layui-form-item">
+            {!! Form::label('keyword', '关键词', ['class' => 'layui-form-label']) !!}
+            <div class="layui-input-block">
+                {!! app('poppy.mgr-page.form')->text('keyword', null, [
+                     'class' => 'layui-input',
+                    'id' => 'keyword'
+                ]) !!}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            {!! Form::label('description', '描述', ['class' => 'layui-form-label']) !!}
+            <div class="layui-input-block">
+                {!! app('poppy.mgr-page.form')->textarea('description', null, [
+                    'class' => 'layui-textarea',
+                    'rows' => 2,
+                    'id' => 'description'
+                ]) !!}
+            </div>
+        </div>
+        <div class="layui-form-item">
             {!! Form::label('title', '作者', ['class' => 'layui-form-label']) !!}
             <div class="layui-input-block">
                 {!! app('poppy.mgr-page.form')->text('author', null, [
@@ -57,6 +76,7 @@
                 ]) !!}
             </div>
         </div>
+
         <div class="layui-form-item">
             {!! Form::label('title', '创作时间', ['class' => 'layui-form-label']) !!}
             <div class="layui-input-block">

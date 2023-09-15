@@ -55,6 +55,8 @@ class SysContent extends Model
         'title',
         'slug',
         'type',
+        'keyword',
+        'description',
         'thumb',
         'list_order',
         'account_id',

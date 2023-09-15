@@ -50,6 +50,11 @@ class Content
         }
         $initDb = $data;
 
+        $length = strlen($data['content']);
+        if ($length > 65500) {
+            return $this->setError('输入内容超出最大限制, 请清理格式或者移除部分内容');
+        }
+
         // init
         $id && $this->init($id);
 

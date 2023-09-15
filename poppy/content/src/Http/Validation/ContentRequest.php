@@ -30,13 +30,19 @@ class ContentRequest extends Request
         $id     = Route::input('id');
         $type   = input('type');
         return [
-            'type'      => [
+            'type'        => [
                 Rule::string(),
             ],
-            'thumb'     => [
+            'thumb'       => [
                 Rule::string(),
             ],
-            'slug'      => [
+            'keyword'     => [
+                Rule::string(),
+            ],
+            'description' => [
+                Rule::string(),
+            ],
+            'slug'        => [
                 Rule::required(),
                 Rule::string(),
                 Rule::regex('/^[a-z][a-z0-9-]{9,}/'),
@@ -47,16 +53,14 @@ class ContentRequest extends Request
                     }
                 }),
             ],
-            'cat_id'    => [
+            'cat_id'      => [
                 Rule::nullable(),
             ],
-            'content'   => [
-                Rule::nullable(),
-            ],
-            'text'      => [
+            'content'     => [
                 Rule::string(),
+                Rule::nullable(),
             ],
-            'title'     => [
+            'title'       => [
                 Rule::required(),
                 Rule::string(),
                 Rule::unique($tbName, 'title')->where(function ($query) use ($id, $type) {
@@ -66,10 +70,10 @@ class ContentRequest extends Request
                     }
                 }),
             ],
-            'author'    => [
+            'author'      => [
                 Rule::string(),
             ],
-            'create_at' => [
+            'create_at'   => [
                 Rule::dateFormat('Y-m-d H:i:s')
             ],
         ];
