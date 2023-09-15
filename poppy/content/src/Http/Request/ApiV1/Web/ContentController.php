@@ -126,17 +126,19 @@ class ContentController extends JwtApiController
         /** @var SysContent $prev */
         $prev = $DbPrev->first();
         return Resp::success('已获取', [
-            'title'     => $item->title,
-            'author'    => $item->author,
-            'create_at' => $item->create_at,
-            'content'   => $item->content,
-            'cat_title' => $item->cat_id ? SysCategory::kvTitle($item->cat_id) : '',
-            'prev'      => $prev ? [
+            'title'       => $item->title,
+            'keyword'     => $item->keyword,
+            'description' => $item->description,
+            'author'      => $item->author,
+            'create_at'   => $item->create_at,
+            'content'     => $item->content,
+            'cat_title'   => $item->cat_id ? SysCategory::kvTitle($item->cat_id) : '',
+            'prev'        => $prev ? [
                 'path'  => $prev->cat_id ? SysCategory::kvSlug($prev->cat_id) : 'content',
                 'slug'  => (string) $prev->slug,
                 'title' => $prev->title,
             ] : (object) [],
-            'next'      => $next ? [
+            'next'        => $next ? [
                 'path'  => $next->cat_id ? SysCategory::kvSlug($next->cat_id) : 'content',
                 'slug'  => (string) $next->slug,
                 'title' => $next->title,

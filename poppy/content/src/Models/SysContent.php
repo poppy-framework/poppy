@@ -18,17 +18,19 @@ use Poppy\System\Models\PamAccount;
  *
  * @mixin Eloquent
  * @property int                  $id
- * @property string               $title      标题
- * @property string|null          $slug       友好访问名称
- * @property string               $type       分类[简易分类标识]
- * @property int                  $cat_id     分类 ID
- * @property string               $thumb      缩略图
- * @property int                  $list_order 排序
- * @property int                  $account_id 账号 ID
- * @property int                  $is_enable  是否启用
- * @property string               $content    内容
- * @property string               $author     作者
- * @property string               $create_at  创建时间(展示用)
+ * @property string               $title       标题
+ * @property string               $keyword     关键词
+ * @property string               $description 描述
+ * @property string|null          $slug        友好访问名称
+ * @property string               $type        分类[简易分类标识]
+ * @property int                  $cat_id      分类 ID
+ * @property string               $thumb       缩略图
+ * @property int                  $list_order  排序
+ * @property int                  $account_id  账号 ID
+ * @property int                  $is_enable   是否启用
+ * @property string               $content     内容
+ * @property string               $author      作者
+ * @property string               $create_at   创建时间(展示用)
  * @property Carbon|null          $created_at
  * @property Carbon|null          $updated_at
  * @property-read PamAccount|null $pam
