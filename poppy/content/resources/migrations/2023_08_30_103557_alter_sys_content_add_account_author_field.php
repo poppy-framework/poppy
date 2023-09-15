@@ -20,7 +20,7 @@ class AlterSysContentAddAccountAuthorField extends Migration
             $table->string('slug', 255)->default('')->after('title')->comment('友好访问名称');
             $table->string('keyword', 255)->default('')->after('slug')->comment('关键词');
             $table->string('description', 255)->default('')->after('keyword')->comment('描述');
-            $table->dateTime('create_at')->default(null)->after('content')->comment('创建时间(展示用)');
+            $table->dateTime('create_at')->nullable()->after('content')->comment('创建时间(展示用)');
             $table->index(['slug'], 'k_slug');
         });
     }
