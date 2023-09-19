@@ -53,7 +53,7 @@ class UtilHelper
     /**
      * 是不是url地址
      * @param string $url url address
-     * @return false
+     * @return bool
      */
     public static function isUrl(string $url): bool
     {
