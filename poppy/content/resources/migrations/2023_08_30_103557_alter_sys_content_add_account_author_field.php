@@ -17,7 +17,6 @@ class AlterSysContentAddAccountAuthorField extends Migration
     {
         Schema::table('sys_content', function (Blueprint $table) {
             $table->string('author', 100)->default('')->after('account_id')->comment('作者');
-            $table->string('slug', 255)->default('')->after('title')->comment('友好访问名称');
             $table->string('keyword', 255)->default('')->after('slug')->comment('关键词');
             $table->string('description', 255)->default('')->after('keyword')->comment('描述');
             $table->dateTime('create_at')->nullable()->after('content')->comment('创建时间(展示用)');
@@ -33,7 +32,7 @@ class AlterSysContentAddAccountAuthorField extends Migration
     public function down(): void
     {
         Schema::table('sys_content', function (Blueprint $table) {
-            $table->dropColumn(['author', 'create_at', 'slug', 'keyword', 'description']);
+            $table->dropColumn(['author', 'create_at', 'keyword', 'description']);
             $table->dropIndex('k_slug');
         });
     }

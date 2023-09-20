@@ -42,17 +42,6 @@ class ContentRequest extends Request
             'description' => [
                 Rule::string(),
             ],
-            'slug'        => [
-                Rule::required(),
-                Rule::string(),
-                Rule::regex('/^[a-z][a-z0-9-]{9,}/'),
-                Rule::unique($tbName, 'slug')->where(function ($query) use ($id, $type) {
-                    $query->where('type', $type);
-                    if ($id) {
-                        $query->where('id', '!=', $id);
-                    }
-                }),
-            ],
             'cat_id'      => [
                 Rule::nullable(),
             ],

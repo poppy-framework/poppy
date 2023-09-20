@@ -15,17 +15,6 @@
                 ]) !!}
             </div>
         </div>
-        <div class="layui-form-item">
-            {!! Form::label('title', '优化名称', ['class' => 'layui-form-label']) !!}
-            <div class="layui-input-block">
-                {!! app('poppy.mgr-page.form')->text('slug', null, [
-                    'placeholder' => '使用字母, 数字, 中杠线来编写',
-                    'class' => 'layui-input',
-                    'id' => 'slug',
-                ]) !!}
-                <div class="layui-word-aux">slug 长度需要大于等于10</div>
-            </div>
-        </div>
         @if ($type)
             <div class="layui-form-item">
                 {!! Form::label('title', '分类', ['class' => 'layui-form-label']) !!}
@@ -89,19 +78,5 @@
             </div>
         </div>
         {!! Form::close() !!}
-        <script>
-        layui.use(['form', 'layer'], function () {
-            $('#title').on('blur', function () {
-                if ($('#slug').val()) {
-                    return;
-                }
-                Util.makeRequest('{!! route('py-content:backend.content.pinyin') !!}', {
-                    title: $('#title').val()
-                }, function (data) {
-                    $('#slug').val(_.get(data, 'data.pinyin'));
-                })
-            })
-        })
-        </script>
     </div>
 @endsection

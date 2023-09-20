@@ -87,14 +87,6 @@ class ContentController extends BackendController
         return Resp::success('删除成功', '_reload|1');
     }
 
-    public function pinyin()
-    {
-        $title = input('title');
-        return Resp::success('已解析', [
-            'pinyin' => (new Pinyin())->permalink($title)
-        ]);
-    }
-
     /**
      * 开启/关闭 广告
      * @param int $id 活动ID
