@@ -107,12 +107,12 @@ class ContentController extends JwtApiController
      */
     public function detail()
     {
-        $slug     = input('slug');
+        $id     = input('id');
         $cat_slug = input('cat_slug');
 
-        $item = SysContent::where('slug', $slug)->firstOrFail();
+        $item = SysContent::findOrFail($id);
 
-        $Db     = SysContent::select(['cat_id', 'title', 'slug']);
+        $Db     = SysContent::select(['cat_id', 'title', 'id']);
         $DbNext = (clone $Db)->where('id', '>', $item->id)->orderBy('id');
         $DbPrev = (clone $Db)->where('id', '<', $item->id)->orderBy('id', 'desc');
 
