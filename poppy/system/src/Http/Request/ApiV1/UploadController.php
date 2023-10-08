@@ -223,10 +223,10 @@ class UploadController extends JwtApiController
             $Uploader->setFolder($folder);
         }
         $urls = [];
-        if ($ext) {
+        /*if ($ext) {
             $extensions = explode(',', $ext);
             $Uploader->setExtension($extensions);
-        }
+        }*/
 
         // 默认图片压缩到 1080 短边压缩
         if ($type === 'images') {
