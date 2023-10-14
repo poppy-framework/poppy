@@ -182,6 +182,9 @@ class Category
         // 移除 ID -> Name 映射
         sys_tag('py-category')->del(PyCategoryDef::ckIdRefName());
 
+        // 移除 ID -> TypeName 映射
+        sys_tag('py-category')->del(PyCategoryDef::ckIdRefTypeName());
+
         // 移除 Ref 缓存
         sys_tag('py-category')->del(PyCategoryDef::ckNameRefKey());
     }

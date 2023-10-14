@@ -58,7 +58,8 @@ class ContentController extends JwtApiController
         return SysContent::paginationInfo($Db, function (SysContent $item) {
             return [
                 'id'        => $item->id,
-                'path'      => $item->cat_id ? SysCategory::kvSlug($item->cat_id) : 'content',
+                'path'      => $item->cat_id ? SysCategory::kvSlug($item->cat_id) : 'content',  // to be removed
+                'slug'      => $item->cat_id ? SysCategory::kvSlug($item->cat_id) : 'content',
                 'title'     => $item->title,
                 'thumb'     => $item->thumb,
                 'author'    => $item->author,
@@ -107,7 +108,7 @@ class ContentController extends JwtApiController
      */
     public function detail()
     {
-        $id     = input('id');
+        $id       = input('id');
         $cat_slug = input('cat_slug');
 
         $item = SysContent::findOrFail($id);
@@ -135,12 +136,14 @@ class ContentController extends JwtApiController
             'content'     => $item->content,
             'cat_title'   => $item->cat_id ? SysCategory::kvTitle($item->cat_id) : '',
             'prev'        => $prev ? [
-                'path'  => $prev->cat_id ? SysCategory::kvSlug($prev->cat_id) : 'content',
+                'path'  => $prev->cat_id ? SysCategory::kvSlug($prev->cat_id) : 'content',  // to be removed
+                'slug'  => $prev->cat_id ? SysCategory::kvSlug($prev->cat_id) : 'content',
                 'id'    => $prev->id,
                 'title' => $prev->title,
             ] : (object) [],
             'next'        => $next ? [
-                'path'  => $next->cat_id ? SysCategory::kvSlug($next->cat_id) : 'content',
+                'path'  => $next->cat_id ? SysCategory::kvSlug($next->cat_id) : 'content',  // to be removed
+                'slug'  => $next->cat_id ? SysCategory::kvSlug($next->cat_id) : 'content',
                 'id'    => $next->id,
                 'title' => $next->title,
             ] : (object) [],

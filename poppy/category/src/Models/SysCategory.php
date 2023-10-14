@@ -108,6 +108,21 @@ class SysCategory extends Model
         if ($ref = sys_tag('py-category')->hGetAll(PyCategoryDef::ckIdRefName())) {
             return $ref[$id] ?? (string) $id;
         }
+        $ref = self::where('name', '!=', '')->selectRaw('name as tn,id')->pluck('tn', 'id')->toArray();
+        sys_tag('py-category')->hMSet(PyCategoryDef::ckIdRefName(), $ref);
+        return $ref[$id] ?? (string) $id;
+    }
+
+    /**
+     * ID 和 Name 的映射
+     * @param int $id
+     * @return string
+     */
+    public static function kvTypeSlug(int $id): string
+    {
+        if ($ref = sys_tag('py-category')->hGetAll(PyCategoryDef::ckIdRefName())) {
+            return $ref[$id] ?? (string) $id;
+        }
         $ref = self::where('name', '!=', '')->selectRaw("CONCAT(type, '-', name) as tn,id")->pluck('tn', 'id')->toArray();
         sys_tag('py-category')->hMSet(PyCategoryDef::ckIdRefName(), $ref);
         return $ref[$id] ?? (string) $id;

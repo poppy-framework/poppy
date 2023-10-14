@@ -32,4 +32,13 @@ class PyCategoryDef
     {
         return 'id-ref-name';
     }
+
+    /**
+     * 存储表示和 TypeName - ID 的映射
+     * @return string
+     */
+    public static function ckIdRefTypeName(): string
+    {
+        return 'id-ref-type-name';
+    }
 }
