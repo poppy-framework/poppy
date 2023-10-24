@@ -57,13 +57,14 @@ class ContentController extends JwtApiController
         }
         return SysContent::paginationInfo($Db, function (SysContent $item) {
             return [
-                'id'        => $item->id,
-                'path'      => $item->cat_id ? SysCategory::kvSlug($item->cat_id) : 'content',  // to be removed
-                'slug'      => $item->cat_id ? SysCategory::kvSlug($item->cat_id) : 'content',
-                'title'     => $item->title,
-                'thumb'     => $item->thumb,
-                'author'    => $item->author,
-                'create_at' => $item->create_at
+                'id'          => $item->id,
+                'path'        => $item->cat_id ? SysCategory::kvSlug($item->cat_id) : 'content',  // to be removed
+                'slug'        => $item->cat_id ? SysCategory::kvSlug($item->cat_id) : 'content',
+                'title'       => $item->title,
+                'thumb'       => $item->thumb,
+                'description' => $item->description ?: Str::substr(strip_tags($item->content), 0, 150),
+                'author'      => $item->author,
+                'create_at'   => $item->create_at
             ];
         });
     }
