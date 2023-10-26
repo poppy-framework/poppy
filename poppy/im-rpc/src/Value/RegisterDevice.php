@@ -15,7 +15,7 @@ class RegisterDevice extends BaseValue
 
     protected string $deviceType = '';
 
-    protected int $version = 0;
+    protected string $version = '';
 
     /**
      * @return string
@@ -72,20 +72,20 @@ class RegisterDevice extends BaseValue
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getVersion(): int
+    public function getVersion(): string
     {
         return $this->version;
     }
 
     /**
-     * @param int $version
+     * @param string $version
      * @return RegisterDevice
      */
-    public function setVersion(int $version): RegisterDevice
+    public function setVersion(string $version): RegisterDevice
     {
-        $this->version = $version;
+        $this->version = trim($version);
         return $this;
     }
 
