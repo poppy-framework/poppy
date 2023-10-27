@@ -134,6 +134,66 @@ class SysAppVersionTest extends TestCase
     }
 
     /**
+     * 测试 IOS山河 的数据问题
+     * @return void
+     * @throws ApplicationException
+     */
+    public function testIosShanHe():void
+    {
+        SysAppVersion::whereIn('title', array_keys($this->dataIos()))
+            ->where('platform', SysAppVersion::PLATFORM_IOS_SHANHE)
+            ->delete();
+
+        $Version = new Version();
+        $iosData = $this->dataIos();
+        if (!$Version->establish($iosData['4.4.4'])) {
+            $this->fail($Version->getError()->getMessage());
+        }
+        else {
+            $this->assertTrue(true);
+        }
+
+
+        // 最新版本
+        $latest = SysAppVersion::latestVersion(SysAppVersion::PLATFORM_IOS_SHANHE);
+        $this->assertEquals('4.4.4', $latest['title']);
+
+        // 不强制升级
+        $isUpgrade445 = SysAppVersion::isUpgrade(SysAppVersion::PLATFORM_IOS_SHANHE, '4.4.5');
+        $this->assertFalse($isUpgrade445);
+
+        if (!$Version->establish($iosData['4.5.0'])) {
+            $this->fail($Version->getError()->getMessage());
+        }
+        else {
+            $this->assertTrue(true);
+        }
+
+        // 最新版本
+        $latest = SysAppVersion::latestVersion(SysAppVersion::PLATFORM_IOS_SHANHE);
+        $this->assertEquals('4.5.0', $latest['title']);
+        // 强制升级
+        $isUpgrade445 = SysAppVersion::isUpgrade(SysAppVersion::PLATFORM_IOS_SHANHE, '4.4.5');
+        $this->assertTrue($isUpgrade445);
+
+
+        if (!$Version->establish($iosData['4.6.0'])) {
+            $this->fail($Version->getError()->getMessage());
+        }
+        else {
+            $this->assertTrue(true);
+        }
+
+        // 最新版本
+        $latest = SysAppVersion::latestVersion(SysAppVersion::PLATFORM_IOS_SHANHE);
+        $this->assertEquals('4.6.0', $latest['title'], '不匹配');
+
+        // 不强制更新
+        $isUpgrade451 = SysAppVersion::isUpgrade(SysAppVersion::PLATFORM_IOS_SHANHE, '4.5.1');
+        $this->assertFalse($isUpgrade451);
+    }
+
+    /**
      * @throws ApplicationException
      */
     private function dataAndroid(): array
