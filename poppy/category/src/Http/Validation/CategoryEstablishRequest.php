@@ -17,11 +17,11 @@ class CategoryEstablishRequest extends Request
         $id        = Route::input('id');
         $type      = input('type');
         return [
-            'type'  => [
+            'type'      => [
                 Rule::required(),
                 Rule::in(array_keys(SysCategory::kvType())),
             ],
-            'title' => [
+            'title'     => [
                 Rule::required(),
                 Rule::string(),
                 Rule::unique($tableName, 'title')->where(function ($query) use ($id, $type) {
@@ -31,7 +31,10 @@ class CategoryEstablishRequest extends Request
                     }
                 }),
             ],
-            'name'  => [
+            'parent_id' => [
+                Rule::numeric(),
+            ],
+            'name'      => [
                 Rule::string(),
                 Rule::unique($tableName, 'name')->where(function ($query) use ($id, $type) {
                     $query->where('type', $type);
