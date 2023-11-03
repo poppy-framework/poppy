@@ -33,11 +33,7 @@ class VersionController extends WebApiController
         $input   = input();
         $current = sys_get($input, 'version', '1.0.0');
 
-        $os  = x_header('os') ?: 'android';
-        $xk7 = x_header('k7');
-        if ($xk7 && $xk7 === SysAppVersion::PLATFORM_IOS_SHANHE) {
-            $os = SysAppVersion::PLATFORM_IOS_SHANHE;
-        }
+        $os = x_header('os') ?: 'android';
 
         if (!SysAppVersion::kvType($os, true)) {
             return Resp::error('不正确的平台信息');

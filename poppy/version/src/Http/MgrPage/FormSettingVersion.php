@@ -38,9 +38,5 @@ class FormSettingVersion extends FormSettingBase
             Rule::nullable(),
             Rule::url(),
         ])->help('开启 IOS 更新后需要填写的链接地址');
-        $this->text('ios_shanhe_store_url', 'AppStore山河链接')->rules([
-            Rule::nullable(),
-            Rule::url(),
-        ])->help('开启 IOS 更新后需要填写的链接地址');
     }
 }

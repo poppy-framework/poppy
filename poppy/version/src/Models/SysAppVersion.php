@@ -31,9 +31,8 @@ class SysAppVersion extends Model
 {
     /* 操作平台
    * ---------------------------------------- */
-    public const PLATFORM_ANDROID    = 'android';
-    public const PLATFORM_IOS        = 'ios';
-    public const PLATFORM_IOS_SHANHE = 'ios-shanhe';
+    public const PLATFORM_ANDROID = 'android';
+    public const PLATFORM_IOS     = 'ios';
 
     protected $table = 'sys_app_version';
 
@@ -53,9 +52,8 @@ class SysAppVersion extends Model
     public static function kvType(string $key = null, bool $check_key = false)
     {
         $desc = [
-            self::PLATFORM_ANDROID    => '安卓',
-            self::PLATFORM_IOS        => 'iOS',
-            self::PLATFORM_IOS_SHANHE => 'iOS山河',
+            self::PLATFORM_ANDROID => '安卓',
+            self::PLATFORM_IOS     => 'iOS',
         ];
 
         return kv($desc, $key, $check_key);
@@ -138,9 +136,6 @@ class SysAppVersion extends Model
     {
         if ($type === self::PLATFORM_ANDROID) {
             return FileManager::prefix() . self::path($type);
-        }
-        if ($type === self::PLATFORM_IOS_SHANHE) {
-            return sys_setting('py-version::setting.ios_shanhe_store_url');
         }
         return sys_setting('py-version::setting.ios_store_url');
     }
