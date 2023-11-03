@@ -71,6 +71,7 @@ class UploadTest extends TestCase
             }
 
             // 删除复制的目标数据
+            $Upload->setIsForceSetDestination(true);
             $Upload->setDestination($copyAimPath);
             try {
                 $Upload->delete();

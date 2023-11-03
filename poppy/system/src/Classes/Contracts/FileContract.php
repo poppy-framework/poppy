@@ -98,6 +98,12 @@ interface FileContract
     public function setDestination(string $destination);
 
     /**
+     * 强制设置目标地址
+     * @param bool $isForceSetDestination
+     */
+    public function setIsForceSetDestination(bool $isForceSetDestination);
+
+    /**
      * 图片url的地址
      * @return string
      */

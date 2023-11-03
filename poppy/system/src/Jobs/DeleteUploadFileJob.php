@@ -42,6 +42,7 @@ class DeleteUploadFileJob extends Job implements ShouldQueue
         if (!$dest) {
             throw new ApplicationException('文件 ' . $dest . ' @ ' . $this->url . ' 不存在, 不得删除');
         }
+        $Upload->setIsForceSetDestination(true);
         $Upload->setDestination(trim($dest, '/'));
         $Upload->delete();
     }

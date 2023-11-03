@@ -80,6 +80,13 @@ class DefaultFileProvider implements FileContract
      */
     private string $mimeType = '';
 
+    /**
+     * 是否强制设置目录-这样目录是不变的
+     * 不能适用于连续上传图片场景，只适用于明确地址的图片
+     * @var bool
+     */
+    private bool $isForceSetDestination = false;
+
 
     public function __construct()
     {
@@ -340,6 +347,16 @@ class DefaultFileProvider implements FileContract
     }
 
     /**
+     * @param bool $isForceSetDestination
+     * @return $this
+     */
+    public function setIsForceSetDestination(bool $isForceSetDestination): DefaultFileProvider
+    {
+        $this->isForceSetDestination = $isForceSetDestination;
+        return $this;
+    }
+
+    /**
      * @inheritDoc
      */
     public function copyTo(string $dist): bool
@@ -377,12 +394,12 @@ class DefaultFileProvider implements FileContract
      */
     private function genRelativePath(string $extension = 'png'): string
     {
-        if ($this->destination) {
+        if ($this->isForceSetDestination && $this->destination) {
             $ext = FileHelper::ext($this->destination);
             if ($ext !== $extension) {
                 throw new ApplicationException('指定文件的扩展类型不符, 可能导致图片无法展示');
             }
-            // return $this->destination;
+            return $this->destination;
         }
         $now      = Carbon::now();
         $fileName = $now->format('is') . Str::random(8) . '.' . $extension;
@@ -392,7 +409,7 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 重设内容
-     * @param string $extension 扩展
+     * @param string $extension  扩展
      * @param mixed  $img_stream 压缩内容
      * @return bool|StreamInterface
      */

@@ -59,6 +59,7 @@ class UploadTest extends TestCase
 
             $Upload->setExtension(['jpg']);
             $path = 'dev/testing/upload-dest.jpg';
+            $Upload->setIsForceSetDestination(true);
             $Upload->setDestination($path);
             if (!$Upload->saveFile($image)) {
                 $this->fail($Upload->getError());

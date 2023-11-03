@@ -165,6 +165,7 @@ class Version
         /** @var FileContract|AppTrait $Upload */
         $Upload   = app(FileContract::class);
         $distPath = parse_url($this->item->download_url)['path'] ?? '';
+        $Upload->setIsForceSetDestination(true);
         $Upload->setDestination($distPath);
         $latestFilename = SysAppVersion::path($this->item->platform);
         if (!$Upload->copyTo($latestFilename)) {
