@@ -49,11 +49,15 @@ class ContentController extends JwtApiController
      */
     public function lists(): JsonResponse
     {
-        $cat_slug = input('cat_slug');
-        $Db       = SysContent::where('is_enable', SysConfig::YES)
+        $catSlug = input('cat_slug');
+        $catId   = input('cat_id');
+        $Db      = SysContent::where('is_enable', SysConfig::YES)
             ->orderBy('list_order', 'desc');
-        if ($cat_slug && $id = SysCategory::kvNameRefId($cat_slug)) {
-            $Db->where('cat_id', $id);
+        if ($catSlug && !$catId) {
+            $catId = SysCategory::kvNameRefId($catSlug);
+        }
+        if ($catId) {
+            $Db = $Db->where('cat_id', $catId);
         }
         return SysContent::paginationInfo($Db, function (SysContent $item) {
             return [
@@ -110,7 +114,8 @@ class ContentController extends JwtApiController
     public function detail()
     {
         $id       = input('id');
-        $cat_slug = input('cat_slug');
+        $catSlug = input('cat_slug');
+        $catId   = input('cat_id');
 
         $item = SysContent::findOrFail($id);
 
@@ -119,9 +124,13 @@ class ContentController extends JwtApiController
         $DbPrev = (clone $Db)->where('id', '<', $item->id)->orderBy('id', 'desc');
 
         // 筛选分类
-        if ($cat_slug && $cat_id = SysCategory::kvNameRefId($cat_slug)) {
-            $DbNext->where('cat_id', $cat_id);
-            $DbPrev->where('cat_id', $cat_id);
+        if ($catSlug && !$catId) {
+            $catId = SysCategory::kvNameRefId($catSlug);
+        }
+
+        if ($catId) {
+            $DbNext->where('cat_id', $catId);
+            $DbPrev->where('cat_id', $catId);
         }
 
         /** @var SysContent $next */
