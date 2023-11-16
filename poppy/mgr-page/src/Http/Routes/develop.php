@@ -32,16 +32,6 @@ Route::group([
     $router->any('clockwork/report', 'ClockworkController@report')
         ->name('py-mgr-page:develop.clockwork.report');
 
-    /* ApiDoc
-     * ---------------------------------------- */
-    $router->any('api/field/{type}/{field}', 'ApiController@field')
-        ->name('py-mgr-page:develop.api.field');
-    $router->any('api/login', 'ApiController@login')
-        ->name('py-mgr-page:develop.api.login');
-    $router->any('api/{type?}', 'ApiController@index')
-        ->name('py-mgr-page:develop.api.index');
-
-
     // progress
     $router->any('progress', 'ProgressController@index')
         ->name('py-mgr-page:develop.progress.index');

@@ -24,6 +24,9 @@ class LoginFailedEvent
      */
     public $password;
 
+    /**
+     * @param array{type:string, passport: string, password: string} $credentials
+     */
     public function __construct(array $credentials)
     {
         $this->type     = $credentials['type'] ?? '';

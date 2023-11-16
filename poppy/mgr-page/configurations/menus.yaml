@@ -56,17 +56,6 @@ develop :
   title : 核心开发
   groups :
     -
-      title : 文档
-      children :
-        -
-          title : Restful-前台
-          route : py-mgr-page:develop.api.index
-        -
-          title : Restful-后台
-          route : py-mgr-page:develop.api.index
-          route_param :
-            - backend
-    -
       title : 系统信息
       children :
         -
