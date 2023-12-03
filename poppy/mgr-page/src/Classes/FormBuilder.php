@@ -573,7 +573,7 @@ HAHA;
             <<<MULTI
 <div class="layui-upload upload--multi">
     <div class="layui-btn-group">
-        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="{$id}_select">选择文件</button>
+        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="{$id}_select">选择图片</button>
         {$autoUpload}
         <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="{$id}_delete">删除选中图片</button>
         <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="{$id}_select_all">全选</button>
