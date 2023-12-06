@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Poppy\MgrPage\Classes\Grid;
+use Poppy\MgrPage\Classes\Grid\Exporter;
 
 abstract class AbstractExporter implements ExporterInterface
 {
@@ -120,18 +121,20 @@ abstract class AbstractExporter implements ExporterInterface
      */
     public function withScope($scope)
     {
-        if ($scope == \Poppy\MgrPage\Classes\Grid\Exporter::SCOPE_ALL) {
+        if ($scope === Exporter::SCOPE_ALL) {
             return $this;
         }
 
-        [$scope, $args] = explode(':', $scope);
+        $arrScope = explode(':', $scope);
+        $scope    = $arrScope[0];
+        $args     = $arrScope[1] ?? '';
 
-        if ($scope == \Poppy\MgrPage\Classes\Grid\Exporter::SCOPE_CURRENT_PAGE) {
-            $this->grid->model()->usePaginate(true);
+        if ($scope === Exporter::SCOPE_CURRENT_PAGE) {
+            $this->grid->model()->usePaginate();
             $this->page = $args ?: 1;
         }
 
-        if ($scope == \Poppy\MgrPage\Classes\Grid\Exporter::SCOPE_SELECTED_ROWS) {
+        if ($scope === Exporter::SCOPE_SELECTED_ROWS) {
             $selected = explode(',', $args);
             $this->grid->model()->whereIn($this->grid->getKeyName(), $selected);
         }

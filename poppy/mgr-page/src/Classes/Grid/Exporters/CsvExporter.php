@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Poppy\MgrPage\Classes\Grid\Column;
 
 class CsvExporter extends AbstractExporter
 {
@@ -23,20 +24,21 @@ class CsvExporter extends AbstractExporter
         ];
 
         response()->stream(function () {
-            $handle = fopen('php://output', 'w');
+            $handle = fopen('php://output', 'wb');
 
             $titles = [];
 
             $this->chunk(function ($records) use ($handle, &$titles) {
                 if (empty($titles)) {
-                    $titles = $this->getHeaderRowFromRecords($records);
+                    $titles = $this->getHeaderRow();
 
                     // Add CSV headers
                     fputcsv($handle, $titles);
                 }
 
+                $records = $this->getFormattedRecords($records);
                 foreach ($records as $record) {
-                    fputcsv($handle, $this->getFormattedRecord($record));
+                    fputcsv($handle, $record);
                 }
             });
 
@@ -45,6 +47,32 @@ class CsvExporter extends AbstractExporter
         }, 200, $headers)->send();
 
         exit;
+    }
+
+    /**
+     * 获取 Header, 从记录中获取 Header
+     * @return array
+     */
+    private function getHeaderRow(): array
+    {
+        $titles = collect();
+        collect($this->grid->visibleColumns())->each(function (Column $column) use ($titles) {
+            if ($column->name === Column::NAME_ACTION) {
+                return;
+            }
+            $name = $column->name;
+            /** @var Column $column */
+            $column = $this->grid->visibleColumns()->first(function (Column $column) use ($name) {
+                return $column->name === $name;
+            });
+
+            if ($column) {
+                $titles->push($column->label);
+            } else {
+                $titles->push(Str::ucfirst($name));
+            }
+        });
+        return $titles->toArray();
     }
 
     /**
@@ -63,6 +91,24 @@ class CsvExporter extends AbstractExporter
         );
 
         return $titles->toArray();
+    }
+
+    /**
+     * @param Collection $data
+     * @return array
+     */
+    private function getFormattedRecords(Collection $data): array
+    {
+        return $data->map(function ($row) {
+            $newRow = collect();
+            $this->grid->visibleColumns()->each(function (Column $column) use ($row, $newRow) {
+                if ($column->name === Column::NAME_ACTION) {
+                    return;
+                }
+                $newRow->push(data_get($row->toArray(), $column->name));
+            });
+            return $newRow->toArray();
+        })->toArray();
     }
 
     /**

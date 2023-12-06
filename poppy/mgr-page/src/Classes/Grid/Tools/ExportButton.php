@@ -40,6 +40,6 @@ class ExportButton extends AbstractTool
             'selected_export_name' => $this->grid->getExportSelectedName(),
         ];
 
-        return view('py-mgr-page::tpl.filter.export-button', $variables);
+        return view('py-mgr-page::tpl.filter.export-button', $variables)->toHtml();
     }
 }

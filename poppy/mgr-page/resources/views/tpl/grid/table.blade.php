@@ -80,6 +80,15 @@ $('#{!! $filter_id !!}-search').on('click', function () {
     $.each(values, function (i, field) {
         query[field.name] = field.value;
     });
+
+    // export
+    let exportMark = $('#{!! $filter_id !!}-export').val();
+    if (exportMark) {
+        _.set(query, '_export', exportMark);
+        Util.makeRequest('{!! $url_base !!}', query)
+        return;
+    }
+
     layui.table.reload('{!! $filter_id !!}-table', {
         page: {
             curr: 1 //重新从第 1 页开始

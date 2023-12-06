@@ -36,6 +36,7 @@ abstract class ListBase implements ListContract
 
 
     protected bool $showRowSelector = false;
+    protected bool $showExporter = false;
 
 
     /**
@@ -61,6 +62,11 @@ abstract class ListBase implements ListContract
     public function isShowRowSelector(): bool
     {
         return $this->showRowSelector;
+    }
+
+    public function isShowExporter(): bool
+    {
+        return $this->showExporter;
     }
 
     /**

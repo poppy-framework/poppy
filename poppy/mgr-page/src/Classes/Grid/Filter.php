@@ -94,6 +94,9 @@ class Filter
      */
     public $expand = false;
 
+
+    protected bool $export = false;
+
     /**
      * 当前的模型
      * @var Model
@@ -176,6 +179,19 @@ class Filter
     }
 
     /**
+     * @param string $name
+     * @param string $filterClass
+     */
+    public static function extend($name, $filterClass)
+    {
+        if (!is_subclass_of($filterClass, FilterItem::class)) {
+            throw new InvalidArgumentException("The class [$filterClass] must be a type of " . FilterItem::class . '.');
+        }
+
+        static::$supports[$name] = $filterClass;
+    }
+
+    /**
      * Set action of search form.
      *
      * @param string $action
@@ -245,6 +261,12 @@ class Filter
     {
         $this->name = $name;
         $this->setFilterId("{$this->name}-{$this->filterId}");
+        return $this;
+    }
+
+    public function enableExport()
+    {
+        $this->export = true;
         return $this;
     }
 
@@ -437,6 +459,7 @@ class Filter
             'action'    => $this->action ?: $this->urlWithoutFilters(),
             'layout'    => $this->layout,
             'filter_id' => $this->filterId,
+            'export'    => $this->export,
         ])->render();
     }
 
@@ -513,19 +536,6 @@ class Filter
         }
 
         return $this;
-    }
-
-    /**
-     * @param string $name
-     * @param string $filterClass
-     */
-    public static function extend($name, $filterClass)
-    {
-        if (!is_subclass_of($filterClass, FilterItem::class)) {
-            throw new InvalidArgumentException("The class [$filterClass] must be a type of " . FilterItem::class . '.');
-        }
-
-        static::$supports[$name] = $filterClass;
     }
 
     /**

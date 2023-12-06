@@ -3,6 +3,7 @@
 namespace Poppy\MgrPage\Classes\Grid;
 
 use Poppy\MgrPage\Classes\Grid;
+use Poppy\MgrPage\Classes\Grid\Exporters\AbstractExporter;
 use Poppy\MgrPage\Classes\Grid\Exporters\CsvExporter;
 
 class Exporter
@@ -67,32 +68,6 @@ class Exporter
     }
 
     /**
-     * Resolve export driver.
-     *
-     * @param string $driver
-     *
-     * @return CsvExporter
-     */
-    public function resolve($driver)
-    {
-        if ($driver instanceof \Poppy\MgrPage\Classes\Grid\Exporters\AbstractExporter) {
-            return $driver->setGrid($this->grid);
-        }
-
-        return $this->getExporter($driver);
-    }
-
-    /**
-     * Get default exporter.
-     *
-     * @return CsvExporter
-     */
-    public function getDefaultExporter()
-    {
-        return new CsvExporter($this->grid);
-    }
-
-    /**
      * Format query for export url.
      *
      * @param int  $scope
@@ -117,6 +92,32 @@ class Exporter
         }
 
         return [static::$queryName => $query];
+    }
+
+    /**
+     * Resolve export driver.
+     *
+     * @param string $driver
+     *
+     * @return CsvExporter
+     */
+    public function resolve($driver)
+    {
+        if ($driver instanceof AbstractExporter) {
+            return $driver->setGrid($this->grid);
+        }
+
+        return $this->getExporter($driver);
+    }
+
+    /**
+     * Get default exporter.
+     *
+     * @return CsvExporter
+     */
+    public function getDefaultExporter()
+    {
+        return new CsvExporter($this->grid);
     }
 
     /**

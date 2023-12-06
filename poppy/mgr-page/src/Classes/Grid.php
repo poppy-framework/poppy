@@ -182,6 +182,16 @@ class Grid
     }
 
     /**
+     * Initialize with user pre-defined default disables and exporter, etc.
+     *
+     * @param Closure|null $callback
+     */
+    public static function init(Closure $callback = null)
+    {
+        static::$initCallbacks[] = $callback;
+    }
+
+    /**
      * Get Grid model.
      *
      * @return Model
@@ -226,6 +236,13 @@ class Grid
 
         if (!$List->isShowRowSelector()) {
             $this->disableRowSelector();
+        }
+
+        if (!$List->isShowExporter()) {
+            $this->disableExporter();
+        }
+        else {
+            $this->disableExporter(false);
         }
 
         $this->filter($List->filter());
@@ -434,16 +451,6 @@ class Grid
     public function getPerPage(): int
     {
         return $this->perPage;
-    }
-
-    /**
-     * Initialize with user pre-defined default disables and exporter, etc.
-     *
-     * @param Closure|null $callback
-     */
-    public static function init(Closure $callback = null)
-    {
-        static::$initCallbacks[] = $callback;
     }
 
     /**
