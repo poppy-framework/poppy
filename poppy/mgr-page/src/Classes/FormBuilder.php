@@ -217,6 +217,11 @@ class FormBuilder extends CollectiveFormBuilder
                 config: {$contentId}EditorConfig,
                 mode: 'simple', // or 'simple'
             })
+            
+            // init value
+            const html{$contentId} = editor{$contentId}.getHtml();
+            $('#{$contentId}Input').val(html{$contentId})
+            
             const {$contentId}ToolbarConfig = {
                 excludeKeys: [
                     'headerSelect',
