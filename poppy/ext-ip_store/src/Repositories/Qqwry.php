@@ -42,7 +42,7 @@ class Qqwry implements IpContract
         $ipAddr1  = $ipAddr2 = '';
         $EndNum   = $ipAllNum;
         while ($ip1num > $ipNum || $ip2num < $ipNum) {
-            $Middle = intval(($EndNum + $BeginNum) / 2);
+            $Middle = (int)(($EndNum + $BeginNum) / 2);
             fseek($fd, $ipbegin + 7 * $Middle);
             $ipData1 = fread($fd, 4);
             if (strlen($ipData1) < 4) {

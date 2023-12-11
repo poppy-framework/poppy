@@ -25,6 +25,9 @@ class Verification
     const TYPE_MAIL   = 'mail';
     const TYPE_MOBILE = 'mobile';
 
+    public const CAPTCHA_SEND_TYPE_EXIST    = 'exist';
+    public const CAPTCHA_SEND_TYPE_NO_EXIST = 'no-exist';
+
     /**
      * @var RdsDb
      */
@@ -52,9 +55,9 @@ class Verification
     }
 
     /**
-     * @param string $passport    需要发送的通行证
+     * @param string $passport 需要发送的通行证
      * @param int    $expired_min 过期时间
-     * @param int    $length      验证码长度
+     * @param int    $length 验证码长度
      * @return bool
      */
     public function genCaptcha(string $passport, int $expired_min = 5, int $length = 6): bool
@@ -86,7 +89,7 @@ class Verification
     /**
      * 验证验证码, 验证码验证成功仅有一次机会
      * @param string $passport 通行证
-     * @param string $captcha  验证码
+     * @param string $captcha 验证码
      * @param bool   $forget
      * @return bool
      */
@@ -155,7 +158,7 @@ class Verification
 
     /**
      * 限流以及提示, 开发状态下不进行限流
-     * @param string $key     限流标识
+     * @param string $key 限流标识
      * @param int    $seconds 秒数
      * @return bool
      */
@@ -195,7 +198,7 @@ class Verification
     /**
      * 生成一次验证码
      * @param int          $expired_min 过期时间
-     * @param string|array $hidden_str  隐藏的验证字串
+     * @param string|array $hidden_str 隐藏的验证字串
      * @return string
      */
     public function genOnceVerifyCode(int $expired_min = 10, $hidden_str = ''): string
@@ -215,7 +218,7 @@ class Verification
 
     /**
      * 需要验证的验证码
-     * @param string $code   一次验证码
+     * @param string $code 一次验证码
      * @param bool   $forget 是否删除验证码
      * @return bool
      */
@@ -252,7 +255,7 @@ class Verification
 
     /**
      * 验证校验值, 不进行删除
-     * @param string       $key  验证KEy
+     * @param string       $key 验证KEy
      * @param string|array $word 验证值
      * @return bool
      */

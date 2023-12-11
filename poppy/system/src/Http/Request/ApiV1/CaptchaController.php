@@ -7,36 +7,28 @@ namespace Poppy\System\Http\Request\ApiV1;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Action\Verification;
 use Poppy\System\Events\CaptchaSendEvent;
+use Poppy\System\Http\Validation\CaptchaSendRequest;
 use Poppy\System\Models\PamAccount;
 use Throwable;
 
 /**
- * 验证码控制器
+ * 验证码
  */
 class CaptchaController extends JwtApiController
 {
 
-    /**
-     * @api                   {post} /api_v1/system/captcha/send [Sys]发送验证码
-     * @apiVersion            1.0.0
-     * @apiName               SysCaptchaSend
-     * @apiGroup              Poppy
-     * @apiQuery {string}     passport       通行证
-     * @apiQuery {string}     [type]         是否存在(exist:验证必须存在;no-exist:验证必须不存在)
-     */
-    public function send()
+    public function send(CaptchaSendRequest $request)
     {
-        $input    = input();
-        $passport = sys_get($input, 'passport');
-        $type     = sys_get($input, 'type');
+        $passport = $request->getPassport();
+        $type     = $request->getType();
 
         if ($type) {
-            if ($type === 'exist') {
+            if ($type === Verification::CAPTCHA_SEND_TYPE_EXIST) {
                 if (!PamAccount::passportExists($passport)) {
                     return Resp::error('输入的账号不存在, 请检查输入');
                 }
             }
-            elseif ($type === 'no-exist') {
+            elseif ($type === Verification::CAPTCHA_SEND_TYPE_NO_EXIST) {
                 if (PamAccount::passportExists($passport)) {
                     return Resp::error('输入的账号已存在, 请检查输入');
                 }

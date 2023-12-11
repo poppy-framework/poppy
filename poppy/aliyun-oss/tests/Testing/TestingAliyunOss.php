@@ -13,15 +13,15 @@ class TestingAliyunOss
     public static function config(): array
     {
         return [
-            'access_key'      => sys_setting('py-aliyun-oss::oss.access_key'),
-            'access_secret'   => sys_setting('py-aliyun-oss::oss.access_secret'),
-            'endpoint'        => sys_setting('py-aliyun-oss::oss.endpoint'),
-            'bucket'          => sys_setting('py-aliyun-oss::oss.bucket'),
-            'url_prefix'      => sys_setting('py-aliyun-oss::oss.url_prefix'),
-            'role_arn'        => sys_setting('py-aliyun-oss::oss.role_arn'),
-            'temp_app_key'    => sys_setting('py-aliyun-oss::oss.temp_app_key'),
-            'temp_app_secret' => sys_setting('py-aliyun-oss::oss.temp_app_secret'),
-            'watermark'       => sys_setting('py-aliyun-oss::oss.watermark'),
+            'access_key'      => env('PY_ALIYUN_OSS_ACCESS_KEY'),
+            'access_secret'   => env('PY_ALIYUN_OSS_ACCESS_SECRET'),
+            'endpoint'        => env('PY_ALIYUN_OSS_ENDPOINT'),
+            'bucket'          => env('PY_ALIYUN_OSS_BUCKET'),
+            'url_prefix'      => env('PY_ALIYUN_OSS_URL_PREFIX'),
+            'role_arn'        => env('PY_ALIYUN_OSS_ROLE_ARN'),
+            'temp_app_key'    => env('PY_ALIYUN_OSS_TEMP_APP_KEY'),
+            'temp_app_secret' => env('PY_ALIYUN_OSS_TEMP_APP_SECRET'),
+            'watermark'       => env('PY_ALIYUN_OSS_WATERMARK'),
         ];
     }
 }

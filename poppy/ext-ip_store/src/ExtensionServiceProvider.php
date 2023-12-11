@@ -39,7 +39,7 @@ class ExtensionServiceProvider extends ServiceProvider implements DeferrableProv
 
     private function registerIp()
     {
-        $store = strtolower(config('ext.ip_store.type', 'mon17'));
+        $store = strtolower(config('poppy.ext-ip_store.type', 'mon17'));
         $types = ['mon17', 'qqwry'];
         if (!in_array($store, $types)) {
             $store = 'mon17';

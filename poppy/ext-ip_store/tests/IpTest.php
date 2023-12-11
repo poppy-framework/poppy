@@ -20,7 +20,6 @@ class IpTest extends TestCase
     public function testMon17(): void
     {
         $area = (new Mon17())->area($this->ip);
-
         $this->assertEquals('中国 山东 济南', $area);
     }
 
@@ -29,6 +28,8 @@ class IpTest extends TestCase
     {
         $area = (new Qqwry())->area('39.71.122.222');
         $this->assertEquals('山东省临沂市 联通', $area);
+        $area = (new Qqwry())->area('113.126.78.131');
+        $this->assertEquals('山东省青岛市 电信', $area);
     }
 
     public function testContractBind()

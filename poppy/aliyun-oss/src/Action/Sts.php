@@ -126,7 +126,6 @@ class Sts
 		{
 			"Effect": "Allow",
 			"Action": [
-				"oss:Put*",
 				"oss:PutObject"
 			],
 			"Resource": [
