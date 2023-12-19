@@ -7,7 +7,7 @@ Route::group([
     'namespace'  => 'Poppy\Backstage\Http\Request\Api',
 ], function (Router $router) {
     // Auth
-    $router->any('auth/login', 'AuthController@login');
+    $router->post('auth/login', 'AuthController@login');
 });
 
 Route::group([
@@ -15,6 +15,8 @@ Route::group([
     'namespace'  => 'Poppy\Backstage\Http\Request\Api',
 ], function (Router $router) {
     // 用户信息
-    $router->any('home/menu', 'HomeController@menu');
-    $router->any('auth/access', 'AuthController@access');
+    $router->get('home/menu', 'HomeController@menu');
+    $router->get('home/setting', 'HomeController@setting');
+    $router->post('home/setting', 'HomeController@setting');
+    $router->get('auth/access', 'AuthController@access');
 });

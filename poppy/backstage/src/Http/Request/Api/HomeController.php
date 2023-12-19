@@ -4,9 +4,18 @@ declare(strict_types = 1);
 
 namespace Poppy\Backstage\Http\Request\Api;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use Poppy\Backstage\Http\Validation\SettingRequest;
+use Poppy\Core\Classes\Contracts\SettingContract;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Http\Request\ApiV1\JwtApiController;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Request;
 
 /**
  * 认证控制器
@@ -18,15 +27,32 @@ class HomeController extends JwtApiController
     {
         return Resp::success('OK', [
             [
+                'path'      => '/manage',
+                'name'      => 'manage',
+                'component' => 'LAYOUT',
+                'meta'      => [
+                    'title' => '系统设置',
+                    'icon'  => 'setting-1',
+                ],
+                'children'  => [
+                    [
+                        'path'      => 'setting',
+                        'name'      => 'ManageSetting',
+                        'component' => '/manage/setting/index',
+                        'meta'      => [
+                            'title' => '站点设置',
+                            'icon'  => 'system-setting',
+                        ],
+                    ],
+                ],
+            ],
+            [
                 'path'      => '/list',
                 'name'      => 'list',
                 'component' => 'LAYOUT',
                 'redirect'  => '/list/base',
                 'meta'      => [
-                    'title' => [
-                        'zh_CN' => '列表页',
-                        'en_US' => 'List',
-                    ],
+                    'title' => '列表页',
                     'icon'  => 'view-list',
                 ],
                 'children'  => [
@@ -35,10 +61,7 @@ class HomeController extends JwtApiController
                         'name'      => 'ListBase',
                         'component' => '/list/base/index',
                         'meta'      => [
-                            'title' => [
-                                'zh_CN' => '基础列表页',
-                                'en_US' => 'Base List',
-                            ],
+                            'title' => '基础列表页',
                             'icon'  => 'view-list',
                         ],
                     ],
@@ -47,10 +70,7 @@ class HomeController extends JwtApiController
                         'name'      => 'ListCard',
                         'component' => '/list/card/index',
                         'meta'      => [
-                            'title' => [
-                                'zh_CN' => '卡片列表页',
-                                'en_US' => 'Card List',
-                            ],
+                            'title' => '卡片列表页',
                         ],
                     ],
                     [
@@ -58,10 +78,7 @@ class HomeController extends JwtApiController
                         'name'      => 'ListFilter',
                         'component' => '/list/filter/index',
                         'meta'      => [
-                            'title' => [
-                                'zh_CN' => '筛选列表页',
-                                'en_US' => 'Filter List',
-                            ],
+                            'title' => '筛选列表页',
                         ],
                     ],
                     [
@@ -69,10 +86,7 @@ class HomeController extends JwtApiController
                         'name'      => 'ListTree',
                         'component' => '/list/tree/index',
                         'meta'      => [
-                            'title' => [
-                                'zh_CN' => '树状筛选列表页',
-                                'en_US' => 'Tree List',
-                            ],
+                            'title' => '树状筛选列表页',
                         ],
                     ],
                 ],
@@ -83,10 +97,7 @@ class HomeController extends JwtApiController
                 'component' => 'LAYOUT',
                 'redirect'  => '/form/base',
                 'meta'      => [
-                    'title' => [
-                        'zh_CN' => '表单页',
-                        'en_US' => 'Form',
-                    ],
+                    'title' => '表单页',
                     'icon'  => 'edit-1',
                 ],
                 'children'  => [
@@ -95,10 +106,15 @@ class HomeController extends JwtApiController
                         'name'      => 'FormBase',
                         'component' => '/form/base/index',
                         'meta'      => [
-                            'title' => [
-                                'zh_CN' => '基础表单页',
-                                'en_US' => 'Base Form',
-                            ],
+                            'title' => '基础表单页',
+                        ],
+                    ],
+                    [
+                        'path'      => 'auto',
+                        'name'      => 'FormAuto',
+                        'component' => '/form/auto/index',
+                        'meta'      => [
+                            'title' => '通用表单',
                         ],
                     ],
                     [
@@ -106,10 +122,7 @@ class HomeController extends JwtApiController
                         'name'      => 'FormStep',
                         'component' => '/form/step/index',
                         'meta'      => [
-                            'title' => [
-                                'zh_CN' => '分步表单页',
-                                'en_US' => 'Step Form',
-                            ],
+                            'title' => '分步表单页',
                         ],
                     ],
                 ],
@@ -120,10 +133,7 @@ class HomeController extends JwtApiController
                 'component' => 'LAYOUT',
                 'redirect'  => '/detail/base',
                 'meta'      => [
-                    'title' => [
-                        'zh_CN' => '详情页',
-                        'en_US' => 'Detail',
-                    ],
+                    'title' => '详情页',
                     'icon'  => 'layers',
                 ],
                 'children'  =>
@@ -133,10 +143,7 @@ class HomeController extends JwtApiController
                             'name'      => 'DetailBase',
                             'component' => '/detail/base/index',
                             'meta'      => [
-                                'title' => [
-                                    'zh_CN' => '基础详情页',
-                                    'en_US' => 'Base Detail',
-                                ],
+                                'title' => '基础详情页',
                             ],
                         ],
                         [
@@ -144,10 +151,7 @@ class HomeController extends JwtApiController
                             'name'      => 'DetailAdvanced',
                             'component' => '/detail/advanced/index',
                             'meta'      => [
-                                'title' => [
-                                    'zh_CN' => '多卡片详情页',
-                                    'en_US' => 'Card Detail',
-                                ],
+                                'title' => '多卡片详情页',
                             ],
                         ],
                         [
@@ -155,10 +159,7 @@ class HomeController extends JwtApiController
                             'name'      => 'DetailDeploy',
                             'component' => '/detail/deploy/index',
                             'meta'      => [
-                                'title' => [
-                                    'zh_CN' => '数据详情页',
-                                    'en_US' => 'Data Detail',
-                                ],
+                                'title' => '数据详情页',
                             ],
                         ],
                         [
@@ -166,10 +167,7 @@ class HomeController extends JwtApiController
                             'name'      => 'DetailSecondary',
                             'component' => '/detail/secondary/index',
                             'meta'      => [
-                                'title' => [
-                                    'zh_CN' => '二级详情页',
-                                    'en_US' => 'Secondary Detail',
-                                ],
+                                'title' => '二级详情页',
                             ],
                         ],
                     ],
@@ -181,10 +179,7 @@ class HomeController extends JwtApiController
                 'redirect'  => '/frame/doc',
                 'meta'      => [
                     'icon'  => 'internet',
-                    'title' => [
-                        'zh_CN' => '外部页面',
-                        'en_US' => 'External',
-                    ],
+                    'title' => '外部页面',
                 ],
                 'children'  => [
                     [
@@ -193,10 +188,7 @@ class HomeController extends JwtApiController
                         'component' => 'IFrame',
                         'meta'      => [
                             'frameSrc' => 'https://tdesign.tencent.com/starter/docs/vue-next/get-started',
-                            'title'    => [
-                                'zh_CN' => '使用文档（内嵌）',
-                                'en_US' => 'Documentation(IFrame)',
-                            ],
+                            'title'    => '使用文档（内嵌）',
                         ],
                     ],
                     [
@@ -205,10 +197,7 @@ class HomeController extends JwtApiController
                         'component' => 'IFrame',
                         'meta'      => [
                             'frameSrc' => 'https://tdesign.tencent.com/vue-next/getting-started',
-                            'title'    => [
-                                'zh_CN' => 'TDesign 文档（内嵌）',
-                                'en_US' => 'TDesign (IFrame)',
-                            ],
+                            'title'    => 'TDesign 文档（内嵌）',
                         ],
                     ],
                     [
@@ -218,14 +207,61 @@ class HomeController extends JwtApiController
                         'meta'      => [
                             'frameSrc'   => 'https://tdesign.tencent.com/vue-next/getting-started',
                             'frameBlank' => true,
-                            'title'      => [
-                                'zh_CN' => 'TDesign 文档（外链',
-                                'en_US' => 'TDesign Doc(Link)',
-                            ],
+                            'title'      => 'TDesign 文档（外链)',
                         ],
                     ],
                 ],
             ],
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse|RedirectResponse|Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws AuthorizationException
+     * @throws ValidationException
+     */
+    public function setting(Request $request)
+    {
+        /** @var SettingRequest $req */
+        $req = app(SettingRequest::class, [$request]);
+        $req->scene('namespace')->validateResolved();
+        if (is_post()) {
+            $namespace = $req->getNamespace();
+            $req->scene($namespace)->validateResolved();
+            $data     = $req->getData();
+            $settings = [];
+            foreach ($data as $key => $value) {
+                $settings[$namespace . '.' . $key] = $value;
+            }
+            app(SettingContract::class)->set($settings);
+            return Resp::success('操作成功');
+        }
+
+        $req->scene('namespace')->validateResolved();
+        return Resp::success('获取成功', $this->settingValues($req->definedKeys(), $req->getNamespace()));
+
+    }
+
+    /**
+     * 返回配置
+     * @param array  $keys
+     * @param string $group
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function settingValues(array $keys, string $group): array
+    {
+        if (!isset($keys[$group])) {
+            return [];
+        }
+        $settings = [];
+        foreach ($keys[$group] as $key) {
+            $settings[$key] = app(SettingContract::class)->get("{$group}.{$key}");
+        }
+        return $settings;
     }
 }

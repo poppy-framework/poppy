@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace DummyNamespace;
 
-use \Poppy\Framework\Application\Request;
+use Poppy\Framework\Application\Request;
 
 class DummyClass extends Request
 {
@@ -16,6 +16,11 @@ class DummyClass extends Request
     public function authorize(): bool
     {
         return false;
+    }
+
+    public function attributes(): array
+    {
+        return [];
     }
 
     /**

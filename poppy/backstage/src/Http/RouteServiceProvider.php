@@ -27,7 +27,7 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
         Route::group([
             'prefix' => 'api/backstage/i',
         ], function () {
-            require_once __DIR__ . '/Routes/api.php';
+            require_once __DIR__ . '/Routes/backstage.php';
         });
     }
 }
