@@ -15,14 +15,14 @@ class Cache
     /**
      * @var RdsDb
      */
-    private RdsDb $cache;
+    private RdsDb $store;
 
     /**
      * @param string $tag
      */
     private function __construct(string $tag)
     {
-        $this->cache = new RdsDb('', $tag);
+        $this->store = new RdsDb('', $tag);
     }
 
     /**
@@ -31,6 +31,14 @@ class Cache
     public static function of(string $tag = ''): Cache
     {
         return new self($tag);
+    }
+
+    /**
+     * @return RdsDb
+     */
+    public function getStore(): RdsDb
+    {
+        return $this->store;
     }
 
     /**
@@ -49,7 +57,7 @@ class Cache
      */
     public function get(string $key, $default = null)
     {
-        return $this->cache->get($key) ?? value($default);
+        return $this->store->get($key) ?? value($default);
     }
 
     /**
@@ -69,7 +77,7 @@ class Cache
             return $this->forget($key);
         }
 
-        return $this->cache->setEx($key, (int) max(1, $seconds), $value);
+        return $this->store->setEx($key, (int) max(1, $seconds), $value);
     }
 
     /**
@@ -90,7 +98,7 @@ class Cache
      */
     public function forever(string $key, $value): bool
     {
-        return $this->cache->set($key, $value);
+        return $this->store->set($key, $value);
     }
 
     /**
@@ -101,7 +109,7 @@ class Cache
      */
     public function remember(string $key, int $ttl, Closure $callback)
     {
-        $value = $this->cache->get($key);
+        $value = $this->store->get($key);
         if ($value !== null) {
             return $value;
         }
@@ -117,7 +125,7 @@ class Cache
      */
     public function rememberForever(string $key, Closure $callback)
     {
-        $value = $this->cache->get($key);
+        $value = $this->store->get($key);
         if ($value !== null) {
             return $value;
         }
@@ -141,7 +149,7 @@ class Cache
      */
     public function delete(string $key): bool
     {
-        return $this->cache->del($key) > 0;
+        return $this->store->del($key) > 0;
     }
 
     /**
