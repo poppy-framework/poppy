@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Poppy\Core\Redis;
 
+use Illuminate\Cache\Events\CacheHit;
+use Illuminate\Cache\Events\CacheMissed;
 use Throwable;
 
 /**
@@ -53,7 +55,19 @@ class RdsDb
      */
     public function __call($method, $arguments)
     {
-        return $this->handler->$method(...$arguments);
+        $value = $this->handler->$method(...$arguments);
+        if ($method !== 'get') {
+            return $value;
+        }
+
+        $key = (string) sys_get($arguments, 0);
+        if ($value === null) {
+            event(new CacheMissed($key));
+        } else {
+            event(new CacheHit($key, $value));
+        }
+        return $value;
+
     }
 
     public function __destruct()
