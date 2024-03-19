@@ -10,6 +10,7 @@ use Poppy\MgrPage\Http\Request\Backend\BackendController;
 use Poppy\Sms\Http\MgrPage\FormSettingAliyun;
 use Poppy\Sms\Http\MgrPage\FormSettingChuanglan;
 use Poppy\Sms\Http\MgrPage\FormSettingLianLu;
+use Poppy\Sms\Http\MgrPage\FormSettingVolc;
 
 /**
  * 短信控制器
@@ -48,5 +49,13 @@ class StoreController extends BackendController
     public function lianlu()
     {
         return (new FormSettingLianLu())->render();
+    }
+
+    /**
+     * @return Factory|View
+     */
+    public function volc()
+    {
+        return (new FormSettingVolc())->render();
     }
 }

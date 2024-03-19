@@ -25,6 +25,7 @@ class Sms
     public const SCOPE_ALIYUN    = 'aliyun';
     public const SCOPE_CHUANGLAN = 'chuanglan';
     public const SCOPE_LIANLU    = 'lianlu';
+    public const SCOPE_VOLC      = 'volc';
 
 
     /**
@@ -46,7 +47,7 @@ class Sms
 
     /**
      * 短信类型
-     * @param string|null $key key
+     * @param string|null $key       key
      * @param bool        $check_key 检测key是否存在
      * @return array|string
      */
@@ -135,7 +136,7 @@ class Sms
         $this->templates->offsetSet($id, [
             'scope' => $scope,
             'type'  => $type,
-            'code'  => $code
+            'code'  => $code,
         ]);
         return $this->save();
     }

@@ -90,6 +90,13 @@ class ServiceProvider extends PoppyServiceProvider
                         'poppy.sms.lianlu.cty_app_key' => sys_setting('py-sms::sms.chuanglan_cty_app_key'),
                     ]);
                 }
+                if ($sendType === Sms::SCOPE_VOLC) {
+                    config([
+                        'poppy.sms.volc.access_key'          => sys_setting('py-sms::sms.volc_access_key'),
+                        'poppy.sms.volc.access_secret'       => sys_setting('py-sms::sms.volc_access_secret'),
+                        'poppy.sms.volc.default_account' => sys_setting('py-sms::sms.volc_default_account'),
+                    ]);
+                }
             }
         }
     }
