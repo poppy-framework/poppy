@@ -157,7 +157,8 @@ class TimeHelper
      */
     public static function dayStart(string $date = ''): string
     {
-        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', trim($date))) {
+        $date = trim($date);
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
             return Carbon::createFromFormat('Y-m-d', $date)->startOfDay()->toDateTimeString();
         }
         return Carbon::now()->startOfDay()->toDateTimeString();
@@ -170,7 +171,8 @@ class TimeHelper
      */
     public static function dayEnd(string $date = ''): string
     {
-        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', trim($date))) {
+        $date = trim($date);
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
             return Carbon::createFromFormat('Y-m-d', $date)->endOfDay()->toDateTimeString();
         }
         return Carbon::now()->endOfDay()->toDateTimeString();

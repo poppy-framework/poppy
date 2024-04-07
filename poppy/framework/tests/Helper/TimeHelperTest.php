@@ -52,6 +52,7 @@ class TimeHelperTest extends TestCase
     public function testDayStart(): void
     {
         $this->assertEquals('2020-11-20 00:00:00', TimeHelper::dayStart('2020-11-20'));
+        $this->assertEquals('2022-12-10 00:00:00', TimeHelper::dayStart('2022-12-10 '));
 
         $today = Carbon::now();
         $this->assertEquals($today->startOfDay(), TimeHelper::dayStart());
@@ -60,6 +61,7 @@ class TimeHelperTest extends TestCase
     public function testDayEnd(): void
     {
         $this->assertEquals('2020-11-20 23:59:59', TimeHelper::dayEnd('2020-11-20'));
+        $this->assertEquals('2022-12-10 23:59:59', TimeHelper::dayEnd('2022-12-10 '));
 
         $today = Carbon::now();
         $this->assertEquals($today->endOfDay(), TimeHelper::dayEnd());
