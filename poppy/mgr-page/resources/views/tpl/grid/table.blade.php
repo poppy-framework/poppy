@@ -82,11 +82,12 @@ $('#{!! $filter_id !!}-search').on('click', function () {
     });
 
     // export
-    let exportMark = $('#{!! $filter_id !!}-export').val();
+    let exportMark = $('select[name=_export_]').val();
     if (exportMark) {
         _.set(query, '_export', exportMark);
-        Util.makeRequest('{!! $url_base !!}', query)
-        return;
+        let url = new URLSearchParams(query);
+        window.open("{!! $url_base !!}"+url.toString());
+        return false;
     }
 
     layui.table.reload('{!! $filter_id !!}-table', {
