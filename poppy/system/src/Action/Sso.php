@@ -32,6 +32,9 @@ class Sso
     public const GROUP_UNLIMITED = 'unlimited';
     public const GROUP_KICKED    = 'kicked';
 
+    public const SSO_ACTION_LOGIN = 'login';
+    public const SSO_ACTION_RENEW = 'renew';
+
     private array $groups = [
         'app:' . self::GROUP_KICKED    => ['android', 'ios'],
         'web:' . self::GROUP_UNLIMITED => ['h5', 'webapp'],
@@ -42,6 +45,12 @@ class Sso
      * @var string
      */
     private string $ssoType;
+
+    /**
+     * 触发sso来源动作
+     * @var string
+     */
+    private string $ssoAction = self::SSO_ACTION_LOGIN;
 
     public function __construct()
     {
@@ -55,6 +64,16 @@ class Sso
             $ssoType = self::SSO_NONE;
         }
         $this->ssoType = $ssoType;
+    }
+
+    /**
+     * @param string $ssoAction
+     * @return $this
+     */
+    public function setSsoAction(string $ssoAction): self
+    {
+        $this->ssoAction = $ssoAction;
+        return $this;
     }
 
     /**
@@ -138,7 +157,8 @@ class Sso
         // 触发数据的删除和事件, 事件用于通知用户下线
         if ($logoutUsers->count()) {
             PamToken::whereIn('id', $logoutUsers->pluck('id')->toArray())->delete();
-            event(new PamSsoEvent($pam, $logoutUsers));
+            $event = (new PamSsoEvent($pam, $logoutUsers))->setSsoAction($this->ssoAction);
+            event($event);
         }
 
         // 创建/更新用户的设备类型

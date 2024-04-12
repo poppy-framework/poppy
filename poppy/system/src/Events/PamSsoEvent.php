@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\System\Events;
 
 use Illuminate\Support\Collection;
+use Poppy\System\Action\Sso;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamToken;
 
@@ -23,6 +24,13 @@ class PamSsoEvent
      */
     public Collection $tokens;
 
+    /**
+     * 什么动作触发
+     * 用户登录 login
+     * 凭证续期 renew
+     * @var string
+     */
+    public string $ssoAction = Sso::SSO_ACTION_LOGIN;
 
     /**
      * PamDisableEvent constructor.
@@ -34,4 +42,16 @@ class PamSsoEvent
         $this->pam    = $pam;
         $this->tokens = $tokens;
     }
+
+    /**
+     * @param string $ssoAction
+     * @return $this
+     */
+    public function setSsoAction(string $ssoAction): self
+    {
+        $this->ssoAction = $ssoAction;
+        return $this;
+    }
+
+
 }

@@ -14,6 +14,7 @@ use Illuminate\Validation\ValidationException;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Helper\UtilHelper;
 use Poppy\System\Action\Pam;
+use Poppy\System\Action\Sso;
 use Poppy\System\Action\Verification;
 use Poppy\System\Events\LoginSuccessEvent;
 use Poppy\System\Events\LoginTokenPassedEvent;
@@ -292,7 +293,10 @@ class AuthController extends JwtApiController
         try {
             $deviceId   = x_header('id') ?: input('device_id', '');
             $deviceType = x_header('os') ?: input('device_type', '');
-            event(new LoginTokenPassedEvent($pam, $token, $deviceId, $deviceType));
+
+            $event = (new LoginTokenPassedEvent($pam, $token, $deviceId, $deviceType))
+                ->setAction(Sso::SSO_ACTION_RENEW);
+            event($event);
         } catch (Throwable $e) {
             return Resp::error($e->getMessage());
         }
