@@ -185,18 +185,44 @@ class Sso
             return $this->setError('设备类型必须是' . implode(',', $devices) . '中的一种');
         }
 
-        /** @var PamToken $pamToken */
-        $pamToken = PamToken::where('account_id', $pam->id)
+        $tokenMd5     = md5($token);
+        $pamId        = $pam->id;
+        $expiredAt    = Carbon::now()->addMinutes(config('jwt.ttl'))->toDateTimeString();
+        $oldTokenHash = '';
+
+        /** @var PamToken|null $pamToken */
+        $pamToken = PamToken::where('account_id', $pamId)
             ->where('device_id', $device_id)
             ->first();
+        if (!$pamToken) {
+            $oldPamToken = PamToken::where('account_id', $pamId)
+                ->where('device_type', $device_type)
+                ->first();
+            if ($oldPamToken) {
+                $oldTokenHash = $oldPamToken->token_hash;
+                PamToken::where('account_id', $pamId)
+                    ->where('device_type', $device_type)
+                    ->delete();
+            }
 
-        $oldTokenHash = $pamToken->token_hash;
+            $pamToken = PamToken::create([
+                'account_id'  => $pamId,
+                'device_id'   => $device_id,
+                'token_hash'  => $tokenMd5,
+                'device_type' => $device_type,
+                'expired_at'  => $expiredAt,
+                'login_ip'    => EnvHelper::ip(),
+            ]);
+        }
+        else {
+            $oldTokenHash = $pamToken->token_hash;
 
-        $pamToken->token_hash  = md5($token);
-        $pamToken->device_type = $device_type;
-        $pamToken->expired_at  = Carbon::now()->addMinutes(config('jwt.ttl'))->toDateTimeString();
-        $pamToken->login_ip    = EnvHelper::ip();
-        $pamToken->save();
+            $pamToken->token_hash  = $tokenMd5;
+            $pamToken->device_type = $device_type;
+            $pamToken->expired_at  = $expiredAt;
+            $pamToken->login_ip    = EnvHelper::ip();
+            $pamToken->save();
+        }
 
         event(new TokenRenewAfterEvent($pamToken, $oldTokenHash));
 
