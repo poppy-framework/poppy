@@ -4,13 +4,12 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Events;
 
-use Poppy\System\Action\Sso;
 use Poppy\System\Models\PamAccount;
 
 /**
  * 用户颁发token 成功
  */
-class LoginTokenPassedEvent
+class TokenRenewEvent
 {
     /**
      * @var PamAccount 用户账户

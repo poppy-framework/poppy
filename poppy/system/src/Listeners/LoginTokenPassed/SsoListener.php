@@ -28,7 +28,7 @@ class SsoListener
      */
     public function handle(LoginTokenPassedEvent $event): void
     {
-        $Sso = (new Sso())->setSsoAction($event->action);
+        $Sso = new Sso();
         if (!$Sso->handle($event->pam, $event->deviceId, $event->deviceType, $event->token)) {
             throw new ApplicationException($Sso->getError());
         }

@@ -13,6 +13,7 @@ use Poppy\Framework\Helper\EnvHelper;
 use Poppy\System\Classes\PySystemDef;
 use Poppy\System\Events\PamSsoEvent;
 use Poppy\System\Events\PamSsoLogoutEvent;
+use Poppy\System\Events\TokenRenewAfterEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamToken;
 use Poppy\System\Models\SysConfig;
@@ -32,9 +33,6 @@ class Sso
     public const GROUP_UNLIMITED = 'unlimited';
     public const GROUP_KICKED    = 'kicked';
 
-    public const SSO_ACTION_LOGIN = 'login';
-    public const SSO_ACTION_RENEW = 'renew';
-
     private array $groups = [
         'app:' . self::GROUP_KICKED    => ['android', 'ios'],
         'web:' . self::GROUP_UNLIMITED => ['h5', 'webapp'],
@@ -45,12 +43,6 @@ class Sso
      * @var string
      */
     private string $ssoType;
-
-    /**
-     * 触发sso来源动作
-     * @var string
-     */
-    private string $ssoAction = self::SSO_ACTION_LOGIN;
 
     public function __construct()
     {
@@ -64,16 +56,6 @@ class Sso
             $ssoType = self::SSO_NONE;
         }
         $this->ssoType = $ssoType;
-    }
-
-    /**
-     * @param string $ssoAction
-     * @return $this
-     */
-    public function setSsoAction(string $ssoAction): self
-    {
-        $this->ssoAction = $ssoAction;
-        return $this;
     }
 
     /**
@@ -157,8 +139,7 @@ class Sso
         // 触发数据的删除和事件, 事件用于通知用户下线
         if ($logoutUsers->count()) {
             PamToken::whereIn('id', $logoutUsers->pluck('id')->toArray())->delete();
-            $event = (new PamSsoEvent($pam, $logoutUsers))->setSsoAction($this->ssoAction);
-            event($event);
+            event(new PamSsoEvent($pam, $logoutUsers));
         }
 
         // 创建/更新用户的设备类型
@@ -176,6 +157,50 @@ class Sso
         ]);
 
         $this->validateUser($pamId);
+        return true;
+    }
+
+    /**
+     * 凭证续期
+     * @param PamAccount $pam
+     * @param string     $device_id   设备 ID
+     * @param string     $device_type 设备类型
+     * @param string     $token       token
+     * @return bool
+     * @throws Exception
+     */
+    public function renew(PamAccount $pam, string $device_id, string $device_type, string $token): bool
+    {
+        // 不启用
+        if (!self::isEnable()) {
+            return true;
+        }
+        // 设备数据限制
+        if (!$device_id || !$device_type) {
+            return $this->setError('开启单一登录必须传递设备ID/设备类型');
+        }
+        // 设备标识限制
+        $devices = Arr::flatten($this->groups);
+        if (!in_array($device_type, $devices, true)) {
+            return $this->setError('设备类型必须是' . implode(',', $devices) . '中的一种');
+        }
+
+        /** @var PamToken $pamToken */
+        $pamToken = PamToken::where('account_id', $pam->id)
+            ->where('device_id', $device_id)
+            ->first();
+
+        $oldTokenHash = $pamToken->token_hash;
+
+        $pamToken->token_hash  = md5($token);
+        $pamToken->device_type = $device_type;
+        $pamToken->expired_at  = Carbon::now()->addMinutes(config('jwt.ttl'))->toDateTimeString();
+        $pamToken->login_ip    = EnvHelper::ip();
+        $pamToken->save();
+
+        event(new TokenRenewAfterEvent($pamToken, $oldTokenHash));
+
+        $this->validateUser($pam->id);
         return true;
     }
 

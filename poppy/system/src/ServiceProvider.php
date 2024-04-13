@@ -25,6 +25,7 @@ use Poppy\System\Classes\File\DefaultFileProvider;
 use Poppy\System\Events\LoginTokenPassedEvent;
 use Poppy\System\Events\PamLogoutEvent;
 use Poppy\System\Events\PamPasswordModifiedEvent;
+use Poppy\System\Events\TokenRenewEvent;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\PamRole;
 use Poppy\System\Models\Policies\PamAccountPolicy;
@@ -57,6 +58,9 @@ class ServiceProvider extends PoppyServiceProvider
         ],
         PamLogoutEvent::class           => [
             Listeners\PamLogout\SsoListener::class,
+        ],
+        TokenRenewEvent::class    => [
+            Listeners\TokenRenew\TokenRenewListener::class,
         ],
         PamPasswordModifiedEvent::class => [
             Listeners\PamPasswordModified\SsoListener::class,
