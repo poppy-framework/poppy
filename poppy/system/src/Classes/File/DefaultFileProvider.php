@@ -267,6 +267,10 @@ class DefaultFileProvider implements FileContract
      */
     public function saveInput($content): bool
     {
+        /**
+         * 这里在处理 jpg 文件后缀时，会出现问题，因为 jpg 的 mimeType 是 image/jpeg。
+         * 所以需要对其做个兼容
+         */
         $extension = 'png';
         if (Str::contains($this->mimeType, '/')) {
             $extension = Str::after($this->mimeType, '/');
@@ -392,15 +396,32 @@ class DefaultFileProvider implements FileContract
      * @return string
      * @throws ApplicationException
      */
-    private function genRelativePath(string $extension = 'png'): string
+    public function genRelativePath(string $extension = 'png'): string
     {
         if ($this->isForceSetDestination && $this->destination) {
             $ext = FileHelper::ext($this->destination);
-            if ($ext !== $extension) {
-                throw new ApplicationException('指定文件的扩展类型不符, 可能导致图片无法展示');
+            /**
+             * 兼容 ext 是 jpg 的情况
+             * 另外我查询了关于 jpg 和 jpeg 的区别，这里的介绍两者的区别是：
+             * JPG and JPEG are interchangeable file extensions representing the same image format established by the Joint Photographic Experts Group. The distinction lies solely in their naming; JPG was used when file systems limited extensions to three characters. Their functionality and compatibility are identical.
+             * 非官方翻译版：JPG 和 JPEG 是可互换的文件扩展名，代表联合图像专家组建立的相同图像格式。区别仅在于它们的命名；当文件系统将扩展名限制为三个字符时，使用 JPG。它们的功能和兼容性是相同的。
+             * @link https://kinsta.com/blog/jpg-vs-jpeg/
+             */
+            if (($extension === 'jpeg' && $ext === 'jpg') || $ext === $extension) {
+                return $this->destination;
             }
-            return $this->destination;
+
+            throw new ApplicationException('指定文件的扩展类型不符, 可能导致图片无法展示');
         }
+
+        return $this->generatePath($extension);
+    }
+
+    /**
+     * 生成上传路径
+     */
+    public function generatePath(string $extension = 'png'): string
+    {
         $now      = Carbon::now();
         $fileName = $now->format('is') . Str::random(8) . '.' . $extension;
 
@@ -413,7 +434,7 @@ class DefaultFileProvider implements FileContract
      * @param mixed  $img_stream 压缩内容
      * @return bool|StreamInterface
      */
-    private function resizeContent(string $extension, $img_stream)
+    public function resizeContent(string $extension, $img_stream)
     {
         // 缩放图片
         if ($extension !== 'gif' && in_array($extension, FileManager::kvExt(FileManager::TYPE_IMAGES), true)) {
