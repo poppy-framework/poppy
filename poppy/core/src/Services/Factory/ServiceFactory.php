@@ -46,21 +46,22 @@ class ServiceFactory
 
     /**
      * 分析数组
-     * @param array $hooks  Hook
-     * @param array $params 参数
-     * @return array
      * @throws ApplicationException
      */
-    protected function parseArray(array $hooks, $params = []): array
+    protected function parseArray(array $hooks): array
     {
         $collect = [];
         collect($hooks)->each(function ($hook) use (&$collect) {
             if (!class_exists($hook)) {
-                throw new ApplicationException('Hook Class `' . $hook . '` not exist!');
+                if (version_compare(app()->version(), '8.0.0', '>=')) {
+                    throw new ApplicationException('Hook Class `' . $hook . '` not exist!');
+                }
             }
-            $obj = new $hook();
-            if ($obj instanceof ServiceArray) {
-                $collect[$obj->key()] = $obj->data();
+            else {
+                $obj = new $hook();
+                if ($obj instanceof ServiceArray) {
+                    $collect[$obj->key()] = $obj->data();
+                }
             }
         });
 
