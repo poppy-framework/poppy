@@ -6,7 +6,7 @@
 <input type="hidden" id="{{ $contentId }}Input" name="{{$name}}">
 
 <script>
-	$(function () {
+	if (typeof editHtmlMenu != 'function') {
 		const {genModalTextareaElems, genModalButtonElems} = window.wangEditor;
 
 		const HTML_SVG = `<svg viewBox="0 0 1024 1024"><path fill="#333333" d="M60.544 0l82.144 921.632L511.456 1024l369.728-102.528L963.488 0H60.576z m750.208 862.816l-297.216 82.368v0.48l-0.768-0.224-0.768 0.224v-0.48l-297.216-82.368L144.544 75.328h736.48l-70.24 787.488z m-160-332.608l-13.056 146.56-126.208 34.08-125.856-33.92-8.064-90.24H264.064l15.84 177.504 232.064 64.192 231.328-64.192 31.04-347.008H362.368l-10.304-115.744h432.544l10.112-113.024H228.512l30.496 341.792z" /></svg>`
@@ -19,7 +19,7 @@
 			for (i = 0; i < e; i++) n += t.charAt(Math.floor(Math.random() * a));
 			return n
 		}
-  
+
 		class editHtmlMenu {
 			$content = null;
 
@@ -58,7 +58,7 @@
 			}
 
 			getModalContentElem(editor) {
-				const { textareaId, buttonId } = this;
+				const {textareaId, buttonId} = this;
 
 				console.log(buttonId);
 
@@ -134,7 +134,9 @@
 		};
 
 		wangEditor.Boot.registerMenu(editHtmlConf);
-		
+	}
+
+	$(function () {
 		const {{ $contentId }}EditorConfig = {
 			onChange: function (editor) {
 				const html = editor.getHtml();
