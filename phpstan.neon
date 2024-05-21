@@ -1,0 +1,73 @@
+# Magic behaviour with __get, __set, __call and __callStatic is not exactly static analyser-friendly :)
+# Fortunately, You can ignore it by the following config.
+#
+# vendor/bin/phpstan analyse app --memory-limit 200M -l 0
+#
+
+includes:
+  - ./poppy/ext-phpstan/extension.neon
+
+parameters:
+  paths:
+    - modules
+    - poppy
+  level: 4
+  inferPrivatePropertyTypeFromConstructor: true
+  checkMissingIterableValueType: false
+  treatPhpDocTypesAsCertain: false
+  reportUnmatchedIgnoredErrors: false
+  ignoreErrors:
+    - '#Static call to instance method Poppy\\System\\Classes\\Logger\\Logging::\w+\(\)#'
+    - '#Call to method .* on an unknown class Poppy\\System\\Classes\\Traits\\PamTrait#'
+    - '#Access to an undefined property Illuminate\\.*#'
+    - '#Call to an undefined method Illuminate\\.*#'
+    - '#Call to method .* on an unknown class Poppy\\Framework\\Classes\\Traits\\AppTrait#'
+    - '#Call to protected method getPrefix\(\) of class Illuminate\\Contracts#'
+    - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage#'
+    # PHPDoc
+    - '#Variable .* in PHPDoc tag @var does not exist#'
+    - '#PHPDoc tag @var for property .* with type .* is not subtype of native type .*#'
+    - '#PHPDoc tag @var for variable .* has invalid type#'
+    - '#PHPDoc tag @var has invalid value .* Unexpected token#'
+    - '#PHPDoc tag @param for parameter .* with type .* is not subtype of native type .*#'
+    - '#PHPDoc tag @return with type .* is incompatible with native type .*#'
+    # return
+    - '#.*Filter::.*should return.*but returns Illuminate\\Database\\Eloquent\\Builder#'
+    - '#Method .* should return.*Foundation\\Application.*View\\Factory.*JsonResponse.*Response but returns Illuminate\\.*#'
+    - '#Anonymous function should return Illuminate\\Database\\Eloquent\\Builder<.*> but returns Illuminate\\Database\\Eloquent\\Builder.*#'
+    - '#Anonymous function should return Illuminate\\Database\\Eloquent\\Builder but returns static.*#'
+    - '#Method .* has invalid return type Poppy\\System\\Classes\\Traits\\PamTrait#'
+    # Method xxx should return array{group: int, channel: int} but returns array{group: int}
+    - '#Method .* should return array\{(\w+:\s*\w+,?\s*)*\} but returns .*#'
+    - '#Method .* should return array<.*> but returns array<.*>#'
+    - '#Method .* should return .*Illuminate\\.* but returns Illuminate\\.*#'
+    # property read/written
+    - '#Property .* is never written, only read#'
+    - '#Property .* is never read, only written#'
+    - '#Property .*\\Models\\.* does not accept .*#'
+    - '#Static property .* is never written, only read#'
+    # unused
+    - '#Method .* is unused#'
+    - '#Property .* is unused#'
+    - '#never returns .* so it can be removed from the return type#'
+    - '#Anonymous function has an unused use .*#'
+    - '#Constant .* is unused#'
+    # nullable
+    - '#Offset .* on left side of \?\? always exists and is not nullable#'
+    - '#Offset .* in isset\(\) always exists and is not nullable#'
+    - '#Variable .* on left side of \?\? always exists and is always null#'
+    - '#Expression on left side of \?\? is not nullable#'
+    - '#Offset int on non-empty-array<string, int> in isset\(\) does not exist#'
+    - '#Property .* on left side of \?\? is not nullable#'
+    # unsafe
+    - '#Unsafe usage of new static#'
+    # 实验性
+    #- '#Negated boolean expression is always (false|true)#'
+    #- '#If condition is always (true|false)#'
+    #- '#Result of \|\| is always (false|true)#'
+    #- '#Left side of && is always (true|false)#'
+  excludePaths:
+    - modules/*/tests/*
+    - modules/*/docs/*
+    - modules/*/resources/*
+    - modules/*/configurations/*

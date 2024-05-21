@@ -14,6 +14,6 @@ class AppJsonClientTest extends TestCase
         $client = new AppJsonClient(config('app.url'));
         $client->setAppid('demo')->setSecret(env('KR_CLIENT_DEMO_SECRET'))->enableLog();
         $item = $client->get('api/app/demo/demo/index');
-        var_dump($item);
+        $this->assertEquals(0, $item['status']);
     }
 }

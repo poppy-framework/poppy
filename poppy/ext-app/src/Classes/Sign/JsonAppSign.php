@@ -46,7 +46,7 @@ class JsonAppSign
             return $this->setError(new Resp(Resp::PARAM_ERROR, '请传入 Appid'));
         }
 
-        $clients = config('services.kr-clients');
+        $clients = config('services.kr36');
         $client  = $clients[$appid] ?? '';
 
         if (!$client) {
