@@ -59,7 +59,7 @@ class ServiceProvider extends PoppyServiceProvider
         PamLogoutEvent::class           => [
             Listeners\PamLogout\SsoListener::class,
         ],
-        TokenRenewEvent::class    => [
+        TokenRenewEvent::class          => [
             Listeners\TokenRenew\TokenRenewListener::class,
         ],
         PamPasswordModifiedEvent::class => [
@@ -219,9 +219,12 @@ class ServiceProvider extends PoppyServiceProvider
         ]);
 
         config([
+            // secret
             'poppy.framework.title'       => sys_setting('py-system::site.name'),
             'poppy.framework.description' => sys_setting('py-system::site.description'),
-        ]);
 
+            // system
+            'poppy.system.secret'         => sys_setting('py-system::_.secret'),
+        ]);
     }
 }
