@@ -24,6 +24,7 @@ class ExtensionServiceProvider extends ServiceProvider implements DeferrableProv
         $this->registerApp();
     }
 
+
     private function registerApp(): void
     {
         $this->app->singleton('poppy.ext.app', function () {
