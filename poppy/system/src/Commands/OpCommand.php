@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Poppy\System\Commands;
 
 use Illuminate\Console\Command;
-use Poppy\System\Action\Console;
+use Poppy\System\Action\Develop;
 
 class OpCommand extends Command
 {
@@ -20,7 +20,7 @@ class OpCommand extends Command
         $action = $this->argument('action');
         switch ($action) {
             case 'gen-secret':
-                $Console = new Console();
+                $Console = new Develop();
                 if ($Console->generateSecret()) {
                     $this->writeNewEnvironmentFileWith($Console->secret());
                     $this->info(sys_gen_mk('system.op', '生成替换并汇报成功'));
@@ -30,7 +30,7 @@ class OpCommand extends Command
                 }
                 break;
             case 'secret':
-                $Console = new Console();
+                $Console = new Develop();
                 $this->info(sys_gen_mk('system.op', '当前的密钥为:' . $Console->secret()));
                 break;
             default:
