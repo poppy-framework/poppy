@@ -1,6 +1,6 @@
 {
     "name": "poppy/system",
-    "description": "An admin management module for poppy.",
+    "description": "An admin management module for poppy. ",
     "license": "Apache-2.0",
     "authors": [
         {
