@@ -18,7 +18,6 @@ class UpdateLastLoginListener
      */
     public function handle(LoginSuccessEvent $event)
     {
-
         $pam              = $event->pam;
         $pam->logined_at  = Carbon::now();
         $pam->login_times += 1;
