@@ -23,6 +23,7 @@ class UpdateLastLoginListener
         $pam->login_times += 1;
         $pam->login_ip    = EnvHelper::ip();
         $pam->save();
+
     }
 }
 
