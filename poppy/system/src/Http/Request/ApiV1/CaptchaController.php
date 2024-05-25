@@ -6,6 +6,7 @@ namespace Poppy\System\Http\Request\ApiV1;
 
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Action\Verification;
+use Poppy\System\Classes\Captcha\RequestThrottleService;
 use Poppy\System\Events\CaptchaSendEvent;
 use Poppy\System\Http\Validation\CaptchaSendRequest;
 use Poppy\System\Models\PamAccount;
@@ -36,6 +37,17 @@ class CaptchaController extends JwtApiController
             else {
                 return Resp::error('验证类型有误,请检查输入');
             }
+        }
+
+        try {
+            // 接口请求限流
+            if (app()->has(RequestThrottleService::class)) {
+                if (!app(RequestThrottleService::class)->throttle()) {
+                    return Resp::error('请求频繁,请稍后重试');
+                }
+            }
+        } catch (Throwable $e) {
+            return Resp::error('请求频繁,请稍后重试');
         }
 
         $Verification = new Verification();
