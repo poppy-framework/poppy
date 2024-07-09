@@ -37,6 +37,10 @@ class CaptchaController extends BackendController
             'captcha'  => '验证码',
         ]);
 
+        if ($validator->fails()) {
+            return Resp::error($validator->errors());
+        }
+
         $valid    = $validator->validated();
         $passport = $valid['passport'];
 
