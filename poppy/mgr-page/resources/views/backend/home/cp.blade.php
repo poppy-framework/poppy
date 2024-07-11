@@ -2,6 +2,7 @@
 @section('title', $_title ?? '')
 @section('description', $_description ?? '')
 @section('head-meta')
+    <meta name="robots" content="noindex, nofollow">
     {!! Html::favicon('assets/images/default/favicon.png') !!}
 @endsection
 @section('head-content')

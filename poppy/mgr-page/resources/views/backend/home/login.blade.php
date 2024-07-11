@@ -2,6 +2,7 @@
 @section('title', $_title ?? '')
 @section('description', $_description ?? '')
 @section('head-css')
+    <meta name="robots" content="noindex, nofollow">
     @include('py-mgr-page::tpl._js_css', [
         '_type' => ['layui'],
     ])
