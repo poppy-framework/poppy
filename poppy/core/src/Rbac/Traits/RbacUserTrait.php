@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Poppy\Core\Classes\PyCoreDef;
+use Poppy\System\Models\PamAccount;
 
 /**
  * 用户 trait
@@ -23,7 +24,7 @@ trait RbacUserTrait
      */
     public function cachedRoles(): Collection
     {
-        $cacheKey       = PyCoreDef::rbacCkUserRoles($this->{$this->primaryKey});
+        $cacheKey = PyCoreDef::rbacCkUserRoles($this->{$this->primaryKey});
         return sys_tag('py-core-rbac')->remember($cacheKey, config('cache.ttl'), function () {
             return $this->roles()->get();
         });
@@ -45,16 +46,16 @@ trait RbacUserTrait
             }
             return true;
         });
-        static::deleted(function () {
-            self::clearCachedRoles();
+        static::deleted(function ($model) {
+            self::clearCachedRoles($model);
         });
-        static::saved(function () {
-            self::clearCachedRoles();
+        static::saved(function ($model) {
+            self::clearCachedRoles($model);
         });
 
         if (isset($traits[SoftDeletes::class])) {
-            static::restored(function () {
-                self::clearCachedRoles();
+            static::restored(function ($model) {
+                self::clearCachedRoles($model);
             });
         }
     }
@@ -229,9 +230,17 @@ trait RbacUserTrait
         self::clearCachedRoles();
     }
 
-
-    protected static function clearCachedRoles()
+    /**
+     * 清理RBAC缓存
+     * @param PamAccount|null
+     */
+    protected static function clearCachedRoles($pam = null): void
     {
+        // 优化逻辑，在 PamAccount 表更新时，如果是前台用户更新，则没必要进行清理缓存操作
+        if ($pam instanceof PamAccount && $pam->type !== PamAccount::TYPE_BACKEND) {
+            return;
+        }
+
         sys_tag('py-core-rbac')->clear(PyCoreDef::rbacCkUserRoles('*'));
     }
 
