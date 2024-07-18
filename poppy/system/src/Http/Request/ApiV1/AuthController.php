@@ -360,4 +360,20 @@ class AuthController extends JwtApiController
     {
         return 'passport';
     }
+
+    /**
+     * @return float
+     */
+    public function maxAttempts()
+    {
+        return (int) env('THROTTLES_MAX_ATTEMPTS', $this->maxAttempts);
+    }
+
+    /**
+     * @return float
+     */
+    public function decayMinutes()
+    {
+        return (float) env('THROTTLES_DECAY_MINUTES',$this->decayMinutes);
+    }
 }

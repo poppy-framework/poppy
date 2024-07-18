@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Http\Request\ApiV1;
 
-use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Action\Apidoc;
 use Poppy\System\Action\Console;
@@ -14,8 +13,6 @@ use Poppy\System\Action\Console;
  */
 class CoreController extends JwtApiController
 {
-    use ThrottlesLogins;
-
     /**
      * @api                   {post} /api_v1/system/core/translate [Sys]多语言包
      * @apiVersion            1.0.0
