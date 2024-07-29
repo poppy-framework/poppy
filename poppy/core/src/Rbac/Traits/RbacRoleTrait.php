@@ -16,16 +16,21 @@ use Poppy\Core\Rbac\Permission\Permission;
 trait RbacRoleTrait
 {
     //Big block of caching functionality.
+    protected ?Collection $permissions = null;
 
     /**
      * @return Collection|mixed
      */
     public function cachedPermissions()
     {
-        $cacheKey = PyCoreDef::rbacCkRolePermissions($this->{$this->primaryKey});
-        return sys_tag('py-core-rbac')->remember($cacheKey, config('cache.ttl'), function () {
-            return $this->perms()->get();
-        });
+        if (!$this->permissions) {
+            $cacheKey          = PyCoreDef::rbacCkRolePermissions($this->{$this->primaryKey});
+            $this->permissions = sys_tag('py-core-rbac')->remember($cacheKey, config('cache.ttl'), function () {
+                return $this->perms()->get();
+            });
+        }
+
+        return $this->permissions;
     }
 
     /**
@@ -189,7 +194,7 @@ trait RbacRoleTrait
 
     /**
      * Checks if the role has a permission by its name.
-     * @param string|array $name permission name or array of permission names
+     * @param string|array $name        permission name or array of permission names
      * @param bool         $require_all all permissions in the array are required
      * @return bool
      */

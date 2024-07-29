@@ -18,16 +18,21 @@ use Poppy\System\Models\PamAccount;
 trait RbacUserTrait
 {
     //Big block of caching functionality.
+    protected ?Collection $roles = null;
 
     /**
      * @return Collection
      */
     public function cachedRoles(): Collection
     {
-        $cacheKey = PyCoreDef::rbacCkUserRoles($this->{$this->primaryKey});
-        return sys_tag('py-core-rbac')->remember($cacheKey, config('cache.ttl'), function () {
-            return $this->roles()->get();
-        });
+        if (!$this->roles) {
+            $cacheKey    = PyCoreDef::rbacCkUserRoles($this->{$this->primaryKey});
+            $this->roles = sys_tag('py-core-rbac')->remember($cacheKey, config('cache.ttl'), function () {
+                return $this->roles()->get();
+            });
+        }
+
+        return $this->roles;
     }
 
     /**
