@@ -153,6 +153,24 @@ class Cache
     }
 
     /**
+     * @param array $keys
+     * @return array
+     */
+    public function mGet(array $keys): array
+    {
+        return $this->store->mGet($keys);
+    }
+
+    /**
+     * @param array $values
+     * @return bool
+     */
+    public function mSet(array $values): bool
+    {
+        return $this->store->mSet($values);
+    }
+
+    /**
      * @param $ttl
      * @return int
      */
