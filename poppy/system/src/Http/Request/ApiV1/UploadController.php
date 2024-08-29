@@ -17,6 +17,22 @@ use Validator;
  */
 class UploadController extends JwtApiController
 {
+    /**
+     * 允许上传的文件后缀名列表
+     */
+    protected const ALLOW_FILE_EXTENSIONS = ['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'heic', 'mp4', 'rm', 'rmvb', 'wmv'];
+    /**
+     * 检测文件的 mime，如果是 image/*，那么还要符合以下图片 mime
+     */
+    protected const ALLOW_IMAGE_MIME = [
+        'jpg'  => 'image/jpeg',
+        'png'  => 'image/png',
+        'gif'  => 'image/gif',
+        'jpeg' => 'image/jpeg',
+        'webp' => 'image/webp',
+        'bmp'  => 'image/bmp',
+        'heic' => 'image/heic',
+    ];
 
     /**
      * @api                   {post} /api_v1/system/upload/image [Sys]图片上传
@@ -74,16 +90,23 @@ class UploadController extends JwtApiController
 
         $urls = [];
         if ($type === 'form') {
-            $Image->setExtension(['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'heic', 'mp4', 'rm', 'rmvb', 'wmv']);
+            $Image->setExtension(self::ALLOW_FILE_EXTENSIONS);
             $image = Request::file('image');
             if (!is_array($image)) {
                 $image = [$image];
             }
 
             foreach ($image as $_img) {
-                if (is_null($_img)) {
+                if ($_img === null) {
                     return Resp::error('图片内容为空, 请检查是否上传图片或者支持类型是否正确');
                 }
+
+                // 如果是图片，则通过 mime 再次进行检测
+                $extension = strtolower($_img->getClientOriginalExtension());
+                if (isset(self::ALLOW_IMAGE_MIME[$extension]) && $_img->getMimeType() !== self::ALLOW_IMAGE_MIME[$extension]) {
+                    return '只允许上传 "' . implode(',', self::ALLOW_FILE_EXTENSIONS) . '" 格式';
+                }
+
                 if ($Image->saveFile($_img)) {
                     $urls[] = $Image->getUrl();
                 }
@@ -252,7 +275,6 @@ class UploadController extends JwtApiController
 
         return Resp::error($Uploader->getError());
     }
-
 
     private function demo()
     {

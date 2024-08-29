@@ -178,15 +178,14 @@ class DefaultFileProvider implements FileContract
             return $this->setError($file->getErrorMessage());
         }
 
-        // 存储, 根据后缀来进行区分
-        if ($file->getClientOriginalExtension() && !in_array(strtolower($file->getClientOriginalExtension()), $this->allowedExtensions, true)) {
-            return $this->setError('你只允许上传 "' . implode(',', $this->allowedExtensions) . '" 格式');
-        }
-
         // 磁盘对象
         $Disk      = $this->storage();
-        $extension = $file->getClientOriginalExtension();
+        $extension = strtolower($file->getClientOriginalExtension());
 
+        // 存储, 根据后缀来进行区分
+        if ($extension && !in_array($extension, $this->allowedExtensions, true)) {
+            return $this->setError('你只允许上传 "' . implode(',', $this->allowedExtensions) . '" 格式');
+        }
 
         $fileRelativePath = $this->genRelativePath($extension);
         $zipContent       = file_get_contents($file->getPathname());
