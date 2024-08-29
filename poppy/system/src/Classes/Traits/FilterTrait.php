@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Poppy\System\Classes\Traits;
 
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Poppy\Framework\Classes\Resp;
@@ -33,7 +33,7 @@ trait FilterTrait
     }
 
     /**
-     * @param Model           $Db       数据对象
+     * @param EloquentBuilder $Db       数据对象
      * @param string|\Closure $resource 资源
      * @param array           $append   增加
      * @return JsonResponse

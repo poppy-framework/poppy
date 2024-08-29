@@ -15,7 +15,7 @@ trait PamTrait
 {
 
     /**
-     * @var PamAccount;
+     * @var PamAccount|null
      */
     protected $pam;
 
