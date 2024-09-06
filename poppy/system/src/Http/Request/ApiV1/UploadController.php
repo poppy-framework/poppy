@@ -103,7 +103,7 @@ class UploadController extends JwtApiController
 
                 // 如果是图片，则通过 mime 再次进行检测
                 $extension = strtolower($_img->getClientOriginalExtension());
-                if (isset(self::ALLOW_IMAGE_MIME[$extension]) && $_img->getMimeType() !== self::ALLOW_IMAGE_MIME[$extension]) {
+                if (isset(self::ALLOW_IMAGE_MIME[$extension]) && !in_array($_img->getMimeType(), self::ALLOW_IMAGE_MIME, true)) {
                     return Resp::error('只允许上传 "' . implode(',', self::ALLOW_FILE_EXTENSIONS) . '" 格式');
                 }
 
