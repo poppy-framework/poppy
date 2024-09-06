@@ -21,17 +21,47 @@ class UploadController extends JwtApiController
      * 允许上传的文件后缀名列表
      */
     protected const ALLOW_FILE_EXTENSIONS = ['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'heic', 'mp4', 'rm', 'rmvb', 'wmv'];
+
     /**
-     * 检测文件的 mime，如果是 image/*，那么还要符合以下图片 mime
+     * 检测图片的扩展名
+     */
+    protected const ALLOW_IMAGE_EXT = [
+        'jpg',
+        'png',
+        'gif',
+        'jpeg',
+        'webp',
+        'bmp',
+        'heic',
+    ];
+
+    /**
+     * 图片的 mime_type
      */
     protected const ALLOW_IMAGE_MIME = [
-        'jpg'  => 'image/jpeg',
-        'png'  => 'image/png',
-        'gif'  => 'image/gif',
-        'jpeg' => 'image/jpeg',
-        'webp' => 'image/webp',
-        'bmp'  => 'image/bmp',
-        'heic' => 'image/heic',
+        // jpg/jpeg/jiff
+        'image/pjpeg',
+        'image/jpeg',
+
+        // png
+        'image/png',
+
+        // gif
+        'image/gif',
+
+        // webp
+        'image/webp',
+
+        // bmp
+        'image/bmp',
+        'image/x-bmp',
+        'image/x-ms-bmp',
+
+        // heic
+        'image/heic',
+        'image/heic-sequence',
+        'image/heif',
+        'image/heif-sequence',
     ];
 
     /**
@@ -103,7 +133,7 @@ class UploadController extends JwtApiController
 
                 // 如果是图片，则通过 mime 再次进行检测
                 $extension = strtolower($_img->getClientOriginalExtension());
-                if (isset(self::ALLOW_IMAGE_MIME[$extension]) && !in_array($_img->getMimeType(), self::ALLOW_IMAGE_MIME, true)) {
+                if (in_array($extension, self::ALLOW_IMAGE_EXT, true) && !in_array($_img->getMimeType(), self::ALLOW_IMAGE_MIME, true)) {
                     return Resp::error('只允许上传 "' . implode(',', self::ALLOW_FILE_EXTENSIONS) . '" 格式');
                 }
 
