@@ -37,6 +37,7 @@ class UploadController extends JwtApiController
 
     /**
      * 图片的 mime_type
+     * @see https://github.com/symfony/mime/blob/5.4/MimeTypes.php
      */
     protected const ALLOW_IMAGE_MIME = [
         // jpg/jpeg/jiff
