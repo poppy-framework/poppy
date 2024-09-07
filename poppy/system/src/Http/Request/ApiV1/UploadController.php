@@ -18,54 +18,6 @@ use Validator;
 class UploadController extends JwtApiController
 {
     /**
-     * 允许上传的文件后缀名列表
-     */
-    protected const ALLOW_FILE_EXTENSIONS = ['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'heic', 'mp4', 'rm', 'rmvb', 'wmv'];
-
-    /**
-     * 检测图片的扩展名
-     */
-    protected const ALLOW_IMAGE_EXT = [
-        'jpg',
-        'png',
-        'gif',
-        'jpeg',
-        'webp',
-        'bmp',
-        'heic',
-    ];
-
-    /**
-     * 图片的 mime_type
-     * @see https://github.com/symfony/mime/blob/5.4/MimeTypes.php
-     */
-    protected const ALLOW_IMAGE_MIME = [
-        // jpg/jpeg/jiff
-        'image/pjpeg',
-        'image/jpeg',
-
-        // png
-        'image/png',
-
-        // gif
-        'image/gif',
-
-        // webp
-        'image/webp',
-
-        // bmp
-        'image/bmp',
-        'image/x-bmp',
-        'image/x-ms-bmp',
-
-        // heic
-        'image/heic',
-        'image/heic-sequence',
-        'image/heif',
-        'image/heif-sequence',
-    ];
-
-    /**
      * @api                   {post} /api_v1/system/upload/image [Sys]图片上传
      * @apiDescription        图片上传
      * @apiVersion            1.0.0
@@ -121,12 +73,22 @@ class UploadController extends JwtApiController
 
         $urls = [];
         if ($type === 'form') {
-            $Image->setExtension(self::ALLOW_FILE_EXTENSIONS);
+            $allowFileExtensions = config('poppy.system.upload.allow_extensions') ?: ['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'heic', 'mp4', 'rm', 'rmvb', 'wmv'];
+            $Image->setExtension($allowFileExtensions);
             $image = Request::file('image');
             if (!is_array($image)) {
                 $image = [$image];
             }
 
+            $allowImageExtensions = config('poppy.system.upload.allow_image_extensions') ?: ['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'heic'];
+            $allowImageMimes      = config('poppy.system.upload.allow_image_mimes') ?: [
+                'image/pjpeg', 'image/jpeg',
+                'image/png',
+                'image/gif',
+                'image/webp',
+                'image/bmp', 'image/x-bmp',
+                'image/x-ms-bmp', 'image/heic', 'image/heic-sequence', 'image/heif', 'image/heif-sequence',
+            ];
             foreach ($image as $_img) {
                 if ($_img === null) {
                     return Resp::error('图片内容为空, 请检查是否上传图片或者支持类型是否正确');
@@ -134,8 +96,8 @@ class UploadController extends JwtApiController
 
                 // 如果是图片，则通过 mime 再次进行检测
                 $extension = strtolower($_img->getClientOriginalExtension());
-                if (in_array($extension, self::ALLOW_IMAGE_EXT, true) && !in_array($_img->getMimeType(), self::ALLOW_IMAGE_MIME, true)) {
-                    return Resp::error('只允许上传 "' . implode(',', self::ALLOW_FILE_EXTENSIONS) . '" 格式');
+                if (in_array($extension, $allowImageExtensions, true) && !in_array($_img->getMimeType(), $allowImageMimes, true)) {
+                    return Resp::error('只允许上传 "' . implode(',', $allowFileExtensions) . '" 格式');
                 }
 
                 if ($Image->saveFile($_img)) {
