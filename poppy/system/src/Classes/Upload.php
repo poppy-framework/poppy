@@ -17,6 +17,7 @@ class Upload
 
     /**
      * 允许上传的图片 MIME
+     * @see https://github.com/symfony/mime/blob/5.4/MimeTypes.php 如果升级 symfony/mime 版本，需要查看是否需要同步该配置
      */
     public const ALLOW_IMAGE_MIMES = [
         // jpg/jpeg/jiff
