@@ -8,6 +8,7 @@ use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Helper\UtilHelper;
 use Poppy\System\Classes\Contracts\FileContract;
 use Poppy\System\Classes\File\DefaultFileProvider;
+use Poppy\System\Classes\Upload;
 use Request;
 use Throwable;
 use Validator;
@@ -73,22 +74,15 @@ class UploadController extends JwtApiController
 
         $urls = [];
         if ($type === 'form') {
-            $allowFileExtensions = config('poppy.system.upload.allow_extensions') ?: ['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'heic', 'mp4', 'rm', 'rmvb', 'wmv'];
+            $allowFileExtensions = config('poppy.system.upload.allow_extensions', Upload::ALLOW_UPLOAD_EXTENSIONS);
             $Image->setExtension($allowFileExtensions);
             $image = Request::file('image');
             if (!is_array($image)) {
                 $image = [$image];
             }
 
-            $allowImageExtensions = config('poppy.system.upload.allow_image_extensions') ?: ['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'heic'];
-            $allowImageMimes      = config('poppy.system.upload.allow_image_mimes') ?: [
-                'image/pjpeg', 'image/jpeg',
-                'image/png',
-                'image/gif',
-                'image/webp',
-                'image/bmp', 'image/x-bmp',
-                'image/x-ms-bmp', 'image/heic', 'image/heic-sequence', 'image/heif', 'image/heif-sequence',
-            ];
+            $allowImageExtensions = config('poppy.system.upload.allow_image_extensions', Upload::ALLOW_IMAGE_EXTENSIONS);
+            $allowImageMimes      = config('poppy.system.upload.allow_image_mimes', Upload::ALLOW_IMAGE_MIMES);
             foreach ($image as $_img) {
                 if ($_img === null) {
                     return Resp::error('图片内容为空, 请检查是否上传图片或者支持类型是否正确');
