@@ -135,6 +135,7 @@ class SettingRepository implements SettingContract
         }
         else {
             $record->value = $serializeValue;
+            $record->content = $value;
             $record->save();
         }
 

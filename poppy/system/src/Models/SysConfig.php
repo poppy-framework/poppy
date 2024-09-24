@@ -19,6 +19,7 @@ use Poppy\Framework\Classes\Traits\KeyParserTrait;
  * @property string $item        配置名称
  * @property string $value       配置值
  * @property string $description 配置介绍
+ * @property mixed  $content     JSON 格式化后的内容
  * @method static Builder|SysConfig applyKey($key)
  * @mixin Eloquent
  */
