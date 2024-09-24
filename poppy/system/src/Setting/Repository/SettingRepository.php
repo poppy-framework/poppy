@@ -12,6 +12,7 @@ use Poppy\Core\Redis\RdsDb;
 use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Classes\Traits\KeyParserTrait;
 use Poppy\System\Classes\PySystemDef;
+use Poppy\System\Events\SysConfigSavedEvent;
 use Poppy\System\Exceptions\SettingKeyNotMatchException;
 use Poppy\System\Exceptions\SettingValueOutOfRangeException;
 use Poppy\System\Models\SysConfig;
@@ -124,17 +125,20 @@ class SettingRepository implements SettingContract
         }
         if (!$record) {
             [$namespace, $group, $item] = $this->parseKey($key);
-            SysConfig::create([
+            $record = SysConfig::create([
                 'namespace' => $namespace,
                 'group'     => $group,
                 'item'      => $item,
                 'value'     => $serializeValue,
+                'content'   => $value,
             ]);
         }
         else {
             $record->value = $serializeValue;
             $record->save();
         }
+
+        event(new SysConfigSavedEvent($record));
 
         self::$rds->hSet(PySystemDef::ckSetting(), $this->convertKey($key), $serializeValue);
         return true;

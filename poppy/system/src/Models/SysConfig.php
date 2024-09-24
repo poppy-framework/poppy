@@ -57,6 +57,11 @@ class SysConfig extends Model
         'item',
         'value',
         'description',
+        'content',
+    ];
+
+    protected $casts = [
+        'content' => 'json',
     ];
 
     /**
