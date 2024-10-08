@@ -189,6 +189,7 @@ class ServiceProvider extends PoppyServiceProvider
             Commands\InstallCommand::class,
             Commands\BanCommand::class,
             Commands\OpCommand::class,
+            Commands\SysConfigConvertCommand::class,
         ]);
     }
 
