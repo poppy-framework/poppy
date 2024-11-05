@@ -45,7 +45,11 @@ return [
     ],
     'kr36'      => [
         'demo' => [
-            'secret'      => env('KR_CLIENT_DEMO_SECRET'),
+            'secret'      => env('KR36_DEMO_SECRET'),
+            'description' => 'Demo'
+        ],
+        'kjs' => [
+            'secret'      => env('KR36_DEVELOP_SECRET'),
             'description' => 'Demo'
         ]
     ]

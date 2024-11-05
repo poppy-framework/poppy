@@ -34,7 +34,7 @@ class Sso
     public const GROUP_KICKED    = 'kicked';
 
     private array $groups = [
-        'app:' . self::GROUP_KICKED    => ['android', 'ios'],
+        'app:' . self::GROUP_KICKED    => ['android', 'ios', 'harmony_next'],
         'web:' . self::GROUP_UNLIMITED => ['h5', 'webapp'],
     ];
 
