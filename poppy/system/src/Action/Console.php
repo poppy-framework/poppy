@@ -12,6 +12,8 @@ use Poppy\Framework\Helper\UtilHelper;
 
 /**
  * 对接 Console 中台
+ * @deprecated 弃用
+ * @see Develop
  */
 class Console
 {

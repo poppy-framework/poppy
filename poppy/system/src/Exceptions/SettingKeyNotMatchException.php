@@ -8,9 +8,9 @@ use Poppy\Framework\Exceptions\BaseException;
 
 class SettingKeyNotMatchException extends BaseException
 {
-    public function __construct($key = '')
+    public function __construct(string $key = '')
     {
-        $message = trans('py-system::util.exception.setting_key_not_match', [
+        $message = trans('py-system::setting.key_not_match', [
             'key' => $key,
         ]);
         parent::__construct($message);

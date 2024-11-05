@@ -257,7 +257,7 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
      */
     public static function kvPlatform($key = null, bool $check_exists = false)
     {
-        $platform = (array) config('module.system.platform', []);
+        $platform = (array) config('poppy.system.platform', []);
         $desc     = array_merge([
             self::REG_PLATFORM_ANDROID => 'android',
             self::REG_PLATFORM_IOS     => 'ios',
