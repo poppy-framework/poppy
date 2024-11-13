@@ -9,6 +9,7 @@ use DB;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use JsonException;
 use Poppy\Framework\Classes\Traits\KeyParserTrait;
 
 /**
@@ -64,23 +65,6 @@ class SysConfig extends Model
     protected $casts = [
         'content' => 'json',
     ];
-
-    /**
-     * Scope to find a setting record for the specified module (or plugin) name and setting name.
-     * @param Builder $query query
-     * @param string  $key   Specifies the setting key value, for example 'system:updates.check'
-     * @return Builder
-     */
-    public function scopeApplyKey($query, $key)
-    {
-        [$namespace, $group, $item] = $this->parseKey($key);
-
-        $query->where('namespace', $namespace)
-            ->where('group', $group)
-            ->where('item', $item);
-
-        return $query;
-    }
 
     /**
      * @param null $key key
@@ -148,5 +132,30 @@ class SysConfig extends Model
             app('poppy.system.setting')->set($statusKey, $tbStatus);
         }
         return $tbStatus[$table];
+    }
+
+    /**
+     * Scope to find a setting record for the specified module (or plugin) name and setting name.
+     * @param Builder $query query
+     * @param string  $key Specifies the setting key value, for example 'system:updates.check'
+     * @return Builder
+     */
+    public function scopeApplyKey($query, $key)
+    {
+        [$namespace, $group, $item] = $this->parseKey($key);
+
+        $query->where('namespace', $namespace)
+            ->where('group', $group)
+            ->where('item', $item);
+
+        return $query;
+    }
+
+    /**
+     * @throws JsonException
+     */
+    protected function asJson($value)
+    {
+        return json_encode($value, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 }

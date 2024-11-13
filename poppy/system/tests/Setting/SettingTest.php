@@ -64,8 +64,34 @@ class SettingTest extends TestCase
         $valGetB = sys_setting($keyB);
         $this->assertEquals($valB, $valGetB);
 
+        // C : null
+        $keyC = $this->randKey('set');
+        $valC = null;
+        app('poppy.system.setting')->set($keyC, $valC);
+        $valGetC = sys_setting($keyC);
+        $this->assertEquals($valC, $valGetC);
+
+        // D : 65535
+        $keyD = $this->randKey('set');
+        $valD = 65535;
+        app('poppy.system.setting')->set($keyD, $valD);
+        $valGetD = sys_setting($keyD);
+        $this->assertEquals($valD, $valGetD);
+
+        // E : Object
+        $keyE = $this->randKey('set');
+        $valE = [
+            'a' => 1,
+            'b' => 'D',
+            'c' => null,
+            'e' => ['string'],
+        ];
+        app('poppy.system.setting')->set($keyE, $valE);
+        $valGetE = sys_setting($keyE);
+        $this->assertEquals($valE, $valGetE);
+
         $gn = app('poppy.system.setting')->getNG('testing::set');
-        $this->assertCount(2, $gn);
+        $this->assertCount(5, $gn);
     }
 
     /**
