@@ -49,6 +49,8 @@ class Resp
      */
     private $message = '操作出错了';
 
+    private $data;
+
     /**
      * Resp constructor.
      * @param int               $code    code
@@ -108,6 +110,24 @@ class Resp
             }
             $this->message = $message;
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param mixed $data
+     * @return Resp
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+        return $this;
     }
 
     /**
@@ -218,7 +238,8 @@ class Resp
             $resp = new self($type, $msg);
         }
         else {
-            $resp = $msg;
+            $resp   = $msg;
+            $append = $append ?? ($resp->data ?? null);
         }
 
 
