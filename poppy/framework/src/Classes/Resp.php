@@ -49,7 +49,7 @@ class Resp
      */
     private $message = '操作出错了';
 
-    private $data;
+    private $data = null;
 
     /**
      * Resp constructor.
