@@ -65,6 +65,6 @@ class LianLuSmsProvider extends BaseSms implements SmsContract
             $appId  = config('poppy.sms.lianlu.app_id');
             $appKey = config('poppy.sms.lianlu.app_key');
         }
-        $this->llApi = new SmsApi($mchId, $appId, $appKey, $this->sign);
+        $this->llApi = new SmsApi((string) $mchId, (string) $appId, (string) $appKey, $this->sign);
     }
 }
