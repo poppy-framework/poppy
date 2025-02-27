@@ -67,6 +67,7 @@
                     <div class="layui-form-item mt5">
                         {!! Form::button('登录', ['class'=> 'layui-btn layui-btn-info J_submit','type' => 'submit',]) !!}
                     </div>
+                    {!! sys_hook('poppy.mgr-page.html_login') !!}
                 </div>
             </fieldset>
             {!! Form::close() !!}

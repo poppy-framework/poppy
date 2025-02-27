@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use DB;
 use Exception;
 use Illuminate\Auth\SessionGuard;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -18,6 +19,7 @@ use Poppy\Framework\Helper\EnvHelper;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Http\MgrPage\FormSettingLog;
 use Poppy\System\Classes\Contracts\PasswordContract;
+use Poppy\System\Classes\PySystemDef;
 use Poppy\System\Classes\Traits\PamTrait;
 use Poppy\System\Classes\Traits\UserSettingTrait;
 use Poppy\System\Events\LoginBannedEvent;
@@ -739,5 +741,58 @@ class Pam
             return $this->setError("该账号因 $pam->disable_reason 被封禁至 $pam->disable_end_at");
         }
         return true;
+    }
+
+
+    /**
+     * 用户自定义的 Session 生命周期
+     * @param PamAccount $pam
+     */
+    public function setSessionLifetime(PamAccount $pam): void
+    {
+        $defaultLoginHours = sys_setting('py-system::pam.lifetime') ?: 12;
+
+        // 获取用户设定
+        $setting  = $this->userSettingGet($pam->id, PySystemDef::uskAccount());
+        $lifetime = ($setting['expired_hour'] ?? $defaultLoginHours) * 60;
+        config(['session.lifetime' => $lifetime]);
+    }
+
+    /**
+     * 设置记录登录时长的有效期
+     * @return void
+     */
+    public function setRememberTokenExpired(): void
+    {
+        if (!$this->isRemember()) {
+            return;
+        }
+
+        $auth        = $this->auth();
+        $cookieJar   = $auth->getCookieJar();
+        $cookieValue = $cookieJar->queued($auth->getRecallerName())->getValue();
+
+        // reset expired value
+        $rememberTokenExpireMinutes = ((int) sys_setting('py-system::pam.remember_hour', 60) ?: 60) * 24 * 60;
+        $cookieJar->queue($auth->getRecallerName(), $cookieValue, $rememberTokenExpireMinutes);
+    }
+
+
+    /**
+     * 是否记住了自动登录
+     * @return bool
+     */
+    public function isRemember(): bool
+    {
+        return (bool) sys_setting('py-system::pam.is_remember');
+    }
+
+    /**
+     * 获取后台的Auth
+     * @return Guard|SessionGuard
+     */
+    public function auth()
+    {
+        return Auth::guard(PamAccount::GUARD_BACKEND);
     }
 }

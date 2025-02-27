@@ -6,8 +6,6 @@ namespace Poppy\MgrPage\Http\Request\Backend;
 
 use Auth;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\SessionGuard;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +24,6 @@ use Poppy\Framework\Helper\UtilHelper;
 use Poppy\MgrPage\Classes\Setting\SettingView;
 use Poppy\MgrPage\Http\MgrPage\FormPassword;
 use Poppy\System\Action\Pam;
-use Poppy\System\Classes\PySystemDef;
 use Poppy\System\Classes\Traits\UserSettingTrait;
 use Poppy\System\Events\BePamLogoutEvent;
 use Poppy\System\Http\Validation\PamLoginRequest;
@@ -71,7 +68,8 @@ class HomeController extends BackendController
      */
     public function login(Request $req)
     {
-        $auth = $this->auth();
+        $Pam  = new Pam();
+        $auth = $Pam->auth();
         $req->merge([
             'os' => PamAccount::REG_PLATFORM_MGR,
         ]);
@@ -81,25 +79,24 @@ class HomeController extends BackendController
             $request      = app(PamLoginRequest::class, [$req]);
             $reqPassport  = $request->scene('passport')->validated();
             $isMobile     = UtilHelper::isMobile($reqPassport['passport']);
-            $Pam          = new Pam();
             $loginSuccess = false;
             if (!$isMobile) {
                 $reqPwd = $request->scene('password')->validated();
                 if ($Pam->loginCheck($reqPwd['passport'], $reqPwd['password'], PamAccount::GUARD_BACKEND)) {
-                    $auth->login($Pam->getPam(), $this->isRemember());
+                    $auth->login($Pam->getPam(), $Pam->isRemember());
                     $loginSuccess = true;
                 }
             }
             if ($isMobile) {
                 $reqCaptcha = $request->scene('captcha')->validated();
                 if ($Pam->beCaptchaLogin($reqCaptcha['passport'], $reqCaptcha['captcha'])) {
-                    $auth->login($Pam->getPam(), $this->isRemember());
+                    $auth->login($Pam->getPam(), $Pam->isRemember());
                     $loginSuccess = true;
                 }
             }
             if ($loginSuccess) {
-                $this->setSessionLifetime($Pam->getPam());
-                $this->setRememberTokenExpired();
+                $Pam->setSessionLifetime($Pam->getPam());
+                $Pam->setRememberTokenExpired();
                 return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
             }
             return Resp::error($Pam->getError());
@@ -178,57 +175,5 @@ class HomeController extends BackendController
         return view('py-mgr-page::backend.home.easyweb.' . $type, [
             'host' => $host,
         ]);
-    }
-
-    /**
-     * 获取后台的Auth
-     * @return Guard|SessionGuard
-     */
-    private function auth()
-    {
-        return Auth::guard(PamAccount::GUARD_BACKEND);
-    }
-
-
-    /**
-     * 用户自定义的 Session 生命周期
-     * @param PamAccount $pam
-     */
-    private function setSessionLifetime(PamAccount $pam): void
-    {
-        $defaultLoginHours = sys_setting('py-system::pam.lifetime') ?: 12;
-
-        // 获取用户设定
-        $setting  = $this->userSettingGet($pam->id, PySystemDef::uskAccount());
-        $lifetime = ($setting['expired_hour'] ?? $defaultLoginHours) * 60;
-        config(['session.lifetime' => $lifetime]);
-    }
-
-    /**
-     * 是否记住了自动登录
-     * @return bool
-     */
-    private function isRemember(): bool
-    {
-        return (bool) sys_setting('py-system::pam.is_remember');
-    }
-
-    /**
-     * 设置记录登录时长的有效期
-     * @return void
-     */
-    private function setRememberTokenExpired(): void
-    {
-        if (!$this->isRemember()) {
-            return;
-        }
-
-        $auth        = $this->auth();
-        $cookieJar   = $auth->getCookieJar();
-        $cookieValue = $cookieJar->queued($auth->getRecallerName())->getValue();
-
-        // reset expired value
-        $rememberTokenExpireMinutes = ((int) sys_setting('py-system::pam.remember_hour', 60) ?: 60) * 24 * 60;
-        $cookieJar->queue($auth->getRecallerName(), $cookieValue, $rememberTokenExpireMinutes);
     }
 }

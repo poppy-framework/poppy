@@ -13,3 +13,7 @@ poppy.mgr-page.html_top_nav :
 poppy.mgr-page.settings :
   title : 配置项
   type : array
+poppy.mgr-page.html_login:
+  title: 登录
+  type: html
+  description: 登录页面追加的内容
