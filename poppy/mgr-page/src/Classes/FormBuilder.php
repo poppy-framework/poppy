@@ -24,13 +24,13 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 生成树选择
-     * @param string $name 名称
-     * @param array  $tree 需要生成的树
+     * @param string $name     名称
+     * @param array  $tree     需要生成的树
      * @param string $selected 选择
-     * @param array  $options 选项
-     * @param string $id ID KEY
-     * @param string $title Title KEY
-     * @param string $pid PID KEY
+     * @param array  $options  选项
+     * @param string $id       ID KEY
+     * @param string $title    Title KEY
+     * @param string $pid      PID KEY
      * @return HtmlString
      */
     public function tree(string $name, array $tree, $selected = '', $options = [], $id = 'id', $title = 'title', $pid = 'pid'): HtmlString
@@ -48,9 +48,9 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * radio 选择器(支持后台)
-     * @param string      $name 名字
-     * @param array       $lists 列表
-     * @param string|null $value 值
+     * @param string      $name    名字
+     * @param array       $lists   列表
+     * @param string|null $value   值
      * @param array       $options 选项
      * @return string
      */
@@ -71,9 +71,9 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 选择器
-     * @param string $name 名字
-     * @param array  $lists 数组
-     * @param null   $value 值
+     * @param string $name    名字
+     * @param array  $lists   数组
+     * @param null   $value   值
      * @param array  $options 选项
      * @return string
      */
@@ -107,7 +107,7 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 代码编辑器
-     * @param string      $name 名字
+     * @param string      $name  名字
      * @param string|null $value 值
      * @return HtmlString
      */
@@ -175,21 +175,21 @@ class FormBuilder extends CollectiveFormBuilder
 
         return view('py-mgr-page::backend.editor', [
             'contentId' => $contentId,
-            'name' => $name,
+            'name'      => $name,
             'uploadUrl' => $uploadUrl,
-            'token' => $token,
-            'sign'    => $sign,
+            'token'     => $token,
+            'sign'      => $sign,
             'timestamp' => $timestamp,
-            'value' => $value,
+            'value'     => $value,
         ])->render();
     }
 
     /**
      * 生成排序链接
-     * @param string $name 名字
-     * @param string $value 值
+     * @param string $name       名字
+     * @param string $value      值
      * @param string $route_name 路由名字
-     * @param bool   $pjax 是否是 Pjax 请求
+     * @param bool   $pjax       是否是 Pjax 请求
      * @return string
      */
     public function order(string $name, $value = '', $route_name = '', $pjax = false): string
@@ -232,7 +232,7 @@ HTML;
     /**
      * 提示组件
      * @param string      $description 描述
-     * @param string|null $name 名字
+     * @param string|null $name        名字
      * @return string
      */
     public function tip(string $description, string $name = null): string
@@ -254,8 +254,8 @@ TIP;
 
     /**
      * 上传缩略图
-     * @param string $name 名字
-     * @param null   $value 值
+     * @param string $name    名字
+     * @param null   $value   值
      * @param array  $options 选项
      * @return string
      */
@@ -338,8 +338,8 @@ CONTENT;
 
     /**
      * 上传缩略图
-     * @param string $name 名字
-     * @param null   $value 值
+     * @param string $name    名字
+     * @param null   $value   值
      * @param array  $options 选项
      * @return string
      */
@@ -445,8 +445,8 @@ CONTENT;
 
     /**
      * 多图上传组件
-     * @param string $name form 名称
-     * @param null   $value 值
+     * @param string $name    form 名称
+     * @param null   $value   值
      * @param array  $options 选项
      * @return string
      */
@@ -665,8 +665,318 @@ MULTI;
     }
 
     /**
+     * 多图复制拖拽上传组件
+     * @param string $name    form 名称
+     * @param null   $value   值
+     * @param array  $options 选项
+     * @return string
+     */
+    public function parseMultiThumb(string $name, $value = null, array $options = []): string
+    {
+        $id        = $this->getIdAttribute($name, $options) ?? 'multi_thumb_' . Str::random(6);
+        $number    = $options['number'] ?? 3;
+        $pop_size  = $options['pop_size'] ?? '300';
+        $type      = $options['type'] ?? 'image';
+        $imageType = $options['image_type'] ?? 'default';
+        $pam       = $options['pam'] ?? false;
+        if (!$pam) {
+            $pam = app('auth')->guard(PamAccount::TYPE_BACKEND)->user();
+        }
+        $token = $pam ? app('tymon.jwt.auth')->fromUser($pam) : '';
+        if (!$token) {
+            $token = $options['token'] ?? '';
+        }
+        $ext = 'jpg|png|gif|jpeg|webp';
+        if ($type === 'video') {
+            $ext = 'mp4';
+        }
+        if ($type === 'picture') {
+            $ext = 'mp4|jpg|png|gif|jpeg|webp';
+        }
+        $value = (array) $this->getValueAttribute($name, $value);
+        if (strpos($name, '[]') === false) {
+            $name .= '[]';
+        }
+
+        /** @var ApiSignContract $Sign */
+        $Sign      = app(ApiSignContract::class);
+        $timestamp = Carbon::now()->timestamp;
+        $sign      = $Sign->sign([
+            'token'     => $token,
+            'timestamp' => $timestamp,
+        ]);
+
+        $auto = (bool) ($options['auto'] ?? false);
+
+        $sortStr = <<<SORT
+     var el{$id} = document.getElementById('{$id}_container'); var sort{$id} = new Sortable(el{$id})
+SORT;
+
+        $renderStr = '';
+        if (count($value)) {
+            $data      = json_encode($value);
+            $renderStr = <<<HAHA
+            //将预览html 追加
+            var values = {$data};
+            for(var item in values) {
+                var data = {
+                    index : item,
+                    name  : item,
+                    type  : (values[item].indexOf('.mp4') !== -1) ? 'video' : 'image',
+                    result : values[item],
+                    preview : Util.mgrPagePreviewUrl(values[item], 300),
+                    classname : 'multi-uploaded',
+                }
+                layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
+                    $('#{$id}_container').append(html);
+                    
+                    {$sortStr}
+                });
+            }
+HAHA;
+        }
+        $uploadUrl = route('py-system:api_v1.upload.image');
+        return /** @lang text */
+            <<<MULTI
+<div class="layui-upload upload--multi">
+    <div class="layui-btn-group">
+        <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="{$id}_delete">删除选中图片</button>
+        <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="{$id}_select_all">全选</button>
+        <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="{$id}_unselect_all">取消全选</button>
+    </div>
+    <div class="layui-row">
+        <div class="layui-col-xs6">
+            <div class="layui-upload-drag upload-container" style="display: block;" id="{$id}_uploadContainer">
+              <p>点击上传，或拖拽图片到此处上传</p>
+            </div>
+        </div>
+        <div class="layui-col-xs6">
+            <div class="layui-upload-drag upload-container" style="display: block;" id="{$id}_parseUploadContainer">
+                <p>点击并复制图片到此处上传</p>
+            </div>
+        </div>
+    </div>
+
+    <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+        <div class="layui-upload-list clearfix j_multi-img" id="{$id}_container"></div>
+    </blockquote>
+</div>
+<script id="{$id}_template" type="text/html">
+    <div class="multi-img {{ d.classname }}" filename="{{ d.index }}">
+        <i class="layui-icon layui-icon-ok-circle" style="display:none;"></i>
+        <input type="checkbox" name="________mark" lay-ignore>
+        <input type="checkbox" class="j_img_value" checked name="{$name}" style="display:none" value="{{  d.result }}" lay-ignore>
+        {{#  if(d.type === 'image'){ }}
+        <img src="{{  d.result }}" alt="{{ d.name }}" class="layui-upload-img" data-width="{{ $pop_size }}px" data-height="{{ $pop_size }}px">
+        <i class="layui-icon layui-icon-search J_image_preview" data-parents=".j_multi-img" data-src="{{  d.result }}" style="display:none;"></i>
+        {{# } else { }}
+        <video controls class="layui-upload-img">
+            <source src="{{  d.result }}" type="video/mp4">
+        </video>
+        {{#  } }} 
+    </div>
+</script>
+<script>
+$(function(){
+    var {$id}_files = [];
+    
+    {$renderStr}
+   
+     //绑定单击事件
+    $('body').on('click', '#{$id}_container>div',  function () {
+        var isChecked = $(this).find("input[name=________mark]").prop("checked");
+        $(this).find("input[name=________mark]").prop("checked", !isChecked);
+        if (isChecked) {
+            $(this).removeClass('multi-checked');
+        } else {
+            $(this).addClass('multi-checked')
+        }
+        return false;
+    });
+    $('body').on('click', '#{$id}_select_all',  function () {
+        $('#{$id}_container>div').each(function(){
+            var isChecked = $(\$(this)).find("input[name=________mark]").prop("checked", true);
+            $(this).addClass('multi-checked')
+        })
+    });
+    $('body').on('click', '#{$id}_unselect_all',  function () {
+        $('#{$id}_container>div').each(function(){
+            var isChecked = $(\$(this)).find("input[name=________mark]").prop("checked", false);
+            $(this).removeClass('multi-checked')
+        })
+    });
+
+    // 粘贴事件监听
+    document.getElementById('{$id}_parseUploadContainer').addEventListener('paste', function (event) {
+        const items = (event.clipboardData || window.clipboardData).items;
+
+        var length = $('#{$id}_container div').length + 1;
+        for (const item of items) {
+            if (length > {$number}){
+                 top.layer.msg('添加的图片不能多于 {$number} 张');
+                 return;
+            }
+            if (item.type.indexOf('image') !== -1) {
+                const file = item.getAsFile();
+                uploadImage(file, length); // 调用上传方法
+                ++length
+            }
+        }
+    });
+    document.querySelector('#{$id}_parseUploadContainer').addEventListener('click', function (e) {    
+        $('.upload-container').css("border-color", "");   
+        $(this).css("border-color", "#5468FF");
+        event.stopPropagation(); // 阻止事件冒泡，避免触发 document 点击事件
+    });
+    
+    // 点击其他地方时移除边框
+    $(document).on('click', function() {
+        $('.upload-container').css("border-color", "");
+    });
+
+    // 上传图片方法
+    function uploadImage(file, index) {
+    
+        const formData = new FormData();
+        formData.append('token', '{$token}');
+		formData.append('sign', '{$sign}');
+		formData.append('timestamp', '{$timestamp}');
+		formData.append('image_type', '{$imageType}');
+        formData.append('image', file);
+
+        // 图片预览
+        const reader = new FileReader();
+        reader.onload = function (e) {
+             var data = {
+                index: index,
+                name: '{$id}_image_' + index,
+                type: 'image',
+                result: URL.createObjectURL(file),
+                classname : ''
+            };
+            if ($('#{$id}_container').html()=== '请选择图片') {
+                $('#{$id}_container').html('');
+            }
+            //将预览 html 追加
+            layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
+                $('#{$id}_container').append(html);
+                {$sortStr}
+            });
+        };
+        reader.readAsDataURL(file);
+        
+        layer.load(); //上传loading
+        // 上传到后台
+        $.ajax({
+            url: '{$uploadUrl}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                uploadFileSuccess(res, index);
+            },
+            error: function () {
+                layer.closeAll('loading'); //关闭loading
+                top.layer.msg("上传失败！");
+            }
+        });
+    }
+        
+    var {$id}_uploader = layui.upload.render({
+        elem:'#{$id}_uploadContainer',   //开始
+        url: '{$uploadUrl}' ,
+        multiple: true,
+        number : {$number},
+        auto: false,
+        accept : 'file',
+        field : 'image',
+        exts : '{$ext}',
+        size : 100000,
+        drag: true,
+        data : {
+            token : '{$token}',
+            sign : '{$sign}',
+            timestamp : '{$timestamp}',
+            image_type: '{$imageType}',
+        },
+        choose: function (obj) {  // 选择图片后事件
+            var files = obj.pushFile(); // 将每次选择的文件追加到文件队列
+            {$id}_files = files;
+            // 预读本地文件示例，不支持ie8/9
+            obj.preview(function (index, file, result) {
+                console.log('preview', index, file)
+                var data = {
+                    index: index,
+                    name: file.name,
+                    type: (file.name.indexOf('.mp4') !== -1) ? 'video' : 'image',
+                    result: URL.createObjectURL(file),
+                    classname : ''
+                };
+                var length = $('#{$id}_container div').length;
+                if (length >= {$number}){
+                     delete {$id}_files[index];
+                     top.layer.msg('添加的图片不能多于 {$number} 张');
+                     return;
+                } else {
+                    obj.upload(index, file);
+                }
+                if ($('#{$id}_container').html()=== '请选择图片') {
+                    $('#{$id}_container').html('');
+                }
+                
+                //将预览 html 追加
+                layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
+                    $('#{$id}_container').append(html);
+                    {$sortStr}
+                });
+            });
+         }, 
+        before: function (obj) { //上传前回函数
+            layer.load(); //上传loading
+        },
+        done: function (res,index,upload) {    //上传完毕后事件
+            uploadFileSuccess(res, index);
+        }, 
+        error: function (index, upload) {
+            layer.closeAll('loading'); //关闭loading
+            top.layer.msg("上传失败！");
+        }
+    })
+    function uploadFileSuccess(res, index) {
+        if (res.status) {
+            top.layer.msg(res.message);
+            top.layer.closeAll('loading'); //关闭loading
+            return;
+        }
+        var ctr = $('#{$id}_container').find('[filename='+index+']');
+        ctr.find('img').attr('src', res.data.url[0]);
+        ctr.find('.j_img_value').attr('value', res.data.url[0]);
+        ctr.find('.layui-icon-search').attr('data-src', res.data.url[0]);
+        ctr.addClass('multi-uploaded');
+        layer.closeAll('loading'); //关闭loading
+        top.layer.msg("上传成功！");
+        return delete {$id}_files[index]; // 删除文件队列已经上传成功的文件
+    }
+    //批量删除 单击事件
+    $('#{$id}_delete').click(function () {
+        $('#{$id}_container').find('input[name=________mark]:checked').each(function (index, value) {
+            var filename = $(this).parent().attr("filename");
+            delete {$id}_files[filename];
+            $(this).parent().remove();
+            if (!$.trim($('#{$id}_container').html())){
+                $('#{$id}_container').text('请选择图片');
+            }
+        });
+    });
+})
+</script>
+MULTI;
+    }
+
+    /**
      * 显示上传的单图
-     * @param string|array $url 需要显示的地址
+     * @param string|array $url     需要显示的地址
      * @param array        $options 选项
      * @return string
      */
@@ -720,8 +1030,8 @@ MULTI;
 
     /**
      * 日期选择器
-     * @param string $name 名字
-     * @param string $value 值
+     * @param string $name    名字
+     * @param string $value   值
      * @param array  $options 选项
      * @return string
      */
@@ -748,8 +1058,8 @@ MULTI;
 
     /**
      * 生成日期时间选择器
-     * @param string $name 名字
-     * @param string $value 值
+     * @param string $name    名字
+     * @param string $value   值
      * @param array  $options 选项
      * @return string
      */
@@ -763,8 +1073,8 @@ MULTI;
 
     /**
      * 日期选择器
-     * @param string $name 名字
-     * @param string $value 值
+     * @param string $name    名字
+     * @param string $value   值
      * @param array  $options 选项
      * @return string
      */
@@ -778,8 +1088,8 @@ MULTI;
 
     /**
      * 生成日期选择器
-     * @param string $name 名字
-     * @param string $value 值
+     * @param string $name    名字
+     * @param string $value   值
      * @param array  $options 选项
      * @return string
      */
@@ -811,8 +1121,8 @@ HTML;
 
     /**
      * 生成日期选择器
-     * @param string $name 名字
-     * @param string $value 值
+     * @param string $name    名字
+     * @param string $value   值
      * @param array  $options 选项
      * @return string
      */
@@ -825,8 +1135,8 @@ HTML;
 
 
     /**
-     * @param string $name 名字
-     * @param string $value 值
+     * @param string $name    名字
+     * @param string $value   值
      * @param array  $options 选项
      * @return string
      */
@@ -838,8 +1148,8 @@ HTML;
     }
 
     /**
-     * @param string $name 名字
-     * @param string $value 值
+     * @param string $name    名字
+     * @param string $value   值
      * @param array  $options 选项
      * @return string
      */
@@ -851,8 +1161,8 @@ HTML;
     }
 
     /**
-     * @param string $name 名字
-     * @param string $value 值
+     * @param string $name    名字
+     * @param string $value   值
      * @param array  $options 选项
      * @return string
      */
