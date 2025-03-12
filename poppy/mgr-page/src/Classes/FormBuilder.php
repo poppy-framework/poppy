@@ -706,14 +706,14 @@ MULTI;
             'timestamp' => $timestamp,
         ]);
 
-        $auto = (bool) ($options['auto'] ?? false);
-
         $sortStr = <<<SORT
      var el{$id} = document.getElementById('{$id}_container'); var sort{$id} = new Sortable(el{$id})
 SORT;
 
         $renderStr = '';
+        $handle    = '<div class="layui-btn-group hide" id="' . $id . '_containerHandle">';
         if (count($value)) {
+            $handle    = '<div class="layui-btn-group" id="' . $id . '_containerHandle">';
             $data      = json_encode($value);
             $renderStr = <<<HAHA
             //将预览html 追加
@@ -725,7 +725,8 @@ SORT;
                     type  : (values[item].indexOf('.mp4') !== -1) ? 'video' : 'image',
                     result : values[item],
                     preview : Util.mgrPagePreviewUrl(values[item], 300),
-                    classname : 'multi-uploaded',
+                    classname : 'multi-uploaded J_tooltip',
+                    title : '长按拖动排序'
                 }
                 layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
                     $('#{$id}_container').append(html);
@@ -736,23 +737,19 @@ SORT;
 HAHA;
         }
         $uploadUrl = route('py-system:api_v1.upload.image');
+        $handle    .= '
+        <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="' . $id . '_delete">删除选中图片</button>
+        <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="' . $id . '_select_all">全选</button>
+        <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="' . $id . '_unselect_all">取消全选</button>
+    </div>';
         return /** @lang text */
             <<<MULTI
 <div class="layui-upload upload--multi">
-    <div class="layui-btn-group">
-        <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="{$id}_delete">删除选中图片</button>
-        <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="{$id}_select_all">全选</button>
-        <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="{$id}_unselect_all">取消全选</button>
-    </div>
     <div class="layui-row">
         <div class="layui-col-xs6">
             <div class="layui-upload-drag upload-container" style="display: block;" id="{$id}_uploadContainer">
-              <p>点击上传，或拖拽图片到此处上传</p>
-            </div>
-        </div>
-        <div class="layui-col-xs6">
-            <div class="layui-upload-drag upload-container" style="display: block;" id="{$id}_parseUploadContainer">
-                <p>点击并复制图片到此处上传</p>
+                <i class="bi bi-cloud-arrow-up-fill" style="color: #5468FF; font-size: 30px;"></i>
+                <p>拖拽图片到此区域 或 截图后鼠标移入此区域, 按Ctrl+V上传图片</p>
             </div>
         </div>
     </div>
@@ -760,9 +757,10 @@ HAHA;
     <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
         <div class="layui-upload-list clearfix j_multi-img" id="{$id}_container"></div>
     </blockquote>
+    {$handle}
 </div>
 <script id="{$id}_template" type="text/html">
-    <div class="multi-img {{ d.classname }}" filename="{{ d.index }}">
+    <div class="multi-img {{ d.classname }}" title="{{ d.title }}" filename="{{ d.index }}">
         <i class="layui-icon layui-icon-ok-circle" style="display:none;"></i>
         <input type="checkbox" name="________mark" lay-ignore>
         <input type="checkbox" class="j_img_value" checked name="{$name}" style="display:none" value="{{  d.result }}" lay-ignore>
@@ -779,7 +777,7 @@ HAHA;
 <script>
 $(function(){
     var {$id}_files = [];
-    
+    var isListening = false;
     {$renderStr}
    
      //绑定单击事件
@@ -807,7 +805,7 @@ $(function(){
     });
 
     // 粘贴事件监听
-    document.getElementById('{$id}_parseUploadContainer').addEventListener('paste', function (event) {
+    function handlePaste(event) {
         const items = (event.clipboardData || window.clipboardData).items;
 
         var length = $('#{$id}_container div').length + 1;
@@ -822,21 +820,27 @@ $(function(){
                 ++length
             }
         }
-    });
-    document.querySelector('#{$id}_parseUploadContainer').addEventListener('click', function (e) {    
-        $('.upload-container').css("border-color", "");   
+    };
+    document.getElementById('{$id}_uploadContainer').addEventListener('mouseenter', function (e) {
         $(this).css("border-color", "#5468FF");
-        event.stopPropagation(); // 阻止事件冒泡，避免触发 document 点击事件
+
+        if (!isListening) {
+            document.addEventListener('paste', handlePaste);
+            isListening = true; // 标记事件已绑定
+        }
     });
-    
-    // 点击其他地方时移除边框
-    $(document).on('click', function() {
-        $('.upload-container').css("border-color", "");
+
+    document.getElementById('{$id}_uploadContainer').addEventListener('mouseleave', function (e) {
+        $(this).css("border-color", "");
+        if (isListening) {
+            document.removeEventListener('paste', handlePaste);
+            isListening = false; // 标记事件已解绑
+        }
     });
 
     // 上传图片方法
     function uploadImage(file, index) {
-    
+
         const formData = new FormData();
         formData.append('token', '{$token}');
 		formData.append('sign', '{$sign}');
@@ -862,13 +866,16 @@ $(function(){
                 $('#{$id}_container').append(html);
                 {$sortStr}
             });
+            if ($('#{$id}_containerHandle').hasClass('hide')) {
+                $('#{$id}_containerHandle').show();
+            }
         };
         reader.readAsDataURL(file);
-        
+
         layer.load(); //上传loading
         // 上传到后台
         $.ajax({
-            url: '{$uploadUrl}',
+            url: '{$uploadUrl}', // 后端接口
             type: 'POST',
             data: formData,
             processData: false,
@@ -882,7 +889,7 @@ $(function(){
             }
         });
     }
-        
+
     var {$id}_uploader = layui.upload.render({
         elem:'#{$id}_uploadContainer',   //开始
         url: '{$uploadUrl}' ,
@@ -924,20 +931,23 @@ $(function(){
                 if ($('#{$id}_container').html()=== '请选择图片') {
                     $('#{$id}_container').html('');
                 }
-                
+
                 //将预览 html 追加
                 layui.laytpl({$id}_template.innerHTML).render(data, function (html) {
                     $('#{$id}_container').append(html);
                     {$sortStr}
                 });
+                if ($('#{$id}_containerHandle').hasClass('hide')) {
+                    $('#{$id}_containerHandle').show();
+                }
             });
-         }, 
+         },
         before: function (obj) { //上传前回函数
             layer.load(); //上传loading
         },
         done: function (res,index,upload) {    //上传完毕后事件
             uploadFileSuccess(res, index);
-        }, 
+        },
         error: function (index, upload) {
             layer.closeAll('loading'); //关闭loading
             top.layer.msg("上传失败！");
@@ -953,7 +963,7 @@ $(function(){
         ctr.find('img').attr('src', res.data.url[0]);
         ctr.find('.j_img_value').attr('value', res.data.url[0]);
         ctr.find('.layui-icon-search').attr('data-src', res.data.url[0]);
-        ctr.addClass('multi-uploaded');
+        ctr.addClass('multi-uploaded').addClass('J_tooltip').attr('title', '长按拖动排序');;
         layer.closeAll('loading'); //关闭loading
         top.layer.msg("上传成功！");
         return delete {$id}_files[index]; // 删除文件队列已经上传成功的文件
