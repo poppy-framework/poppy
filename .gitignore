@@ -52,6 +52,7 @@ Thumbs.db
 /vendor
 /storage/framework/*.php
 /public/uploads/*
+/public/default/*
 modules/op/tests/files/account.json
 /public/dev/*
 !/public/uploads/.gitkeep
@@ -68,4 +69,5 @@ _ide_helper_models.php
 /storage/clockwork/
 /storage/phpunit/
 /resources/http/http-client.private.env.json
+
 

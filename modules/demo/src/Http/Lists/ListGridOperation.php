@@ -7,16 +7,24 @@ namespace Demo\Http\Lists;
 use Closure;
 use Demo\Classes\DemoDef;
 use Demo\Models\DemoGrid;
+use Illuminate\Support\Str;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid\Column;
 use Poppy\MgrPage\Classes\Grid\Displayer\Actions;
+use Poppy\MgrPage\Classes\Grid\Filter;
+use Poppy\MgrPage\Classes\Grid\Filter\Scope;
 use Poppy\MgrPage\Classes\Grid\ListBase;
 use Poppy\MgrPage\Classes\Operations;
+use Poppy\System\Models\PamAccount;
+use Poppy\System\Models\PamRole;
+use Poppy\System\Models\PamRoleAccount;
 
 class ListGridOperation extends ListBase
 {
 
     protected bool $showRowSelector = true;
+
+    protected bool $showExporter = true;
 
     /**
      * @inheritDoc
@@ -61,6 +69,18 @@ class ListGridOperation extends ListBase
             }
         },
         ])->fixed();
+    }
+
+
+    /**
+     * @inheritDoc
+     * @return Closure
+     */
+    public function filter(): Closure
+    {
+        return function (Filter $filter) {
+            $filter->enableExport();
+        };
     }
 
     public function batchAction(): Closure

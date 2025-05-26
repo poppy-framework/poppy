@@ -61,5 +61,11 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
         ], function () {
             require_once __DIR__ . '/Routes/api.php';
         });
+        Route::group([
+            'prefix'     => 'api/app/demo',
+            'middleware' => 'py-ext-app.sign-json'
+        ], function () {
+            require_once __DIR__ . '/Routes/api-app.php';
+        });
     }
 }

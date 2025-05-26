@@ -70,7 +70,7 @@
     <legend>多图上传</legend>
 </fieldset>
 <div>
-    {!! Form::multiThumb('images', []) !!}
+    {!! Form::multiThumb('images', [], ['number' => 200]) !!}
 </div>
 <pre class="layui-code"><?php echo '{!! ' ?> Form::multiThumb('images', []) !!}</pre>
 {!! Form::close() !!}

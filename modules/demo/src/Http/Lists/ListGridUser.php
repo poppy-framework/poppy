@@ -31,6 +31,7 @@ class ListGridUser extends ListBase
             $filter->column(2, function (Filter $filter) {
                 $filter->betweenDate('id', 'Between')->withTime();
             });
+            $filter->enableExport();
         };
     }
 }

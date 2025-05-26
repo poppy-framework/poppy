@@ -42,7 +42,6 @@
         "mlocati/ip-lib": "^1.16",
         "guzzlehttp/guzzle": "^7.3",
         "overtrue/pinyin": "^4.0",
-        "ovidigital/js-object-to-json": "^1.0",
         "hamcrest/hamcrest-php": "^2.0.1",
         "nikic/php-parser": "^4.15",
         "sentry/sentry-laravel": "3.*",
