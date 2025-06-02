@@ -88,6 +88,10 @@ class UploadController extends JwtApiController
                     return Resp::error('图片内容为空, 请检查是否上传图片或者支持类型是否正确');
                 }
 
+                if (!$_img->isValid()){
+                    return Resp::error('文件未正确上传, 请重试');
+                }
+
                 // 如果是图片，则通过 mime 再次进行检测
                 $extension = strtolower($_img->getClientOriginalExtension());
                 if (in_array($extension, $allowImageExtensions, true) && !in_array($_img->getMimeType(), $allowImageMimes, true)) {
@@ -200,13 +204,11 @@ class UploadController extends JwtApiController
      * @apiQuery {string}     file        内容
      * @apiQuery {string}     type        上传类型(audio|音频;video|视频;images|图片;file|文件上传)
      * @apiQuery {string}     [folder]    (4.0) 文件存储目录
-     * @apiQuery {string}     [ext]       上传限制扩展(后台进行限制), 多个使用 ',' 分隔, 默认是 后台进行限制
      * @apiQuery {string}     [district]  图片大小限制(最短边, 默认是 1080)
      */
     public function file()
     {
         $type     = input('type', 'audio');
-        $ext      = input('ext', '');
         $district = (int) input('district', 1080);
         $folder   = input('folder', '');
 
@@ -233,10 +235,6 @@ class UploadController extends JwtApiController
             $Uploader->setFolder($folder);
         }
         $urls = [];
-        /*if ($ext) {
-            $extensions = explode(',', $ext);
-            $Uploader->setExtension($extensions);
-        }*/
 
         // 默认图片压缩到 1080 短边压缩
         if ($type === 'images') {
