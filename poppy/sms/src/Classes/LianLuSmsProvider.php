@@ -16,6 +16,19 @@ class LianLuSmsProvider extends BaseSms implements SmsContract
      */
     private SmsApi $llApi;
 
+    public function __construct()
+    {
+        parent::__construct();
+        config([
+            'poppy.sms.lianlu.mch_id'      => sys_setting('py-sms::sms.lianlu_mch_id'),
+            'poppy.sms.lianlu.app_id'      => sys_setting('py-sms::sms.lianlu_app_id'),
+            'poppy.sms.lianlu.app_key'     => sys_setting('py-sms::sms.lianlu_app_key'),
+            'poppy.sms.lianlu.cty_mch_id'  => sys_setting('py-sms::sms.lianlu_cty_mch_id'),
+            'poppy.sms.lianlu.cty_app_id'  => sys_setting('py-sms::sms.chuanglan_cty_app_id'),
+            'poppy.sms.lianlu.cty_app_key' => sys_setting('py-sms::sms.chuanglan_cty_app_key'),
+        ]);
+    }
+
     /**
      * @inheritDoc
      */

@@ -91,8 +91,6 @@ class ServiceProvider extends PoppyServiceProvider
     public function boot(): void
     {
         parent::boot('poppy.system');
-
-        $this->bootConfigs();
     }
 
     /**
@@ -162,7 +160,8 @@ class ServiceProvider extends PoppyServiceProvider
             }
             $uploader      = $hooks[$uploadType];
             $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
-            return new $uploaderClass();
+            call_user_func([$uploaderClass, 'fillConfig']);
+            return new $uploaderClass;
         });
         $this->app->alias('poppy.system.uploader', FileContract::class);
 
@@ -176,10 +175,9 @@ class ServiceProvider extends PoppyServiceProvider
             }
             $uploader      = $hooks[$uploadType];
             $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
-            return new $uploaderClass();
+            call_user_func([$uploaderClass, 'fillConfig']);
+            return new $uploaderClass;
         });
-        $this->app->alias('poppy.system.file', FileContract::class);
-
     }
 
     private function registerConsole(): void
@@ -204,28 +202,5 @@ class ServiceProvider extends PoppyServiceProvider
         app('auth')->provider('pam', function () {
             return new PamProvider(PamAccount::class);
         });
-    }
-
-    private function bootConfigs(): void
-    {
-        config([
-            'mail.driver'       => sys_setting('py-system::mail.driver') ?: config('mail.driver'),
-            'mail.encryption'   => sys_setting('py-system::mail.encryption') ?: config('mail.encryption'),
-            'mail.port'         => sys_setting('py-system::mail.port') ?: config('mail.port'),
-            'mail.host'         => sys_setting('py-system::mail.host') ?: config('mail.host'),
-            'mail.from.address' => sys_setting('py-system::mail.from') ?: config('mail.from.address'),
-            'mail.from.name'    => sys_setting('py-system::mail.from') ?: config('mail.from.name'),
-            'mail.username'     => sys_setting('py-system::mail.username') ?: config('mail.username'),
-            'mail.password'     => sys_setting('py-system::mail.password') ?: config('mail.password'),
-        ]);
-
-        config([
-            // secret
-            'poppy.framework.title'       => sys_setting('py-system::site.name'),
-            'poppy.framework.description' => sys_setting('py-system::site.description'),
-
-            // system
-            'poppy.system.secret'         => sys_setting('py-system::_.secret'),
-        ]);
     }
 }

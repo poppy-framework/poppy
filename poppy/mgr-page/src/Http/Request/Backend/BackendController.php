@@ -8,6 +8,7 @@ use Auth;
 use Poppy\Framework\Application\Controller;
 use Poppy\Framework\Classes\Traits\PoppyTrait;
 use Poppy\System\Models\PamAccount;
+use View;
 
 /**
  * 后台初始化控制器
@@ -45,5 +46,28 @@ abstract class BackendController extends Controller
     public function pam(): ?PamAccount
     {
         return Auth::guard(PamAccount::GUARD_BACKEND)->user();
+    }
+
+    /**
+     * seo
+     * @param mixed ...$args args
+     */
+    protected function seo(...$args): void
+    {
+        config([
+            // secret
+            'poppy.framework.title'       => sys_setting('py-system::site.name'),
+            'poppy.framework.description' => sys_setting('py-system::site.description'),
+        ]);
+        [$title, $description] = parse_seo($args);
+        $title       = $title ? $title . '-' . config('poppy.framework.title') : config('poppy.framework.title');
+        $description = $description ?: config('poppy.framework.description');
+
+        $this->title = $title;
+
+        View::share([
+            '_title'       => $title,
+            '_description' => $description,
+        ]);
     }
 }

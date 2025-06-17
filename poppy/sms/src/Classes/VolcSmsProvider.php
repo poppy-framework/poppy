@@ -12,6 +12,17 @@ use Volc\Service\Sms as VolcSms;
 
 class VolcSmsProvider extends BaseSms implements SmsContract
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+        config([
+            'poppy.sms.volc.access_key'      => sys_setting('py-sms::sms.volc_access_key'),
+            'poppy.sms.volc.access_secret'   => sys_setting('py-sms::sms.volc_access_secret'),
+            'poppy.sms.volc.default_account' => sys_setting('py-sms::sms.volc_default_account'),
+        ]);
+    }
+
     /**
      * @inheritDoc
      */
@@ -117,6 +128,11 @@ class VolcSmsProvider extends BaseSms implements SmsContract
         }
     }
 
+    protected function logger()
+    {
+        return Logging::logger('Sms');
+    }
+
     /**
      * 初始化
      * @throws SmsException
@@ -135,10 +151,5 @@ class VolcSmsProvider extends BaseSms implements SmsContract
         }
 
         return $client;
-    }
-
-    protected function logger()
-    {
-        return Logging::logger('Sms');
     }
 }

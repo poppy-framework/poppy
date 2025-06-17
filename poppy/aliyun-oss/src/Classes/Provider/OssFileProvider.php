@@ -7,6 +7,7 @@ namespace Poppy\AliyunOss\Classes\Provider;
 use Exception;
 use Illuminate\Support\Str;
 use OSS\OssClient;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Exceptions\LoadConfigurationException;
 use Poppy\System\Classes\File\DefaultFileProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -22,24 +23,20 @@ class OssFileProvider extends DefaultFileProvider
      * @var OssClient|null
      */
     private static ?OssClient $client = null;
-
-    /**
-     * @var bool 是否在保存后删除本地文件
-     */
-    private bool $deleteLocal = true;
-
-    /**
-     * 当前仓库
-     * @var string
-     */
-    private string $bucket;
-
-
     /**
      * Oss 限制最长边不会超过 30000 像素
      * @var int|null
      */
     protected ?int $resizeLongDistrict = 30000;
+    /**
+     * @var bool 是否在保存后删除本地文件
+     */
+    private bool $deleteLocal = true;
+    /**
+     * 当前仓库
+     * @var string
+     */
+    private string $bucket;
 
     /**
      * OssDefaultUploadProvider constructor.
@@ -62,6 +59,28 @@ class OssFileProvider extends DefaultFileProvider
         $bucket          = config('poppy.aliyun-oss.bucket');
         self::$client    = new OssClient($accessKeyId, $accessKeySecret, $endpoint, false);
         $this->bucket    = $bucket;
+    }
+
+    /**
+     * @return void
+     * @throws ApplicationException
+     */
+    public static function fillConfig(): void
+    {
+        if (sys_setting('py-system::picture.save_type') !== 'aliyun') {
+            throw new ApplicationException('后台配置必须开启 Aliyun 存储');
+        }
+        config([
+            'poppy.aliyun-oss.access_key'    => sys_setting('py-aliyun-oss::oss.access_key'),
+            'poppy.aliyun-oss.access_secret' => sys_setting('py-aliyun-oss::oss.access_secret'),
+            'poppy.aliyun-oss.endpoint'      => sys_setting('py-aliyun-oss::oss.endpoint'),
+            'poppy.aliyun-oss.bucket'        => sys_setting('py-aliyun-oss::oss.bucket'),
+            'poppy.aliyun-oss.url'           => sys_setting('py-aliyun-oss::oss.url_prefix'),
+            'poppy.aliyun-oss.role_arn'      => sys_setting('py-aliyun-oss::oss.role_arn'),
+            'poppy.aliyun-oss.temp_key'      => sys_setting('py-aliyun-oss::oss.temp_app_key'),
+            'poppy.aliyun-oss.temp_secret'   => sys_setting('py-aliyun-oss::oss.temp_app_secret'),
+            'poppy.aliyun-oss.watermark'     => sys_setting('py-aliyun-oss::oss.watermark'),
+        ]);
     }
 
     /**

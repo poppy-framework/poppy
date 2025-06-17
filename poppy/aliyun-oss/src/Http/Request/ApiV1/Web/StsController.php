@@ -8,7 +8,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Poppy\AliyunOss\Action\Sts;
+use Poppy\AliyunOss\Classes\Provider\OssFileProvider;
 use Poppy\Framework\Classes\Resp;
+use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Http\Request\ApiV1\JwtApiController;
 
 /**
@@ -50,12 +52,14 @@ class StsController extends JwtApiController
 
     /**
      * @return JsonResponse|RedirectResponse|Response
+     * @throws ApplicationException
      */
     public function tempOss()
     {
-        if (sys_setting('py-system::picture.save_type') !== 'aliyun') {
-            return Resp::error('后台配置必须开启 Aliyun 存储');
-        }
+        // 读取配置信息
+        (new OssFileProvider())->fillConfig();
+
+        // 初始化数据
         $config = config('poppy.aliyun-oss');
         $Sts    = new Sts();
         $Sts->setConfig($config['temp_key'], $config['temp_secret'], $config['bucket'], $config['endpoint'], $config['role_arn'], $config['url']);

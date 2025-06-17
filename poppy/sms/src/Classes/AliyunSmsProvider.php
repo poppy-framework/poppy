@@ -13,6 +13,16 @@ use Poppy\Sms\Exceptions\SmsException;
 
 class AliyunSmsProvider extends BaseSms implements SmsContract
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+        config([
+            'poppy.sms.aliyun.access_key'    => sys_setting('py-sms::sms.aliyun_access_key'),
+            'poppy.sms.aliyun.access_secret' => sys_setting('py-sms::sms.aliyun_access_secret'),
+        ]);
+    }
+
     /**
      * @inheritDoc
      */

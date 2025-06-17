@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Action;
 
-use Illuminate\Support\Str;
 use JsonException;
 use Poppy\Extension\App\Classes\AppClient;
 use Poppy\Framework\Classes\Traits\AppTrait;
@@ -12,8 +11,6 @@ use Poppy\Framework\Helper\UtilHelper;
 
 /**
  * 对接 Console 中台
- * @deprecated 弃用
- * @see Develop
  */
 class Console
 {
@@ -47,9 +44,9 @@ class Console
      */
     public function __construct()
     {
-        $this->appid = (string) env('CP_APPID');
-        $secret      = (string) env('CP_SECRET');
-        $this->host  = (string) env('CP_URL');
+        $this->appid  = (string) env('CP_APPID');
+        $secret       = (string) env('CP_SECRET');
+        $this->host   = (string) env('CP_URL');
         $this->client = (new AppClient())->setAppid($this->appid)->setSecret($secret);
     }
 
@@ -125,46 +122,6 @@ class Console
 
         }
         return true;
-    }
-
-
-    /**
-     * 生成密钥并汇报
-     * @return bool
-     */
-    public function generateSecret(): bool
-    {
-        $name   = (string) env('APP_NAME');
-        $env    = (string) env('APP_ENV');
-        $url    = $this->host . '/api_v1/op/app/project/save-secret';
-        $secret = md5(microtime(true) . Str::random());
-        app('poppy.system.setting')->set('py-system::_.secret', $secret);
-
-        if (!$this->checkAppId()) {
-            return false;
-        }
-
-        $resp = $this->client->post($url, [
-            'name'  => $name,
-            'env'   => $env,
-            'value' => $secret,
-        ]);
-
-        $status  = data_get($resp, 'status');
-        $message = data_get($resp, 'message');
-        if ($status === 0) {
-            return true;
-        }
-        return $this->setError('已生成, 上报失败:' . $message);
-    }
-
-    /**
-     * 当前的密钥
-     * @return mixed
-     */
-    public function secret()
-    {
-        return sys_setting('py-system::_.secret');
     }
 
     /**

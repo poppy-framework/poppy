@@ -100,4 +100,22 @@ class PySystemDef
     {
         return 'ban-ip-range-' . $type;
     }
+
+    /**
+     * 填充邮箱配置
+     * @return void
+     */
+    public static function fillMailConfig(): void
+    {
+        config([
+            'mail.driver'       => sys_setting('py-system::mail.driver') ?: config('mail.driver'),
+            'mail.encryption'   => sys_setting('py-system::mail.encryption') ?: config('mail.encryption'),
+            'mail.port'         => sys_setting('py-system::mail.port') ?: config('mail.port'),
+            'mail.host'         => sys_setting('py-system::mail.host') ?: config('mail.host'),
+            'mail.from.address' => sys_setting('py-system::mail.from') ?: config('mail.from.address'),
+            'mail.from.name'    => sys_setting('py-system::mail.from') ?: config('mail.from.name'),
+            'mail.username'     => sys_setting('py-system::mail.username') ?: config('mail.username'),
+            'mail.password'     => sys_setting('py-system::mail.password') ?: config('mail.password'),
+        ]);
+    }
 }

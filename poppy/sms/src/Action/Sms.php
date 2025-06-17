@@ -47,7 +47,7 @@ class Sms
 
     /**
      * 短信类型
-     * @param string|null $key       key
+     * @param string|null $key key
      * @param bool        $check_key 检测key是否存在
      * @return array|string
      */
@@ -106,6 +106,83 @@ class Sms
     }
 
     /**
+     * 实现原理：
+     * 1. 获取所有的平台
+     * 2. 过滤存在该模板的平台
+     * 3. 再次进行过滤
+     * @param string $type
+     * @return string
+     */
+
+    public static function rateSmsDriverByType(string $type): string
+    {
+        // 获取所有的模板
+        $templates = collect((new Sms())->getTemplates());
+
+        // 获取所有的驱动
+        $hooks = sys_hook('poppy.sms.send_type');
+
+        // 对驱动过滤，查找符合条件的驱动
+        $types = [];
+        foreach (array_keys($hooks) as $hook) {
+            if ($templates[$hook . ':' . $type] ?? null) {
+                $types[] = $hook;
+            }
+        }
+        return self::rateSmsDriver($types);
+    }
+
+    /**
+     * 抽取公共方法
+     * @param array $sendTypes
+     * @return string
+     */
+    private static function rateSmsDriver(array $sendTypes): string
+    {
+        $rates = [];
+        foreach ($sendTypes as $sendType) {
+            $rate = (int) sys_setting('py-sms::sms.send_rate_' . $sendType);
+            if ($rate) {
+                $rates[$sendType] = $rate;
+            }
+        }
+
+        return self::getRandType($rates);
+    }
+
+    /**
+     * @param array $rates
+     * @return string
+     */
+    private static function getRandType(array $rates): string
+    {
+        try {
+            $result = self::SCOPE_LOCAL;
+            if (!$rates) {
+                return $result;
+            }
+            if (count($rates) === 1) {
+                return (string) array_key_first($rates);
+            }
+            //概率数组的总概率精度
+            $sumRates = array_sum($rates);
+            //概率数组循环
+            foreach ($rates as $key => $rate) {
+                $randNum = random_int(1, $sumRates);
+                if ($randNum <= $rate) {
+                    $result = $key;
+                    break;
+                }
+                $sumRates -= $rate;
+            }
+
+            return (string) $result;
+        } catch (Throwable $e) {
+            return $result;
+        }
+    }
+
+    /**
      * 获取所有的模版
      * @return Collection
      */
@@ -160,7 +237,6 @@ class Sms
         throw new HintException('短信ID不存在');
     }
 
-
     /**
      * 刪除
      * @param string $id id
@@ -175,38 +251,6 @@ class Sms
         }
 
         return $this->save();
-    }
-
-    /**
-     * @param array $rates
-     * @return string
-     */
-    private static function getRandType(array $rates): string
-    {
-        try {
-            $result = self::SCOPE_LOCAL;
-            if (!$rates) {
-                return $result;
-            }
-            if (count($rates) === 1) {
-                return (string) array_key_first($rates);
-            }
-            //概率数组的总概率精度
-            $sumRates = array_sum($rates);
-            //概率数组循环
-            foreach ($rates as $key => $rate) {
-                $randNum = random_int(1, $sumRates);
-                if ($randNum <= $rate) {
-                    $result = $key;
-                    break;
-                }
-                $sumRates -= $rate;
-            }
-
-            return (string) $result;
-        } catch (Throwable $e) {
-            return $result;
-        }
     }
 
     /**

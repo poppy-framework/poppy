@@ -9,6 +9,7 @@ use Mail;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
+use Poppy\System\Classes\PySystemDef;
 use Poppy\System\Mail\TestMail;
 use Throwable;
 
@@ -19,6 +20,7 @@ class FormMailTest extends FormWidget
     {
         $all = $request->all();
         try {
+            PySystemDef::fillMailConfig();
             Mail::to($all['to'])->send(new TestMail($all['content']));
             return Resp::success('邮件发送成功');
         } catch (Throwable $e) {

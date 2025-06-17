@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Poppy\System\Commands;
 
 use Illuminate\Console\Command;
-use Poppy\System\Action\Develop;
 
 class OpCommand extends Command
 {
     protected $signature = 'py-system:op
         {action : Operation Type}
+        {--secret=}
     ';
 
     protected $description = 'Operation for system';
@@ -19,19 +19,18 @@ class OpCommand extends Command
     {
         $action = $this->argument('action');
         switch ($action) {
-            case 'gen-secret':
-                $Console = new Develop();
-                if ($Console->generateSecret()) {
-                    $this->writeNewEnvironmentFileWith($Console->secret());
-                    $this->info(sys_gen_mk('system.op', '生成替换并汇报成功'));
+            case 'set-secret':
+                $secret = (string) $this->option('secret');
+                if (strlen($secret) !== 32) {
+                    $this->warn(sys_gen_mk('system.op', '密钥 [--secret] 长度必须是 32 位长度'));
+                    return 0;
                 }
-                else {
-                    $this->warn(sys_gen_mk('system.op', $Console->getError()));
-                }
+
+                $this->writeNewEnvironmentFileWith($secret);
+                $this->info(sys_gen_mk('system.op', '生成替换并汇报成功'));
                 break;
-            case 'secret':
-                $Console = new Develop();
-                $this->info(sys_gen_mk('system.op', '当前的密钥为:' . $Console->secret()));
+            case 'show-secret':
+                $this->info(sys_gen_mk('system.op', '当前的密钥为:' . env('PY_SECRET')));
                 break;
             default:
                 $this->warn(sys_gen_mk('system.op', '错误的 action'));

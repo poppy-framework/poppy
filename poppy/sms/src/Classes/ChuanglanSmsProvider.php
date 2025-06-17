@@ -16,6 +16,18 @@ class ChuanglanSmsProvider extends BaseSms implements SmsContract
      */
     private SmsApi $clApi;
 
+
+    public function __construct()
+    {
+        parent::__construct();
+        config([
+            'poppy.sms.chuanglan.access_key'        => sys_setting('py-sms::sms.chuanglan_access_key'),
+            'poppy.sms.chuanglan.access_secret'     => sys_setting('py-sms::sms.chuanglan_access_secret'),
+            'poppy.sms.chuanglan.cty_access_key'    => sys_setting('py-sms::sms.chuanglan_cty_access_key'),
+            'poppy.sms.chuanglan.cty_access_secret' => sys_setting('py-sms::sms.chuanglan_cty_access_secret'),
+        ]);
+    }
+
     /**
      * @inheritDoc
      */

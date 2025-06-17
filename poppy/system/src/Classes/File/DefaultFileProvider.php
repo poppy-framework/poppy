@@ -41,40 +41,32 @@ class DefaultFileProvider implements FileContract
      * @var bool
      */
     protected bool $watermark = false;
-
-    /**
-     * @var string 文件夹
-     */
-    private string $folder;
-
-    /**
-     * @var string 返回地址
-     */
-    private string $returnUrl;
-
-    /**
-     * @var array 允许上传的扩展
-     */
-    private array $allowedExtensions = ['zip'];
-
-    /**
-     * @var int 默认图片质量
-     */
-    private int $quality = 70;
-
-    /**
-     * 短边限制
-     * @var int
-     */
-    private int $resizeDistrict = 1920;
-
-
     /**
      * 长边限制
      * @var int|null
      */
     protected ?int $resizeLongDistrict = null;
-
+    /**
+     * @var string 文件夹
+     */
+    private string $folder;
+    /**
+     * @var string 返回地址
+     */
+    private string $returnUrl;
+    /**
+     * @var array 允许上传的扩展
+     */
+    private array $allowedExtensions = ['zip'];
+    /**
+     * @var int 默认图片质量
+     */
+    private int $quality = 70;
+    /**
+     * 短边限制
+     * @var int
+     */
+    private int $resizeDistrict = 1920;
     /**
      * @var string 图片mime类型
      */
@@ -429,7 +421,7 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 重设内容
-     * @param string $extension  扩展
+     * @param string $extension 扩展
      * @param mixed  $img_stream 压缩内容
      * @return bool|StreamInterface
      */
@@ -450,6 +442,11 @@ class DefaultFileProvider implements FileContract
             return $img_stream;
         }
         return $img_stream;
+    }
+
+    public static function fillConfig(): void
+    {
+
     }
 
     /**

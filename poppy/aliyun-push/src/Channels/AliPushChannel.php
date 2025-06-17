@@ -7,6 +7,7 @@ namespace Poppy\AliyunPush\Channels;
 use Illuminate\Notifications\Notification;
 use Poppy\AliyunPush\Classes\AliPush;
 use Poppy\AliyunPush\Classes\Config\Config;
+use Poppy\AliyunPush\Classes\PyAliyunPushDef;
 use Poppy\AliyunPush\Contracts\AliPushChannel as AliPushChannelContract;
 use Poppy\AliyunPush\Exceptions\PushException;
 use Poppy\Framework\Exceptions\ApplicationException;
@@ -30,6 +31,7 @@ class AliPushChannel
         if (!$notify) {
             return;
         }
+        PyAliyunPushDef::fillConfig();
 
         $Push = AliPush::getInstance()->setConfig(Config::default());
         if (!$Push->send($notify)) {

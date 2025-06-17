@@ -27,6 +27,13 @@ abstract class BaseSms
      */
     protected string $scope = Sms::SCOPE_LOCAL;
 
+    public function __construct()
+    {
+        config([
+            'weiran.sms.sign' => sys_setting('weiran-sms::sms.sign'),
+        ]);
+    }
+
     /**
      * @param string $scope
      */
@@ -38,8 +45,8 @@ abstract class BaseSms
     /**
      * 检查短信是否为空
      * @param string|array $mobile 手机号
-     * @param string       $type   类型
-     * @param string       $sign   签名
+     * @param string       $type 类型
+     * @param string       $sign 签名
      * @return bool
      */
     public function checkSms($mobile, string $type, string $sign): bool
