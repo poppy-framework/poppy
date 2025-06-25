@@ -152,7 +152,7 @@ class ServiceProvider extends PoppyServiceProvider
 
         /* 文件上传提供者
          * ---------------------------------------- */
-        $this->app->bind('poppy.system.uploader', function () {
+        $this->app->bind('poppy.system.uploader', function ($app, $config) {
             $uploadType = sys_setting('py-system::picture.save_type');
             $hooks      = sys_hook('poppy.system.upload_type');
             if (!$uploadType) {
@@ -160,14 +160,13 @@ class ServiceProvider extends PoppyServiceProvider
             }
             $uploader      = $hooks[$uploadType];
             $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
-            call_user_func([$uploaderClass, 'fillConfig']);
-            return new $uploaderClass;
+            return new $uploaderClass($config);
         });
         $this->app->alias('poppy.system.uploader', FileContract::class);
 
         /* 文件提供者
          * ---------------------------------------- */
-        $this->app->bind('poppy.system.file', function () {
+        $this->app->bind('poppy.system.file', function ($app, $config) {
             $uploadType = sys_setting('py-system::picture.save_type');
             $hooks      = sys_hook('poppy.system.upload_type');
             if (!$uploadType) {
@@ -175,8 +174,7 @@ class ServiceProvider extends PoppyServiceProvider
             }
             $uploader      = $hooks[$uploadType];
             $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
-            call_user_func([$uploaderClass, 'fillConfig']);
-            return new $uploaderClass;
+            return new $uploaderClass($config);
         });
     }
 

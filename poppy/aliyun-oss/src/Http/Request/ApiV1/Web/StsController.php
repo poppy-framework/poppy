@@ -52,17 +52,10 @@ class StsController extends JwtApiController
 
     /**
      * @return JsonResponse|RedirectResponse|Response
-     * @throws ApplicationException
      */
     public function tempOss()
     {
-        // 读取配置信息
-        (new OssFileProvider())->fillConfig();
-
-        // 初始化数据
-        $config = config('poppy.aliyun-oss');
         $Sts    = new Sts();
-        $Sts->setConfig($config['temp_key'], $config['temp_secret'], $config['bucket'], $config['endpoint'], $config['role_arn'], $config['url']);
         $tempKey = $Sts->tempOss();
         return Resp::web(Resp::SUCCESS, '获取成功', $tempKey);
     }

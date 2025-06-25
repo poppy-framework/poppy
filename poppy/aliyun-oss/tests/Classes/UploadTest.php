@@ -11,6 +11,7 @@ use Poppy\AliyunOss\Classes\Provider\OssFileProvider;
 use Poppy\AliyunOss\Tests\Testing\TestingAliyunOss;
 use Poppy\Framework\Application\TestCase;
 use Poppy\Framework\Exceptions\ApplicationException;
+use Poppy\Framework\Exceptions\LoadConfigurationException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -21,27 +22,25 @@ class UploadTest extends TestCase
 
     private static ?Client $client = null;
 
+    private array $config = [];
+
     public function setUp(): void
     {
         parent::setUp();
-        $config       = TestingAliyunOss::config();
         self::$client = new Client();
-        // config
-        config([
-            'poppy.aliyun-oss.access_key'    => $config['access_key'],
-            'poppy.aliyun-oss.access_secret' => $config['access_secret'],
-            'poppy.aliyun-oss.bucket'        => $config['bucket'],
-            'poppy.aliyun-oss.url'           => $config['url_prefix'],
-            'poppy.aliyun-oss.endpoint'      => $config['endpoint'],
-        ]);
+        $this->config = TestingAliyunOss::config();
     }
 
+    /**
+     * @return void
+     * @throws LoadConfigurationException
+     */
     public function testUpload(): void
     {
         try {
             $file   = poppy_path('poppy.aliyun-oss', 'tests/files/demo.jpg');
             $image  = new UploadedFile($file, 'test.jpg', null, null, true);
-            $Upload = new OssFileProvider();
+            $Upload = new OssFileProvider($this->config);
 
             $Upload->setExtension(['jpg']);
             if (!$Upload->saveFile($image)) {

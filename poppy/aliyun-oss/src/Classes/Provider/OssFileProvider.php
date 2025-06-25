@@ -7,7 +7,6 @@ namespace Poppy\AliyunOss\Classes\Provider;
 use Exception;
 use Illuminate\Support\Str;
 use OSS\OssClient;
-use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Exceptions\LoadConfigurationException;
 use Poppy\System\Classes\File\DefaultFileProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -18,11 +17,7 @@ use Throwable;
  */
 class OssFileProvider extends DefaultFileProvider
 {
-    /**
-     * Oss Client
-     * @var OssClient|null
-     */
-    private static ?OssClient $client = null;
+
     /**
      * Oss 限制最长边不会超过 30000 像素
      * @var int|null
@@ -40,37 +35,14 @@ class OssFileProvider extends DefaultFileProvider
 
     /**
      * OssDefaultUploadProvider constructor.
+     * @param array $conf
      * @throws LoadConfigurationException
      */
-    public function __construct()
+    public function __construct(array $conf = [])
     {
-        parent::__construct();
-        // 设置返回地址
-        $returnUrl = config('poppy.aliyun-oss.url');
+        parent::__construct($conf);
 
-        if (!$returnUrl) {
-            throw new LoadConfigurationException(trans('py-aliyun-oss::classes.provider.return_url_error'));
-        }
-        $this->setReturnUrl($returnUrl);
-
-        $accessKeyId     = config('poppy.aliyun-oss.access_key');
-        $accessKeySecret = config('poppy.aliyun-oss.access_secret');
-        $endpoint        = config('poppy.aliyun-oss.endpoint');
-        $bucket          = config('poppy.aliyun-oss.bucket');
-        self::$client    = new OssClient($accessKeyId, $accessKeySecret, $endpoint, false);
-        $this->bucket    = $bucket;
-    }
-
-    /**
-     * @return void
-     * @throws ApplicationException
-     */
-    public static function fillConfig(): void
-    {
-        if (sys_setting('py-system::picture.save_type') !== 'aliyun') {
-            throw new ApplicationException('后台配置必须开启 Aliyun 存储');
-        }
-        config([
+        $config = array_merge([
             'poppy.aliyun-oss.access_key'    => sys_setting('py-aliyun-oss::oss.access_key'),
             'poppy.aliyun-oss.access_secret' => sys_setting('py-aliyun-oss::oss.access_secret'),
             'poppy.aliyun-oss.endpoint'      => sys_setting('py-aliyun-oss::oss.endpoint'),
@@ -80,7 +52,21 @@ class OssFileProvider extends DefaultFileProvider
             'poppy.aliyun-oss.temp_key'      => sys_setting('py-aliyun-oss::oss.temp_app_key'),
             'poppy.aliyun-oss.temp_secret'   => sys_setting('py-aliyun-oss::oss.temp_app_secret'),
             'poppy.aliyun-oss.watermark'     => sys_setting('py-aliyun-oss::oss.watermark'),
-        ]);
+        ], $conf);
+
+        // set to config
+        config($config);
+
+        // 设置返回地址
+        $returnUrl = config('poppy.aliyun-oss.url');
+
+        if (!$returnUrl) {
+            throw new LoadConfigurationException(trans('py-aliyun-oss::classes.provider.return_url_error'));
+        }
+        $this->setReturnUrl($returnUrl);
+
+        $bucket       = config('poppy.aliyun-oss.bucket');
+        $this->bucket = $bucket;
     }
 
     /**
@@ -111,12 +97,13 @@ class OssFileProvider extends DefaultFileProvider
      */
     public function copyTo(string $dist): bool
     {
-        if (self::$client->doesObjectExist($this->bucket, $dist)) {
-            self::$client->deleteObject($this->bucket, $dist);
+        $client = $this->client();
+        if ($client->doesObjectExist($this->bucket, $dist)) {
+            $client->deleteObject($this->bucket, $dist);
         }
         try {
             $this->destination = ltrim($this->destination, '/');
-            self::$client->copyObject($this->bucket, $this->destination, $this->bucket, $dist);
+            $client->copyObject($this->bucket, $this->destination, $this->bucket, $dist);
             return true;
         } catch (Throwable $e) {
             return $this->setError($e->getMessage());
@@ -129,8 +116,9 @@ class OssFileProvider extends DefaultFileProvider
      */
     public function delete(): bool
     {
-        if (self::$client->doesObjectExist($this->bucket, $this->destination)) {
-            self::$client->deleteObject($this->bucket, $this->destination);
+        $client = $this->client();
+        if ($client->doesObjectExist($this->bucket, $this->destination)) {
+            $client->deleteObject($this->bucket, $this->destination);
         }
         return true;
     }
@@ -143,7 +131,8 @@ class OssFileProvider extends DefaultFileProvider
     private function saveAli(bool $delete_local = true): bool
     {
         try {
-            self::$client->putObject($this->bucket, $this->destination, $this->storage()->get($this->destination));
+            $client = $this->client();
+            $client->putObject($this->bucket, $this->destination, $this->storage()->get($this->destination));
 
             $this->reWatermark();
 
@@ -179,6 +168,14 @@ class OssFileProvider extends DefaultFileProvider
         $append       = "?x-oss-process=image/watermark,image_{$base64},g_center";
         $watermarkUrl = $this->getReturnUrl() . $this->destination . $append;
         $content      = file_get_contents($watermarkUrl);
-        self::$client->putObject($this->bucket, $this->destination, $content);
+        $this->client()->putObject($this->bucket, $this->destination, $content);
+    }
+
+    private function client(): OssClient
+    {
+        $accessKeyId     = config('poppy.aliyun-oss.access_key');
+        $accessKeySecret = config('poppy.aliyun-oss.access_secret');
+        $endpoint        = config('poppy.aliyun-oss.endpoint');
+        return new OssClient($accessKeyId, $accessKeySecret, $endpoint, false);
     }
 }

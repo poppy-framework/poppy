@@ -15,9 +15,8 @@ class StsTest extends TestCase
      */
     public function testTempKey(): void
     {
-        $Sts    = new Sts();
         $config = TestingAliyunOss::config();
-        $Sts->setConfig($config['temp_app_key'], $config['temp_app_secret'], $config['bucket'], $config['endpoint'], $config['role_arn'], $config['url_prefix']);
+        $Sts    = new Sts($config);
         if ($Sts->tempOss()) {
             $temp = $Sts->tempOss();
             $this->outputVariables($temp);
@@ -29,14 +28,16 @@ class StsTest extends TestCase
 
             $accessKeyId     = $temp['access_key_id'];
             $accessKeySecret = $temp['access_key_secret'];
-            $endpoint        = $config['endpoint'];
+            $endpoint        = config('poppy.aliyun-oss.endpoint');
+            $bucket          = config('poppy.aliyun-oss.bucket');
+            $prefixUrl       = config('poppy.aliyun-oss.url');
 
             // 测试上传文件
             try {
                 $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint, false, $temp['security_token']);
                 $url       = $temp['directory'] . 'demo.jpg';
-                $ossClient->uploadFile($config['bucket'], $url, poppy_path('poppy.aliyun-oss', 'tests/files/demo.jpg'));
-                $file = $config['url_prefix'] . '/' . $url;
+                $ossClient->uploadFile($bucket, $url, poppy_path('poppy.aliyun-oss', 'tests/files/demo.jpg'));
+                $file = $prefixUrl . '/' . $url;
                 $this->outputVariables($file);
                 $content = file_get_contents($file);
                 $this->assertGreaterThan(0, strlen($content));

@@ -16,12 +16,7 @@ interface FileContract
     /**
      * 上传文件夹地址
      */
-    public function __construct();
-
-    /**
-     * 填充配置
-     */
-    public static function fillConfig(): void;
+    public function __construct(array $conf = []);
 
     /**
      * 设置返回地址

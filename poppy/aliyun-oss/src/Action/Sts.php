@@ -63,15 +63,27 @@ class Sts
      */
     private string $subDirectory = '';
 
-    /**
-     * 临时授权使用异常方式进行抛出报错, 不进行 Error 抓取
-     * @return array 获取临时授权
-     * @see        tempOss()
-     * @deprecated 4.1
-     */
-    public function getTempKey(): array
+
+    public function __construct(array $conf = [])
     {
-        return $this->tempKey;
+        $config = array_merge([
+            'poppy.aliyun-oss.access_key'    => sys_setting('py-aliyun-oss::oss.access_key'),
+            'poppy.aliyun-oss.access_secret' => sys_setting('py-aliyun-oss::oss.access_secret'),
+            'poppy.aliyun-oss.endpoint'      => sys_setting('py-aliyun-oss::oss.endpoint'),
+            'poppy.aliyun-oss.bucket'        => sys_setting('py-aliyun-oss::oss.bucket'),
+            'poppy.aliyun-oss.url'           => sys_setting('py-aliyun-oss::oss.url_prefix'),
+            'poppy.aliyun-oss.role_arn'      => sys_setting('py-aliyun-oss::oss.role_arn'),
+            'poppy.aliyun-oss.watermark'     => sys_setting('py-aliyun-oss::oss.watermark'),
+        ], $conf);
+
+        config($config);
+
+        $this->tempAppKey    = config('poppy.aliyun-oss.access_key');
+        $this->tempAppSecret = config('poppy.aliyun-oss.access_secret');
+        $this->bucket        = config('poppy.aliyun-oss.bucket');
+        $this->endpoint      = config('poppy.aliyun-oss.endpoint');
+        $this->roleArn       = config('poppy.aliyun-oss.role_arn');
+        $this->url           = config('poppy.aliyun-oss.url');
     }
 
     /**
