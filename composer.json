@@ -40,7 +40,7 @@
         "alibabacloud/dysmsapi": "^1.8",
         "alibabacloud/sts": "^1.8",
         "mlocati/ip-lib": "^1.16",
-        "guzzlehttp/guzzle": "^7.3",
+        "guzzlehttp/guzzle": "^6.3|^7.3",
         "overtrue/pinyin": "^4.0",
         "hamcrest/hamcrest-php": "^2.0.1",
         "nikic/php-parser": "^4.15",
