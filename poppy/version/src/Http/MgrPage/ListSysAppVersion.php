@@ -60,6 +60,7 @@ class ListSysAppVersion extends ListBase
             $operations->create(route_url('py-version:backend.version.establish', null, ['platform' => $platform]), '新增' . $desc . '版本');
             $operations->setting(route_url('py-version:backend.version.setting'));
             $operations->download(SysAppVersion::platformUrl($platform), '最新包地址', '最新包地址, 这里仅仅放置地址, 可能会出现地址无法访问的情况');
+            $operations->request('清空缓存', route('py-version:backend.version.clear_cache'))->sm();
         };
     }
 }

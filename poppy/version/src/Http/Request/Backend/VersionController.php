@@ -12,6 +12,7 @@ use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
 use Poppy\Version\Action\Version;
+use Poppy\Version\Classes\PyVersionDef;
 use Poppy\Version\Http\MgrPage\FormSettingVersion;
 use Poppy\Version\Http\MgrPage\FormVersionEstablish;
 use Poppy\Version\Http\MgrPage\ListSysAppVersion;
@@ -60,8 +61,17 @@ class VersionController extends BackendController
      */
     public function setting()
     {
-        $form = new FormSettingVersion();
-        return $form->render();
+        return (new FormSettingVersion())->render();
+    }
+
+
+    public function clearCache()
+    {
+        sys_tag('py-version')->del([
+            PyVersionDef::ckMaxVersion(),
+            PyVersionDef::ckVersions()
+        ]);
+        return Resp::success('已清理');
     }
 
     /**

@@ -15,4 +15,6 @@ Route::group([
         ->name('py-version:backend.version.setting');
     $router->any('version/delete/{id}', 'VersionController@delete')
         ->name('py-version:backend.version.delete');
+    $router->any('version/clear_cache', 'VersionController@clearCache')
+        ->name('py-version:backend.version.clear_cache');
 });
