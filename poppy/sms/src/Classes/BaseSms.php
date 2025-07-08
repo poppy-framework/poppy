@@ -30,7 +30,7 @@ abstract class BaseSms
     public function __construct()
     {
         config([
-            'weiran.sms.sign' => sys_setting('weiran-sms::sms.sign'),
+            'poppy.sms.sign' => sys_setting('py-sms::sms.sign'),
         ]);
     }
 
