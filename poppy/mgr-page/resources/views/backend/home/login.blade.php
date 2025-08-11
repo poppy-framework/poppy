@@ -22,16 +22,16 @@
             <fieldset class="layui-elem-field layui-field-title">
                 <legend>{!! sys_setting('py-system::site.site_name') !!}登录</legend>
                 <div class="layui-field-box">
-                    <div class="layui-row">
-                        <div class="layui-col-sm3 layui-col-xs-12">
-                            {!! Form::label('passport', config('poppy.mgr-page.captcha_login') ? '手机号' : '用户名',
-                                ['class'=> 'layui-form-label validation']) !!}
+                    @if(config('poppy.mgr-page.account_login'))
+                        <div class="layui-row">
+                            <div class="layui-col-sm3 layui-col-xs-12">
+                                {!! Form::label('passport', config('poppy.mgr-page.captcha_login') ? '手机号' : '用户名',
+                                    ['class'=> 'layui-form-label validation']) !!}
+                            </div>
+                            <div class="layui-col-sm12 layui-col-xs12">
+                                {!! Form::text('passport', null, ['class'=> 'layui-input']) !!}
+                            </div>
                         </div>
-                        <div class="layui-col-sm12 layui-col-xs12">
-                            {!! Form::text('passport', null, ['class'=> 'layui-input']) !!}
-                        </div>
-                    </div>
-                    @if(!config('poppy.mgr-page.captcha_login'))
                         <div class="layui-row">
                             <div class="layui-col-sm3 layui-col-xs-12">
                                 {!! Form::label('password', '密码', ['class'=> 'layui-form-label validation']) !!}
@@ -64,9 +64,11 @@
                             </div>
                         </div>
                     @endif
-                    <div class="layui-form-item mt5">
-                        {!! Form::button('登录', ['class'=> 'layui-btn layui-btn-info J_submit','type' => 'submit',]) !!}
-                    </div>
+                    @if(config('poppy.mgr-page.account_login') || config('poppy.mgr-page.captcha_login'))
+                        <div class="layui-form-item mt5">
+                            {!! Form::button('登录', ['class'=> 'layui-btn layui-btn-info J_submit','type' => 'submit',]) !!}
+                        </div>
+                    @endif
                     <div class="layui-form-item mt5">
                         {!! sys_hook('poppy.mgr-page.html_login') !!}
                     </div>
