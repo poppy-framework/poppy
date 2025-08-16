@@ -44,6 +44,15 @@
                     @if(config('poppy.mgr-page.captcha_login'))
                         <div class="layui-row">
                             <div class="layui-col-sm3 layui-col-xs-12">
+                                {!! Form::label('passport', config('poppy.mgr-page.captcha_login') ? '手机号' : '用户名',
+                                    ['class'=> 'layui-form-label validation']) !!}
+                            </div>
+                            <div class="layui-col-sm12 layui-col-xs12">
+                                {!! Form::text('passport', null, ['class'=> 'layui-input']) !!}
+                            </div>
+                        </div>
+                        <div class="layui-row">
+                            <div class="layui-col-sm3 layui-col-xs-12">
                                 {!! Form::label('code', '图形验证码', ['class'=> 'layui-form-label validation']) !!}
                             </div>
                             <div class="layui-col-sm12 layui-col-xs12 login-captcha">

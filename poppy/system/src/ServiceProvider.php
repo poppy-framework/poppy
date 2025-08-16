@@ -7,7 +7,6 @@ namespace Poppy\System;
 use Illuminate\Auth\Events\Login as AuthLoginEvent;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Events\QueryExecuted;
-use Poppy\Core\Events\ApidocGeneratedEvent;
 use Poppy\Core\Events\PermissionInitEvent;
 use Poppy\Framework\Classes\Traits\PoppyTrait;
 use Poppy\Framework\Events\PoppyOptimized;
@@ -42,9 +41,6 @@ class ServiceProvider extends PoppyServiceProvider
         // laravel
         AuthLoginEvent::class           => [
 
-        ],
-        ApidocGeneratedEvent::class     => [
-            Listeners\ApidocGenerated\ApidocToConsoleListener::class,
         ],
         PermissionInitEvent::class      => [
             Listeners\PermissionInit\InitToDbListener::class,

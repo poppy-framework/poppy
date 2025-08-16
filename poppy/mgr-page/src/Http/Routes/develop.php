@@ -24,17 +24,4 @@ Route::group([
      * ---------------------------------------- */
     $router->any('log', 'LogController@index')
         ->name('py-mgr-page:develop.log.index');
-
-    /* clockwork
-     * ---------------------------------------- */
-    $router->any('clockwork', 'ClockworkController@index')
-        ->name('py-mgr-page:develop.clockwork.index');
-    $router->any('clockwork/report', 'ClockworkController@report')
-        ->name('py-mgr-page:develop.clockwork.report');
-
-    // progress
-    $router->any('progress', 'ProgressController@index')
-        ->name('py-mgr-page:develop.progress.index');
-    $router->any('progress/lists', 'ProgressController@lists')
-        ->name('py-mgr-page:develop.progress.lists');
 });

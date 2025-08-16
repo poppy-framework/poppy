@@ -4,9 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\Core\Commands;
 
-use Exception;
 use Illuminate\Console\Command;
-use Poppy\Core\Events\ApidocGeneratedEvent;
 use Symfony\Component\Process\Process;
 
 /**
@@ -114,7 +112,6 @@ class DocCommand extends Command
         $def = config('poppy.core.apidoc.' . $key);
         if ($def['match'] ?? '') {
             $match = $def['match'];
-            $type  = $key;
         }
         else {
             $matches = [
@@ -145,11 +142,6 @@ class DocCommand extends Command
             }
         });
 
-        try {
-            event(new ApidocGeneratedEvent($type));
-        } catch (Exception $e) {
-            $this->warn($e->getMessage());
-        }
         $this->info($process->getOutput());
     }
 }
