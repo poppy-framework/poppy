@@ -166,9 +166,8 @@ return [
         ],
     ],
     'mgr-page'     => [
-        /*
-         * ---------------------------------------- */
         'captcha_login' => env('PY_MGR_CAPTCHA_LOGIN', false),
+        'account_login' => env('PY_MGR_ACCOUNT_LOGIN', false),
     ],
     'ext-ip_store' => [
         /*

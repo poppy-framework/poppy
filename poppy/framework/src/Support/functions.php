@@ -116,6 +116,8 @@ if (!function_exists('input')) {
      * @param string|null $name
      * @param mixed       $default
      * @return string|array
+     * @deprecated 4.2
+     * @see Request::input()
      */
     function input(string $name = null, $default = null)
     {
