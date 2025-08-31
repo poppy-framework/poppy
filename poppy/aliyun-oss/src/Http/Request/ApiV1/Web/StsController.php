@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Poppy\AliyunOss\Action\Sts;
-use Poppy\AliyunOss\Classes\Provider\OssFileProvider;
+use Poppy\AliyunOss\Http\Request\ApiV1\Validation\StsTempOssRequest;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\System\Http\Request\ApiV1\JwtApiController;
@@ -52,10 +52,14 @@ class StsController extends JwtApiController
 
     /**
      * @return JsonResponse|RedirectResponse|Response
+     * @throws ApplicationException
      */
-    public function tempOss()
+    public function tempOss(StsTempOssRequest $request)
     {
-        $Sts    = new Sts();
+        $Sts = new Sts();
+        if ($request->getIsTemp() === 'Y') {
+            $Sts->setSubDirectory('temp');
+        }
         $tempKey = $Sts->tempOss();
         return Resp::web(Resp::SUCCESS, '获取成功', $tempKey);
     }

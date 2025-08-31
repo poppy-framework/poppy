@@ -4,9 +4,11 @@ declare(strict_types = 1);
 
 namespace Poppy\AliyunOss\Tests\Classes;
 
+use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
+use OSS\Core\OssException;
+use OSS\Http\RequestCore_Exception;
 use Poppy\AliyunOss\Classes\Provider\OssFileProvider;
 use Poppy\AliyunOss\Tests\Testing\TestingAliyunOss;
 use Poppy\Framework\Application\TestCase;
@@ -34,6 +36,9 @@ class UploadTest extends TestCase
     /**
      * @return void
      * @throws LoadConfigurationException
+     * @throws GuzzleException
+     * @throws OssException
+     * @throws RequestCore_Exception
      */
     public function testUpload(): void
     {
@@ -65,7 +70,7 @@ class UploadTest extends TestCase
             try {
                 $resp = self::$client->get($url);
                 $this->assertEquals(404, $resp->getStatusCode());
-            } catch (ClientException $e) {
+            } catch (Exception $e) {
                 $this->assertEquals(404, $e->getCode());
             }
 
@@ -76,10 +81,10 @@ class UploadTest extends TestCase
                 $Upload->delete();
                 self::$client->get($aimUrl);
                 $this->assertEquals(404, $resp->getStatusCode());
-            } catch (ClientException $e) {
+            } catch (Exception $e) {
                 $this->assertEquals(404, $e->getCode());
             }
-        } catch (ApplicationException|GuzzleException $e) {
+        } catch (ApplicationException $e) {
             $this->fail($e->getMessage());
         }
     }

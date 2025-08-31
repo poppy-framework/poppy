@@ -151,7 +151,6 @@ return [
         Collective\Html\HtmlServiceProvider::class,                                  // Form
         Poppy\Framework\FrameworkServiceProvider::class,
 
-        Poppy\CodeGenerator\ServiceProvider::class,
         Poppy\Extension\IpStore\ExtensionServiceProvider::class,
         Poppy\Extension\App\ExtensionServiceProvider::class,
     ],

@@ -52,7 +52,6 @@
         "php-curl-class/php-curl-class": "^9.17"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
         "mockery/mockery": "^1.5.1",
         "itsgoingd/clockwork": "^5.1",
         "barryvdh/laravel-ide-helper": "2.8.*",

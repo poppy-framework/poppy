@@ -59,9 +59,6 @@ develop :
       title : 系统信息
       children :
         -
-          title : Clockwork
-          route : py-mgr-page:develop.clockwork.index
-        -
           title : 系统日志
           route : py-mgr-page:develop.log.index
         -
@@ -73,9 +70,3 @@ develop :
         -
           title : 数据库查询监控
           route : py-mgr-page:develop.home.optimize
-    -
-      title : 数据表更新
-      children :
-        -
-          title : 数据表更新执行情况
-          route : py-mgr-page:develop.progress.lists

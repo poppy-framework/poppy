@@ -7,6 +7,8 @@ use OSS\OssClient;
 use Poppy\AliyunOss\Action\Sts;
 use Poppy\AliyunOss\Tests\Testing\TestingAliyunOss;
 use Poppy\Framework\Application\TestCase;
+use Weiran\System\Exceptions\SettingKeyNotMatchException;
+use Weiran\System\Exceptions\SettingValueOutOfRangeException;
 
 class StsTest extends TestCase
 {
@@ -44,6 +46,32 @@ class StsTest extends TestCase
             } catch (OssException $e) {
                 print $e->getMessage();
             }
+        }
+        else {
+            $this->fail($Sts->getError());
+        }
+    }
+
+    public function testSubDirectory(): void
+    {
+        $Sts = new Sts(TestingAliyunOss::config());
+        $Sts->setSubDirectory('temp');
+        if ($Sts->tempOss()) {
+            $temp = $Sts->tempOss();
+            $this->assertIsArray($temp);
+            $this->assertArrayHasKey('directory', $temp);
+            $this->assertStringStartsWith('temp/', $temp['directory']);
+        }
+        else {
+            $this->fail($Sts->getError());
+        }
+
+        $Sts->setSubDirectory('uploads/temp');
+        if ($Sts->tempOss()) {
+            $temp = $Sts->tempOss();
+            $this->assertIsArray($temp);
+            $this->assertArrayHasKey('directory', $temp);
+            $this->assertStringStartsWith('uploads/temp/', $temp['directory']);
         }
         else {
             $this->fail($Sts->getError());

@@ -6,6 +6,8 @@ namespace Poppy\AliyunOss\Classes\Provider;
 
 use Exception;
 use Illuminate\Support\Str;
+use OSS\Core\OssException;
+use OSS\Http\RequestCore_Exception;
 use OSS\OssClient;
 use Poppy\Framework\Exceptions\LoadConfigurationException;
 use Poppy\System\Classes\File\DefaultFileProvider;
@@ -93,7 +95,10 @@ class OssFileProvider extends DefaultFileProvider
     }
 
     /**
-     * @inheritDoc
+     * @param string $dist
+     * @return bool
+     * @throws OssException
+     * @throws RequestCore_Exception
      */
     public function copyTo(string $dist): bool
     {
@@ -112,7 +117,9 @@ class OssFileProvider extends DefaultFileProvider
 
 
     /**
-     * @inheritDoc
+     * @return bool
+     * @throws OssException
+     * @throws RequestCore_Exception
      */
     public function delete(): bool
     {
@@ -147,6 +154,8 @@ class OssFileProvider extends DefaultFileProvider
 
     /**
      * @throws LoadConfigurationException
+     * @throws OssException
+     * @throws RequestCore_Exception
      */
     private function reWatermark(): void
     {

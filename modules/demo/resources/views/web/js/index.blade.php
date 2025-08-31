@@ -3,10 +3,10 @@
     <div class="layui-container">
         <div class="layui-row layui-col-space15 mt15">
             <div class="layui-col-xs12">
-                @if(if_query('type', ''))
+                @if(!Request::get('type'))
                     @include('demo::web.js._index')
                 @else
-                    @include('demo::web.js._type_'.input('type'))
+                    @include('demo::web.js._type_'.app('request')->get('type'))
                 @endif
             </div>
         </div>

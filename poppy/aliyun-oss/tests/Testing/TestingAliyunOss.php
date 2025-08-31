@@ -17,7 +17,7 @@ class TestingAliyunOss
             'poppy.aliyun-oss.access_secret'   => env('PY_ALIYUN_OSS_ACCESS_SECRET'),
             'poppy.aliyun-oss.endpoint'        => env('PY_ALIYUN_OSS_ENDPOINT'),
             'poppy.aliyun-oss.bucket'          => env('PY_ALIYUN_OSS_BUCKET'),
-            'poppy.aliyun-oss.url_prefix'      => env('PY_ALIYUN_OSS_URL_PREFIX'),
+            'poppy.aliyun-oss.url'             => env('PY_ALIYUN_OSS_URL_PREFIX'),
             'poppy.aliyun-oss.role_arn'        => env('PY_ALIYUN_OSS_ROLE_ARN'),
             'poppy.aliyun-oss.temp_app_key'    => env('PY_ALIYUN_OSS_TEMP_APP_KEY'),
             'poppy.aliyun-oss.temp_app_secret' => env('PY_ALIYUN_OSS_TEMP_APP_SECRET'),
