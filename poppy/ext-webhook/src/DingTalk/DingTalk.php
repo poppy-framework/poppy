@@ -75,10 +75,10 @@ class DingTalk
             $queryData['sign']      = $this->sign($queryData['timestamp']);
         }
         $response = $this->httpClient->send($request, ['query' => $queryData]);
-        return
-            $response->getStatusCode() === 200
-            &&
-            json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['errcode'] ?? 1 === 0;
+
+        $contents = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+
+        return $response->getStatusCode() === 200 && ($contents['errcode'] ?? 1) === 0;
     }
 
     /**
