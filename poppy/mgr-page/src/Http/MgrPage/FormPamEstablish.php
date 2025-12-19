@@ -105,7 +105,7 @@ class FormPamEstablish extends FormWidget
             $this->text('username', '用户名')->rules([
                 Rule::nullable(),
             ]);
-            $this->tags('role_id', '用户角色')->options(PamRole::getLinear($this->type));
+            $this->tags('role_id', '用户角色')->options(PamRole::getLinear($this->type))->max(10);
         }
 
         $this->password('password', '密码');
