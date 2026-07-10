@@ -45,6 +45,11 @@ Thumbs.db
 .idea
 /nbproject/
 
+#      AI      #
+################
+.omc
+.claude
+
 # Project User #
 ################
 /poppy/mgr-page/resources/libs/webpack.mix.js

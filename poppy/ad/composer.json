@@ -14,8 +14,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Poppy\\Ad\\": "src/",
-			"Poppy\\Ad\\Tests\\": "tests/"
+			"Poppy\\Ad\\": "src/"
 		}
 	},
 	"extra": {

@@ -1,0 +1,102 @@
+name: Release
+
+# ─────────────────────────────────────────────────────────
+# Poppy monorepo 自动发布 workflow
+# 触发：推送形如 v*.*.* 的 tag（如 v4.2.1、v4.2.1-rc1）
+#
+# 行为：
+#   1. 找到上一次发布的 tag
+#   2. 读取本次 tag 的 message，解析 skip / only 控制
+#   3. 调用 release.sh 主调度，对每个子模块执行：
+#      - git subtree split
+#      - 注入 version 字段
+#      - force-push 到 poppy-framework/poppy-<name>:main
+#      - 创建 GitHub Release（带 changelog）
+#      - 通过 webhook 触发 packagist 同步
+#
+# 精细控制（在 tag message body 中写）：
+#   skip: ad, im-rpc          # 跳过指定模块
+#   only: framework, core     # 只发指定模块
+#
+# 凭据：
+#   - secrets.GITHUB_TOKEN 默认带 contents: write，但跨仓库 push 需要 PAT
+#   - 推荐用 secrets.POPPY_RELEASE_TOKEN（一个 PAT，对所有 22 个目标仓库有 write 权限）
+#   - 更推荐用 GitHub App：actions/create-github-app-token@v1
+# ─────────────────────────────────────────────────────────
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+# 允许 GITHUB_TOKEN 创建 Release（同仓库）
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Release ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (full history for subtree split)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup jq
+        run: sudo apt-get update -qq && sudo apt-get install -y jq
+
+      - name: Detect previous tag
+        id: prev
+        run: |
+          set -euo pipefail
+          # 找上一个匹配的 v*.*.* tag
+          PREV=$(git tag --sort=-version:refname \
+            | grep -E '^v[0-9]+\.[0-9]+(\.[0-9]+)?' \
+            | grep -v "^${GITHUB_REF_NAME}$" \
+            | head -1 || true)
+          if [[ -z "$PREV" ]]; then
+            PREV=""
+            echo "ℹ No previous tag found — this is the first release"
+          else
+            echo "ℹ Previous tag: $PREV"
+          fi
+          echo "previous=${PREV}" >> "$GITHUB_OUTPUT"
+
+      - name: Read tag message
+        id: tagmsg
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # 用 gh api 拿 annotated tag 的 message
+          MESSAGE=$(gh api \
+            repos/${{ github.repository }}/git/refs/tags/${{ github.ref_name }} \
+            --jq '.object.url // ""' 2>/dev/null || echo "")
+          if [[ -n "$MESSAGE" ]]; then
+            TAG_BODY=$(gh api "$MESSAGE" --jq '.message // ""' 2>/dev/null || echo "")
+          fi
+          # lightweight tag fallback：用 git show 拿 commit message
+          if [[ -z "${TAG_BODY:-}" ]]; then
+            TAG_BODY=$(git show "$GITHUB_REF_NAME" --no-patch --format=%B 2>/dev/null || echo "")
+          fi
+          echo "message<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$TAG_BODY" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "Tag message:"
+          echo "$TAG_BODY" | sed 's/^/  | /'
+
+      - name: Run release orchestrator
+        env:
+          GH_TOKEN: ${{ secrets.POPPY_RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_ORG: poppy-framework
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          chmod +x ./.github/scripts/*.sh
+          ./.github/scripts/release.sh \
+            "$VERSION" \
+            "${{ steps.prev.outputs.previous }}" \
+            "${{ steps.tagmsg.outputs.message }}"

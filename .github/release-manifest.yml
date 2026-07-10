@@ -1,0 +1,96 @@
+# Poppy monorepo 子模块发布清单
+#
+# 任何 poppy/<name> 目录如果不在这里，就不会被发布。
+# 加新模块：在这里加一条 + 在 poppy/<name>/ 准备子包即可。
+#
+# 注意：本文件决定哪些模块会被推送。删一条 = 该模块不再自动发布。
+# 不要把模块的 "repo" 字段填错，否则会推到错误的 GitHub 仓库。
+
+modules:
+  # ─────────────── 基础层（无依赖） ───────────────
+  - name: framework
+    description: A framework for laravel module development.
+    dependencies: []
+  - name: faker
+    description: Poppy Faker is a PHP library that generates fake data for zh user.
+    dependencies: []
+  - name: version
+    description: An Version management.
+    dependencies: []
+  - name: im-rpc
+    description: An Version management.
+    dependencies: []
+  - name: area
+    description: An Area management.
+    dependencies: []
+  - name: category
+    description: An Multi Level Category Management.
+    dependencies: []
+  - name: ad
+    description: An Ad management.
+    dependencies: []
+  - name: app
+    description: An app management.
+    dependencies: []
+
+  # ─────────────── 扩展层（无依赖） ───────────────
+  - name: ext-app
+    description: App extension utilities.
+    dependencies: []
+  - name: ext-alipay
+    description: Poppy Alipay Extension.
+    dependencies: []
+  - name: ext-ip_store
+    description: IP to area name conversion.
+    dependencies: []
+  - name: ext-phpstan
+    description: PHPStan extension for Poppy.
+    dependencies: []
+  - name: ext-webhook
+    description: Webhook robot SDK.
+    dependencies: []
+  - name: aliyun-push
+    description: Poppy Aliyun Push Extension.
+    dependencies: []
+  - name: sensitive-word
+    description: An sensitive words component.
+    dependencies: []
+
+  # ─────────────── 核心层 ───────────────
+  - name: core
+    description: An admin plugin for poppy.
+    dependencies: [framework]
+
+  # ─────────────── 阿里云集成（依赖 system） ───────────────
+  - name: aliyun-oss
+    description: Poppy Aliyun Oss Extension.
+    dependencies: [system]
+
+  # ─────────────── 业务层 ───────────────
+  - name: system
+    description: An admin management module for poppy.
+    dependencies: [core, ext-app]
+  - name: mgr-page
+    description: An admin management page module.
+    dependencies: [system]
+  - name: sms
+    description: Poppy Sms 扩展.
+    dependencies: [system]
+  - name: content
+    description: An Simple Content Management.
+    dependencies: [category]
+
+# ─────────────── 全局配置 ───────────────
+config:
+  # 目标 GitHub 组织
+  github_org: poppy-framework
+  # 目标仓库命名规则（{name} = 模块名）
+  repo_name_template: poppy-{name}
+  # packagist 包名规则
+  composer_name_template: poppy/{name}
+  # 默认推送的分支
+  default_branch: main
+  # 是否触发 packagist webhook 同步（如果上游仓库已配 packagist webhook）
+  sync_to_packagist: true
+  # 单次发布超时（秒）
+  per_module_timeout: 300

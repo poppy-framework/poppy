@@ -60,52 +60,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Poppy\\Extension\\Alipay\\": "poppy/ext-alipay/src",
-            "Poppy\\Extension\\Alipay\\Tests\\": "poppy/ext-alipay/tests",
-            "Poppy\\Extension\\IpStore\\": "poppy/ext-ip_store/src",
-            "Poppy\\Extension\\IpStore\\Tests\\": "poppy/ext-ip_store/tests",
-            "Poppy\\Extension\\Phpstan\\": "poppy/ext-phpstan/src",
-            "Poppy\\Faker\\": "poppy/faker/src",
-            "Faker\\": "poppy/faker/src/Faker/",
-            "Poppy\\Faker\\Tests\\": "poppy/faker/tests",
-            "Poppy\\Framework\\": "poppy/framework/src",
-            "Poppy\\Framework\\Tests\\": "poppy/framework/tests",
-            "Poppy\\Core\\": "poppy/core/src",
-            "Poppy\\Core\\Tests\\": "poppy/core/tests",
-            "Poppy\\System\\": "poppy/system/src",
-            "Poppy\\System\\Tests\\": "poppy/system/tests",
-            "Poppy\\MgrPage\\": "poppy/mgr-page/src/",
-            "Poppy\\MgrPage\\Tests\\": "poppy/mgr-page/tests/",
-            "Poppy\\MgrApp\\": "poppy/mgr-app/src/",
-            "Poppy\\MgrApp\\Tests\\": "poppy/mgr-app/tests/",
-            "Poppy\\Ad\\": "poppy/ad/src",
-            "Poppy\\Ad\\Tests\\": "poppy/ad/tests",
-            "Poppy\\Area\\": "poppy/area/src",
-            "Poppy\\Area\\Tests\\": "poppy/area/tests",
-            "Poppy\\Sms\\": "poppy/sms/src",
-            "Poppy\\Sms\\Tests\\": "poppy/sms/tests",
-            "Poppy\\Version\\": "poppy/version/src",
-            "Poppy\\Version\\Tests\\": "poppy/version/tests",
-            "Poppy\\Content\\": "poppy/content/src",
-            "Poppy\\Content\\Tests\\": "poppy/content/tests",
-            "Poppy\\AliyunPush\\": "poppy/aliyun-push/src",
-            "Poppy\\AliyunPush\\Tests\\": "poppy/aliyun-push/tests",
-            "Poppy\\SensitiveWord\\": "poppy/sensitive-word/src",
-            "Poppy\\SensitiveWord\\Tests\\": "poppy/sensitive-word/tests",
-            "Poppy\\AliyunOss\\": "poppy/aliyun-oss/src",
-            "Poppy\\AliyunOss\\Tests\\": "poppy/aliyun-oss/tests",
-            "Poppy\\CodeGenerator\\": "poppy/code-generator/src/",
             "Demo\\": "modules/demo/src/",
             "Demo\\Tests\\": "modules/demo/tests/"
-        },
-        "files": [
-            "poppy/framework/src/Support/functions.php",
-            "poppy/system/src/Support/functions.php",
-            "poppy/core/src/Support/functions.php",
-            "poppy/sensitive-word/src/Support/functions.php",
-            "poppy/mgr-page/src/Support/functions.php"
-        ]
+        }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "poppy/*"
+        }
+    ],
     "extra": {
         "laravel": {
             "dont-discover": [
@@ -114,24 +78,11 @@
         }
     },
     "scripts": {
-        "codeup": [
-            "git subtree push --prefix=poppy/framework  codeup-framework 4.2",
-            "git subtree push --prefix=poppy/mgr-page  codeup-mgr-page 4.2",
-            "git subtree push --prefix=poppy/mgr-app  codeup-mgr-app 4.2",
-            "git subtree push --prefix=poppy/core  codeup-core 4.2",
-            "git subtree push --prefix=poppy/system  codeup-system 4.2",
-            "git subtree push --prefix=poppy/faker  codeup-faker 4.2",
-            "git subtree push --prefix=poppy/version  codeup-version 4.2",
-            "git subtree push --prefix=poppy/aliyun-oss  codeup-aliyun-oss 4.2",
-            "git subtree push --prefix=poppy/aliyun-push  codeup-aliyun-push 4.2",
-            "git subtree push --prefix=poppy/area  codeup-area 4.2",
-            "git subtree push --prefix=poppy/sensitive-word  codeup-sensitive-word 4.2",
-            "git subtree push --prefix=poppy/sms  codeup-sms 4.2",
-            "git subtree push --prefix=poppy/ext-alipay  codeup-ext-alipay 4.2",
-            "git subtree push --prefix=poppy/ext-ip_store  codeup-ext-ip_store 4.2",
-            "git subtree push --prefix=poppy/ad  codeup-ad 4.2",
-            "git subtree push --prefix=poppy/code-generator codeup-code-generator 4.2",
-            "git subtree push --prefix=poppy/ext-phpstan codeup-ext-phpstan 4.2"
+        "release:check": [
+            "bash .github/scripts/release.sh --help 2>/dev/null; bash -c '.github/scripts/release.sh dryrun-check 2>&1 | head -40'"
+        ],
+        "release:dry-run": [
+            "bash .github/scripts/release.sh 4.2.1-rc1 '' '' --dry-run"
         ],
         "post-install-cmd": [
             "php artisan clear-compiled",
