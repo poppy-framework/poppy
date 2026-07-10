@@ -94,9 +94,18 @@ class FunctionTest extends TestCase
         // 当前支持的参数和非参数
         array_map(function ($param) {
             $this->outputVariables(sys_gen_mk(self::class, $param));
+            sys_error('testing', $param);
+            sys_info('testing', $param);
+            sys_debug('testing', $param);
+            sys_warning('testing', $param);
+            sys_error('testing', $param, true);
+            sys_info('testing', $param, true);
+            sys_debug('testing', $param, true);
+            sys_warning('testing', $param, true);
         }, $params);
 
         // 兼容之前的写法
+        sys_error(self::class, $queryError);
         $this->assertTrue(true);
     }
 

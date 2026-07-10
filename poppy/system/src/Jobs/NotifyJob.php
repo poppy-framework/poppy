@@ -9,7 +9,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Log;
 use Poppy\Framework\Application\Job;
 use Poppy\Framework\Helper\ArrayHelper;
 use Poppy\Framework\Helper\UtilHelper;
@@ -94,15 +93,15 @@ class NotifyJob extends Job implements ShouldQueue
                     'query' => $this->params,
                 ]));
             }
-            Log::info(sys_gen_mk(self::class, $this->log($resp)));
+            sys_info(self::class, $this->log($resp));
         } catch (GuzzleException $e) {
             if ($this->execNum < count($timeMap)) {
                 $delayDesc = 'next will exec at (' . Carbon::now()->addSeconds($timeMap[$this->execNum])->toDateTimeString() . ')(' . $timeMap[$this->execNum] . 's)';
-                Log::warning(sys_gen_mk(self::class, $this->log($e, $delayDesc)));
+                sys_error(self::class, $this->log($e, $delayDesc));
                 dispatch((new self($this->url, $this->method, $this->params, $this->execNum + 1))->delay($timeMap[$this->execNum]));
             }
             else {
-                Log::warning(sys_gen_mk(self::class, $this->log($e)));
+                sys_error(self::class, $this->log($e));
             }
         }
     }

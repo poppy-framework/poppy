@@ -1,34 +1,39 @@
 {
-    "name": "poppy/mgr-page",
-    "description": "An admin management page module.",
-    "license": "Apache-2.0",
-    "authors": [
+    "name" : "poppy/mgr-page",
+    "description" : "An admin management page module.",
+    "license" : "Apache-2.0",
+    "authors" : [
         {
-            "name": "Mark Zhao",
-            "email": "zhaody901@126.com"
+            "name" : "Mark Zhao",
+            "email" : "zhaody901@126.com"
         }
     ],
-    "require": {
-        "php": ">=7.4",
-        "poppy/system": "4.2.x-dev",
-        "ovidigital/js-object-to-json": "^1.0"
+    "require" : {
+        "php" : ">=7.4",
+        "ext-json" : "*",
+        "poppy/system" : "4.2.*",
+        "mews/captcha" : "^3.2"
     },
-    "autoload": {
-        "psr-4": {
-            "Poppy\\MgrPage\\": "src/",
-            "Poppy\\MgrPage\\Tests\\": "tests/"
+    "autoload" : {
+        "psr-4" : {
+            "Poppy\\MgrPage\\" : "src/"
         },
-        "files": [
+        "files" : [
             "src/Support/functions.php"
         ]
     },
-    "config": {
-        "preferred-install": "dist"
-    },
-    "laravel": {
-        "aliases": {
-            "Form": "Poppy\\MgrPage\\Facade\\FormFacade"
+    "autoload-dev" : {
+        "psr-4" : {
+            "Poppy\\MgrPage\\Tests\\" : "tests/"
         }
     },
-    "minimum-stability": "dev"
+    "config" : {
+        "preferred-install" : "dist"
+    },
+    "laravel" : {
+        "aliases" : {
+            "Form" : "Poppy\\MgrPage\\Facade\\FormFacade"
+        }
+    },
+    "minimum-stability" : "dev"
 }

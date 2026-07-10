@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Cache\TaggableStore;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Poppy\Core\Classes\PyCoreDef;
 use Poppy\Core\Redis\RdsDb;
@@ -67,24 +68,36 @@ if (!function_exists('sys_cacher')) {
 if (!function_exists('sys_db')) {
     /**
      * 模型缓存
-     * todo 根据是否存在来定义模型信息
-     * @param string|array $key 需要支持的缓存
-     * @return string
+     * @param string       $table 数据表
+     * @param array|string $keys  密钥
+     * @return array|string
      */
-    function sys_db($key): string
+    function sys_db(string $table, $keys = [])
     {
         static $cache;
+
+        if (class_exists($table)) {
+            $table = (new $table)->getTable();
+        }
+
         if (!$cache) {
-            $cache = sys_tag('py-core')->get(PyCoreDef::ckLangModels());
+            $cache = sys_tag('py-core')->hGetAll(PyCoreDef::ckLangModels());
             if (!$cache) {
-                app(ConsoleKernelContract::class)->call('py-core:inspect', [
-                    'type' => 'db_seo',
+                app(ConsoleKernelContract::class)->call('py-core:db', [
+                    'do' => 'fields',
                 ]);
-                $cache = sys_tag('py-core')->get(PyCoreDef::ckLangModels());
+                $cache = sys_tag('py-core')->hGetAll(PyCoreDef::ckLangModels());
             }
         }
 
-        return data_get($cache, $key);
+        $tbFields = data_get($cache, $table, []);
+        if (is_string($keys)) {
+            return data_get($tbFields, $keys, '');
+        }
+        if (count($keys)) {
+            return Arr::only($tbFields, $keys);
+        }
+        return $tbFields;
     }
 }
 
@@ -106,12 +119,12 @@ if (!function_exists('sys_hook')) {
 if (!function_exists('sys_gen_mk')) {
     /**
      * 根据异常类型生成符合条件格式的日志
-     * @param       $class
-     * @param mixed $info
-     * @param bool  $request
+     * @param string $tag
+     * @param mixed  $info
+     * @param bool   $request
      * @return string
      */
-    function sys_gen_mk($class, $info, bool $request = false): string
+    function sys_gen_mk(string $tag, $info, bool $request = false): string
     {
         $jsonMark = JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
 
@@ -129,13 +142,22 @@ if (!function_exists('sys_gen_mk')) {
             }
         }
 
-        $append = function ($info) use ($request, $req, $jsonMark, $class) {
-            return "[{$class}]:" . $info . (($request && $req) ? PHP_EOL . json_encode($req, $jsonMark) : '');
+        $append = function ($info) use ($request, $req, $jsonMark, $tag) {
+            try {
+                $je = json_encode($req, $jsonMark);
+            } catch (JsonException $e) {
+                $je = '';
+            }
+            return "[{$tag}]:" . $info . (($request && $req) ? PHP_EOL . $je : '');
         };
 
         // append datagtvgit flow hotfix finish 2.9.7
         if (is_array($info)) {
-            return $append(json_encode($info, $jsonMark));
+            try {
+                return $append(json_encode($info, JSON_THROW_ON_ERROR | $jsonMark));
+            } catch (JsonException $e) {
+                return $append(array_keys($info));
+            }
         }
 
         if (is_string($info)) {
@@ -163,8 +185,12 @@ if (!function_exists('sys_gen_mk')) {
             $content = $info;
         }
 
-        $content = json_encode($content, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        return "[{$class}]:" . $content;
+        try {
+            $content = json_encode($content, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            return "[{$tag}]:" . $content;
+        } catch (JsonException $e) {
+            return "[{$tag}]:" . $content;
+        }
     }
 }
 
@@ -217,7 +243,7 @@ if (!function_exists('sys_mark')) {
         // append data
         $content = '';
         if (is_array($append)) {
-            $content = json_encode($append, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+            $content = json_encode($append, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         }
         if (is_string($append)) {
             $content = $append;
@@ -235,31 +261,26 @@ if (!function_exists('sys_mark')) {
 if (!function_exists('sys_error')) {
     /**
      * 用于记录系统异常信息, 通常需要开启请求
-     * @param mixed        $object
-     * @param string|bool  $class
-     * @param string|array $append
-     * @see        Log::error()
-     * @deprecated 4.1
+     * @param string $tag          标签或者 class 名称
+     * @param mixed  $info         需要输出的信息
+     * @param bool   $with_request 是否打印请求数据
      */
-    function sys_error($object, $class = '', $append = '')
+    function sys_error(string $tag, $info, bool $with_request = false)
     {
-        app('log')->error(sys_gen_mk($class, $append));
+        app('log')->error(sys_gen_mk($tag, $info, $with_request));
     }
 }
 
 if (!function_exists('sys_debug')) {
     /**
      * 4.1 更改为展示 debug 信息, 不区分环境, 用户追踪系统中的问题
-     * @param mixed        $object
-     * @param string|bool  $class
-     * @param string|array $append
-     * @see        Log::debug()
-     * @deprecated 4.1
-     * @since      3.1
+     * @param string $tag          标签或者 class 名称
+     * @param mixed  $info         需要输出的信息
+     * @param bool   $with_request 是否打印请求数据
      */
-    function sys_debug($object, $class = '', $append = '')
+    function sys_debug(string $tag, $info, bool $with_request = false)
     {
-        app('log')->debug(sys_gen_mk($class, $append));
+        app('log')->debug(sys_gen_mk($tag, $info, $with_request));
     }
 }
 
@@ -267,14 +288,40 @@ if (!function_exists('sys_debug')) {
 if (!function_exists('sys_info')) {
     /**
      * 记录信息, 一般用户信息追溯
-     * @param mixed        $object
-     * @param string|bool  $class
-     * @param string|array $append
-     * @see        Log::info()
-     * @deprecated 4.1
+     * @param string $tag          标签或者 class 名称
+     * @param mixed  $info         需要输出的信息
+     * @param bool   $with_request 是否打印请求数据
      */
-    function sys_info($object, $class = '', $append = '')
+    function sys_info(string $tag, $info, bool $with_request = false)
     {
-        app('log')->info(sys_gen_mk($class, $append));
+        app('log')->info(sys_gen_mk($tag, $info, $with_request));
+    }
+}
+
+if (!function_exists('sys_warning')) {
+    /**
+     * 警告信息, 一般用户 deprecated 的提示
+     * @param string $tag          标签或者 class 名称
+     * @param mixed  $info         需要输出的信息
+     * @param bool   $with_request 是否打印请求数据
+     * @since 4.1
+     */
+    function sys_warning(string $tag, $info, bool $with_request = false)
+    {
+        app('log')->warning(sys_gen_mk($tag, $info, $with_request));
+    }
+}
+
+if (!function_exists('sys_emergency')) {
+    /**
+     * 紧急的信息, 用于提示错误内容
+     * @param string $tag          标签或者 class 名称
+     * @param mixed  $info         需要输出的信息
+     * @param bool   $with_request 是否打印请求数据
+     * @since 4.1
+     */
+    function sys_emergency(string $tag, $info, bool $with_request = false)
+    {
+        app('log')->emergency(sys_gen_mk($tag, $info, $with_request));
     }
 }

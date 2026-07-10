@@ -26,7 +26,7 @@ class LocalSmsProvider extends BaseSms implements SmsContract
         $sign    = $this->sign;
         $trans   = sys_trans($this->sms['code'], $params);
         $content = ($sign ? "[{$sign}]" : '') . $trans;
-        Log::info(sys_gen_mk(self::class, $content));
+        sys_info(self::class, $content, true);
 
         return true;
     }
