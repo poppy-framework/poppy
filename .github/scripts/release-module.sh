@@ -47,12 +47,40 @@ fi
 
 AUTH_TOKEN="${GH_TOKEN:-${GITHUB_TOKEN:-}}"
 
-PREFIX="poppy/$MODULE"
-
 if [[ -z "$AUTH_TOKEN" ]]; then
   echo "✗ No GH_TOKEN or GITHUB_TOKEN in environment" >&2
   exit 1
 fi
+
+# ─── 诊断：打印 token 的真实身份和权限 ───
+echo "[$MODULE] ── Token diagnostics ──"
+TOKEN_PREFIX="${AUTH_TOKEN:0:10}"
+echo "  Token prefix: $TOKEN_PREFIX"
+# 用 token 查 /user，看是哪个身份
+WHOAMI=$(curl -sS -H "Authorization: token $AUTH_TOKEN" -H "Accept: application/vnd.github+json" \
+  https://api.github.com/user 2>/dev/null || echo "{}")
+LOGIN=$(echo "$WHOAMI" | jq -r '.login // "(invalid token)"' 2>/dev/null)
+TYPE=$(echo "$WHOAMI" | jq -r '.type // "(unknown)"' 2>/dev/null)
+echo "  Identity: $LOGIN (type: $TYPE)"
+
+# 查 framework 仓库权限（用 /repos/.../installation 看 App 安装的实际授权）
+REPO_PERMS=$(curl -sS -o /dev/null -w "%{http_code}" \
+  -H "Authorization: token $AUTH_TOKEN" -H "Accept: application/vnd.github+json" \
+  "https://api.github.com/repos/$GH_ORG/$TARGET_REPO" 2>/dev/null || echo "000")
+echo "  GET /repos/$GH_ORG/$TARGET_REPO → HTTP $REPO_PERMS"
+
+# 列出 token 能访问的所有仓库数（用 /installation/repositories，仅 GitHub App token 有权限）
+REPO_LIST=$(curl -sS -H "Authorization: token $AUTH_TOKEN" -H "Accept: application/vnd.github+json" \
+  "https://api.github.com/installation/repositories?per_page=100" 2>/dev/null || echo "{}")
+REPO_COUNT=$(echo "$REPO_LIST" | jq -r '.total_count // 0' 2>/dev/null)
+echo "  Installation repositories count: $REPO_COUNT"
+if [[ "$REPO_COUNT" -gt 0 ]] && [[ "$REPO_COUNT" -lt 100 ]]; then
+  echo "  Accessible repos (sample):"
+  echo "$REPO_LIST" | jq -r '.repositories[]?.name' 2>/dev/null | head -10 | sed 's/^/    - /'
+fi
+echo "───────────────────────────────────────"
+
+PREFIX="poppy/$MODULE"
 
 if [[ ! -d "$REPO_ROOT/$PREFIX" ]]; then
   echo "✗ Module directory not found: $PREFIX" >&2
