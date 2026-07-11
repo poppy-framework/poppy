@@ -43,7 +43,7 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ secrets.POPPY_RELEASE_APP_ID }}
+          client-id: ${{ secrets.POPPY_RELEASE_CLIENT_ID }}
           private-key: ${{ secrets.POPPY_RELEASE_APP_KEY }}
           owner: poppy-framework
       - name: Debug GitHub App
