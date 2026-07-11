@@ -19,9 +19,9 @@ name: Release
 #   only: framework, core     # 只发指定模块
 #
 # 凭据：
-#   - secrets.GITHUB_TOKEN 默认带 contents: write，但跨仓库 push 需要 PAT
-#   - 推荐用 secrets.POPPY_RELEASE_TOKEN（一个 PAT，对所有 22 个目标仓库有 write 权限）
-#   - 更推荐用 GitHub App：actions/create-github-app-token@v1
+#   - 用 GitHub App（actions/create-github-app-token@v1）
+#   - 需 secrets.POPPY_RELEASE_APP_ID / POPPY_RELEASE_APP_KEY
+#   - App 需安装到 poppy-framework 组织，并对 21 个目标仓库授权 contents: write
 # ─────────────────────────────────────────────────────────
 
 on:
@@ -39,6 +39,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.POPPY_RELEASE_APP_ID }}
+          private-key: ${{ secrets.POPPY_RELEASE_APP_KEY }}
       - name: Checkout (full history for subtree split)
         uses: actions/checkout@v4
         with:
@@ -90,7 +96,7 @@ jobs:
 
       - name: Run release orchestrator
         env:
-          GH_TOKEN: ${{ secrets.POPPY_RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           GH_ORG: poppy-framework
         run: |
           set -euo pipefail

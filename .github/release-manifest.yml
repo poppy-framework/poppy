@@ -17,17 +17,8 @@ modules:
   - name: version
     description: An Version management.
     dependencies: []
-  - name: im-rpc
-    description: An Version management.
-    dependencies: []
   - name: area
     description: An Area management.
-    dependencies: []
-  - name: category
-    description: An Multi Level Category Management.
-    dependencies: []
-  - name: ad
-    description: An Ad management.
     dependencies: []
   - name: app
     description: An app management.
@@ -76,16 +67,13 @@ modules:
   - name: sms
     description: Poppy Sms 扩展.
     dependencies: [system]
-  - name: content
-    description: An Simple Content Management.
-    dependencies: [category]
 
 # ─────────────── 全局配置 ───────────────
 config:
   # 目标 GitHub 组织
   github_org: poppy-framework
   # 目标仓库命名规则（{name} = 模块名）
-  repo_name_template: poppy-{name}
+  repo_name_template: {name}
   # packagist 包名规则
   composer_name_template: poppy/{name}
   # 默认推送的分支

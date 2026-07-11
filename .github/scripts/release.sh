@@ -134,7 +134,14 @@ if [[ "$DRY_RUN" == "1" ]]; then
   echo "── DRY-RUN MODE — no git push / no API calls ──"
   for mod in "${TO_RELEASE[@]}"; do
     echo
-    echo ">>> [DRY-RUN] Would release: $mod → poppy-framework/poppy-$mod"
+    # 从 manifest 读取模板
+    REPO_TPL=$(grep -E '^[[:space:]]*repo_name_template:' "$MANIFEST" | sed -E 's/^[[:space:]]*repo_name_template:[[:space:]]*//' | head -1 | tr -d '[:space:]')
+    [[ -z "$REPO_TPL" ]] && REPO_TPL='{name}'
+    # 用 bash 参数展开替换 {name}（避免 sed 把 { 和 } 当元字符）
+    TARGET_REPO_DISPLAY="${REPO_TPL//\{name\}/$mod}"
+    GH_ORG_DISPLAY=$(grep -E '^[[:space:]]*github_org:' "$MANIFEST" | sed -E 's/^[[:space:]]*github_org:[[:space:]]*//' | head -1 | tr -d '[:space:]')
+    [[ -z "$GH_ORG_DISPLAY" ]] && GH_ORG_DISPLAY='poppy-framework'
+    echo ">>> [DRY-RUN] Would release: $mod → $GH_ORG_DISPLAY/$TARGET_REPO_DISPLAY"
     echo "    changelog preview:"
     "$SCRIPT_DIR/changelog.sh" "$mod" "$PREV_TAG" "v$VERSION" --dry-run 2>/dev/null \
       | head -15 | sed 's/^/      /'

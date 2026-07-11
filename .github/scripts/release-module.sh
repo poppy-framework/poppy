@@ -25,11 +25,29 @@ if [[ -z "$MODULE" || -z "$VERSION" ]]; then
   exit 1
 fi
 
-PREFIX="poppy/$MODULE"
-GH_ORG="${GH_ORG:-poppy-framework}"
-TARGET_REPO="poppy-$MODULE"
-TARGET_BRANCH="${TARGET_BRANCH:-main}"
+# 从 manifest 读取配置（repo_name_template / github_org / default_branch）
+MANIFEST="$REPO_ROOT/.github/release-manifest.yml"
+GH_ORG="${GH_ORG:-}"
+if [[ -z "$GH_ORG" ]]; then
+  GH_ORG=$(grep -E '^[[:space:]]*github_org:' "$MANIFEST" | sed -E 's/^[[:space:]]*github_org:[[:space:]]*//' | head -1 | tr -d '[:space:]')
+fi
+[[ -z "$GH_ORG" ]] && GH_ORG='poppy-framework'
+
+REPO_TEMPLATE=$(grep -E '^[[:space:]]*repo_name_template:' "$MANIFEST" | sed -E 's/^[[:space:]]*repo_name_template:[[:space:]]*//' | head -1 | tr -d '[:space:]')
+[[ -z "$REPO_TEMPLATE" ]] && REPO_TEMPLATE='{name}'
+
+# 用 bash 参数展开替换 {name}（避免 sed 把 { 和 } 当元字符）
+TARGET_REPO="${TARGET_REPO_OVERRIDE:-${REPO_TEMPLATE//\{name\}/$MODULE}}"
+
+TARGET_BRANCH="${TARGET_BRANCH:-}"
+if [[ -z "$TARGET_BRANCH" ]]; then
+  TARGET_BRANCH=$(grep -E '^[[:space:]]*default_branch:' "$MANIFEST" | sed -E 's/^[[:space:]]*default_branch:[[:space:]]*//' | head -1 | tr -d '[:space:]')
+fi
+[[ -z "$TARGET_BRANCH" ]] && TARGET_BRANCH='main'
+
 AUTH_TOKEN="${GH_TOKEN:-${GITHUB_TOKEN:-}}"
+
+PREFIX="poppy/$MODULE"
 
 if [[ -z "$AUTH_TOKEN" ]]; then
   echo "✗ No GH_TOKEN or GITHUB_TOKEN in environment" >&2
