@@ -45,8 +45,6 @@ jobs:
         with:
           app-id: ${{ secrets.POPPY_RELEASE_APP_ID }}
           private-key: ${{ secrets.POPPY_RELEASE_APP_KEY }}
-          # Organization-level installation ID — 必须显式传,否则 default discover 会拿到错的 installation (或不存在的 repo-level installation),导致 push 403
-          installation-id: 145833904
       - name: Debug GitHub App
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
