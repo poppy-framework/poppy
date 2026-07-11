@@ -47,7 +47,7 @@ jobs:
           private-key: ${{ secrets.POPPY_RELEASE_APP_KEY }}
       - name: Debug GitHub App
         env:
-          GH_TOKEN: ${{ steps.token.outputs.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           echo "===== AUTH ====="
           gh auth status

@@ -161,7 +161,7 @@ for mod in "${TO_RELEASE[@]}"; do
     echo "✓ $mod released successfully"
     SUCCEEDED+=("$mod")
   else
-    echo "✗ $module FAILED"
+    echo "✗ $mod FAILED"
     FAILED+=("$mod")
   fi
 done
