@@ -45,6 +45,7 @@ jobs:
         with:
           app-id: ${{ secrets.POPPY_RELEASE_APP_ID }}
           private-key: ${{ secrets.POPPY_RELEASE_APP_KEY }}
+          owner: poppy-framework
       - name: Debug GitHub App
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
