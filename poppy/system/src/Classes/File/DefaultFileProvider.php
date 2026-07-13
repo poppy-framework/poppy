@@ -80,7 +80,7 @@ class DefaultFileProvider implements FileContract
     private bool $isForceSetDestination = false;
 
 
-    public function __construct(array $conf = [])
+    public function __construct()
     {
         $this->folder    = (is_production() ? '' : 'dev/') . 'uploads';
         $this->returnUrl = config('app.url') . '/';

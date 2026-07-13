@@ -63,7 +63,6 @@
         "poppy/area": "*@dev",
         "poppy/category": "*@dev",
         "poppy/content": "*@dev",
-        "poppy/im-rpc": "*@dev",
         "poppy/sensitive-word": "*@dev",
         "poppy/sms": "*@dev",
         "alibabacloud/dysmsapi-20170525": "^4.6"

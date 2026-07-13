@@ -8,6 +8,11 @@ use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;
 use Poppy\MgrPage\Classes\Operations;
 
+/**
+ * 邮件配置, 邮件配置在系统中使用程度较低, 无需增加复杂度
+ * @deprecated 4.2
+ * @removed    4.3
+ */
 class FormMailStore extends FormSettingBase
 {
 

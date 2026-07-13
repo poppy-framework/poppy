@@ -40,13 +40,11 @@ class OssFileProvider extends DefaultFileProvider
     /**
      * OssDefaultUploadProvider constructor.
      *
-     * @param array $conf
-     *
      * @throws LoadConfigurationException
      */
-    public function __construct(array $conf = [])
+    public function __construct()
     {
-        parent::__construct($conf);
+        parent::__construct();
 
         $this->aliyunAccessKey    = (string) sys_setting('py-aliyun-oss::oss.access_key');
         $this->aliyunAccessSecret = (string) sys_setting('py-aliyun-oss::oss.access_secret');

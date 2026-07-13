@@ -12,12 +12,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 interface FileContract
 {
-
-    /**
-     * 上传文件夹地址
-     */
-    public function __construct(array $conf = []);
-
     /**
      * 设置返回地址
      * @param string $url 地址
