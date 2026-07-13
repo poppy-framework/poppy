@@ -24,7 +24,7 @@
         "ext-curl": "*",
         "symfony/console": "4.*",
         "symfony/finder": "4.*",
-        "symfony/yaml": "4.*",
+        "symfony/yaml": "5.*",
         "elasticsearch/elasticsearch": "7.*",
         "jenssegers/date": "^4.0",
         "laravel/framework": "6.*",
@@ -49,13 +49,31 @@
         "psr/http-factory-implementation": "*",
         "mews/captcha": "3.2.*",
         "twbs/bootstrap-icons": "^1.10",
-        "php-curl-class/php-curl-class": "^9.17"
+        "php-curl-class/php-curl-class": "^9.17",
+        "poppy/framework": "*@dev",
+        "poppy/mgr-page": "*@dev",
+        "poppy/system": "*@dev",
+        "poppy/core": "*@dev",
+        "poppy/ext-app": "*@dev",
+        "poppy/ext-ip_store": "*@dev",
+        "poppy/ad": "*@dev",
+        "poppy/aliyun-oss": "*@dev",
+        "poppy/aliyun-push": "*@dev",
+        "poppy/app": "*@dev",
+        "poppy/area": "*@dev",
+        "poppy/category": "*@dev",
+        "poppy/content": "*@dev",
+        "poppy/im-rpc": "*@dev",
+        "poppy/sensitive-word": "*@dev",
+        "poppy/sms": "*@dev",
+        "alibabacloud/dysmsapi-20170525": "^4.6"
     },
     "require-dev": {
         "mockery/mockery": "^1.5.1",
         "itsgoingd/clockwork": "^5.1",
         "barryvdh/laravel-ide-helper": "2.8.*",
         "doctrine/dbal": "^2.6",
+        "phpunit/phpunit": "^9.6",
         "kitloong/laravel-migrations-generator": "^5.2"
     },
     "autoload": {
@@ -64,10 +82,31 @@
             "Demo\\Tests\\": "modules/demo/tests/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Poppy\\Sms\\Tests\\": "poppy/sms/tests/",
+            "Poppy\\System\\Tests\\": "poppy/system/tests/",
+            "Poppy\\Core\\Tests\\": "poppy/core/tests/",
+            "Poppy\\Extension\\Alipay\\Tests\\": "poppy/ext-alipay/tests",
+            "Poppy\\Extension\\IpStore\\Tests\\": "poppy/ext-ip_store/tests",
+            "Poppy\\Faker\\Tests\\": "poppy/faker/tests",
+            "Poppy\\Framework\\Tests\\": "poppy/framework/tests",
+            "Poppy\\MgrPage\\Tests\\": "poppy/mgr-page/tests/",
+            "Poppy\\Area\\Tests\\": "poppy/area/tests",
+            "Poppy\\Version\\Tests\\": "poppy/version/tests",
+            "Poppy\\Content\\Tests\\": "poppy/content/tests",
+            "Poppy\\AliyunPush\\Tests\\": "poppy/aliyun-push/tests",
+            "Poppy\\SensitiveWord\\Tests\\": "poppy/sensitive-word/tests",
+            "Poppy\\AliyunOss\\Tests\\": "poppy/aliyun-oss/tests"
+        }
+    },
     "repositories": [
         {
             "type": "path",
-            "url": "poppy/*"
+            "url": "poppy/*",
+            "options": {
+                "symlink": true
+            }
         }
     ],
     "extra": {
@@ -107,6 +146,13 @@
         "preferred-install": "dist",
         "allow-plugins": {
             "php-http/discovery": false
+        },
+        "policy": {
+            "advisories": {
+                "block": false
+            }
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

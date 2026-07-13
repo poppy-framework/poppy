@@ -13,16 +13,6 @@ use Poppy\Sms\Exceptions\SmsException;
 
 class AliyunSmsProvider extends BaseSms implements SmsContract
 {
-
-    public function __construct()
-    {
-        parent::__construct();
-        config([
-            'poppy.sms.aliyun.access_key'    => sys_setting('py-sms::sms.aliyun_access_key'),
-            'poppy.sms.aliyun.access_secret' => sys_setting('py-sms::sms.aliyun_access_secret'),
-        ]);
-    }
-
     /**
      * @inheritDoc
      */
@@ -34,10 +24,7 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
         }
 
         // 支持数组/字串/多字串
-        $mobile = array_reduce((array) $mobile, function ($carry, $mobile) {
-            $mobile = str_replace('-', '', $mobile);
-            return $carry ? $carry . ',' . $mobile : $mobile;
-        }, '');
+        $mobile = PySmsHelper::transToAliyunMobile($mobile);
 
         try {
             $client = $this->initClient();
@@ -51,7 +38,7 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
             $request->signName     = $this->sign;
             $request->templateCode = $this->sms['code'];
             if ($params) {
-                $request->templateParam = json_encode($params, JSON_UNESCAPED_UNICODE);
+                $request->templateParam = json_encode($params, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
             }
             $resp = $client->sendSms($request);
 
@@ -69,7 +56,8 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
                 return true;
             }
             return $this->setError('Aliyun:' . $resp->body->message);
-        } catch (SmsException $e) {
+        }
+        catch (SmsException $e) {
             return $this->setError($e->getMessage());
         }
     }
@@ -80,15 +68,15 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
      */
     private function initClient(): Dysmsapi
     {
-        $accessKeyId     = config('poppy.sms.aliyun.access_key');
-        $accessKeySecret = config('poppy.sms.aliyun.access_secret');
+        $accessKeyId     = (string) sys_setting('py-sms::sms.aliyun_access_key');
+        $accessKeySecret = (string) sys_setting('py-sms::sms.aliyun_access_secret');
         if (!class_exists(Dysmsapi::class)) {
             throw new SmsException('你需要手动安装 `alibabacloud/dysmsapi-20170525` 组件');
         }
 
         $config           = new Config([
             'accessKeyId'     => $accessKeyId,
-            'accessKeySecret' => $accessKeySecret
+            'accessKeySecret' => $accessKeySecret,
         ]);
         $config->endpoint = 'dysmsapi.aliyuncs.com';
         return new Dysmsapi($config);

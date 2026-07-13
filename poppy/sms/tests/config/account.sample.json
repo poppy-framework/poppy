@@ -1,13 +1,14 @@
 {
-    "aliyun_access_key" : "",
-    "aliyun_access_secret" : "",
-    "chuanglan_access_key" : "",
-    "chuanglan_access_secret" : "",
-    "chuanglan_sign" : "",
-    "lianlu_sign" : "",
-    "lianlu_mch_id" : "",
-    "lianlu_app_id" : "",
-    "lianlu_app_key" : "",
-    "lianlu_cash_over_code" : "",
-    "mobile" : ""
+    "aliyun_access_key": "",
+    "aliyun_access_secret": "",
+    "aliyun_sign": "",
+    "chuanglan_access_key": "",
+    "chuanglan_access_secret": "",
+    "chuanglan_sign": "",
+    "lianlu_sign": "",
+    "lianlu_mch_id": "",
+    "lianlu_app_id": "",
+    "lianlu_app_key": "",
+    "lianlu_cash_over_code": "",
+    "mobile": ""
 }

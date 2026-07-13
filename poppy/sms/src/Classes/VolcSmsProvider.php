@@ -13,16 +13,6 @@ use Volc\Service\Sms as VolcSms;
 class VolcSmsProvider extends BaseSms implements SmsContract
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-        config([
-            'poppy.sms.volc.access_key'      => sys_setting('py-sms::sms.volc_access_key'),
-            'poppy.sms.volc.access_secret'   => sys_setting('py-sms::sms.volc_access_secret'),
-            'poppy.sms.volc.default_account' => sys_setting('py-sms::sms.volc_default_account'),
-        ]);
-    }
-
     /**
      * @inheritDoc
      */
@@ -35,7 +25,7 @@ class VolcSmsProvider extends BaseSms implements SmsContract
 
         $templateId = $this->sms['code'] ?? '';
 
-        $smsAccount = sys_get($params, 'SmsAccount', config('poppy.sms.volc.default_account'));
+        $smsAccount = sys_get($params, 'SmsAccount', (string) sys_setting('py-sms::sms.volc_default_account'));
         unset($params['SmsAccount']);
 
         $templateParam = $params;
@@ -123,7 +113,8 @@ class VolcSmsProvider extends BaseSms implements SmsContract
             $errorMessage = data_get((array) $error, 'Message');
 
             return $this->setError('Volc:' . $errorMessage);
-        } catch (SmsException $e) {
+        }
+        catch (SmsException $e) {
             return $this->setError($e->getMessage());
         }
     }
@@ -139,8 +130,8 @@ class VolcSmsProvider extends BaseSms implements SmsContract
      */
     private function initClient()
     {
-        $accessKeyId     = config('poppy.sms.volc.access_key');
-        $accessKeySecret = config('poppy.sms.volc.access_secret');
+        $accessKeyId     = (string) sys_setting('py-sms::sms.volc_access_key');
+        $accessKeySecret = (string) sys_setting('py-sms::sms.volc_access_secret');
 
         $client = VolcSms::getInstance();
         $client->setAccessKey($accessKeyId);

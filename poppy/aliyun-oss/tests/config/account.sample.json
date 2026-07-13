@@ -1,0 +1,11 @@
+{
+    "access_key": "",
+    "access_secret": "",
+    "endpoint": "",
+    "bucket": "",
+    "url_prefix": "",
+    "role_arn": "",
+    "temp_access_key": "",
+    "temp_access_secret": "",
+    "watermark": ""
+}

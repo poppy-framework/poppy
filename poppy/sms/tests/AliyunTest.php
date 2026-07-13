@@ -5,11 +5,14 @@ declare(strict_types = 1);
 namespace Poppy\Sms\Tests;
 
 use Illuminate\Support\Str;
+use JsonException;
+use Poppy\Framework\Helper\StrHelper;
 use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Classes\AliyunSmsProvider;
 use Poppy\Sms\Classes\PySmsHelper;
 use Poppy\System\Exceptions\SettingKeyNotMatchException;
 use Poppy\System\Exceptions\SettingValueOutOfRangeException;
+use Throwable;
 
 /**
  * 发送短信
@@ -17,14 +20,26 @@ use Poppy\System\Exceptions\SettingValueOutOfRangeException;
 class AliyunTest extends BaseSms
 {
 
+    private string $previousAliyunAccessKey = '';
+    private string $previousAliyunAccessSecret = '';
+    private string $previousSignName = '';
+
+    /**
+     * @throws SettingValueOutOfRangeException
+     * @throws SettingKeyNotMatchException
+     */
     public function setUp(): void
     {
         parent::setUp();
 
-        // config
-        config([
-            'poppy.sms.aliyun.access_key'    => data_get($this->conf, 'aliyun_access_key'),
-            'poppy.sms.aliyun.access_secret' => data_get($this->conf, 'aliyun_access_secret'),
+        $this->previousAliyunAccessKey    = (string) sys_setting('py-sms::sms.aliyun_access_key');
+        $this->previousAliyunAccessSecret = (string) sys_setting('py-sms::sms.aliyun_access_secret');
+        $this->previousSignName           = (string) sys_setting('py-sms::sms.sign');
+
+        app('poppy.system.setting')->set([
+            'py-sms::sms.aliyun_access_key'    => data_get($this->conf, 'aliyun_access_key'),
+            'py-sms::sms.aliyun_access_secret' => data_get($this->conf, 'aliyun_access_secret'),
+            'py-sms::sms.sign'                 => data_get($this->conf, 'aliyun_sign'),
         ]);
     }
 
@@ -53,6 +68,7 @@ class AliyunTest extends BaseSms
      * @return void
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
+     * @throws JsonException
      */
     public function testCaptcha(): void
     {
@@ -62,12 +78,27 @@ class AliyunTest extends BaseSms
 
         $Provider = new AliyunSmsProvider();
         if ($Provider->send('captcha', $this->mobile, [
-            'code' => 'Test_' . Str::random(4),
+            'code' => StrHelper::randomNumber(111111, 999999),
         ])) {
             $this->assertTrue(true);
         }
         else {
             $this->fail($Provider->getError()->getMessage());
         }
+    }
+
+    /**
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
+     * @throws Throwable
+     */
+    public function tearDown(): void
+    {
+        app('poppy.system.setting')->set([
+            'py-sms::sms.aliyun_access_key'    => $this->previousAliyunAccessKey,
+            'py-sms::sms.aliyun_access_secret' => $this->previousAliyunAccessSecret,
+            'py-sms::sms.sign'                 => $this->previousSignName,
+        ]);
+        parent::tearDown();
     }
 }

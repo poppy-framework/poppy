@@ -4,26 +4,40 @@ declare(strict_types = 1);
 
 namespace Poppy\Sms\Tests;
 
+use JsonException;
 use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Classes\LianLuSmsProvider;
 use Poppy\System\Exceptions\SettingKeyNotMatchException;
 use Poppy\System\Exceptions\SettingValueOutOfRangeException;
+use Throwable;
 
 /**
  * 发送短信
  */
 class LianLuTest extends BaseSms
 {
+    private string $previousSign = '';
+    private string $previousMchId = '';
+    private string $previousAppId = '';
+    private string $previousAppKey = '';
 
+    /**
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
+     */
     public function setUp(): void
     {
         parent::setUp();
-        // config
-        config([
-            'poppy.sms.sign'           => (string) data_get($this->conf, 'lianlu_sign'),
-            'poppy.sms.lianlu.mch_id'  => data_get($this->conf, 'lianlu_mch_id'),
-            'poppy.sms.lianlu.app_id'  => data_get($this->conf, 'lianlu_app_id'),
-            'poppy.sms.lianlu.app_key' => data_get($this->conf, 'lianlu_app_key'),
+        $this->previousSign   = (string) sys_setting('py-sms::sms.sign');
+        $this->previousMchId  = (string) sys_setting('py-sms::sms.lianlu_mch_id');
+        $this->previousAppId  = (string) sys_setting('py-sms::sms.lianlu_app_id');
+        $this->previousAppKey = (string) sys_setting('py-sms::sms.lianlu_app_key');
+
+        app('poppy.system.setting')->set([
+            'py-sms::sms.sign'           => (string) data_get($this->conf, 'lianlu_sign'),
+            'py-sms::sms.lianlu_mch_id'  => data_get($this->conf, 'lianlu_mch_id'),
+            'py-sms::sms.lianlu_app_id'  => data_get($this->conf, 'lianlu_app_id'),
+            'py-sms::sms.lianlu_app_key' => data_get($this->conf, 'lianlu_app_key'),
         ]);
     }
 
@@ -32,6 +46,7 @@ class LianLuTest extends BaseSms
      * @return void
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
+     * @throws JsonException
      */
     public function testSendSms(): void
     {
@@ -53,6 +68,7 @@ class LianLuTest extends BaseSms
      * @return void
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
+     * @throws JsonException
      */
     public function testTemplateSms(): void
     {
@@ -66,5 +82,21 @@ class LianLuTest extends BaseSms
         else {
             $this->fail($Sms->getError()->getMessage());
         }
+    }
+
+    /**
+     * @throws SettingValueOutOfRangeException
+     * @throws Throwable
+     * @throws SettingKeyNotMatchException
+     */
+    public function tearDown(): void
+    {
+        app('poppy.system.setting')->set([
+            'py-sms::sms.sign'           => $this->previousSign,
+            'py-sms::sms.lianlu_mch_id'  => $this->previousMchId,
+            'py-sms::sms.lianlu_app_id'  => $this->previousAppId,
+            'py-sms::sms.lianlu_app_key' => $this->previousAppKey,
+        ]);
+        parent::tearDown();
     }
 }

@@ -1,5 +1,1 @@
-/.idea
-/vendor
-/tests/config/*.json
-!/vendor/.gitkeep
-/composer.lock
+tests/config/account.json

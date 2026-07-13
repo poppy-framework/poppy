@@ -28,9 +28,11 @@ class Sts
     protected array $tempKey;
 
     /**
-     * @var mixed|string
+     * @var string
      */
-    private $url;
+    private string $url;
+
+    private string $endpoint;
 
     /**
      * 子用户的key
@@ -50,11 +52,6 @@ class Sts
     private string $bucket;
 
     /**
-     * @var string
-     */
-    private string $endpoint;
-
-    /**
      * 角色资源描述符，在RAM的控制台的资源详情页上可以获取
      * @url https://ram.console.aliyun.com/#/role/list
      */
@@ -68,26 +65,14 @@ class Sts
     private string $subDirectory = '';
 
 
-    public function __construct(array $conf = [])
+    public function __construct()
     {
-        $config = array_merge([
-            'poppy.aliyun-oss.access_key'    => sys_setting('py-aliyun-oss::oss.access_key'),
-            'poppy.aliyun-oss.access_secret' => sys_setting('py-aliyun-oss::oss.access_secret'),
-            'poppy.aliyun-oss.endpoint'      => sys_setting('py-aliyun-oss::oss.endpoint'),
-            'poppy.aliyun-oss.bucket'        => sys_setting('py-aliyun-oss::oss.bucket'),
-            'poppy.aliyun-oss.url'           => sys_setting('py-aliyun-oss::oss.url_prefix'),
-            'poppy.aliyun-oss.role_arn'      => sys_setting('py-aliyun-oss::oss.role_arn'),
-            'poppy.aliyun-oss.watermark'     => sys_setting('py-aliyun-oss::oss.watermark'),
-        ], $conf);
-
-        config($config);
-
-        $this->tempAppKey    = config('poppy.aliyun-oss.access_key');
-        $this->tempAppSecret = config('poppy.aliyun-oss.access_secret');
-        $this->bucket        = config('poppy.aliyun-oss.bucket');
-        $this->endpoint      = config('poppy.aliyun-oss.endpoint');
-        $this->roleArn       = config('poppy.aliyun-oss.role_arn');
-        $this->url           = config('poppy.aliyun-oss.url');
+        $this->tempAppKey    = (string) sys_setting('py-aliyun-oss::oss.access_key');
+        $this->tempAppSecret = (string) sys_setting('py-aliyun-oss::oss.access_secret');
+        $this->bucket        = (string) sys_setting('py-aliyun-oss::oss.bucket');
+        $this->endpoint      = (string) sys_setting('py-aliyun-oss::oss.endpoint');
+        $this->roleArn       = (string) sys_setting('py-aliyun-oss::oss.role_arn');
+        $this->url           = (string) sys_setting('py-aliyun-oss::oss.url_prefix');
     }
 
     /**
@@ -97,6 +82,7 @@ class Sts
      * @param string $endpoint
      * @param string $role_arn
      * @param string $url_prefix
+     *
      * @return void
      */
     public function setConfig(string $app_key, string $app_secret, string $bucket, string $endpoint, string $role_arn, string $url_prefix = ''): self
@@ -163,7 +149,8 @@ POLICY;
         try {
 
             $response = $client->assumeRoleWithOptions($request, new RuntimeOptions([]));
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             throw new ApplicationException($e->getMessage());
         }
 
@@ -196,7 +183,7 @@ POLICY;
             // 必填，您的 AccessKey ID
             'accessKeyId'     => $this->tempAppKey,
             // 必填，您的 AccessKey Secret
-            'accessKeySecret' => $this->tempAppSecret
+            'accessKeySecret' => $this->tempAppSecret,
         ]);
         $config->endpoint = 'sts.cn-hangzhou.aliyuncs.com';
         return new StsClient($config);

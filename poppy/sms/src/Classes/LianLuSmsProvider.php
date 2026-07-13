@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\Sms\Classes;
 
+use JsonException;
 use Poppy\Framework\Helper\UtilHelper;
 use Poppy\Sms\Action\Sms;
 use Poppy\Sms\Classes\Contracts\SmsContract;
@@ -16,21 +17,9 @@ class LianLuSmsProvider extends BaseSms implements SmsContract
      */
     private SmsApi $llApi;
 
-    public function __construct()
-    {
-        parent::__construct();
-        config([
-            'poppy.sms.lianlu.mch_id'      => sys_setting('py-sms::sms.lianlu_mch_id'),
-            'poppy.sms.lianlu.app_id'      => sys_setting('py-sms::sms.lianlu_app_id'),
-            'poppy.sms.lianlu.app_key'     => sys_setting('py-sms::sms.lianlu_app_key'),
-            'poppy.sms.lianlu.cty_mch_id'  => sys_setting('py-sms::sms.lianlu_cty_mch_id'),
-            'poppy.sms.lianlu.cty_app_id'  => sys_setting('py-sms::sms.chuanglan_cty_app_id'),
-            'poppy.sms.lianlu.cty_app_key' => sys_setting('py-sms::sms.chuanglan_cty_app_key'),
-        ]);
-    }
-
     /**
      * @inheritDoc
+     * @throws JsonException
      */
     public function send(string $type, $mobile, array $params = [], $sign = ''): bool
     {
@@ -51,7 +40,7 @@ class LianLuSmsProvider extends BaseSms implements SmsContract
         }
         $result = $this->llApi->sendTemplateSMS($mobile, $templateId, $templateParams);
         if (!is_null($result)) {
-            $output = json_decode($result, true);
+            $output = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
             if (isset($output['status']) && $output['status'] === '00') {
                 return true;
             }
@@ -64,20 +53,21 @@ class LianLuSmsProvider extends BaseSms implements SmsContract
 
     /**
      * 初始化配置
-     * @param string $mobiles
+     *
+     * @param string $mobile
      */
-    private function initConfig($mobiles): void
+    private function initConfig(string $mobile): void
     {
-        if (!UtilHelper::isChMobile($mobiles)) {
-            $mchId  = config('poppy.sms.lianlu.cty_mch_id');
-            $appId  = config('poppy.sms.lianlu.cty_app_id');
-            $appKey = config('poppy.sms.lianlu.cty_app_key');
+        if (UtilHelper::isChMobile($mobile)) {
+            $mchId  = (string) sys_setting('py-sms::sms.lianlu_mch_id');
+            $appId  = (string) sys_setting('py-sms::sms.lianlu_app_id');
+            $appKey = (string) sys_setting('py-sms::sms.lianlu_app_key');
         }
         else {
-            $mchId  = config('poppy.sms.lianlu.mch_id');
-            $appId  = config('poppy.sms.lianlu.app_id');
-            $appKey = config('poppy.sms.lianlu.app_key');
+            $mchId  = (string) sys_setting('py-sms::sms.lianlu_cty_mch_id');
+            $appId  = (string) sys_setting('py-sms::sms.lianlu_cty_app_id');
+            $appKey = (string) sys_setting('py-sms::sms.lianlu_cty_app_key');
         }
-        $this->llApi = new SmsApi((string) $mchId, (string) $appId, (string) $appKey, $this->sign);
+        $this->llApi = new SmsApi($mchId, $appId, $appKey, $this->sign);
     }
 }

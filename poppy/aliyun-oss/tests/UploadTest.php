@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Poppy\AliyunOss\Tests\Classes;
+namespace Poppy\AliyunOss\Tests;
 
 use Exception;
 use GuzzleHttp\Client;
@@ -10,16 +10,17 @@ use GuzzleHttp\Exception\GuzzleException;
 use OSS\Core\OssException;
 use OSS\Http\RequestCore_Exception;
 use Poppy\AliyunOss\Classes\Provider\OssFileProvider;
-use Poppy\AliyunOss\Tests\Testing\TestingAliyunOss;
-use Poppy\Framework\Application\TestCase;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\Framework\Exceptions\LoadConfigurationException;
+use Poppy\System\Exceptions\SettingKeyNotMatchException;
+use Poppy\System\Exceptions\SettingValueOutOfRangeException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Throwable;
 
 /**
  * 上传测试
  */
-class UploadTest extends TestCase
+class UploadTest extends BaseAliyun
 {
 
     private static ?Client $client = null;
@@ -30,7 +31,21 @@ class UploadTest extends TestCase
     {
         parent::setUp();
         self::$client = new Client();
-        $this->config = TestingAliyunOss::config();
+
+        $this->previousAppKey    = (string) sys_setting('py-aliyun-oss::oss.access_key');
+        $this->previousAppSecret = (string) sys_setting('py-aliyun-oss::oss.access_secret');
+        $this->previousBucket    = (string) sys_setting('py-aliyun-oss::oss.bucket');
+        $this->previousEndpoint  = (string) sys_setting('py-aliyun-oss::oss.endpoint');
+        $this->previousUrl       = (string) sys_setting('py-aliyun-oss::oss.url_prefix');
+
+        app('poppy.system.setting')->set([
+            'py-aliyun-oss::oss.access_key'    => $this->confAccessKey,
+            'py-aliyun-oss::oss.access_secret' => $this->confAccessSecret,
+            'py-aliyun-oss::oss.bucket'        => $this->confBucket,
+            'py-aliyun-oss::oss.endpoint'      => $this->confEndpoint,
+            'py-aliyun-oss::oss.url_prefix'    => $this->confUrlPrefix,
+        ]);
+
     }
 
     /**
@@ -70,7 +85,8 @@ class UploadTest extends TestCase
             try {
                 $resp = self::$client->get($url);
                 $this->assertEquals(404, $resp->getStatusCode());
-            } catch (Exception $e) {
+            }
+            catch (Exception $e) {
                 $this->assertEquals(404, $e->getCode());
             }
 
@@ -81,11 +97,30 @@ class UploadTest extends TestCase
                 $Upload->delete();
                 self::$client->get($aimUrl);
                 $this->assertEquals(404, $resp->getStatusCode());
-            } catch (Exception $e) {
+            }
+            catch (Exception $e) {
                 $this->assertEquals(404, $e->getCode());
             }
-        } catch (ApplicationException $e) {
+        }
+        catch (ApplicationException $e) {
             $this->fail($e->getMessage());
         }
+    }
+
+    /**
+     * @throws SettingValueOutOfRangeException
+     * @throws SettingKeyNotMatchException
+     * @throws Throwable
+     */
+    public function tearDown(): void
+    {
+        app('poppy.system.setting')->set([
+            'py-aliyun-oss::oss.access_key'    => $this->previousAppKey,
+            'py-aliyun-oss::oss.access_secret' => $this->previousAppSecret,
+            'py-aliyun-oss::oss.bucket'        => $this->previousBucket,
+            'py-aliyun-oss::oss.endpoint'      => $this->previousEndpoint,
+            'py-aliyun-oss::oss.url_prefix'    => $this->previousUrl,
+        ]);
+        parent::tearDown();
     }
 }

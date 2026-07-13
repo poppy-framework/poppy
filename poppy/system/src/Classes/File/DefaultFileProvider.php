@@ -49,28 +49,28 @@ class DefaultFileProvider implements FileContract
     /**
      * @var string 文件夹
      */
-    private string $folder;
+    protected string $folder;
     /**
      * @var string 返回地址
      */
-    private string $returnUrl;
+    protected string $returnUrl;
     /**
      * @var array 允许上传的扩展
      */
-    private array $allowedExtensions = ['zip'];
+    protected array $allowedExtensions = ['zip'];
     /**
      * @var int 默认图片质量
      */
-    private int $quality = 70;
+    protected int $quality = 70;
     /**
      * 短边限制
      * @var int
      */
-    private int $resizeDistrict = 1920;
+    protected int $resizeDistrict = 1920;
     /**
      * @var string 图片mime类型
      */
-    private string $mimeType = '';
+    protected string $mimeType = '';
 
     /**
      * 是否强制设置目录-这样目录是不变的

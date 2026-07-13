@@ -12,8 +12,7 @@
     "require" : {
         "php" : ">=7.4",
         "aliyuncs/oss-sdk-php" : "2.*",
-        "alibabacloud/sts-20150401" : "^1.1",
-        "poppy/system" : "4.2.*"
+        "alibabacloud/sts-20150401" : "^1.1"
     },
     "require-dev" : {
         "guzzlehttp/guzzle": "^6.3|^7.3"
