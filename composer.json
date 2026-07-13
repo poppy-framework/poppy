@@ -24,7 +24,6 @@
         "ext-curl": "*",
         "symfony/console": "4.*",
         "symfony/finder": "4.*",
-        "symfony/yaml": "5.*",
         "elasticsearch/elasticsearch": "7.*",
         "jenssegers/date": "^4.0",
         "laravel/framework": "6.*",
@@ -72,8 +71,7 @@
         "itsgoingd/clockwork": "^5.1",
         "barryvdh/laravel-ide-helper": "2.8.*",
         "doctrine/dbal": "^2.6",
-        "phpunit/phpunit": "^9.6",
-        "kitloong/laravel-migrations-generator": "^5.2"
+        "phpunit/phpunit": "^9.6"
     },
     "autoload": {
         "psr-4": {
