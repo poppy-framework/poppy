@@ -4,7 +4,7 @@
 # 用法: changelog.sh <module> <prev-tag> <new-tag> [--dry-run]
 #
 # 输出到 stdout，可重定向到文件。
-# --dry-run 模式只打印前 20 条 commit，dry-run 用。
+# --dry-run 模式只打印前 20 条 commit。
 # ─────────────────────────────────────────────────────────
 
 set -euo pipefail
@@ -22,50 +22,89 @@ if [[ -z "$MODULE" || -z "$NEW_TAG" ]]; then
 fi
 
 PREFIX="poppy/$MODULE"
-RANGE=""
+
+if [[ ! -d "$REPO_ROOT/$PREFIX" ]]; then
+  echo "✗ Module directory not found: $PREFIX (looked under $REPO_ROOT)" >&2
+  exit 1
+fi
+
+# ─── Tag & range validation ────────────────────────────────────────────────
+# PREV_TAG may legitimately be empty (initial release), but if supplied it
+# must resolve. NEW_TAG is mandatory.
+prev_ok=0
 if [[ -n "$PREV_TAG" ]]; then
+  if git -C "$REPO_ROOT" rev-parse --verify --quiet "$PREV_TAG^{commit}" >/dev/null 2>&1; then
+    prev_ok=1
+  fi
+fi
+
+if ! git -C "$REPO_ROOT" rev-parse --verify --quiet "$NEW_TAG^{commit}" >/dev/null 2>&1; then
+  echo "✗ new tag not resolvable: $NEW_TAG" >&2
+  exit 1
+fi
+
+RANGE=""
+if [[ "$prev_ok" -eq 1 ]]; then
+  # Catch reversed ranges: a swapped prev/new silently produces an empty
+  # range and would ship a "(no commits)" changelog to a real release.
+  if ! git -C "$REPO_ROOT" merge-base --is-ancestor "$PREV_TAG" "$NEW_TAG" 2>/dev/null; then
+    echo "✗ $PREV_TAG is not an ancestor of $NEW_TAG — range would be empty." >&2
+    echo "  (verify the prev/new tag ordering before re-running)" >&2
+    exit 1
+  fi
   RANGE="$PREV_TAG..$NEW_TAG"
 fi
 
+DRY_RUN=0
 if [[ "${4:-}" == "--dry-run" ]]; then
-  echo "## Changes in $NEW_TAG"
-  echo
-  if [[ -n "$RANGE" ]]; then
-    if git -C "$REPO_ROOT" rev-parse "$PREV_TAG" >/dev/null 2>&1; then
-      git -C "$REPO_ROOT" log --oneline --no-merges -- "$PREFIX" "$RANGE" 2>/dev/null | head -20 || echo "(no commits)"
-    else
-      echo "(previous tag $PREV_TAG not found — showing last 20 commits)"
-      git -C "$REPO_ROOT" log --oneline --no-merges -- "$PREFIX" 2>/dev/null | head -20
-    fi
-  else
-    echo "(initial release)"
-  fi
-  exit 0
+  DRY_RUN=1
 fi
 
-# Normal output
-{
-  echo "## Changes in $NEW_TAG"
-  echo
-  if [[ -n "$RANGE" ]] && git -C "$REPO_ROOT" rev-parse "$PREV_TAG" >/dev/null 2>&1; then
-    echo "### Commits between $PREV_TAG and $NEW_TAG"
-    echo
-    if git -C "$REPO_ROOT" rev-parse "$RANGE" >/dev/null 2>&1; then
-      git -C "$REPO_ROOT" log --pretty=format:"- %s (%h)" --no-merges -- "$PREFIX" "$RANGE" 2>/dev/null \
-        | head -100
-      echo
-    else
-      echo "(no commits in range)"
-    fi
+# ─── Single source of truth for the git log filter ─────────────────────────
+# Critical: range must come BEFORE `--`, otherwise git treats it as a path
+# filter and silently drops the range.
+#
+# Args: <pretty-format> <limit>
+print_commits() {
+  local pretty="$1"
+  local limit="$2"
+
+  local -a log_args=(--no-merges "--pretty=format:$pretty")
+  if [[ -n "$RANGE" ]]; then
+    log_args+=("$RANGE")
+  fi
+  log_args+=("--" "$PREFIX")
+
+  # `head -n` closes the pipe early → git receives SIGPIPE (exit 141) → under
+  # `set -o pipefail` the whole pipeline would be marked failed. Capture
+  # output, append `|| true`, and surface "(no commits)" on empty result.
+  local out
+  out=$(git -C "$REPO_ROOT" log "${log_args[@]}" 2>/dev/null | head -n "$limit" || true)
+  if [[ -z "$out" ]]; then
+    echo "(no commits)"
   else
-    if [[ -n "$PREV_TAG" ]]; then
-      echo "_(previous tag $PREV_TAG not found — showing last 50 commits)_"
-      echo
-      git -C "$REPO_ROOT" log --pretty=format:"- %s (%h)" --no-merges -- "$PREFIX" 2>/dev/null \
-        | head -50
-      echo
-    else
-      echo "_(initial release)_"
-    fi
+    printf '%s\n' "$out"
   fi
 }
+
+# ─── Render ────────────────────────────────────────────────────────────────
+echo "## Changes in $NEW_TAG"
+echo
+
+if [[ "$prev_ok" -eq 0 && -n "$PREV_TAG" ]]; then
+  # Caller gave a prev tag we couldn't resolve; surface that fact and fall
+  # back to the last 20 commits for that module path.
+  echo "_(previous tag $PREV_TAG not found — showing last 20 commits)_"
+  echo
+  print_commits "%h %s" 20
+elif [[ -z "$RANGE" ]]; then
+  echo "_(initial release)_"
+else
+  echo "### Commits between $PREV_TAG and $NEW_TAG"
+  echo
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    print_commits "%h %s" 20
+  else
+    print_commits "- %s (%h)" 100
+  fi
+fi

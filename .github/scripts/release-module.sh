@@ -6,7 +6,7 @@
 # 步骤:
 #   1. git subtree split --prefix=poppy/<module> → split/<module>
 #   2. 在临时 git 仓库注入 version 字段
-#   3. force-push 到 poppy-framework/poppy-<module> 的 main 分支
+#   3. force-push 到 poppy-framework/<module> 的 main 分支
 #   4. 在目标仓库创建 GitHub Release（带 changelog）
 #   5. packagist 同步（依赖 GitHub webhook 已配）
 # ─────────────────────────────────────────────────────────
@@ -126,7 +126,15 @@ else
 fi
 
 echo "[$MODULE] Step 4/5: create GitHub Release v$VERSION"
-CHANGELOG=$("$SCRIPT_DIR/changelog.sh" "$MODULE" "$PREV_TAG" "v$VERSION" 2>/dev/null || echo "## v$VERSION")
+# Capture changelog errors into a temp file so CI logs show what went wrong
+# (instead of silently swallowing them and shipping a junk release body).
+ERR=$(mktemp)
+if ! CHANGELOG=$("$SCRIPT_DIR/changelog.sh" "$MODULE" "$PREV_TAG" "v$VERSION" 2>"$ERR"); then
+  cat "$ERR" >&2
+  echo "::warning::changelog generation failed for $MODULE — using placeholder body" >&2
+  CHANGELOG="## v$VERSION"
+fi
+rm -f "$ERR"
 RELEASE_NOTES=$(printf '%s\n\n%s\n' "## v$VERSION" "$CHANGELOG")
 
 RELEASE_BODY=$(jq -n \
