@@ -7,12 +7,35 @@
 # 不要把模块的 "repo" 字段填错，否则会推到错误的 GitHub 仓库。
 
 modules:
-  # ─────────────── 基础层（无依赖） ───────────────
+  # ─────────────── 核心层 ───────────────
+  - name: core
+    description: An admin plugin for poppy.
+    dependencies: [framework]
   - name: framework
     description: A framework for laravel module development.
     dependencies: []
   - name: faker
     description: Poppy Faker is a PHP library that generates fake data for zh user.
+    dependencies: []
+
+  # ─────────────── 业务层 ───────────────
+  - name: system
+    description: An admin management module for poppy.
+    dependencies: [core, ext-app]
+  - name: mgr-page
+    description: An admin management page module.
+    dependencies: [system]
+  - name: sms
+    description: Poppy Sms 扩展.
+    dependencies: [system]
+  - name: aliyun-oss
+    description: Poppy Aliyun Oss Extension.
+    dependencies: [system]
+  - name: aliyun-push
+    description: Poppy Aliyun Push Extension.
+    dependencies: []
+  - name: sensitive-word
+    description: An sensitive words component.
     dependencies: []
   - name: version
     description: An Version management.
@@ -34,39 +57,9 @@ modules:
   - name: ext-ip_store
     description: IP to area name conversion.
     dependencies: []
-  - name: ext-phpstan
-    description: PHPStan extension for Poppy.
-    dependencies: []
   - name: ext-webhook
     description: Webhook robot SDK.
     dependencies: []
-  - name: aliyun-push
-    description: Poppy Aliyun Push Extension.
-    dependencies: []
-  - name: sensitive-word
-    description: An sensitive words component.
-    dependencies: []
-
-  # ─────────────── 核心层 ───────────────
-  - name: core
-    description: An admin plugin for poppy.
-    dependencies: [framework]
-
-  # ─────────────── 阿里云集成（依赖 system） ───────────────
-  - name: aliyun-oss
-    description: Poppy Aliyun Oss Extension.
-    dependencies: [system]
-
-  # ─────────────── 业务层 ───────────────
-  - name: system
-    description: An admin management module for poppy.
-    dependencies: [core, ext-app]
-  - name: mgr-page
-    description: An admin management page module.
-    dependencies: [system]
-  - name: sms
-    description: Poppy Sms 扩展.
-    dependencies: [system]
 
 # ─────────────── 全局配置 ───────────────
 config:
