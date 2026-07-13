@@ -49,6 +49,7 @@
         "mews/captcha": "3.2.*",
         "twbs/bootstrap-icons": "^1.10",
         "php-curl-class/php-curl-class": "^9.17",
+        "alibabacloud/dysmsapi-20170525": "^4.6",
         "poppy/framework": "*@dev",
         "poppy/mgr-page": "*@dev",
         "poppy/system": "*@dev",
@@ -62,9 +63,10 @@
         "poppy/area": "*@dev",
         "poppy/category": "*@dev",
         "poppy/content": "*@dev",
+        "poppy/faker": "*@dev",
+        "poppy/version": "*@dev",
         "poppy/sensitive-word": "*@dev",
-        "poppy/sms": "*@dev",
-        "alibabacloud/dysmsapi-20170525": "^4.6"
+        "poppy/sms": "*@dev"
     },
     "require-dev": {
         "mockery/mockery": "^1.5.1",

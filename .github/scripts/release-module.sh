@@ -89,7 +89,7 @@ fi
 
 SPLIT_BRANCH="split/$MODULE"
 TMPDIR=$(mktemp -d -t "poppy-release-$MODULE-XXXXXX")
-trap 'rm -rf "$TMPDIR"; git -C "$REPO_ROOT" branch -D "$SPLIT_BRANCH" 2>/dev/null || true' EXIT
+trap 'rm -rf "$TMPDIR"; git -C "$REPO_ROOT" worktree remove --force "$WORKTREE_DIR" 2>/dev/null || true; git -C "$REPO_ROOT" branch -D "$SPLIT_BRANCH" 2>/dev/null || true' EXIT
 
 echo "[$MODULE] Step 1/5: subtree split"
 # 注意：--squash 不能用在 split 上，只对 add 有意义
@@ -104,21 +104,26 @@ SPLIT_SHA=$(git -C "$REPO_ROOT" rev-parse "$SPLIT_BRANCH")
 echo "  ✓ split → $SPLIT_SHA"
 
 echo "[$MODULE] Step 2/5: prepare release commit"
-git -C "$REPO_ROOT" archive "$SPLIT_BRANCH" | tar -x -C "$TMPDIR"
-"$SCRIPT_DIR/inject-version.sh" "$TMPDIR/composer.json" "$VERSION"
+# 使用 worktree 保留完整提交历史
+WORKTREE_DIR="$TMPDIR/repo"
+git -C "$REPO_ROOT" worktree add "$WORKTREE_DIR" "$SPLIT_BRANCH"
 
-# 在临时 git 仓库里做一次 commit（包含 version 注入）
-git -C "$TMPDIR" init -q
-git -C "$TMPDIR" config user.email "release-bot@poppy-framework.local"
-git -C "$TMPDIR" config user.name "poppy-release-bot"
-git -C "$TMPDIR" add -A
-git -C "$TMPDIR" commit -q -m "chore(release): bump version to $VERSION"
-RELEASE_SHA=$(git -C "$TMPDIR" rev-parse HEAD)
+# 修改 composer.json
+"$SCRIPT_DIR/inject-version.sh" "$WORKTREE_DIR/composer.json" "$VERSION"
+
+# 在 worktree 里提交
+git -C "$WORKTREE_DIR" config user.email "release-bot@poppy-framework.local"
+git -C "$WORKTREE_DIR" config user.name "poppy-release-bot"
+git -C "$WORKTREE_DIR" add composer.json
+git -C "$WORKTREE_DIR" commit -q -m "chore(release): bump version to $VERSION"
+
+RELEASE_SHA=$(git -C "$WORKTREE_DIR" rev-parse HEAD)
 echo "  ✓ release commit: $RELEASE_SHA"
 
+# 修改 PUSH_URL 指向 WORKTREE_DIR
 echo "[$MODULE] Step 3/5: push to $GH_ORG/$TARGET_REPO:$TARGET_BRANCH"
 PUSH_URL="https://x-access-token:${AUTH_TOKEN}@github.com/$GH_ORG/$TARGET_REPO.git"
-if git -C "$TMPDIR" push --force "$PUSH_URL" "HEAD:refs/heads/$TARGET_BRANCH" 2>&1 | tail -3; then
+if git -C "$WORKTREE_DIR" push --force "$PUSH_URL" "HEAD:refs/heads/$TARGET_BRANCH" 2>&1 | tail -3; then
   echo "  ✓ pushed"
 else
   echo "  ✗ push failed" >&2

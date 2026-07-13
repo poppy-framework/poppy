@@ -3,6 +3,8 @@
 namespace Poppy\MgrPage\Http;
 
 use Illuminate\Routing\Router;
+use Poppy\MgrPage\Http\Request\Backend\CaptchaController;
+use Poppy\MgrPage\Http\Request\Backend\HomeController;
 use Route;
 
 class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProvider
@@ -28,15 +30,14 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
         // backend
         Route::group([
             'prefix'    => $this->prefix,
-            'namespace' => 'Poppy\MgrPage\Http\Request\Backend',
         ], function (Router $router) {
-            $router->any('/', 'HomeController@index')
+            $router->any('/', [HomeController::class, 'index'])
                 ->middleware('backend-auth')
                 ->name('py-mgr-page:backend.home.index');
-            $router->any('login', 'HomeController@login')
+            $router->any('login', [HomeController::class, 'login'])
                 ->middleware('web')
                 ->name('py-mgr-page:backend.home.login');
-            $router->any('captcha/send', 'CaptchaController@send')
+            $router->any('captcha/send', [CaptchaController::class, 'send'])
                 ->middleware('web')
                 ->name('py-mgr-page:backend.captcha.send');
         });
@@ -56,14 +57,6 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
      */
     protected function mapDevRoutes(): void
     {
-        // develop
-        Route::group([
-            'middleware' => 'web',
-            'prefix'     => $this->prefix . '/develop',
-        ], function (Router $router) {
-            $router->any('api/json/{type?}', 'Poppy\MgrPage\Http\Request\Develop\ApiController@json')
-                ->name('py-mgr-page:develop.api.json');
-        });
         Route::group([
             'middleware' => 'backend-auth',
             'prefix'     => $this->prefix . '/develop',
