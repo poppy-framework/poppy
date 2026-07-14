@@ -33,6 +33,11 @@ class ServiceProvider extends PoppyServiceProvider
         $this->publishes([
             __DIR__ . '/../resources/config/doctum-config.php' => storage_path('doctum/config.php'),
         ], 'poppy');
+
+        // poppy assets
+        $this->publishes([
+            __DIR__ . '/../resources/swagger-ui/' => public_path('docs/swagger-ui/'),
+        ], 'poppy-mix');
     }
 
     /**
@@ -56,9 +61,7 @@ class ServiceProvider extends PoppyServiceProvider
 
     private function registerSchedule()
     {
-        app('events')->listen('console.schedule', function (Schedule $schedule) {
-
-        });
+        app('events')->listen('console.schedule', function (Schedule $schedule) {});
     }
 
 

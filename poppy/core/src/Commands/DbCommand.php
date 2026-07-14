@@ -15,7 +15,9 @@ use ReflectionClass;
 use Throwable;
 
 /**
- * Db
+ * Db Maintain Tool, 很古早的工具, 不建议使用
+ * @deprecated 4.2
+ * @removed    4.3
  */
 class DbCommand extends Command
 {
@@ -114,7 +116,8 @@ class DbCommand extends Command
                         $seoDb[$key] = $fields;
                     }
                 }
-            } catch (Throwable $e) {
+            }
+            catch (Throwable $e) {
                 $this->error($e->getMessage());
             }
         });

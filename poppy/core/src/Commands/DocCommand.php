@@ -5,6 +5,9 @@ declare(strict_types = 1);
 namespace Poppy\Core\Commands;
 
 use Illuminate\Console\Command;
+use OpenApi\Generator;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Process\Process;
 
 /**
@@ -26,6 +29,29 @@ class DocCommand extends Command
     {
         $type = $this->argument('type');
         switch ($type) {
+            case 'openapi':
+                $weiranDirs  = app('files')->glob(app('path.poppy') . '/*/src/Http');
+                $moduleDirs  = app('files')->glob(app('path.module') . '/*/src/Http');
+                $projectDirs = resource_path('docs');
+                if (!class_exists(Generator::class)) {
+                    $this->error('Please Run `composer require zircote/swagger-php` Install OpenApi\Generator First ');
+
+                    return;
+                }
+
+                $openapi = (new Generator())->generate(array_merge($weiranDirs, $moduleDirs, [$projectDirs]));
+
+                try {
+                    app('files')->ensureDirectoryExists(public_path('docs/swagger-ui/'));
+                    app('files')->put(public_path('docs/swagger-ui/weiran.json'), $openapi->toJson());
+                    $this->info(
+                        'Output swagger api doc, view ' . $this->laravel['config']->get('app.url') . '/docs/swagger-ui/'
+                    );
+                }
+                catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+                    $this->error($e->getMessage());
+                }
+                break;
             case 'api':
                 if (!command_exist('apidoc')) {
                     $this->error("apidoc 命令不存在\n");
