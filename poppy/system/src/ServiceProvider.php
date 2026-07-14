@@ -118,10 +118,7 @@ class ServiceProvider extends PoppyServiceProvider
                 ->everyFifteenMinutes()->appendOutputTo($this->consoleLog());
             $schedule->command('py-system:user', ['clear_log'])
                 ->dailyAt('04:00')->appendOutputTo($this->consoleLog());
-            // 每天清理一次
             $schedule->command('py-system:user', ['clear_expired'])
-                ->dailyAt('06:00')->appendOutputTo($this->consoleLog());
-            $schedule->command('py-system:op', ['gen-secret'])
                 ->dailyAt('06:00')->appendOutputTo($this->consoleLog());
         });
     }
@@ -146,7 +143,9 @@ class ServiceProvider extends PoppyServiceProvider
         $this->app->alias('poppy.system.password', PasswordContract::class);
 
 
-        /* 文件上传提供者
+        /** 文件上传提供者
+         * @deprecated 4.2
+         * @removed    4.3
          * ---------------------------------------- */
         $this->app->bind('poppy.system.uploader', function ($app, $config) {
             $uploadType = sys_setting('py-system::picture.save_type');
@@ -158,7 +157,6 @@ class ServiceProvider extends PoppyServiceProvider
             $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
             return new $uploaderClass($config);
         });
-        $this->app->alias('poppy.system.uploader', FileContract::class);
 
         /* 文件提供者
          * ---------------------------------------- */
@@ -172,6 +170,7 @@ class ServiceProvider extends PoppyServiceProvider
             $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
             return new $uploaderClass($config);
         });
+        $this->app->alias('poppy.system.file', FileContract::class);
     }
 
     private function registerConsole(): void

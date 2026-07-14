@@ -42,7 +42,8 @@ class UploadTest extends TestCase
             else {
                 $this->fail("Url {$url} 不可访问!");
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -77,7 +78,8 @@ class UploadTest extends TestCase
             else {
                 $this->fail("Url {$url} 不可访问!");
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -110,7 +112,8 @@ class UploadTest extends TestCase
             else {
                 $this->fail($Image->getError());
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
     }
