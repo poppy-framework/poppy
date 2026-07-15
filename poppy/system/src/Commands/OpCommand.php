@@ -27,7 +27,7 @@ class OpCommand extends Command
                 }
 
                 $this->writeNewEnvironmentFileWith($secret);
-                $this->info(sys_gen_mk('system.op', '生成替换并汇报成功'));
+                $this->info(sys_gen_mk('system.op', '密钥替换成功'));
                 break;
             case 'show-secret':
                 $this->info(sys_gen_mk('system.op', '当前的密钥为:' . config('poppy.system.secret')));

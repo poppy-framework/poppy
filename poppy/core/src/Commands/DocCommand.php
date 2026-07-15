@@ -77,15 +77,20 @@ class DocCommand extends Command
             case 'cs':
                 $this->info(
                     'Please Run Command:' . "\n" .
-                    'php-cs-fixer fix --config=' . framework_path('.php_cs') . ' --diff --dry-run --verbose --diff-format=udiff'
+                    'php-cs-fixer fix --config=' . framework_path('.php-cs-fixer.php') . ' --diff --dry-run --verbose --diff-format=udiff'
                 );
                 break;
             case 'cs-pf':
                 $this->info(
                     'Please Run Command:' . "\n" .
-                    'php-cs-fixer fix ' . framework_path() . ' --config=' . framework_path('.php_cs') . ' --diff --dry-run --verbose --diff-format=udiff'
+                    'php-cs-fixer fix ' . framework_path() . ' --config=' . framework_path('.php-cs-fixer.php') . ' --diff --dry-run --verbose --diff-format=udiff'
                 );
                 break;
+            /**
+             * 生成 php 文档, 这个文档的价值不大, 后续废弃
+             * @deprecated 4.2
+             * @removed    5.0
+             */
             case 'php':
                 $doctum = storage_path('doctum/doctum.phar');
                 $config = storage_path('doctum/config.php');

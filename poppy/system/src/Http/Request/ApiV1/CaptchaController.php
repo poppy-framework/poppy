@@ -4,11 +4,13 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Http\Request\ApiV1;
 
+use OpenApi\Annotations as OA;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Action\Verification;
 use Poppy\System\Classes\Captcha\RequestThrottleService;
 use Poppy\System\Events\CaptchaSendEvent;
-use Poppy\System\Http\Validation\CaptchaSendRequest;
+use Poppy\System\Http\Request\ApiV1\Captcha\CaptchaSendRequest;
+use Poppy\System\Http\Request\ApiV1\Captcha\CaptchaVerifyCodeRequest;
 use Poppy\System\Models\PamAccount;
 use Throwable;
 
@@ -18,6 +20,27 @@ use Throwable;
 class CaptchaController extends JwtApiController
 {
 
+    /**
+     * @OA\Post(
+     *     path="/api_v1/system/captcha/send",
+     *     tags={"System"},
+     *     summary="[Captcha]发送验证码",
+     *     description="向指定通行证 (手机号 / 邮箱) 发送一次性验证码. type=exist 时要求通行证存在, type=no-exist 时要求通行证不存在. 命中限流或频繁请求时返回失败.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="发送验证码请求体, 见 SystemCaptchaSendRequest schema",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/PoppySystemCaptchaSendRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="验证码发送成功",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppySystemResponseBody")
+     *     ),
+     * )
+     */
     public function send(CaptchaSendRequest $request)
     {
         $passport = $request->getPassport();
@@ -41,17 +64,16 @@ class CaptchaController extends JwtApiController
 
         try {
             // 接口请求限流
-            if (app()->has(RequestThrottleService::class)) {
-                if (!app(RequestThrottleService::class)->throttle()) {
-                    return Resp::error('请求频繁,请稍后重试');
-                }
+            if (app()->has(RequestThrottleService::class) && !app(RequestThrottleService::class)->throttle()) {
+                return Resp::error('请求频繁,请稍后重试');
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return Resp::error('请求频繁,请稍后重试');
         }
 
         $Verification = new Verification();
-        $expired      = (int) sys_setting('py-system::pam.captcha_expired') ?: 5;
+        $expired      = ((int) sys_setting('py-system::pam.captcha_expired')) ?: 5;
         $length       = ((int) sys_setting('py-system::pam.captcha_length')) ?: 6;
 
         if (!$Verification->isPassThrottle('send-' . $passport)) {
@@ -61,8 +83,14 @@ class CaptchaController extends JwtApiController
             $captcha = $Verification->getCaptcha();
             try {
                 event(new CaptchaSendEvent($passport, $captcha));
-                return Resp::success('验证码发送成功' . (!is_production() ? ', 验证码:' . $captcha : ''));
-            } catch (Throwable $e) {
+                if (is_production()) {
+                    return Resp::success('验证码发送成功');
+                }
+                return Resp::success('验证码发送成功', [
+                    'captcha' => $captcha,
+                ]);
+            }
+            catch (Throwable $e) {
                 return Resp::error($e);
             }
         }
@@ -73,26 +101,31 @@ class CaptchaController extends JwtApiController
 
 
     /**
-     * @api                   {post} /api_v1/system/captcha/verify_code [Sys]获取验证串
-     * @apiDescription        用以保存 passport 验证的验证串, 隐藏字串为 passport
-     * @apiVersion            1.0.0
-     * @apiName               SysCaptchaVerifyCode
-     * @apiGroup              Poppy
-     * @apiQuery {string}     passport           通行证
-     * @apiQuery {string}     captcha            验证码
-     * @apiQuery {string}     [expire_min]       验证串有效期(默认:10 分钟, 最长不超过 60 分钟)
+     * @OA\Post(
+     *     path="/api_v1/system/captcha/verify_code",
+     *     tags={"System"},
+     *     summary="[Captcha]生成验证串",
+     *     description="通过通行证 + 验证码兑换一次性 verify_code, 隐藏字串为 passport. verify_code 可作为后续重置密码 / 换绑手机等流程的凭据. expire_min 默认 10 分钟, 范围 1~60.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="生成验证串请求体, 见 SystemCaptchaVerifyCodeRequest schema",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/PoppySystemCaptchaVerifyCodeRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="生成验证串成功",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppySystemCaptchaVerifyCodeResponseBody")
+     *     ),
+     * )
      */
-    public function verifyCode()
+    public function verifyCode(CaptchaVerifyCodeRequest $request)
     {
-        $passport   = (string) input('passport');
-        $captcha    = (string) input('captcha');
-        $expire_min = (int) input('expire_min', 10);
-        if ($expire_min > 60) {
-            $expire_min = 60;
-        }
-        if ($expire_min < 1) {
-            $expire_min = 1;
-        }
+        $passport   = $request->getPassport();
+        $captcha    = $request->getCaptcha();
+        $expire_min = $request->getExpireMin();
 
         $Verification = new Verification();
         if (!$Verification->checkCaptcha($passport, $captcha)) {

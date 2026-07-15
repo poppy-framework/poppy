@@ -4,13 +4,12 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Http\Request\ApiV1;
 
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Validation\ValidationException;
+use OpenApi\Annotations as OA;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Helper\UtilHelper;
 use Poppy\System\Action\Pam;
@@ -18,8 +17,11 @@ use Poppy\System\Action\Verification;
 use Poppy\System\Events\LoginSuccessEvent;
 use Poppy\System\Events\LoginTokenPassedEvent;
 use Poppy\System\Events\TokenRenewEvent;
-use Poppy\System\Http\Validation\PamLoginRequest;
-use Poppy\System\Http\Validation\PamPasswordRequest;
+use Poppy\System\Http\Request\ApiV1\Auth\AuthBindMobileRequest;
+use Poppy\System\Http\Request\ApiV1\Auth\AuthExistsRequest;
+use Poppy\System\Http\Request\ApiV1\Auth\AuthLoginRequest;
+use Poppy\System\Http\Request\ApiV1\Auth\AuthRenewRequest;
+use Poppy\System\Http\Request\ApiV1\Auth\AuthResetPasswordRequest;
 use Poppy\System\Models\PamAccount;
 use Poppy\System\Models\Resources\PamResource;
 use Throwable;
@@ -27,6 +29,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  * 认证控制器
+ *
+ * @OA\Tag(name="System", description="认证 / 登录 / Token 等接口")
  */
 class AuthController extends JwtApiController
 {
@@ -45,40 +49,21 @@ class AuthController extends JwtApiController
     protected float $decayMinutes = 0.5;
 
     /**
-     * @api                   {post} /api_v1/system/auth/access [Sys]检测 Token
-     * @apiVersion            1.0.0
-     * @apiName               SysAuthAccess
-     * @apiGroup              Poppy
-     * @apiQuery {integer}    token           Token
-     * @apiSuccess {object[]} data            返回
-     * @apiSuccess {integer}  id              ID
-     * @apiSuccess {string}   username        用户名
-     * @apiSuccess {string}   mobile          手机号
-     * @apiSuccess {string}   email           邮箱
-     * @apiSuccess {string}   type            类型
-     * @apiSuccess {string}   is_enable       是否启用(Y|N)
-     * @apiSuccess {string}   disable_reason  禁用原因
-     * @apiSuccess {string}   created_at      创建时间
-     * @apiSuccessExample {json} data:
-     * {
-     *     "status": 0,
-     *     "message": "",
-     *     "data": {
-     *         "id": 9,
-     *         "username": "user001",
-     *         "mobile": "",
-     *         "email": "",
-     *         "type": "user",
-     *         "is_enable": "Y",
-     *         "disable_reason": "",
-     *         "created_at": "2021-03-18 15:30:15",
-     *         "updated_at": "2021-03-18 16:38:06"
-     *     }
-     * }
+     * @OA\Post(
+     *     path="/api_v1/system/auth/access",
+     *     tags={"System"},
+     *     summary="[Auth]检测 Token",
+     *     description="校验当前请求 Token 是否有效, 返回 PAM 账号信息.",
+     *     @OA\Response(
+     *         response=200,
+     *         description="有效登录",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppySystemAuthAccessResponseBody")
+     *     ),
+     * )
      */
-    public function access(): JsonResponse
+    public function access(Request $request): JsonResponse
     {
-        $pam    = (new PamResource($this->pam()))->toArray(app('request'));
+        $pam    = (new PamResource($this->pam()))->toArray($request);
         $append = (array) sys_hook('poppy.system.auth_access');
         $all    = array_merge($pam, $append);
         return Resp::success(
@@ -88,42 +73,52 @@ class AuthController extends JwtApiController
     }
 
     /**
-     * @api                   {post} /api_v1/system/auth/login [Sys]登录/注册
-     * @apiVersion            1.0.0
-     * @apiName               SysAuthLogin
-     * @apiGroup              Poppy
-     * @apiQuery {string}     passport        通行证
-     * @apiQuery {string}     [password]      密码
-     * @apiQuery {string}     [captcha]       验证码
-     * @apiQuery {string}     [device_id]     设备ID(开启单一登录之后可用)
-     * @apiQuery {string}     [device_type]   设备类型(开启单一登录之后可用)
-     * @apiQuery {string}     [guard]         登录类型 [web|用户(默认);backend|后台;]
-     * @apiSuccess {string}   token           认证成功的Token
-     * @apiSuccess {string}   type            账号类型
-     * @apiSuccess {string}   is_register     是否是注册 [Y|N]
-     * @apiSuccessExample {json} data:
-     * {
-     *      "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.*******",
-     *      "type": "backend",
-     *      "is_register": "backend",
-     * }
-     */
-
-
-    /**
-     * @param Request $req
-     * @return JsonResponse
-     * @throws AuthorizationException
-     * @throws ValidationException
+     * @OA\Post(
+     *     path="/api_v1/system/auth/login",
+     *     tags={"System"},
+     *     summary="[Auth]登录/注册",
+     *     description="通过密码或短信验证码登录账号, 不存在账号会自动注册.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="登录请求体, 见 AuthLoginRequest schema",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/PoppySystemAuthLoginRequest")
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="x-os",
+     *         in="header",
+     *         description="OS 平台类型 (例如 ios, android, pc)",
+     *         @OA\Schema(type="string", example="pc")
+     *     ),
+     *     @OA\Parameter(
+     *         name="x-type",
+     *         in="header",
+     *         description="账号类型 (例如 backend, web)",
+     *         @OA\Schema(type="string", example="backend")
+     *     ),
+     *     @OA\Parameter(
+     *         name="x-id",
+     *         in="header",
+     *         description="设备 ID",
+     *         @OA\Schema(type="string", example="123456")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="登录成功",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppySystemAuthLoginResponseBody")
+     *     )
+     * )
      * @throws Throwable
      */
     public function login(Request $req): JsonResponse
     {
         $req->merge([
-            'os' => input('device_type', '') ?: x_header('os'),
+            'os' => ((string) $req->input('device_type', '')) ?: x_header('os'),
         ]);
-        /** @var PamLoginRequest $request */
-        $request     = app(PamLoginRequest::class, [$req]);
+        /** @var AuthLoginRequest $request */
+        $request     = app(AuthLoginRequest::class, [$req]);
         $reqPassport = $request->scene('passport')->validated();
 
         // 频率限制
@@ -138,7 +133,7 @@ class AuthController extends JwtApiController
         }
 
         // 登录类型
-        $guard = (input('guard') ?: x_header('type')) === PamAccount::TYPE_BACKEND
+        $guard = (((string) $request->input('guard')) ?: x_header('type')) === PamAccount::TYPE_BACKEND
             ? PamAccount::GUARD_JWT_BACKEND
             : PamAccount::GUARD_JWT_WEB;
 
@@ -152,6 +147,7 @@ class AuthController extends JwtApiController
         }
         else {
             // use password
+
             $reqPwd   = $request->scene('password')->validated();
             $passport = PamAccount::fullFilledPassport($reqPwd['passport']);
             if (!$Pam->loginCheck($passport, $reqPwd['password'], $guard)) {
@@ -167,9 +163,10 @@ class AuthController extends JwtApiController
         /* 设备单一性登陆验证(基于 Redis + Db)
          * ---------------------------------------- */
         try {
-            $deviceId = x_header('id') ?: input('device_id', '');
+            $deviceId = x_header('id') ?: (string) $request->input('device_id', '');
             event(new LoginTokenPassedEvent($pam, $token, $deviceId, $reqPassport['os']));
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return Resp::error($e->getMessage());
         }
 
@@ -182,22 +179,31 @@ class AuthController extends JwtApiController
 
 
     /**
-     * @throws Throwable
-     * @api                   {post} /api_v1/system/auth/reset_password [Sys]重设密码
-     * @apiVersion            1.0.0
-     * @apiName               SysAuthResetPassword
-     * @apiGroup              Poppy
-     * @apiQuery {string}     [verify_code]     方式1: 通过验证码获取到-> 验证串
-     * @apiQuery {string}     [passport]        方式2: 手机号 + 验证码直接验证并修改
-     * @apiQuery {string}     [captcha]         验证码
-     * @apiQuery {string}     password          密码
+     * @OA\Post(
+     *     path="/api_v1/system/auth/reset_password",
+     *     tags={"System"},
+     *     summary="[Auth]重设密码",
+     *     description="通过验证码或 verify_code 重设密码. verify_code 与 passport/captcha 两种方式二选一.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/PoppySystemAuthResetPasswordRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="登录成功",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppySystemResponseBody")
+     *     )
+     * )
      */
-    public function resetPassword(PamPasswordRequest $request)
+    public function resetPassword(AuthResetPasswordRequest $request)
     {
-        $verify_code = input('verify_code', '');
-        $password    = $request->input('password');
-        $passport    = input('passport', '');
-        $captcha     = input('captcha', '');
+        $verify_code = $request->getVerifyCode();
+        $passport    = $request->getPassport();
+        $captcha     = $request->getCaptcha();
+        $password    = $request->getPwd();
 
         $Verification = new Verification();
         if ((!$verify_code && !$passport) || ($verify_code && $passport)) {
@@ -241,19 +247,30 @@ class AuthController extends JwtApiController
     }
 
     /**
-     * @api                   {post} /api_v1/system/auth/bind_mobile [Sys]换绑手机
-     * @apiVersion            1.0.0
-     * @apiName               SysAuthBindMobile
-     * @apiGroup              Poppy
-     * @apiQuery {string}     verify_code     之前手机号生成的校验验证串
-     * @apiQuery {string}     passport        新手机号
-     * @apiQuery {string}     captcha         验证码
+     * @OA\Post(
+     *     path="/api_v1/system/auth/bind_mobile",
+     *     tags={"System"},
+     *     summary="[Auth]换绑手机",
+     *     description="解绑并换绑当前 PAM 账号到新手机号.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/PoppySystemAuthBindMobileRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="登录成功",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppySystemResponseBody")
+     *     )
+     * )
      */
-    public function bindMobile()
+    public function bindMobile(AuthBindMobileRequest $request)
     {
-        $captcha     = input('captcha');
-        $passport    = input('passport');
-        $verify_code = input('verify_code');
+        $captcha     = $request->getCaptcha();
+        $passport    = $request->getPassport();
+        $verify_code = $request->getVerifyCode();
 
         if (!UtilHelper::isMobile($passport)) {
             return Resp::error('请输入正确手机号');
@@ -278,24 +295,38 @@ class AuthController extends JwtApiController
     }
 
     /**
-     * @api                   {post} /api_v1/system/auth/renew [Sys]凭证续期
-     * @apiVersion            1.0.0
-     * @apiName               SysAuthRenew
-     * @apiGroup              Poppy
-     * @apiQuery {string}     [device_id]   设备 ID, 参考 header x-id
-     * @apiQuery {string}     [device_type] 设备 类型, 参考 header x-os
+     * @OA\Post(
+     *     path="/api_v1/system/auth/renew",
+     *     tags={"System"},
+     *     summary="[Auth]凭证续期",
+     *     description="使用当前 JWT 续签一个新的 Token.",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/PoppySystemAuthRenewRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="登录成功",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppySystemAuthRenewResponseBody")
+     *     )
+     * )
      */
-    public function renew()
+    public function renew(AuthRenewRequest $request)
     {
         $pam   = $this->pam;
         $token = JWTAuth::fromUser($pam);
 
         try {
-            $deviceId   = x_header('id') ?: input('device_id', '');
-            $deviceType = x_header('os') ?: input('device_type', '');
+            $deviceId   = x_header('id') ?: $request->getDeviceId();
+            $deviceType = x_header('os') ?: $request->getDeviceType();
 
             event(new TokenRenewEvent($pam, $token, $deviceId, $deviceType));
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return Resp::error($e->getMessage());
         }
 
@@ -309,13 +340,14 @@ class AuthController extends JwtApiController
 
 
     /**
-     * @api                   {post} /api_v1/system/auth/logout [Sys]退出登录
-     * @apiVersion            1.0.0
-     * @apiName               SysAuthLogout
-     * @apiGroup              Poppy
-     */
-
-    /**
+     * @OA\Post(
+     *     path="/api_v1/system/auth/logout",
+     *     tags={"System"},
+     *     summary="[Auth]退出登录",
+     *     description="退出当前 JWT 登录态.",
+     *     @OA\Response(response=200, description="已退出登录"),
+     * )
+     *
      * @return JsonResponse|RedirectResponse|Response
      * @throws Throwable
      */
@@ -326,18 +358,29 @@ class AuthController extends JwtApiController
     }
 
     /**
-     * @api                   {post} /api_v1/system/auth/exists [Sys]检查通行证是否存在
-     * @apiDescription        存在返回成功, 不成功返回失败
-     * @apiVersion            1.0.0
-     * @apiName               SysAuthExists
-     * @apiGroup              Poppy
-     * @apiQuery {string}     passport  通行证
-     * @apiQuery {string}     [is_data] 是否以Data形式返回 [Y|N]
+     * @OA\Post(
+     *     path="/api_v1/system/auth/exists",
+     *     tags={"System"},
+     *     summary="[Auth]检查通行证是否存在",
+     *     description="检查指定通行证 (手机号 / 邮箱) 是否在系统中存在. 存在返回成功, 不存在返回失败.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/PoppySystemAuthExistsRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="通行证存在",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppySystemAuthExistsResponseBody")
+     *     ),
+     * )
      */
-    public function exists()
+    public function exists(AuthExistsRequest $request)
     {
-        $passport = input('passport');
-        $is_data  = input('is_data', 'N');
+        $passport = $request->getPassport();
+        $is_data  = $request->getIsData();
         $exists   = PamAccount::passportExists($passport);
 
         if ($exists) {
@@ -356,11 +399,6 @@ class AuthController extends JwtApiController
         return Resp::error('通行证不存在');
     }
 
-    protected function username(): string
-    {
-        return 'passport';
-    }
-
     /**
      * @return float
      */
@@ -374,6 +412,11 @@ class AuthController extends JwtApiController
      */
     public function decayMinutes()
     {
-        return (float) env('THROTTLES_DECAY_MINUTES',$this->decayMinutes);
+        return (float) env('THROTTLES_DECAY_MINUTES', $this->decayMinutes);
+    }
+
+    protected function username(): string
+    {
+        return 'passport';
     }
 }

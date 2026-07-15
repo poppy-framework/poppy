@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Poppy\Area\Http\Request\ApiV1\Web;
 
+use OpenApi\Annotations as OA;
+use Poppy\Area\Http\Request\ApiV1\Web\Area\AreaCodeResponseBody;
+use Poppy\Area\Http\Request\ApiV1\Web\Area\AreaCountryResponseBody;
 use Poppy\Area\Models\SysArea;
 use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Helper\UtilHelper;
@@ -11,44 +14,24 @@ use Poppy\System\Http\Request\ApiV1\WebApiController;
 
 /**
  * 地区管理控制器
+ *
+ * @OA\Tag(name="Area", description="地区代码 / 国别 等接口")
  */
 class AreaController extends WebApiController
 {
 
     /**
-     * @api                   {post} api_v1/area/area/code [Area]地区代码
-     * @apiDescription        获取地区代码
-     * @apiVersion            1.0.0
-     * @apiName               AreaAreaCode
-     * @apiGroup              Poppy
-     * @apiSuccess {object[]} data         返回
-     * @apiSuccess {integer}  id           ID
-     * @apiSuccess {string}   title        标题
-     * @apiSuccess {string}   code         地区编码
-     * @apiSuccess {object[]} children     子级别
-     * @apiSuccessExample     {json} data:
-     * {
-     *     "status": 0,
-     *     "message": "",
-     *     "data": [
-     *         {
-     *             "id": 1,
-     *             "title": "北京市",
-     *             "children": [
-     *                 {
-     *                     "id": 3,
-     *                     "title": "北京市",
-     *                     "children": [
-     *                         {
-     *                             "id": 4,
-     *                             "title": "东城区"
-     *                         }
-     *                     ]
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     * }
+     * @OA\Post(
+     *     path="/api_v1/area/area/code",
+     *     tags={"Area"},
+     *     summary="[Area]地区代码",
+     *     description="获取地区代码 (树形结构). code 字段为地区编码左 6 位.",
+     *     @OA\Response(
+     *         response=200,
+     *         description="获取数据成功",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppyAreaAreaCodeResponseBody")
+     *     ),
+     * )
      */
     public function code()
     {
@@ -59,11 +42,17 @@ class AreaController extends WebApiController
 
 
     /**
-     * @api                   {post} api_v1/area/area/country [Area]国别
-     * @apiDescription        获取国家代码
-     * @apiVersion            1.0.0
-     * @apiName               AreaAreaCountry
-     * @apiGroup              Poppy
+     * @OA\Post(
+     *     path="/api_v1/area/area/country",
+     *     tags={"Area"},
+     *     summary="[Area]国别",
+     *     description="获取国家代码 (键值对, code => 国家名称).",
+     *     @OA\Response(
+     *         response=200,
+     *         description="获取成功",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppyAreaAreaCountryResponseBody")
+     *     ),
+     * )
      */
     public function country()
     {

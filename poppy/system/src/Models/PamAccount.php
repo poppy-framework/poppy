@@ -275,7 +275,7 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
      * 获取账户实例
      * @return PamAccount
      */
-    public static function instance(): PamAccount
+    public static function instance(): self
     {
         if (config('poppy.core.rbac.account')) {
             $pamClass = config('poppy.core.rbac.account');

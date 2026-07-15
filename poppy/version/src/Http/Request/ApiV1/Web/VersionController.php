@@ -4,34 +4,43 @@ declare(strict_types = 1);
 
 namespace Poppy\Version\Http\Request\ApiV1\Web;
 
+use OpenApi\Annotations as OA;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Http\Request\ApiV1\WebApiController;
+use Poppy\Version\Http\Request\ApiV1\Web\Version\VersionVersionRequest;
+use Poppy\Version\Http\Request\ApiV1\Web\Version\VersionVersionResponseBody;
 use Poppy\Version\Models\SysAppVersion;
 
+/**
+ * 版本检测控制器
+ *
+ * @OA\Tag(name="Version", description="App 版本检测 等接口")
+ */
 class VersionController extends WebApiController
 {
     /**
-     * @api                     {get} api_v1/version/app/version [Version]版本检测
-     * @apiVersion              1.0.0
-     * @apiName                 VersionAppVersion
-     * @apiGroup                Poppy
-     * @apiQuery    {string}    version       版本号
-     * @apiSuccess  {string}    download_url  下载地址
-     * @apiSuccess  {string}    description   描述
-     * @apiSuccess  {string}    version       版本
-     * @apiSuccess  {string}    is_upgrade    是否需要强制更新
-     * @apiSuccessExample       data
-     *  {
-     *     "download_url": "http://www.domain.com",
-     *     "description": "android",
-     *     "version": "1.13.0",
-     *     "is_upgrade": "Y"
-     *  }
+     * @OA\Get(
+     *     path="/api_v1/version/app/version",
+     *     tags={"Version"},
+     *     summary="[Version]App 版本检测",
+     *     description="检测当前 App 版本. 通过请求头 x-os 识别平台 (默认 android). 返回最新版本信息及是否需要强制更新.",
+     *     @OA\Parameter(
+     *         name="version",
+     *         in="query",
+     *         required=false,
+     *         description="当前版本号 (默认 1.0.0)",
+     *         @OA\Schema(type="string", default="1.0.0", example="1.0.0")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="获取版本成功",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppyVersionVersionVersionResponseBody")
+     *     ),
+     * )
      */
-    public function version()
+    public function version(VersionVersionRequest $request)
     {
-        $input   = input();
-        $current = sys_get($input, 'version', '1.0.0');
+        $current = $request->getVersion();
 
         $os = x_header('os') ?: 'android';
 

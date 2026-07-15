@@ -2,28 +2,42 @@
 
 namespace Demo\Http\Request\Api\Web;
 
+use Demo\Http\Request\Api\Web\ApiDoc\ApiDocHowRequest;
+use Demo\Http\Request\Api\Web\ApiDoc\ApiDocHowResponseBody;
+use OpenApi\Annotations as OA;
 use Poppy\Framework\Application\ApiController;
 use Poppy\Framework\Classes\Resp;
 
+/**
+ * ApiDoc 编写示例控制器
+ *
+ * @OA\Tag(name="Demo", description="ApiDoc 编写示例 / Resp 响应示例 等接口")
+ */
 class ApiDocController extends ApiController
 {
     /**
-     * @api               {get} api/demo/apidoc/how [Demo]ApiDoc编写示例
-     * @apiDescription    怎样写Apidoc
-     * @apiVersion        1.0.0
-     * @apiName           ApidocHow
-     * @apiGroup          Demo
-     * @apiQuery {integer}            number         数值
-     * @apiQuery {int{100-999}}   number_range   数值范围
-     * @apiQuery {string}         string         字串
-     * @apiQuery {string{..5}}    string_mx      字串最大5
-     * @apiQuery {string{2..5}}   string_between 字串间隔
-     * @apiQuery {int{2..5}}      number_between 数值间隔
-     * @apiQuery {int=1,2,3,99}   number_select  数值间隔
-     * @apiQuery {string=banana,apple,ball} string_select  字串枚举
+     * @OA\Get(
+     *     path="/api/demo/apidoc/how",
+     *     tags={"Demo"},
+     *     summary="[Demo]ApiDoc 编写示例",
+     *     description="演示 Swagger 注解的各类字段定义 (数值 / 范围 / 枚举 / 字串长度). 接口回显请求参数, 用于前端调试 OpenAPI 客户端生成.",
+     *     @OA\RequestBody(
+     *         required=false,
+     *         description="所有字段均为可选, 演示用",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/DemoApiDocHowRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="返回输入值",
+     *         @OA\JsonContent(ref="#/components/schemas/DemoApiDocHowResponseBody")
+     *     ),
+     * )
      */
-    public function how()
+    public function how(ApiDocHowRequest $request)
     {
-        return Resp::success('返回输入值', input());
+        return Resp::success('返回输入值', $request->all());
     }
 }

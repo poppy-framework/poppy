@@ -6,7 +6,12 @@ namespace Poppy\Content\Http\Request\ApiV1\Web;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
+use OpenApi\Annotations as OA;
 use Poppy\Category\Models\SysCategory;
+use Poppy\Content\Http\Request\ApiV1\Web\Content\ContentDetailRequest;
+use Poppy\Content\Http\Request\ApiV1\Web\Content\ContentDetailResponseBody;
+use Poppy\Content\Http\Request\ApiV1\Web\Content\ContentListsRequest;
+use Poppy\Content\Http\Request\ApiV1\Web\Content\ContentListsResponseBody;
 use Poppy\Content\Models\SysContent;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Http\Request\ApiV1\JwtApiController;
@@ -14,43 +19,37 @@ use Poppy\System\Models\SysConfig;
 
 /**
  * 内容控制器
+ *
+ * @OA\Tag(name="Content", description="内容列表 / 详情 等接口")
  */
 class ContentController extends JwtApiController
 {
 
     /**
-     * @api                   {post} api_v1/content/content/lists 内容列表
-     * @apiDescription        获取内容列表
-     * @apiVersion            1.0.0
-     * @apiName               ContentContentList
-     * @apiGroup              Poppy
-     * @apiQuery {string}     [cat_slug]     分类标识
-     * @apiSuccess {object[]} list              列表
-     * @apiSuccess {string}   list.id           ID
-     * @apiSuccess {string}   list.path         路径
-     * @apiSuccess {string}   list.title        标题
-     * @apiSuccess {string}   list.thumb        缩略图
-     * @apiSuccess {string}   list.author       作者
-     * @apiSuccess {string}   list.create_at    创作时间
-     *
-     * @apiSuccessExample {json} data
-     *  {
-     *      "list": [
-     *          {
-     *              "slug": "",
-     *              "path": "content",
-     *              "title": "3",
-     *              "thumb": "https://test-oss.iliexiang.com/dev/default/202303/27/14/13532wv9xVNe.jpg",
-     *              "author": "",
-     *              "create_at": "0000-00-00 00:00:00"
-     *          }
-     *      ]
-     *  }
+     * @OA\Post(
+     *     path="/api_v1/content/content/lists",
+     *     tags={"Content"},
+     *     summary="[Content]内容列表",
+     *     description="获取内容列表 (分页). 可通过 cat_slug 或 cat_id 过滤分类.",
+     *     @OA\RequestBody(
+     *         required=false,
+     *         description="列表请求体",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/PoppyContentContentListsRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="获取列表成功",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppyContentContentListsResponseBody")
+     *     ),
+     * )
      */
-    public function lists(): JsonResponse
+    public function lists(ContentListsRequest $request): JsonResponse
     {
-        $catSlug = input('cat_slug');
-        $catId   = input('cat_id');
+        $catSlug = $request->getCatSlug();
+        $catId   = $request->getCatId();
         $Db      = SysContent::where('is_enable', SysConfig::YES)
             ->orderBy('list_order', 'desc');
         if ($catSlug && !$catId) {
@@ -74,48 +73,31 @@ class ContentController extends JwtApiController
     }
 
     /**
-     * @api                 {post} api_v1/content/content/detail 内容详细
-     * @apiDescription      获取详细内容
-     * @apiVersion          1.0.0
-     * @apiName             ContentContentDetail
-     * @apiGroup            Poppy
-     * @apiQuery  {int}     [cat_id]      分类ID
-     * @apiQuery  {int}     slug          内容 Slug
-     *
-     * @apiSuccess {string}   title       标题
-     * @apiSuccess {string}   author      作者
-     * @apiSuccess {string}   create_at   创作时间
-     * @apiSuccess {string}   content     内容
-     * @apiSuccess {string}   cat_title   分类标题
-     * @apiSuccess {object}   prev        上一条
-     * @apiSuccess {string}   [prev.path] 路径
-     * @apiSuccess {string}   [prev.slug] 标识
-     * @apiSuccess {object}   next        下一条
-     * @apiSuccess {string}   [next.path] 路径
-     * @apiSuccess {string}   [next.slug] 标识
-     *
-     * @apiSuccessExample {json} data
-     *  {
-     *      "title": "标题",
-     *      "author": "作者",
-     *      "create_at": "2023-08-30 16:04:00",
-     *      "content": "<p>内容管理</p>",
-     *      "cat_title": "默认 1'",
-     *      "prev": [
-     *          "path": "content",
-     *          "slug": "slug-a"
-     *      ],
-     *      "next": [
-     *          "path": "content",
-     *          "slug": "slug-b"
-     *      ]
-     *  }
+     * @OA\Post(
+     *     path="/api_v1/content/content/detail",
+     *     tags={"Content"},
+     *     summary="[Content]内容详情",
+     *     description="获取内容详情, 同时返回同分类下的上一条 / 下一条.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="详情请求体, 见 PoppyContentContentDetailRequest schema",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/PoppyContentContentDetailRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="已获取",
+     *         @OA\JsonContent(ref="#/components/schemas/PoppyContentContentDetailResponseBody")
+     *     ),
+     * )
      */
-    public function detail()
+    public function detail(ContentDetailRequest $request)
     {
-        $id       = input('id');
-        $catSlug = input('cat_slug');
-        $catId   = input('cat_id');
+        $id       = $request->getId();
+        $catSlug  = $request->getCatSlug();
+        $catId    = $request->getCatId();
 
         $item = SysContent::findOrFail($id);
 

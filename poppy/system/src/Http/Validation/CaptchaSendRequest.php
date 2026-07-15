@@ -8,6 +8,11 @@ use Poppy\Framework\Application\Request;
 use Poppy\Framework\Validation\Rule;
 use Poppy\System\Action\Verification;
 
+/**
+ * @deprecated 4.2
+ * @removed    5.0
+ * @see        \Poppy\System\Http\Request\ApiV1\Captcha\CaptchaSendRequest
+ */
 class CaptchaSendRequest extends Request
 {
 
