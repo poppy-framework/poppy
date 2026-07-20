@@ -5,9 +5,6 @@ declare(strict_types = 1);
 namespace Poppy\Core\Commands;
 
 use Illuminate\Console\Command;
-use Mail;
-use Poppy\System\Mail\MaintainMail;
-use Throwable;
 
 /**
  * User
@@ -19,9 +16,6 @@ class OpCommand extends Command
      */
     protected $signature = 'py-core:op
         {do : Maintain type}
-        {--title= : Mail title}
-        {--content= : Mail content}
-        {--file= : Mail attachment file}
     ';
 
     /**
@@ -36,20 +30,6 @@ class OpCommand extends Command
     {
         $do = $this->argument('do');
         switch ($do) {
-            case 'mail':
-                $title   = $this->option('title') ?: 'No Title';
-                $content = $this->option('content') ?: 'No Content';
-                $file    = $this->option('file');
-                if (!config('poppy.core.op_mail')) {
-                    $this->error(sys_gen_mk(self::class, 'Config `poppy.core.op_mail` not set. Can not send Op Mail'));
-                    return;
-                }
-                try {
-                    Mail::to(config('poppy.core.op_mail'))->send(new MaintainMail($title, $content, $file));
-                } catch (Throwable $e) {
-                    $this->error(sys_gen_mk(self::class, $e->getMessage()));
-                }
-                break;
             case 'clear':
                 sys_tag('py-core')->clear();
                 $this->info(sys_gen_mk(self::class, 'Clear Core Cache'));
