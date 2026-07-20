@@ -48,6 +48,11 @@ class CategoryEstablishRequest extends Request
 
     public function attributes(): array
     {
-        return sys_db(SysCategory::class);
+        return [
+            'type'      => '分类类型',
+            'title'     => '分类名称',
+            'parent_id' => '父分类ID',
+            'name'      => '分类名称',
+        ];
     }
 }

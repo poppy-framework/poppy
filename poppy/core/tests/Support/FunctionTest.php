@@ -53,26 +53,6 @@ class FunctionTest extends TestCase
         $this->assertEquals(null, sys_tag('py-core')->get('test.sys_cache'));
     }
 
-    public function testSysDb(): void
-    {
-        Artisan::call('poppy:optimize');
-        $dbClass = sys_db(PamAccount::class);
-        $dbTable = sys_db('pam_account');
-
-        $this->assertEquals($dbClass, $dbTable);
-
-
-        $arrClassEmail = sys_db(PamAccount::class, ['email']);
-        $arrDbEmail    = sys_db('pam_account', ['email']);
-        $this->assertEquals($arrClassEmail, $arrDbEmail);
-
-        $strClassEmail = sys_db(PamAccount::class, 'email');
-        $strDbEmail    = sys_db('pam_account', 'email');
-        $this->assertEquals($strClassEmail, $strDbEmail);
-
-
-    }
-
     public function testSysFn(): void
     {
         $exception  = new Exception('Test Exception');

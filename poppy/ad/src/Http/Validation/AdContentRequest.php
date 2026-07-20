@@ -17,7 +17,18 @@ class AdContentRequest extends Request
 
     public function attributes(): array
     {
-        return sys_db(SysAdContent::class);
+        return [
+            'place_id'   => '广告位',
+            'title'      => '标题',
+            'introduce'  => '介绍',
+            'start_at'   => '开始时间',
+            'end_at'     => '结束时间',
+            'src'        => '图片',
+            'action'     => '操作',
+            'value'      => '值',
+            'is_enable'  => '是否开启',
+            'list_order' => '排序',
+        ];
     }
 
     /**
@@ -28,7 +39,7 @@ class AdContentRequest extends Request
     public function rules(): array
     {
         $tbName = (new SysAdContent())->getTable();
-        $id = Route::input('id');
+        $id     = Route::input('id');
         return [
             'place_id'   => [
                 Rule::required(),

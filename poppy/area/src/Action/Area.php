@@ -69,8 +69,8 @@ class Area
                 Rule::integer(),
             ],
         ], [], [
-            'title'     => sys_db('sys_area.title'),
-            'parent_id' => sys_db('sys_area.parent_id'),
+            'title'     => trans('py-system::action.area.title'),
+            'parent_id' => trans('py-system::action.area.parent_id'),
         ]);
         if ($validator->fails()) {
             return $this->setError($validator->messages());

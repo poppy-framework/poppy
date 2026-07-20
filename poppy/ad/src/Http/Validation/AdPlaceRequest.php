@@ -16,7 +16,13 @@ class AdPlaceRequest extends Request
 
     public function attributes(): array
     {
-        return sys_db(SysAdPlace::class);
+        return [
+            'title'     => '标题',
+            'width'     => '宽度',
+            'height'    => '高度',
+            'thumb'     => '缩略图',
+            'introduce' => '介绍',
+        ];
     }
 
     /**

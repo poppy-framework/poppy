@@ -29,11 +29,6 @@ class ServiceProvider extends PoppyServiceProvider
     {
         parent::boot('poppy.core');
 
-        // 注册 api 文档配置
-        $this->publishes([
-            __DIR__ . '/../resources/config/doctum-config.php' => storage_path('doctum/config.php'),
-        ], 'poppy');
-
         // poppy assets
         $this->publishes([
             __DIR__ . '/../resources/swagger-ui/' => public_path('docs/swagger-ui/'),
@@ -71,7 +66,6 @@ class ServiceProvider extends PoppyServiceProvider
         $this->commands([
             Commands\PermissionCommand::class,
             Commands\DocCommand::class,
-            Commands\DbCommand::class,
             Commands\OpCommand::class,
             Commands\InspectCommand::class,
             Commands\PersistCommand::class,

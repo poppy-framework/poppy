@@ -15,7 +15,15 @@ class AppEstablishRequest extends Request
 
     public function attributes(): array
     {
-        return sys_db(SysApp::class);
+        return [
+            'title'        => '应用名称',
+            'secret'       => '应用密钥',
+            'name'         => '应用名称',
+            'account_type' => '账号类型',
+            'account_id'   => '账号ID',
+            'note'         => '备注',
+            'permissions'  => '权限',
+        ];
     }
 
     /**

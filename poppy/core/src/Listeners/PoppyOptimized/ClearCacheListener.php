@@ -42,10 +42,6 @@ class ClearCacheListener
             }
         });
 
-        app(Kernel::class)->call('py-core:db', [
-            'do' => 'fields',
-        ]);
-
         if (function_exists('opcache_reset')) {
             opcache_reset();
         }

@@ -46,7 +46,10 @@ class PamRoleRequest extends Request
 
     public function attributes(): array
     {
-        return sys_db(PamRole::class);
+        return [
+            'title' => '角色名称',
+            'type'  => '角色类型',
+        ];
     }
 
     /**

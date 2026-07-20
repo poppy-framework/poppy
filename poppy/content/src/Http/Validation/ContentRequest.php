@@ -16,7 +16,17 @@ class ContentRequest extends Request
 
     public function attributes(): array
     {
-        return sys_db(SysContent::class);
+        return [
+            'type'        => '内容类型',
+            'thumb'       => '缩略图',
+            'keyword'     => '关键词',
+            'description' => '描述',
+            'cat_id'      => '分类ID',
+            'content'     => '内容',
+            'title'       => '标题',
+            'author'      => '作者',
+            'create_at'   => '创建时间',
+        ];
     }
 
     /**
@@ -63,7 +73,7 @@ class ContentRequest extends Request
                 Rule::string(),
             ],
             'create_at'   => [
-                Rule::dateFormat('Y-m-d H:i:s')
+                Rule::dateFormat('Y-m-d H:i:s'),
             ],
         ];
     }

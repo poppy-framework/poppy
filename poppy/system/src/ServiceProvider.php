@@ -143,21 +143,6 @@ class ServiceProvider extends PoppyServiceProvider
         $this->app->alias('poppy.system.password', PasswordContract::class);
 
 
-        /** 文件上传提供者
-         * @deprecated 4.2
-         * @removed    4.3
-         * ---------------------------------------- */
-        $this->app->bind('poppy.system.uploader', function ($app, $config) {
-            $uploadType = sys_setting('py-system::picture.save_type');
-            $hooks      = sys_hook('poppy.system.upload_type');
-            if (!$uploadType) {
-                $uploadType = 'default';
-            }
-            $uploader      = $hooks[$uploadType];
-            $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
-            return new $uploaderClass($config);
-        });
-
         /* 文件提供者
          * ---------------------------------------- */
         $this->app->bind('poppy.system.file', function ($app, $config) {

@@ -9,12 +9,13 @@ use Poppy\Framework\Classes\Traits\AppTrait;
 /**
  * Listener Helpers
  * @deprecated 4.1
- * @removed 5.0
+ * @removed    5.0
  */
 trait ListenerTrait
 {
     /**
      * Im 返回参数检测, 并且记录日志
+     *
      * @param mixed  $event  事件
      * @param string $class  类
      * @param array  $result 结果
@@ -31,6 +32,7 @@ trait ListenerTrait
 
     /**
      * 检测 action 状态并进行日志记录
+     *
      * @param mixed    $event  事件
      * @param string   $class  类
      * @param bool     $result 结果
