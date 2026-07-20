@@ -28,7 +28,7 @@ git push origin v4.2.1
 
 ```bash
 # 跳过指定模块（保留其上次版本号，不发）
-git tag v4.2.1 -m "skip: ad, im-rpc, ext-phpstan"
+git tag v4.2.1 -m "skip: ad, im-rpc"
 
 # 只发指定模块（其余不发）
 git tag v4.2.1 -m "only: framework, core"
