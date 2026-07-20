@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Poppy\Core\Listeners\PoppyOptimized;
 
 use Poppy\Framework\Events\PoppyOptimized;
-use Poppy\Framework\Foundation\Console\Kernel;
 use Storage;
 
 /**
