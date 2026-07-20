@@ -20,7 +20,7 @@ name: Release
 #
 # 凭据：
 #   - 用 GitHub App（actions/create-github-app-token@v1）
-#   - 需 secrets.POPPY_RELEASE_APP_ID / POPPY_RELEASE_APP_KEY
+#   - 需 secrets.POPPY_RELEASE_CLIENT_ID / POPPY_RELEASE_APP_KEY
 #   - App 需安装到 poppy-framework 组织，并对 21 个目标仓库授权 contents: write
 # ─────────────────────────────────────────────────────────
 

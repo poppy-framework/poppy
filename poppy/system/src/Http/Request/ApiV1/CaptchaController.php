@@ -86,7 +86,7 @@ class CaptchaController extends JwtApiController
                 if (is_production()) {
                     return Resp::success('验证码发送成功');
                 }
-                return Resp::success('验证码发送成功', [
+                return Resp::success('验证码发送成功' . ', 验证码:' . $captcha, [
                     'captcha' => $captcha,
                 ]);
             }
