@@ -13,7 +13,7 @@
         "ext-json": "*",
         "mews/captcha": "^3.2",
         "laravelcollective/html": "^6.0",
-        "poppy/system": "4.2.*"
+        "poppy/system": "4.3.*"
     },
     "autoload": {
         "psr-4": {

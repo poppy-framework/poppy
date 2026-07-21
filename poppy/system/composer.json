@@ -14,7 +14,7 @@
         "ext-json": "*",
         "tucker-eric/eloquentfilter": "3.*",
         "tymon/jwt-auth": "1.0.*",
-        "poppy/core": "4.2.*",
+        "poppy/core": "4.3.*",
         "hieu-le/active": "4.0.*",
         "mlocati/ip-lib": "1.*",
         "intervention/image": "2.*",

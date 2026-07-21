@@ -3887,7 +3887,7 @@
                 "alibabacloud/sts-20150401": "^1.1",
                 "aliyuncs/oss-sdk-php": "2.*",
                 "php": ">=7.4",
-                "poppy/mgr-page": "4.2.*"
+                "poppy/mgr-page": "4.3.*"
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3|^7.3"
@@ -4365,7 +4365,7 @@
                 "laravelcollective/html": "^6.0",
                 "mews/captcha": "^3.2",
                 "php": ">=7.4",
-                "poppy/system": "4.2.*"
+                "poppy/system": "4.3.*"
             },
             "type": "library",
             "autoload": {
@@ -4492,7 +4492,7 @@
                 "mlocati/ip-lib": "1.*",
                 "overtrue/pinyin": "^4.0",
                 "php": ">=7.4",
-                "poppy/core": "4.2.*",
+                "poppy/core": "4.3.*",
                 "tucker-eric/eloquentfilter": "3.*",
                 "tymon/jwt-auth": "1.0.*"
             },
