@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "20dadbe36d7cc4d3ec77115a1625cd6e",
+    "content-hash": "754c2e472b27bb56afa3602b76f0a504",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -1096,184 +1096,6 @@
             "time": "2020-12-29T14:50:06+00:00"
         },
         {
-            "name": "elasticsearch/elasticsearch",
-            "version": "v7.17.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/elastic/elasticsearch-php.git",
-                "reference": "b8a60b4136ee31117d1aa1b19879530eb6d11efb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/b8a60b4136ee31117d1aa1b19879530eb6d11efb",
-                "reference": "b8a60b4136ee31117d1aa1b19879530eb6d11efb",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": ">=1.3.7",
-                "ezimuel/ringphp": "^1.1.2",
-                "php": "^7.3 || ^8.0",
-                "psr/log": "^1|^2|^3"
-            },
-            "require-dev": {
-                "ext-yaml": "*",
-                "ext-zip": "*",
-                "mockery/mockery": "^1.2",
-                "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^9.3",
-                "squizlabs/php_codesniffer": "^3.4",
-                "symfony/finder": "~4.0"
-            },
-            "suggest": {
-                "ext-curl": "*",
-                "monolog/monolog": "Allows for client-level logging and tracing"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/autoload.php"
-                ],
-                "psr-4": {
-                    "Elasticsearch\\": "src/Elasticsearch/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0",
-                "LGPL-2.1-only"
-            ],
-            "authors": [
-                {
-                    "name": "Zachary Tong"
-                },
-                {
-                    "name": "Enrico Zimuel"
-                }
-            ],
-            "description": "PHP Client for Elasticsearch",
-            "keywords": [
-                "client",
-                "elasticsearch",
-                "search"
-            ],
-            "support": {
-                "issues": "https://github.com/elastic/elasticsearch-php/issues",
-                "source": "https://github.com/elastic/elasticsearch-php/tree/v7.17.3"
-            },
-            "time": "2025-07-14T09:07:02+00:00"
-        },
-        {
-            "name": "ezimuel/guzzlestreams",
-            "version": "4.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ezimuel/guzzlestreams.git",
-                "reference": "903161be81e9f497cc42fb7db982404a4e6441b0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ezimuel/guzzlestreams/zipball/903161be81e9f497cc42fb7db982404a4e6441b0",
-                "reference": "903161be81e9f497cc42fb7db982404a4e6441b0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.4.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^2.1",
-                "phpunit/phpunit": "~9.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Stream\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "Fork of guzzle/streams (abandoned) to be used with elasticsearch-php",
-            "homepage": "http://guzzlephp.org/",
-            "keywords": [
-                "Guzzle",
-                "stream"
-            ],
-            "support": {
-                "source": "https://github.com/ezimuel/guzzlestreams/tree/4.1.0"
-            },
-            "time": "2025-08-05T06:44:46+00:00"
-        },
-        {
-            "name": "ezimuel/ringphp",
-            "version": "1.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ezimuel/ringphp.git",
-                "reference": "b97f46088940671100012482577eeb59f26a13b5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ezimuel/ringphp/zipball/b97f46088940671100012482577eeb59f26a13b5",
-                "reference": "b97f46088940671100012482577eeb59f26a13b5",
-                "shasum": ""
-            },
-            "require": {
-                "ezimuel/guzzlestreams": "^3.0.1 || ^4.0.0",
-                "php": ">=5.4.0",
-                "react/promise": "^2.0 || ^3.0"
-            },
-            "replace": {
-                "guzzlehttp/ringphp": "self.version"
-            },
-            "require-dev": {
-                "ext-curl": "*",
-                "phpunit/phpunit": "~9.0"
-            },
-            "suggest": {
-                "ext-curl": "Guzzle will use specific adapters if cURL is present"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Ring\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "Fork of guzzle/RingPHP (abandoned) to be used with elasticsearch-php",
-            "support": {
-                "source": "https://github.com/ezimuel/ringphp/tree/1.4.1"
-            },
-            "time": "2026-02-11T16:42:15+00:00"
-        },
-        {
             "name": "ezyang/htmlpurifier",
             "version": "v4.16.0",
             "source": {
@@ -1933,83 +1755,6 @@
                 "source": "https://github.com/Jean85/pretty-package-versions/tree/2.1.1"
             },
             "time": "2025-03-19T14:43:43+00:00"
-        },
-        {
-            "name": "jenssegers/date",
-            "version": "v4.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jenssegers/date.git",
-                "reference": "506f86096e0b512f9ece6ad0ccae62b03c125771"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jenssegers/date/zipball/506f86096e0b512f9ece6ad0ccae62b03c125771",
-                "reference": "506f86096e0b512f9ece6ad0ccae62b03c125771",
-                "shasum": ""
-            },
-            "require": {
-                "nesbot/carbon": "^2.16"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.5",
-                "satooshi/php-coveralls": "^2.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Date": "Jenssegers\\Date\\Date"
-                    },
-                    "providers": [
-                        "Jenssegers\\Date\\DateServiceProvider"
-                    ]
-                },
-                "branch-alias": {
-                    "dev-master": "3.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Jenssegers\\Date\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jens Segers",
-                    "homepage": "https://jenssegers.com"
-                }
-            ],
-            "description": "A date library to help you work with dates in different languages",
-            "homepage": "https://github.com/jenssegers/date",
-            "keywords": [
-                "carbon",
-                "date",
-                "datetime",
-                "i18n",
-                "laravel",
-                "time",
-                "translation"
-            ],
-            "support": {
-                "issues": "https://github.com/jenssegers/date/issues",
-                "source": "https://github.com/jenssegers/date/tree/master"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/jenssegers",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/jenssegers/date",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-04-28T06:35:54+00:00"
         },
         {
             "name": "laravel/framework",
@@ -3837,7 +3582,7 @@
         },
         {
             "name": "poppy/ad",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/ad",
@@ -3876,11 +3621,11 @@
         },
         {
             "name": "poppy/aliyun-oss",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/aliyun-oss",
-                "reference": "bd940190013d165f6b22fd88c3eb5d1b11b06fbc"
+                "reference": "7039948b404610584db0309bc0a58bb598ae18d3"
             },
             "require": {
                 "alibabacloud/darabonba": "^1.0",
@@ -3920,7 +3665,7 @@
         },
         {
             "name": "poppy/aliyun-push",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/aliyun-push",
@@ -3961,7 +3706,7 @@
         },
         {
             "name": "poppy/app",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/app",
@@ -4005,7 +3750,7 @@
         },
         {
             "name": "poppy/area",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/area",
@@ -4042,7 +3787,7 @@
         },
         {
             "name": "poppy/category",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/category",
@@ -4079,7 +3824,7 @@
         },
         {
             "name": "poppy/content",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/content",
@@ -4116,7 +3861,7 @@
         },
         {
             "name": "poppy/core",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/core",
@@ -4163,7 +3908,7 @@
         },
         {
             "name": "poppy/ext-app",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/ext-app",
@@ -4207,7 +3952,7 @@
         },
         {
             "name": "poppy/ext-ip_store",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/ext-ip_store",
@@ -4251,7 +3996,7 @@
         },
         {
             "name": "poppy/faker",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/faker",
@@ -4299,7 +4044,7 @@
         },
         {
             "name": "poppy/framework",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/framework",
@@ -4354,11 +4099,11 @@
         },
         {
             "name": "poppy/mgr-page",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/mgr-page",
-                "reference": "7175c04944d44881b52f48c3d10dd5f0f76688e7"
+                "reference": "e90a38ce2df24d6c1a8f478201db14179bb52de8"
             },
             "require": {
                 "ext-json": "*",
@@ -4398,7 +4143,7 @@
         },
         {
             "name": "poppy/sensitive-word",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/sensitive-word",
@@ -4439,7 +4184,7 @@
         },
         {
             "name": "poppy/sms",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/sms",
@@ -4476,11 +4221,11 @@
         },
         {
             "name": "poppy/system",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/system",
-                "reference": "51a161df2effee381f69b04dc42e4ed704512d6f"
+                "reference": "4779ad0d03bc5cef491bec89914eae9d3e616642"
             },
             "require": {
                 "ext-bcmath": "*",
@@ -4533,7 +4278,7 @@
         },
         {
             "name": "poppy/version",
-            "version": "4.2.x-dev",
+            "version": "4.3.x-dev",
             "dist": {
                 "type": "path",
                 "url": "poppy/version",
@@ -5134,79 +4879,6 @@
                 }
             ],
             "time": "2022-12-19T21:55:10+00:00"
-        },
-        {
-            "name": "react/promise",
-            "version": "v3.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp/promise.git",
-                "reference": "23444f53a813a3296c1368bb104793ce8d88f04a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/23444f53a813a3296c1368bb104793ce8d88f04a",
-                "reference": "23444f53a813a3296c1368bb104793ce8d88f04a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "1.12.28 || 1.4.10",
-                "phpunit/phpunit": "^9.6 || ^7.5"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/functions_include.php"
-                ],
-                "psr-4": {
-                    "React\\Promise\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jan Sorgalla",
-                    "email": "jsorgalla@gmail.com",
-                    "homepage": "https://sorgalla.com/"
-                },
-                {
-                    "name": "Christian Lück",
-                    "email": "christian@clue.engineering",
-                    "homepage": "https://clue.engineering/"
-                },
-                {
-                    "name": "Cees-Jan Kiewiet",
-                    "email": "reactphp@ceesjankiewiet.nl",
-                    "homepage": "https://wyrihaximus.net/"
-                },
-                {
-                    "name": "Chris Boden",
-                    "email": "cboden@gmail.com",
-                    "homepage": "https://cboden.dev/"
-                }
-            ],
-            "description": "A lightweight implementation of CommonJS Promises/A for PHP",
-            "keywords": [
-                "promise",
-                "promises"
-            ],
-            "support": {
-                "issues": "https://github.com/reactphp/promise/issues",
-                "source": "https://github.com/reactphp/promise/tree/v3.3.0"
-            },
-            "funding": [
-                {
-                    "url": "https://opencollective.com/reactphp",
-                    "type": "open_collective"
-                }
-            ],
-            "time": "2025-08-19T18:57:03+00:00"
         },
         {
             "name": "sentry/sdk",
@@ -8529,39 +8201,39 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.10.28",
+            "version": "2.2.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "8db20864c72cc97be1d803efe10dc84abf533a05"
+                "reference": "ccbe57917efe30262ce80463fc4a6182c5ac29ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/8db20864c72cc97be1d803efe10dc84abf533a05",
-                "reference": "8db20864c72cc97be1d803efe10dc84abf533a05",
+                "url": "https://api.github.com/repos/composer/composer/zipball/ccbe57917efe30262ce80463fc4a6182c5ac29ed",
+                "reference": "ccbe57917efe30262ce80463fc4a6182c5ac29ed",
                 "shasum": ""
             },
             "require": {
                 "composer/ca-bundle": "^1.0",
-                "composer/semver": "^1.0",
+                "composer/metadata-minifier": "^1.0",
+                "composer/pcre": "^1.0",
+                "composer/semver": "^3.0",
                 "composer/spdx-licenses": "^1.2",
-                "composer/xdebug-handler": "^1.1",
-                "justinrainbow/json-schema": "^5.2.10",
+                "composer/xdebug-handler": "^2.0 || ^3.0",
+                "justinrainbow/json-schema": "^5.2.11",
                 "php": "^5.3.2 || ^7.0 || ^8.0",
-                "psr/log": "^1.0",
+                "psr/log": "^1.0 || ^2.0",
+                "react/promise": "^1.2 || ^2.7",
                 "seld/jsonlint": "^1.4",
                 "seld/phar-utils": "^1.0",
-                "symfony/console": "^2.7 || ^3.0 || ^4.0 || ^5.0",
-                "symfony/filesystem": "^2.7 || ^3.0 || ^4.0 || ^5.0",
-                "symfony/finder": "^2.7 || ^3.0 || ^4.0 || ^5.0",
-                "symfony/process": "^2.7 || ^3.0 || ^4.0 || ^5.0"
-            },
-            "conflict": {
-                "symfony/console": "2.8.38"
+                "symfony/console": "^2.8.52 || ^3.4.35 || ^4.4 || ^5.0",
+                "symfony/filesystem": "^2.8.52 || ^3.4.35 || ^4.4 || ^5.0 || ^6.0",
+                "symfony/finder": "^2.8.52 || ^3.4.35 || ^4.4 || ^5.0 || ^6.0",
+                "symfony/process": "^2.8.52 || ^3.4.35 || ^4.4 || ^5.0 || ^6.0"
             },
             "require-dev": {
                 "phpspec/prophecy": "^1.10",
-                "symfony/phpunit-bridge": "^4.2"
+                "symfony/phpunit-bridge": "^4.2 || ^5.0 || ^6.0"
             },
             "suggest": {
                 "ext-openssl": "Enabling the openssl extension allows you to access https URLs for repositories and packages",
@@ -8574,7 +8246,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.10-dev"
+                    "dev-main": "2.2-dev"
                 }
             },
             "autoload": {
@@ -8590,12 +8262,12 @@
                 {
                     "name": "Nils Adermann",
                     "email": "naderman@naderman.de",
-                    "homepage": "http://www.naderman.de"
+                    "homepage": "https://www.naderman.de"
                 },
                 {
                     "name": "Jordi Boggiano",
                     "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
+                    "homepage": "https://seld.be"
                 }
             ],
             "description": "Composer helps you declare, manage and install dependencies of PHP projects. It ensures you have the right stack everywhere.",
@@ -8606,9 +8278,9 @@
                 "package"
             ],
             "support": {
-                "irc": "irc://irc.freenode.org/composer",
+                "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/1.10.28"
+                "source": "https://github.com/composer/composer/tree/2.2.29"
             },
             "funding": [
                 {
@@ -8620,32 +8292,169 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-05-13T09:02:17+00:00"
+            "time": "2026-07-01T09:24:18+00:00"
         },
         {
-            "name": "composer/semver",
-            "version": "1.7.2",
+            "name": "composer/metadata-minifier",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/composer/semver.git",
-                "reference": "647490bbcaf7fc4891c58f47b825eb99d19c377a"
+                "url": "https://github.com/composer/metadata-minifier.git",
+                "reference": "8e86142e3ade750b837d55e55f0cdc786d8da006"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/647490bbcaf7fc4891c58f47b825eb99d19c377a",
-                "reference": "647490bbcaf7fc4891c58f47b825eb99d19c377a",
+                "url": "https://api.github.com/repos/composer/metadata-minifier/zipball/8e86142e3ade750b837d55e55f0cdc786d8da006",
+                "reference": "8e86142e3ade750b837d55e55f0cdc786d8da006",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.3.2 || ^7.0 || ^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.5 || ^5.0.5"
+                "composer/composer": "^2",
+                "phpstan/phpstan": "^1",
+                "symfony/phpunit-bridge": "^4.2 || ^5 || ^6 || ^7"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev"
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\MetadataMinifier\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Small utility library that handles metadata minification and expansion.",
+            "keywords": [
+                "composer",
+                "compression"
+            ],
+            "support": {
+                "issues": "https://github.com/composer/metadata-minifier/issues",
+                "source": "https://github.com/composer/metadata-minifier/tree/1.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-06-30T11:34:59+00:00"
+        },
+        {
+            "name": "composer/pcre",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/pcre.git",
+                "reference": "67a32d7d6f9f560b726ab25a061b38ff3a80c560"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/pcre/zipball/67a32d7d6f9f560b726ab25a061b38ff3a80c560",
+                "reference": "67a32d7d6f9f560b726ab25a061b38ff3a80c560",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.2 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.3",
+                "phpstan/phpstan-strict-rules": "^1.1",
+                "symfony/phpunit-bridge": "^4.2 || ^5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Pcre\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "PCRE wrapping library that offers type-safe preg_* replacements.",
+            "keywords": [
+                "PCRE",
+                "preg",
+                "regex",
+                "regular expression"
+            ],
+            "support": {
+                "issues": "https://github.com/composer/pcre/issues",
+                "source": "https://github.com/composer/pcre/tree/1.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-01-21T20:24:37+00:00"
+        },
+        {
+            "name": "composer/semver",
+            "version": "3.4.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/semver.git",
+                "reference": "198166618906cb2de69b95d7d47e5fa8aa1b2b95"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/semver/zipball/198166618906cb2de69b95d7d47e5fa8aa1b2b95",
+                "reference": "198166618906cb2de69b95d7d47e5fa8aa1b2b95",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.2 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.11",
+                "symfony/phpunit-bridge": "^3 || ^7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "3.x-dev"
                 }
             },
             "autoload": {
@@ -8682,9 +8491,9 @@
                 "versioning"
             ],
             "support": {
-                "irc": "irc://irc.freenode.org/composer",
+                "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/1.7.2"
+                "source": "https://github.com/composer/semver/tree/3.4.4"
             },
             "funding": [
                 {
@@ -8694,13 +8503,9 @@
                 {
                     "url": "https://github.com/composer",
                     "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
-                    "type": "tidelift"
                 }
             ],
-            "time": "2020-12-03T15:47:16+00:00"
+            "time": "2025-08-20T19:15:30+00:00"
         },
         {
             "name": "composer/spdx-licenses",
@@ -8780,25 +8585,27 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "1.4.6",
+            "version": "3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "f27e06cd9675801df441b3656569b328e04aa37c"
+                "reference": "6c1925561632e83d60a44492e0b344cf48ab85ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/f27e06cd9675801df441b3656569b328e04aa37c",
-                "reference": "f27e06cd9675801df441b3656569b328e04aa37c",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/6c1925561632e83d60a44492e0b344cf48ab85ef",
+                "reference": "6c1925561632e83d60a44492e0b344cf48ab85ef",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.2 || ^7.0 || ^8.0",
-                "psr/log": "^1.0"
+                "composer/pcre": "^1 || ^2 || ^3",
+                "php": "^7.2.5 || ^8.0",
+                "psr/log": "^1 || ^2 || ^3"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.12.55",
-                "symfony/phpunit-bridge": "^4.2 || ^5"
+                "phpstan/phpstan": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.1",
+                "phpunit/phpunit": "^8.5 || ^9.6 || ^10.5"
             },
             "type": "library",
             "autoload": {
@@ -8822,9 +8629,9 @@
                 "performance"
             ],
             "support": {
-                "irc": "irc://irc.freenode.org/composer",
+                "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/1.4.6"
+                "source": "https://github.com/composer/xdebug-handler/tree/3.0.5"
             },
             "funding": [
                 {
@@ -8840,7 +8647,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-03-25T17:01:18+00:00"
+            "time": "2024-05-06T16:37:16+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -9668,6 +9475,46 @@
             "time": "2025-08-01T08:46:24+00:00"
         },
         {
+            "name": "n98/junit-xml",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cmuench/junit-xml.git",
+                "reference": "0017dd92ac8cb619f02e32f4cffd768cfe327c73"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cmuench/junit-xml/zipball/0017dd92ac8cb619f02e32f4cffd768cfe327c73",
+                "reference": "0017dd92ac8cb619f02e32f4cffd768cfe327c73",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "N98\\JUnitXml\\": "src/N98/JUnitXml"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Münch",
+                    "email": "c.muench@netz98.de"
+                }
+            ],
+            "description": "JUnit XML Document generation library",
+            "support": {
+                "issues": "https://github.com/cmuench/junit-xml/issues",
+                "source": "https://github.com/cmuench/junit-xml/tree/1.1.0"
+            },
+            "time": "2020-12-25T09:08:58+00:00"
+        },
+        {
             "name": "nikic/php-parser",
             "version": "v4.19.5",
             "source": {
@@ -9717,6 +9564,82 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v4.19.5"
             },
             "time": "2025-12-06T11:45:25+00:00"
+        },
+        {
+            "name": "overtrue/phplint",
+            "version": "3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/phplint.git",
+                "reference": "c3021ad8cebd802ad3f4924c45f508803e0b80e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/overtrue/phplint/zipball/c3021ad8cebd802ad3f4924c45f508803e0b80e5",
+                "reference": "c3021ad8cebd802ad3f4924c45f508803e0b80e5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "n98/junit-xml": "1.1.0",
+                "php": "^5.5.9 || ^7.0",
+                "symfony/console": "^3.2 || ^4.0 || ^5.0",
+                "symfony/finder": "^3.0 || ^4.0 || ^5.0",
+                "symfony/process": "^3.3 || ^4.0 || ^5.0",
+                "symfony/yaml": "^3.0 || ^4.0 || ^5.0"
+            },
+            "require-dev": {
+                "brainmaestro/composer-git-hooks": "^2.7",
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "jakub-onderka/php-console-highlighter": "^0.3.2 || ^0.4"
+            },
+            "bin": [
+                "bin/phplint"
+            ],
+            "type": "library",
+            "extra": {
+                "hooks": {
+                    "pre-push": [
+                        "composer check-style"
+                    ],
+                    "pre-commit": [
+                        "composer fix-style"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Overtrue\\PHPLint\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "overtrue",
+                    "email": "anzhengchao@gmail.com"
+                }
+            ],
+            "description": "`phplint` is a tool that can speed up linting of php files by running several lint processes at once.",
+            "keywords": [
+                "check",
+                "lint",
+                "phplint",
+                "syntax"
+            ],
+            "support": {
+                "issues": "https://github.com/overtrue/phplint/issues",
+                "source": "https://github.com/overtrue/phplint/tree/3.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/overtrue",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-07-12T07:37:04+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -9835,6 +9758,58 @@
                 "source": "https://github.com/phar-io/version/tree/3.2.1"
             },
             "time": "2022-02-21T01:04:05+00:00"
+        },
+        {
+            "name": "php-cs-fixer/shim",
+            "version": "v3.95.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHP-CS-Fixer/shim.git",
+                "reference": "64a33558b1b581470c8c8489048efaf9ceeb8415"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/shim/zipball/64a33558b1b581470c8c8489048efaf9ceeb8415",
+                "reference": "64a33558b1b581470c8c8489048efaf9ceeb8415",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-tokenizer": "*",
+                "php": "^7.4 || ^8.0"
+            },
+            "replace": {
+                "friendsofphp/php-cs-fixer": "self.version"
+            },
+            "suggest": {
+                "ext-dom": "For handling output formats in XML",
+                "ext-mbstring": "For handling non-UTF8 characters."
+            },
+            "bin": [
+                "php-cs-fixer",
+                "php-cs-fixer.phar"
+            ],
+            "type": "application",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Dariusz Rumiński",
+                    "email": "dariusz.ruminski@gmail.com"
+                }
+            ],
+            "description": "A tool to automatically fix PHP code style",
+            "support": {
+                "issues": "https://github.com/PHP-CS-Fixer/shim/issues",
+                "source": "https://github.com/PHP-CS-Fixer/shim/tree/v3.95.15"
+            },
+            "time": "2026-07-15T09:52:14+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -10456,6 +10431,78 @@
                 "source": "https://github.com/php-fig/cache/tree/master"
             },
             "time": "2016-08-06T20:24:11+00:00"
+        },
+        {
+            "name": "react/promise",
+            "version": "v2.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/promise.git",
+                "reference": "1a8460931ea36dc5c76838fec5734d55c88c6831"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/1a8460931ea36dc5c76838fec5734d55c88c6831",
+                "reference": "1a8460931ea36dc5c76838fec5734d55c88c6831",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.6 || ^5.7 || ^4.8.36"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions_include.php"
+                ],
+                "psr-4": {
+                    "React\\Promise\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Sorgalla",
+                    "email": "jsorgalla@gmail.com",
+                    "homepage": "https://sorgalla.com/"
+                },
+                {
+                    "name": "Christian Lück",
+                    "email": "christian@clue.engineering",
+                    "homepage": "https://clue.engineering/"
+                },
+                {
+                    "name": "Cees-Jan Kiewiet",
+                    "email": "reactphp@ceesjankiewiet.nl",
+                    "homepage": "https://wyrihaximus.net/"
+                },
+                {
+                    "name": "Chris Boden",
+                    "email": "cboden@gmail.com",
+                    "homepage": "https://cboden.dev/"
+                }
+            ],
+            "description": "A lightweight implementation of CommonJS Promises/A for PHP",
+            "keywords": [
+                "promise",
+                "promises"
+            ],
+            "support": {
+                "issues": "https://github.com/reactphp/promise/issues",
+                "source": "https://github.com/reactphp/promise/tree/v2.11.0"
+            },
+            "funding": [
+                {
+                    "url": "https://opencollective.com/reactphp",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2023-11-16T16:16:50+00:00"
         },
         {
             "name": "sebastian/cli-parser",

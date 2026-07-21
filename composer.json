@@ -1,6 +1,6 @@
 {
-    "name": "wulicode/poppy",
-    "version": "4.2",
+    "name": "poppy-framework/poppy",
+    "version": "4.3",
     "description": "The Laravel Framework.",
     "keywords": [
         "framework",
@@ -22,8 +22,6 @@
         "ext-libxml": "*",
         "ext-xml": "*",
         "ext-curl": "*",
-        "symfony/console": "4.*",
-        "symfony/finder": "4.*",
         "laravel/framework": "6.*",
         "alibabacloud/client": "^1.5",
         "sentry/sentry-laravel": "3.*",
@@ -57,7 +55,9 @@
         "zircote/swagger-php": "^4.11",
         "doctrine/annotations": "^1.14",
         "hamcrest/hamcrest-php": "^2.0.1",
-        "nikic/php-parser": "^4.15"
+        "nikic/php-parser": "^4.15",
+        "overtrue/phplint": "*",
+        "php-cs-fixer/shim": "^3.95"
     },
     "autoload": {
         "psr-4": {

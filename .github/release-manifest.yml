@@ -70,7 +70,7 @@ config:
   # packagist 包名规则
   composer_name_template: poppy/{name}
   # 默认推送的分支
-  default_branch: 4.2
+  default_branch: 4.3
   # 是否触发 packagist webhook 同步（如果上游仓库已配 packagist webhook）
   sync_to_packagist: true
   # 单次发布超时（秒）

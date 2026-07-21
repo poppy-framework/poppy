@@ -77,13 +77,13 @@ class DocCommand extends Command
             case 'cs':
                 $this->info(
                     'Please Run Command:' . "\n" .
-                    'php-cs-fixer fix --config=' . framework_path('.php-cs-fixer.php') . ' --diff --dry-run --verbose --diff-format=udiff'
+                    '$(which php-cs-fixer) fix --config=' . framework_path('.php-cs-fixer.php') . ' --diff --dry-run --verbose'
                 );
                 break;
             case 'cs-pf':
                 $this->info(
                     'Please Run Command:' . "\n" .
-                    'php-cs-fixer fix ' . framework_path() . ' --config=' . framework_path('.php-cs-fixer.php') . ' --diff --dry-run --verbose --diff-format=udiff'
+                    '$(which php-cs-fixer) fix ' . framework_path() . ' --config=' . framework_path('.php-cs-fixer.php') . ' --diff --dry-run --verbose'
                 );
                 break;
             case 'log':

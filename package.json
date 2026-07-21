@@ -21,34 +21,5 @@
         "postcss": "^8.3.11",
         "sass": "^1.58.3",
         "sass-loader": "^12.1.0"
-    },
-    "apidoc": {
-        "title": "Poppy 接口文档",
-        "url": "{{domain}}/",
-        "version": "1.0.0",
-        "sampleUrl": false
-    },
-    "commitlint": {
-        "extends": [
-            "@commitlint/config-conventional"
-        ],
-        "rules": {
-            "type-enum": [
-                2,
-                "always",
-                [
-                    "bug",
-                    "feat",
-                    "fix",
-                    "docs",
-                    "style",
-                    "refactor",
-                    "test",
-                    "chore",
-                    "revert",
-                    "merge"
-                ]
-            ]
-        }
     }
 }

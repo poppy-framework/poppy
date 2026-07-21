@@ -1,12 +1,13 @@
 <?php
-$baseDir = dirname(__DIR__);
+$baseDir    = dirname(__DIR__);
+$currentDir = __DIR__;
 echo <<<COMMENT
 /*
 |--------------------------------------------------------------------------
 | Poppy Framework cs Fixer
 |--------------------------------------------------------------------------
 | Document Url : https://github.com/FriendsOfPHP/PHP-CS-Fixer
-| Current Dir  : {$baseDir}
+| Current Dir  : {$currentDir}
 */\n
 COMMENT;
 if (strpos($baseDir, 'vendor/poppy') !== false) {
@@ -15,11 +16,12 @@ if (strpos($baseDir, 'vendor/poppy') !== false) {
         $baseDir . '/config',
         $baseDir . '/modules',
     ];
-} else {
+}
+else {
+    $baseDir = dirname(__DIR__, 2);
     // for development
     $folders = [
         $baseDir . '/config',
-        $baseDir . '/framework',
         $baseDir . '/poppy',
         $baseDir . '/modules',
     ];
@@ -29,12 +31,13 @@ if (strpos($baseDir, 'vendor/poppy') !== false) {
 $finder = PhpCsFixer\Finder::create()
     ->exclude('database')
     ->in($folders);
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+return $config
     ->setUsingCache(true)
     ->setCacheFile($baseDir . '/storage/app/.php_cs.cache')
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PSR2'                                       => true,
+        '@PhpCsFixer'                                 => true,
         'array_syntax'                                => [
             'syntax' => 'short',
         ],
@@ -50,8 +53,6 @@ return PhpCsFixer\Config::create()
                 '='  => 'align_single_space',
             ],
         ],
-        'blank_line_before_return'                    => true,
-        'control_structure_continuation_position'     => 'next_line',
         'concat_space'                                => [
             'spacing' => 'one',
         ],
@@ -61,52 +62,56 @@ return PhpCsFixer\Config::create()
         'ereg_to_preg'                                => true,
         'function_typehint_space'                     => true,
         'function_to_constant'                        => true,
-        'hash_to_slash_comment'                       => true,
-        'indentation_type'                            => true,
+        'indentation_type'                            => false,
+        'single_trait_insert_per_statement'           => false,
         'linebreak_after_opening_tag'                 => false,
         'list_syntax'                                 => [
             'syntax' => 'short',
         ],
-        'lowercase_cast'                              => true,
         'class_attributes_separation'                 => [
-            'elements' => ['method', 'property'],
+            'elements' => [
+                'property' => 'one',
+            ],
         ],
+        'lowercase_cast'                              => true,
         'modernize_types_casting'                     => true,
         'native_function_casing'                      => true,
         'new_with_braces'                             => true,
         'no_alias_functions'                          => true,
         'no_blank_lines_after_class_opening'          => true,
         'no_blank_lines_after_phpdoc'                 => true,
-        'no_blank_lines_before_namespace'             => true,
         'no_empty_comment'                            => true,
         'no_empty_phpdoc'                             => true,
         'no_empty_statement'                          => true,
         'no_extra_blank_lines'                        => [
-            'break',
-            'continue',
-            'extra',
-            // 'return',
-            'throw',
-            'use',
-            'parenthesis_brace_block',
-            // 'square_brace_block',
-            'curly_brace_block',
+            'tokens' => [
+                'break',
+                'continue',
+                'extra',
+                // 'return',
+                'throw',
+                'use',
+                'parenthesis_brace_block',
+                // 'square_brace_block',
+                'curly_brace_block',
+            ],
         ],
         'no_leading_import_slash'                     => true,
         'no_leading_namespace_whitespace'             => true,
         'no_multiline_whitespace_around_double_arrow' => true,
-        'no_multiline_whitespace_before_semicolons'   => true,
         'no_short_bool_cast'                          => true,
         'no_singleline_whitespace_before_semicolons'  => true,
         'no_trailing_comma_in_list_call'              => true,
         'no_trailing_comma_in_singleline_array'       => true,
         'no_unneeded_control_parentheses'             => [
-            'break',
-            'clone',
-            'continue',
-            'echo_print',
-            'return',
-            'switch_case',
+            'statements' => [
+                'break',
+                'clone',
+                'continue',
+                'echo_print',
+                'return',
+                'switch_case',
+            ],
         ],
         'no_unreachable_default_argument_value'       => true,
         'no_unused_imports'                           => true,
