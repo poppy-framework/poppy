@@ -62,9 +62,7 @@
     "autoload": {
         "psr-4": {
             "Demo\\": "modules/demo/src/",
-            "Demo\\Tests\\": "modules/demo/tests/",
-            "App\\": "modules/app/src/",
-            "App\\Tests\\": "modules/app/tests/"
+            "Demo\\Tests\\": "modules/demo/tests/"
         }
     },
     "autoload-dev": {
