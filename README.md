@@ -66,3 +66,22 @@ composer release:dry-run
 
 1. 验证当前的 jwt 和 backend 的 guard 是否正确
 
+## 前端发布
+
+安装
+
+```
+pnpm install
+```
+
+源文件复制和监听
+
+```
+php artisan py-mgr:mix source && pnpm watch
+```
+
+临时文件复制到 package 中
+
+```
+php artisan py-mgr:mix
+```

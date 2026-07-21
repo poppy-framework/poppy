@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "491f66186e102098390b9be57a418eee",
+    "content-hash": "4f805e56b48f7c3c5c79f862a0726c03",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -58,90 +58,6 @@
                 "source": "https://github.com/adbario/php-dot-notation/tree/2.5.0"
             },
             "time": "2022-10-14T20:31:46+00:00"
-        },
-        {
-            "name": "alibabacloud/client",
-            "version": "1.5.32",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/aliyun/openapi-sdk-php-client.git",
-                "reference": "5bc6f6d660797dcee2c3aef29700ab41ee764f4d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/aliyun/openapi-sdk-php-client/zipball/5bc6f6d660797dcee2c3aef29700ab41ee764f4d",
-                "reference": "5bc6f6d660797dcee2c3aef29700ab41ee764f4d",
-                "shasum": ""
-            },
-            "require": {
-                "adbario/php-dot-notation": "^2.4.1",
-                "clagiordano/weblibs-configmanager": "^1.0",
-                "ext-curl": "*",
-                "ext-json": "*",
-                "ext-libxml": "*",
-                "ext-mbstring": "*",
-                "ext-openssl": "*",
-                "ext-simplexml": "*",
-                "ext-xmlwriter": "*",
-                "guzzlehttp/guzzle": "^6.3|^7.0",
-                "mtdowling/jmespath.php": "^2.5",
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "composer/composer": "^1.8",
-                "drupal/coder": "^8.3",
-                "ext-dom": "*",
-                "ext-pcre": "*",
-                "ext-sockets": "*",
-                "ext-spl": "*",
-                "league/climate": "^3.2.4",
-                "mikey179/vfsstream": "^1.6",
-                "monolog/monolog": "^1.24",
-                "phpunit/phpunit": "^5.7|^6.6|^7.5|^8.5|^9.5",
-                "psr/cache": "^1.0",
-                "symfony/dotenv": "^3.4",
-                "symfony/var-dumper": "^3.4"
-            },
-            "suggest": {
-                "ext-sockets": "To use client-side monitoring"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/Functions.php"
-                ],
-                "psr-4": {
-                    "AlibabaCloud\\Client\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Alibaba Cloud SDK",
-                    "email": "sdk-team@alibabacloud.com",
-                    "homepage": "http://www.alibabacloud.com"
-                }
-            ],
-            "description": "Alibaba Cloud Client for PHP - Use Alibaba Cloud in your PHP project",
-            "homepage": "https://www.alibabacloud.com/",
-            "keywords": [
-                "alibaba",
-                "alibabacloud",
-                "aliyun",
-                "client",
-                "cloud",
-                "library",
-                "sdk",
-                "tool"
-            ],
-            "support": {
-                "issues": "https://github.com/aliyun/openapi-sdk-php-client/issues",
-                "source": "https://github.com/aliyun/openapi-sdk-php-client"
-            },
-            "time": "2022-12-09T04:05:55+00:00"
         },
         {
             "name": "alibabacloud/credentials",
@@ -678,58 +594,6 @@
                 }
             ],
             "time": "2023-12-11T17:09:12+00:00"
-        },
-        {
-            "name": "clagiordano/weblibs-configmanager",
-            "version": "v1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/clagiordano/weblibs-configmanager.git",
-                "reference": "5c8ebcc62782313b1278afe802b120d18c07a059"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/clagiordano/weblibs-configmanager/zipball/5c8ebcc62782313b1278afe802b120d18c07a059",
-                "reference": "5c8ebcc62782313b1278afe802b120d18c07a059",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "clagiordano/phpunit-result-printer": "^1",
-                "phpunit/phpunit": "^4.8"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "clagiordano\\weblibs\\configmanager\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Claudio Giordano",
-                    "email": "claudio.giordano@autistici.org",
-                    "role": "Developer"
-                }
-            ],
-            "description": "weblibs-configmanager is a tool library for easily read and access to php config array file and direct read/write configuration file / object",
-            "keywords": [
-                "clagiordano",
-                "configuration",
-                "manager",
-                "tool",
-                "weblibs"
-            ],
-            "support": {
-                "issues": "https://github.com/clagiordano/weblibs-configmanager/issues",
-                "source": "https://github.com/clagiordano/weblibs-configmanager/tree/v1.2.0"
-            },
-            "time": "2021-05-18T17:55:57+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -2571,72 +2435,6 @@
                 }
             ],
             "time": "2026-01-01T13:05:00+00:00"
-        },
-        {
-            "name": "mtdowling/jmespath.php",
-            "version": "2.9.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jmespath/jmespath.php.git",
-                "reference": "2157c5e50e813ec6a96c1eed3be7f64a20fb32a8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/2157c5e50e813ec6a96c1eed3be7f64a20fb32a8",
-                "reference": "2157c5e50e813ec6a96c1eed3be7f64a20fb32a8",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2.5 || ^8.0",
-                "symfony/polyfill-mbstring": "^1.17"
-            },
-            "require-dev": {
-                "composer/xdebug-handler": "^3.0.3",
-                "phpunit/phpunit": "^8.5.52"
-            },
-            "bin": [
-                "bin/jp.php"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.9-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/JmesPath.php"
-                ],
-                "psr-4": {
-                    "JmesPath\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Graham Campbell",
-                    "email": "hello@gjcampbell.co.uk",
-                    "homepage": "https://github.com/GrahamCampbell"
-                },
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "Declaratively specify how to extract elements from a JSON document",
-            "keywords": [
-                "json",
-                "jsonpath"
-            ],
-            "support": {
-                "issues": "https://github.com/jmespath/jmespath.php/issues",
-                "source": "https://github.com/jmespath/jmespath.php/tree/2.9.2"
-            },
-            "time": "2026-07-06T18:56:19+00:00"
         },
         {
             "name": "namshi/jose",

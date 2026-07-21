@@ -52,6 +52,7 @@ Thumbs.db
 
 # Project User #
 ################
+
 /poppy/mgr-page/resources/libs/webpack.mix.js
 README.local.md
 .sass-cache

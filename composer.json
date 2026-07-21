@@ -23,7 +23,6 @@
         "ext-xml": "*",
         "ext-curl": "*",
         "laravel/framework": "6.*",
-        "alibabacloud/client": "^1.5",
         "sentry/sentry-laravel": "3.*",
         "twbs/bootstrap-icons": "^1.10",
         "php-curl-class/php-curl-class": "^9.17",

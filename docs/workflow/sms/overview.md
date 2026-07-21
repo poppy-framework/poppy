@@ -76,7 +76,7 @@ poppy/sms/
 | 缓存 | 未定义短信专用缓存；模板从系统设置读取，`PySmsDef::ckTemplate()` 返回 `py-sms::sms.template` |
 | 认证 | 后台路由使用 `backend-auth`，控制器权限为 `backend:py-sms.global.manage` |
 | 统一容器入口 | `ServiceProvider` 绑定 `poppy.sms`，并将其别名到 `Poppy\Sms\Classes\Contracts\SmsContract` |
-| 阿里云依赖 | 根项目声明 `alibabacloud/dysmsapi-20170525:^4.6` 与 `alibabacloud/client:^1.5`；`AliyunSmsProvider` 调用 `Dysmsapi::sendSms()` |
+| 阿里云依赖 | 根项目声明 `alibabacloud/dysmsapi-20170525:^4.6`；`AliyunSmsProvider` 调用 `Dysmsapi::sendSms()` |
 | 其他供应商 | 创蓝、联麓使用模块内 cURL API 包装；火山云使用 `Volc\Service\Sms` SDK（代码运行时检查组件） |
 
 ## 路由概览
