@@ -1,2 +1,10 @@
 resources/style/bootstrap@5.3
 resources/style/bootstrap-icons
+resources/libs/bootstrap@5.3
+resources/libs/easytimer
+resources/libs/clipboard
+resources/libs/js-cookie
+resources/libs/js-storage
+resources/libs/lodash
+resources/libs/tom-select
+resources/libs/layui/**/*.map

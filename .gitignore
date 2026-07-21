@@ -40,6 +40,8 @@ Thumbs.db
 *.scssc
 *.sassc
 .svn
+*.map
+
 # IDE #
 #######
 .idea
@@ -52,22 +54,16 @@ Thumbs.db
 
 # Project User #
 ################
-
-/poppy/mgr-page/resources/libs/webpack.mix.js
 README.local.md
 .sass-cache
 /vendor
 /storage/framework/*.php
 /public/uploads/*
 /public/default/*
-modules/op/tests/files/account.json
 /public/dev/*
-!/public/uploads/.gitkeep
 /node_modules
+modules/op/tests/files/account.json
 .env
-_ide_helper.php
-_ide_helper_models.php
-.phpstorm.meta.php
 .phpunit.result.cache
 /storage/clockwork/
 /storage/phpunit/
