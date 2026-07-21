@@ -14,7 +14,6 @@ class SendSmsProgress extends BaseProgress
 
     public function handle(): array
     {
-
         // 设置执行值
         $this->max(2000);
         $this->min(1);
@@ -34,6 +33,7 @@ class SendSmsProgress extends BaseProgress
             // 更新 lastId
             $this->lastId($this->start() + $this->section(), true);
         }
+
         return $this->fix;
     }
 }

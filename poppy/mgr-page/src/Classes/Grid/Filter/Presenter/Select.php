@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Classes\Grid\Filter\Presenter;
 
@@ -26,8 +26,6 @@ class Select extends Presenter
 
     /**
      * Select constructor.
-     *
-     * @param mixed $options
      */
     public function __construct($options)
     {
@@ -40,7 +38,6 @@ class Select extends Presenter
      * all configurations see https://select2.org/configuration/options-api
      *
      * @param string $key
-     * @param mixed  $val
      *
      * @return $this
      */
@@ -93,9 +90,6 @@ class Select extends Presenter
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function variables(): array
     {
         return [
@@ -106,8 +100,6 @@ class Select extends Presenter
 
     /**
      * Build options.
-     *
-     * @return array
      */
     protected function buildOptions(): array
     {
@@ -122,14 +114,10 @@ class Select extends Presenter
         return is_array($this->options) ? $this->options : [];
     }
 
-    /**
-     * @return string
-     */
     protected function getElementClass(): string
     {
         return str_replace('.', '_', $this->filter->getColumn());
     }
-
 
     /**
      * Get form element class.

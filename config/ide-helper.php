@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Filename & Format
@@ -83,7 +82,6 @@ return [
         'modules/misc/src/models',
     ],
 
-
     /*
     |--------------------------------------------------------------------------
     | Extra classes
@@ -116,7 +114,6 @@ return [
     */
 
     'interfaces'                  => [
-
     ],
 
     /*
@@ -146,7 +143,6 @@ return [
     |
     */
     'custom_db_types'             => [
-
     ],
 
     /*
@@ -198,5 +194,4 @@ return [
     |
     */
     'include_class_docblocks'     => false,
-
 ];

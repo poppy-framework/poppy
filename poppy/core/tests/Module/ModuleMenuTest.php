@@ -9,9 +9,7 @@ use Poppy\Framework\Application\TestCase;
 
 class ModuleMenuTest extends TestCase
 {
-
     use CoreTrait;
-
 
     public function setUp(): void
     {

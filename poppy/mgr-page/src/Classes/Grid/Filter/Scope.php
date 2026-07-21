@@ -12,19 +12,10 @@ class Scope implements Renderable
 {
     public const QUERY_NAME = '_scope';
 
-    /**
-     * @var string
-     */
     public string $key = '';
 
-    /**
-     * @var string
-     */
     protected string $label = '';
 
-    /**
-     * @var Collection
-     */
     protected Collection $queries;
 
     /**
@@ -43,8 +34,6 @@ class Scope implements Renderable
 
     /**
      * Get label.
-     *
-     * @return string
      */
     public function getLabel(): string
     {
@@ -53,8 +42,6 @@ class Scope implements Renderable
 
     /**
      * Get model query conditions.
-     *
-     * @return array
      */
     public function condition(): array
     {
@@ -66,19 +53,16 @@ class Scope implements Renderable
     /**
      * Scope 因为涉及到刷新, 所以使用跳转的方式
      * 这种方式和 layui 的监听tab 不同, 这种会在刷新页面, tab 不会保留刷新的参数
-     * @return string
      */
     public function render(): string
     {
         $url       = request()->fullUrlWithQuery([static::QUERY_NAME => $this->key]);
         $className = (string) input(static::QUERY_NAME) === $this->key ? 'class="layui-this"' : '';
+
         return "<li {$className}><a class=\"J_ignore\" href=\"{$url}\">{$this->label}</a></li>";
     }
 
     /**
-     * @param string $method
-     * @param array  $arguments
-     *
      * @return $this
      */
     public function __call(string $method, array $arguments): self

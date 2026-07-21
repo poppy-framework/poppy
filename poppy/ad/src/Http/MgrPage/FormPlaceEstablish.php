@@ -17,7 +17,6 @@ use Throwable;
 
 class FormPlaceEstablish extends FormWidget
 {
-
     public $ajax = true;
 
     private int $id = 0;
@@ -50,6 +49,7 @@ class FormPlaceEstablish extends FormWidget
                 '_top_reload' => 1,
             ]);
         }
+
         return Resp::error($Place->getError());
     }
 

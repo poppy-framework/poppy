@@ -31,6 +31,7 @@ class UploadController extends BackendController
 
     /**
      * 保存邮件配置
+     *
      * @return array|JsonResponse|RedirectResponse|Response|Redirector|Resp|Content|\Response
      */
     public function store()

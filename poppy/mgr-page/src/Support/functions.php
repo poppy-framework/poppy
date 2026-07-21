@@ -8,10 +8,6 @@ use Poppy\MgrPage\Classes\Operations;
 if (!function_exists('mgr_col')) {
     /**
      * Layui Table 列参数定义
-     * @param int    $width
-     * @param string $fixed
-     * @param string $append
-     * @return string
      */
     function mgr_col(int $width = 0, string $fixed = '', string $append = ''): string
     {
@@ -36,18 +32,14 @@ if (!function_exists('mgr_col')) {
             $arrData[] = "fixed:'{$fixed}'";
         }
         $strData = implode(', ', array_filter($arrData, fn($item) => trim($item)));
+
         return "lay-options=\"{{$strData}}\"";
     }
 }
 
-
 if (!function_exists('mgr_col_actions')) {
     /**
      * Layui Table 列参数定义
-     * @param int    $width
-     * @param string $fixed
-     * @param string $append
-     * @return string
      */
     function mgr_col_actions(int $width = 0, string $fixed = 'right', string $append = ''): string
     {
@@ -55,12 +47,9 @@ if (!function_exists('mgr_col_actions')) {
     }
 }
 
-
 if (!function_exists('mgr_table_open')) {
     /**
      * Layui Table 初始化 KEY
-     * @param string $filter
-     * @return string
      */
     function mgr_table_open(string $filter = 'default'): string
     {
@@ -70,18 +59,16 @@ HTML;
     }
 }
 
-
 if (!function_exists('mgr_table_close')) {
     /**
      * Layui Table 初始化 End
-     * @param string $filter
-     * @return string
+     *
      * @throws JsonException
      */
     function mgr_table_close(string $filter = 'default', $options = []): string
     {
-
         $json = json_encode($options, JSON_THROW_ON_ERROR);
+
         return <<<HTML
     <script>
     $(function () {
@@ -95,13 +82,12 @@ HTML;
 if (!function_exists('mgr_actions')) {
     /**
      * 封装操作函数
-     * @param Closure $closure
-     * @return string
      */
     function mgr_actions(Closure $closure): string
     {
         $operations = new Operations();
         $closure($operations);
+
         return $operations->render();
     }
 }
@@ -109,8 +95,6 @@ if (!function_exists('mgr_actions')) {
 if (!function_exists('mgr_menu_title')) {
     /**
      * 菜单标题
-     * @param array $link
-     * @return string
      */
     function mgr_menu_title(array $link): string
     {
@@ -119,6 +103,7 @@ if (!function_exists('mgr_menu_title')) {
 
         $lk   = $target ? " href=\"{$url}\" target=\"{$target}\" " : "ew-href=\"{$url}\"";
         $icon = isset($link['icon']) && $link['icon'] ? '<i class="' . $link['icon'] . '"></i>' : '';
+
         return <<<LINK
 <a {$lk}>
     {$icon}
@@ -128,11 +113,9 @@ LINK;
     }
 }
 
-
 if (!function_exists('mgr_op')) {
     /**
      * 操作
-     * @return Operations
      */
     function mgr_op(): Operations
     {
@@ -140,13 +123,9 @@ if (!function_exists('mgr_op')) {
     }
 }
 
-
 if (!function_exists('mgr_dropdown')) {
     /**
      * 下拉菜单
-     * @param         $title
-     * @param Closure $closure
-     * @return string
      */
     function mgr_dropdown($title, Closure $closure): string
     {
@@ -154,6 +133,7 @@ if (!function_exists('mgr_dropdown')) {
         $operations->dropdown($title, function (Operations $ops) use ($closure) {
             $closure($ops);
         });
+
         return $operations->render();
     }
 }

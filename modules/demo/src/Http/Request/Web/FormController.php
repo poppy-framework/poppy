@@ -15,20 +15,20 @@ use Poppy\System\Models\PamAccount;
  */
 class FormController extends WebController
 {
-
     public function index($type)
     {
         try {
             $form = $this->factory($type);
-        } catch (ApplicationException $e) {
+        }
+        catch (ApplicationException $e) {
             return Resp::error($e);
         }
         if (method_exists($form, 'setPam')) {
             $form->setPam(PamAccount::first());
         }
+
         return $form->render();
     }
-
 
     /**
      * @throws ApplicationException
@@ -41,9 +41,9 @@ class FormController extends WebController
             if (!class_exists($className)) {
                 throw new ApplicationException("类 $className 不存在!");
             }
-            $factories[$type] = new $className;
-
+            $factories[$type] = new $className();
         }
+
         return $factories[$type];
     }
 }

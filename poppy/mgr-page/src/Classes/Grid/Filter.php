@@ -38,32 +38,29 @@ use Throwable;
 /**
  * 筛选器
  *
- * @method Equal equal($column, $label = '')
- * @method NotEqual notEqual($column, $label = '')
- * @method Like like($column, $label = '')
- * @method StartsWith startsWith($column, $label = '')
- * @method EndsWith endsWith($column, $label = '')
- * @method Gt gt($column, $label = '')
- * @method Gte gte($column, $label = '')
- * @method Lt lt($column, $label = '')
- * @method Lte lte($column, $label = '')
- * @method Between between($column, $label = '')
+ * @method Equal       equal($column, $label = '')
+ * @method NotEqual    notEqual($column, $label = '')
+ * @method Like        like($column, $label = '')
+ * @method StartsWith  startsWith($column, $label = '')
+ * @method EndsWith    endsWith($column, $label = '')
+ * @method Gt          gt($column, $label = '')
+ * @method Gte         gte($column, $label = '')
+ * @method Lt          lt($column, $label = '')
+ * @method Lte         lte($column, $label = '')
+ * @method Between     between($column, $label = '')
  * @method BetweenDate betweenDate($column, $label = '')
- * @method In in($column, $label = '')
- * @method NotIn notIn($column, $label = '')
- * @method Where where($callback, $label = '', $column = null)
- * @method Date date($column, $label = '')
- * @method Month month($column, $label = '')
- * @method Year year($column, $label = '')
- * @method Hidden hidden($name)
- * @method Query query($name, $label = '')
- * @method Group group($column, $label = '', $builder = null)
+ * @method In          in($column, $label = '')
+ * @method NotIn       notIn($column, $label = '')
+ * @method Where       where($callback, $label = '', $column = null)
+ * @method Date        date($column, $label = '')
+ * @method Month       month($column, $label = '')
+ * @method Year        year($column, $label = '')
+ * @method Hidden      hidden($name)
+ * @method Query       query($name, $label = '')
+ * @method Group       group($column, $label = '', $builder = null)
  */
 class Filter
 {
-    /**
-     * @var array
-     */
     protected static array $supports = [
         'equal'       => Equal::class,
         'notEqual'    => NotEqual::class,
@@ -90,15 +87,16 @@ class Filter
 
     /**
      * 是否展开
+     *
      * @var bool
      */
     public $expand = false;
-
 
     protected bool $export = false;
 
     /**
      * 当前的模型
+     *
      * @var Model
      */
     protected $model;
@@ -115,9 +113,6 @@ class Filter
      */
     protected $action;
 
-    /**
-     * @var string
-     */
     protected string $view = 'py-mgr-page::tpl.filter.container';
 
     /**
@@ -137,7 +132,6 @@ class Filter
 
     /**
      * 布局
-     * @var Layout
      */
     protected Layout $layout;
 
@@ -157,15 +151,11 @@ class Filter
 
     /**
      * Primary key of giving model.
-     *
-     * @var mixed
      */
     protected $primaryKey;
 
     /**
      * Create a new filter instance.
-     *
-     * @param Model $model
      */
     public function __construct(Model $model)
     {
@@ -193,8 +183,6 @@ class Filter
 
     /**
      * Set action of search form.
-     *
-     * @param string $action
      *
      * @return $this
      */
@@ -244,36 +232,31 @@ class Filter
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
-     *
      * @return $this
      */
     public function setName(string $name): self
     {
         $this->name = $name;
         $this->setFilterId("{$this->name}-{$this->filterId}");
+
         return $this;
     }
 
     public function enableExport()
     {
         $this->export = true;
+
         return $this;
     }
 
     /**
      * Remove filter by filter id.
-     *
-     * @param mixed $id
      */
     public function removeFilterByID($id)
     {
@@ -284,15 +267,13 @@ class Filter
 
     /**
      * Get all conditions of the filters.
-     *
-     * @return array
      */
     public function conditions(): array
     {
         $inputs = Arr::dot(request()->all());
 
         $inputs = array_filter($inputs, function ($input) {
-            return $input !== '' && !is_null($input);
+            return '' !== $input && !is_null($input);
         });
 
         $this->sanitizeInputs($inputs);
@@ -336,8 +317,6 @@ class Filter
     /**
      * Use a custom filter.
      *
-     * @param FilterItem $filter
-     *
      * @return FilterItem
      */
     public function use(FilterItem $filter)
@@ -358,8 +337,6 @@ class Filter
     /**
      * @param string $key
      * @param string $label
-     *
-     * @return mixed
      */
     public function scope($key, $label = '')
     {
@@ -370,8 +347,6 @@ class Filter
 
     /**
      * Get all filter scopes.
-     *
-     * @return Collection
      */
     public function getScopes(): Collection
     {
@@ -396,7 +371,6 @@ class Filter
      * Add a new layout column.
      *
      * @param int|float $width
-     * @param Closure   $closure
      *
      * @return $this
      */
@@ -404,6 +378,7 @@ class Filter
     {
         $width = $width < 1 ? round(12 * $width) : $width;
         $this->layout->column($width, $closure);
+
         return $this;
     }
 
@@ -430,8 +405,7 @@ class Filter
     }
 
     /**
-     * @param callable $callback
-     * @param int      $count
+     * @param int $count
      *
      * @return bool
      */
@@ -447,7 +421,9 @@ class Filter
 
     /**
      * Get the string contents of the filter view.
+     *
      * @return View|string
+     *
      * @throws Throwable
      */
     public function render()
@@ -455,6 +431,7 @@ class Filter
         if (empty($this->filters)) {
             return '';
         }
+
         return view($this->view, [
             'action'    => $this->action ?: $this->urlWithoutFilters(),
             'layout'    => $this->layout,
@@ -503,10 +480,6 @@ class Filter
     }
 
     /**
-     * @param string $abstract
-     * @param array  $arguments
-     *
-     * @return FilterItem
      * @throws ApplicationException
      */
     public function resolveFilter(string $abstract, array $arguments): FilterItem
@@ -514,22 +487,22 @@ class Filter
         if (!isset(static::$supports[$abstract])) {
             throw new ApplicationException('Abstract Class `' . $abstract . '` Not Exists');
         }
+
         return new static::$supports[$abstract](...$arguments);
     }
 
     /**
      * Generate a filter object and add to grid.
      *
-     * @param string $method
-     * @param array  $arguments
-     *
      * @return FilterItem|$this
+     *
      * @throws ApplicationException
      */
     public function __call(string $method, array $arguments)
     {
         if ($filter = $this->resolveFilter($method, $arguments)) {
             $filter->setParent($this);
+
             return tap($filter, function () use ($filter) {
                 return $this->addFilter($filter);
             });
@@ -547,7 +520,6 @@ class Filter
     }
 
     /**
-     * @param $inputs
      * @return void
      */
     protected function sanitizeInputs(&$inputs)
@@ -560,14 +532,13 @@ class Filter
             return Str::startsWith($key, "{$this->name}_");
         })->mapWithKeys(function ($val, $key) {
             $key = str_replace("{$this->name}_", '', $key);
+
             return [$key => $val];
         })->toArray();
     }
 
     /**
      * Add a filter to grid.
-     *
-     * @param FilterItem $filter
      *
      * @return FilterItem
      */
@@ -587,8 +558,6 @@ class Filter
 
     /**
      * Get scope conditions.
-     *
-     * @return array
      */
     protected function scopeConditions(): array
     {
@@ -603,8 +572,6 @@ class Filter
      * Get full url without query strings.
      *
      * @param Arrayable|array|string $keys
-     *
-     * @return string
      */
     protected function fullUrlWithoutQuery($keys): string
     {
@@ -619,7 +586,7 @@ class Filter
         $query = $request->query();
         Arr::forget($query, $keys);
 
-        $question = $request->getBaseUrl() . ($request->getPathInfo() === '/' ? '/?' : '?');
+        $question = $request->getBaseUrl() . ('/' === $request->getPathInfo() ? '/?' : '?');
 
         return count($request->query()) > 0
             ? $request->url() . $question . http_build_query($query)

@@ -20,6 +20,7 @@ class EnvController extends DevelopController
 
     /**
      * php info
+     *
      * @return Factory|View
      */
     public function phpinfo()
@@ -29,6 +30,7 @@ class EnvController extends DevelopController
 
     /**
      * 检查数据库设计
+     *
      * @url http://blog.csdn.net/zhezhebie/article/details/78589812
      */
     public function db()
@@ -36,11 +38,11 @@ class EnvController extends DevelopController
         $tables = array_map('reset', DB::select('show tables'));
 
         $suggestString   = function ($col) {
-            if (strpos($col['Type'], 'char') !== false) {
-                if ($col['Null'] === 'YES') {
+            if (false !== strpos($col['Type'], 'char')) {
+                if ('YES' === $col['Null']) {
                     return '(Char-null)';
                 }
-                if (!is_null($col['Default']) && $col['Default'] !== '') {
+                if (!is_null($col['Default']) && '' !== $col['Default']) {
                     if (!is_string($col['Default'])) {
                         return '(Char-default)';
                     }
@@ -50,7 +52,7 @@ class EnvController extends DevelopController
             return '';
         };
         $suggestInt      = function ($col) {
-            if (strpos($col['Type'], 'int') !== false) {
+            if (false !== strpos($col['Type'], 'int')) {
                 switch ($col['Key']) {
                     case 'PRI':
                         // 主键不能为Null (Allow Null 不可选)
@@ -61,7 +63,7 @@ class EnvController extends DevelopController
                         if (!is_numeric($col['Default'])) {
                             return '(Int-default)';
                         }
-                        if ($col['Null'] === 'YES') {
+                        if ('YES' === $col['Null']) {
                             return '(Int-Null)';
                         }
                         break;
@@ -71,11 +73,11 @@ class EnvController extends DevelopController
             return '';
         };
         $suggestDecimal  = function ($col) {
-            if (strpos($col['Type'], 'decimal') !== false) {
-                if ($col['Default'] !== '0.00') {
+            if (false !== strpos($col['Type'], 'decimal')) {
+                if ('0.00' !== $col['Default']) {
                     return '(Decimal-default)';
                 }
-                if ($col['Null'] === 'YES') {
+                if ('YES' === $col['Null']) {
                     return '(Decimal-Null)';
                 }
             }
@@ -83,11 +85,11 @@ class EnvController extends DevelopController
             return '';
         };
         $suggestDatetime = function ($col) {
-            if (strpos($col['Type'], 'datetime') !== false) {
+            if (false !== strpos($col['Type'], 'datetime')) {
                 if (!is_null($col['Default'])) {
                     return '(Datetime-default)';
                 }
-                if ($col['Null'] === 'NO') {
+                if ('NO' === $col['Null']) {
                     return '(Datetime-null)';
                 }
             }
@@ -95,7 +97,7 @@ class EnvController extends DevelopController
             return '';
         };
         $suggestFloat    = function ($col) {
-            if (strpos($col['Type'], 'float') !== false) {
+            if (false !== strpos($col['Type'], 'float')) {
                 return '(Float-set)';
             }
 

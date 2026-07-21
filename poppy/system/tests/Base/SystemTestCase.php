@@ -16,29 +16,27 @@ use Throwable;
 
 /**
  * @see        TestCase
+ *
  * @removed    5.0
+ *
  * @deprecated 4.1
  */
 class SystemTestCase extends TestCase
 {
-
     use DbTrait, AppTrait;
 
     /**
      * 是否开启数据库存入
-     * @var bool
      */
     protected bool $enableDb = false;
 
     /**
      * 临时指定账号
-     * @var PamAccount|null
      */
     protected ?PamAccount $pam;
 
     /**
      * 控制台输出
-     * @var array
      */
     protected array $reportType = ['log', 'console'];
 
@@ -49,12 +47,12 @@ class SystemTestCase extends TestCase
         if (!$this->enableDb) {
             try {
                 DB::beginTransaction();
-            } catch (Exception $e) {
+            }
+            catch (Exception $e) {
                 $this->runLog(false, $e->getMessage());
             }
         }
     }
-
 
     public function tearDown(): void
     {
@@ -62,7 +60,8 @@ class SystemTestCase extends TestCase
             try {
                 DB::rollBack();
                 parent::tearDown();
-            } catch (Throwable $e) {
+            }
+            catch (Throwable $e) {
                 $this->runLog(false, $e->getMessage());
             }
         }
@@ -70,10 +69,10 @@ class SystemTestCase extends TestCase
 
     /**
      * 测试日志
+     *
      * @param bool   $result  测试结果
      * @param string $message 测试消息
      * @param mixed  $context 上下文信息, 数组
-     * @return string
      */
     public function runLog(bool $result = true, string $message = '', $context = null): string
     {
@@ -91,9 +90,9 @@ class SystemTestCase extends TestCase
                 'context' => $context ?: [],
             ]);
         }
+
         return $message;
     }
-
 
     protected function initPam($username = '')
     {
@@ -105,8 +104,7 @@ class SystemTestCase extends TestCase
 
     /**
      * 获取环境变量
-     * @param string $key
-     * @param string $default
+     *
      * @return mixed|string
      */
     protected function env(string $key = '', string $default = ''): string
@@ -114,12 +112,12 @@ class SystemTestCase extends TestCase
         if (!$key) {
             return '';
         }
+
         return env('TESTING_' . strtoupper($key), $default);
     }
 
     /**
      * 汇报类型
-     * @return array
      */
     protected function reportType(): array
     {
@@ -149,8 +147,8 @@ class SystemTestCase extends TestCase
 
     /**
      * 当前的描述
+     *
      * @param string $append 追加的信息
-     * @return string
      */
     protected static function desc(string $append = ''): string
     {

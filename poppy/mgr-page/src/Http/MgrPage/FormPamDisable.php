@@ -41,7 +41,6 @@ class FormPamDisable extends FormWidget
         }
 
         return Resp::success('当前用户已封禁', '_top_reload|1');
-
     }
 
     public function data(): array

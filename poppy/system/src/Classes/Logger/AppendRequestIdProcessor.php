@@ -8,7 +8,6 @@ use Monolog\Processor\ProcessorInterface;
 
 class AppendRequestIdProcessor implements ProcessorInterface
 {
-
     public function __invoke(array $record)
     {
         $requestId = request()->requestId ?? '';

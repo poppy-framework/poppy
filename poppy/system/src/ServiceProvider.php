@@ -40,7 +40,6 @@ class ServiceProvider extends PoppyServiceProvider
     protected array $listens = [
         // laravel
         AuthLoginEvent::class           => [
-
         ],
         PermissionInitEvent::class      => [
             Listeners\PermissionInit\InitToDbListener::class,
@@ -81,7 +80,7 @@ class ServiceProvider extends PoppyServiceProvider
 
     /**
      * Bootstrap the module services.
-     * @return void
+     *
      * @throws ModuleNotFoundException
      */
     public function boot(): void
@@ -91,7 +90,6 @@ class ServiceProvider extends PoppyServiceProvider
 
     /**
      * Register the module services.
-     * @return void
      */
     public function register(): void
     {
@@ -131,17 +129,17 @@ class ServiceProvider extends PoppyServiceProvider
         $this->app->bind('poppy.system.api_sign', function () {
             /** @var ApiSignContract $signProvider */
             $signProvider = config('poppy.system.api_sign_provider') ?: DefaultApiSignProvider::class;
+
             return new $signProvider();
         });
         $this->app->alias('poppy.system.api_sign', ApiSignContract::class);
 
-
         $this->app->bind('poppy.system.password', function () {
             $pwdClass = config('poppy.system.password_provider') ?: DefaultPasswordProvider::class;
+
             return new $pwdClass();
         });
         $this->app->alias('poppy.system.password', PasswordContract::class);
-
 
         /* 文件提供者
          * ---------------------------------------- */
@@ -153,6 +151,7 @@ class ServiceProvider extends PoppyServiceProvider
             }
             $uploader      = $hooks[$uploadType];
             $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
+
             return new $uploaderClass($config);
         });
         $this->app->alias('poppy.system.file', FileContract::class);

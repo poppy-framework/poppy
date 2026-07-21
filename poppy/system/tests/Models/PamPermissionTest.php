@@ -12,7 +12,6 @@ use Poppy\System\Models\PamPermissionRole;
 
 class PamPermissionTest extends TestCase
 {
-
     /**
      * @throws ApplicationException
      * @throws Exception

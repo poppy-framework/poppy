@@ -9,10 +9,10 @@ namespace Poppy\MgrPage\Classes\Operation;
  */
 final class RequestOperation extends Operation
 {
-
     public function render(): string
     {
         $this->classes[] = 'J_request';
+
         return parent::render();
     }
 }

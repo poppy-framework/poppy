@@ -50,8 +50,6 @@ class PoppyDisableCommand extends Command
 
     /**
      * Get the console command arguments.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {

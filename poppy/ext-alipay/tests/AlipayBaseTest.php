@@ -13,9 +13,7 @@ class AlipayBaseTest extends TestCase
 {
     private static $aopCert;
 
-
     protected $env = 'sandbox';
-
 
     /**
      * @var string 商户账号
@@ -31,7 +29,6 @@ class AlipayBaseTest extends TestCase
      * @var string 用户账号
      */
     protected $userAccount = 'teqpcn0696@sandbox.com';
-
 
     /**
      * @var string 用户姓名
@@ -68,7 +65,6 @@ class AlipayBaseTest extends TestCase
      */
     private $alipayCertPublicKeyPath;
 
-
     public function setUp(): void
     {
         $resourcesPath                 = dirname(__DIR__) . '/resources';
@@ -77,7 +73,6 @@ class AlipayBaseTest extends TestCase
         $this->alipayRootCertPath      = realpath($resourcesPath . '/sandbox_keys/alipayRootCert.crt');
         $this->alipayCertPublicKeyPath = realpath($resourcesPath . '/sandbox_keys/alipayCertPublicKey_RSA2.crt');
     }
-
 
     protected function client()
     {
@@ -90,7 +85,8 @@ class AlipayBaseTest extends TestCase
 
             try {
                 $appPrivateKey = file_get_contents($this->appPrivateKeyPath);
-            } catch (Throwable $e) {
+            }
+            catch (Throwable $e) {
                 $appPrivateKey = '';
             }
 

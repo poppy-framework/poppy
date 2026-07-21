@@ -11,10 +11,6 @@ use Overtrue\Pinyin\Pinyin;
  */
 class SearchCache
 {
-    /**
-     * @param string $text
-     * @return string
-     */
     public static function py(string $text): string
     {
         static $pinyin;
@@ -26,11 +22,12 @@ class SearchCache
             if (!$pinyin) {
                 $pinyin = new Pinyin();
             }
-            /** @var  $pinYin */
             $py = $pinyin->abbr($text);
             $Rds->hset(PyMgrPageDef::ckSearchPy(), $text, $py);
+
             return $py;
         }
+
         return '';
     }
 }

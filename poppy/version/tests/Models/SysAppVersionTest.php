@@ -11,11 +11,9 @@ use Poppy\Version\Models\SysAppVersion;
 
 class SysAppVersionTest extends TestCase
 {
-
-
     /**
      * 测试 Android 数据
-     * @return void
+     *
      * @throws ApplicationException
      */
     public function testAddAndroid(): void
@@ -23,7 +21,6 @@ class SysAppVersionTest extends TestCase
         SysAppVersion::whereIn('title', array_keys($this->dataAndroid()))
             ->where('platform', SysAppVersion::PLATFORM_ANDROID)
             ->delete();
-
 
         $Version  = new Version();
         $androids = $this->dataAndroid();
@@ -56,7 +53,6 @@ class SysAppVersionTest extends TestCase
         $isUpgrade445 = SysAppVersion::isUpgrade(SysAppVersion::PLATFORM_ANDROID, '4.4.5');
         $this->assertTrue($isUpgrade445);
 
-
         if (!$Version->establish($androids['4.6.0'])) {
             $this->fail($Version->getError()->getMessage());
         }
@@ -75,7 +71,7 @@ class SysAppVersionTest extends TestCase
 
     /**
      * 测试 IOS 的数据问题
-     * @return void
+     *
      * @throws ApplicationException
      */
     public function testIos(): void
@@ -92,7 +88,6 @@ class SysAppVersionTest extends TestCase
         else {
             $this->assertTrue(true);
         }
-
 
         // 最新版本
         $latest = SysAppVersion::latestVersion(SysAppVersion::PLATFORM_IOS);
@@ -115,7 +110,6 @@ class SysAppVersionTest extends TestCase
         // 强制升级
         $isUpgrade445 = SysAppVersion::isUpgrade(SysAppVersion::PLATFORM_IOS, '4.4.5');
         $this->assertTrue($isUpgrade445);
-
 
         if (!$Version->establish($iosData['4.6.0'])) {
             $this->fail($Version->getError()->getMessage());

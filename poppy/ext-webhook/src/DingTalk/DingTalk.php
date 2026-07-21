@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Poppy\Extension\Webhook\DingTalk;
-
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -13,30 +13,21 @@ use Poppy\Extension\Webhook\Contracts\DingTalkMessage;
 /**
  * DINGDING webhook
  * Class Dingding
- *
- * @package Iamzz
  */
 class DingTalk
 {
     /**
      * http client
-     *
-     * @var Client
      */
     private Client $httpClient;
+
     /**
      * DINGDING robot api uri
-     *
-     * @var string
      */
     private string $bashUri = 'https://oapi.dingtalk.com/robot/send';
-    /**
-     * @var string
-     */
+
     private string $accessToken;
-    /**
-     * @var string
-     */
+
     private string $accessKeySecret;
 
     /**
@@ -55,9 +46,6 @@ class DingTalk
     /**
      * 发送消息
      *
-     * @param DingTalkMessage $message
-     *
-     * @return bool
      * @throws GuzzleException|JsonException
      */
     public function send(DingTalkMessage $message): bool
@@ -75,18 +63,16 @@ class DingTalk
             $queryData['sign']      = $this->sign($queryData['timestamp']);
         }
         $response = $this->httpClient->send($request, ['query' => $queryData]);
+
         return
-            $response->getStatusCode() === 200
-            &&
-            json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['errcode'] ?? 1 === 0;
+            200 === $response->getStatusCode()
+            && json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['errcode'] ?? 1 === 0;
     }
 
     /**
      * 计算签名
      *
      * @param float $time 签名需要的时间戳
-     *
-     * @return string
      */
     private function sign(float $time): string
     {

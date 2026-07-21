@@ -11,6 +11,7 @@ class TimeRange extends Time
         $this->options([
             'layui-range' => true,
         ]);
+
         return parent::render();
     }
 }

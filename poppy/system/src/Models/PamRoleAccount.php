@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $account_id 账户id
  * @property int $role_id    角色id
+ *
  * @mixin Eloquent
  */
 class PamRoleAccount extends Model
@@ -29,8 +30,8 @@ class PamRoleAccount extends Model
 
     /**
      * 通过账户id 获取角色id, 加入角色ID 缓存
+     *
      * @param int $account_id 用户id
-     * @return mixed
      */
     public static function getRoleIdByAccountId($account_id)
     {

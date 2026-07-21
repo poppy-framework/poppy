@@ -8,7 +8,6 @@ use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
 class FormSettingLog extends FormSettingBase
 {
-
     public const DAYS_FOREVER = 'forever';
 
     protected $withContent = true;

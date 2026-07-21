@@ -11,14 +11,15 @@ use Poppy\MgrPage\Classes\Traits\UseItems;
 
 class Actions extends AbstractDisplayer
 {
-
     use UseItems, UseInteraction;
 
     /**
      * Append an action.
      *
      * @param array|string $action
+     *
      * @return $this
+     *
      * @see        add()
      * @deprecated 4.2
      */
@@ -38,13 +39,11 @@ class Actions extends AbstractDisplayer
             ->confirm("确认删除 [{$title}]?");
     }
 
-
     public function disable($url, $title, $status = '已启用'): void
     {
         $this->request($status, $url)->icon('check-circle')
             ->confirm("确定要禁用 [{$title}]")->tooltip("当前启用, 点击禁用 [{$title}]");
     }
-
 
     public function enable($url, $title, $status = '已禁用'): void
     {
@@ -53,7 +52,7 @@ class Actions extends AbstractDisplayer
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function display($callback = null): string
     {

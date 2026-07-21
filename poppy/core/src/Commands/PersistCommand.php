@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\Core\Commands;
 
-
 use Illuminate\Console\Command;
 use Poppy\Core\Redis\RdsPersist;
 use Throwable;
@@ -39,15 +38,15 @@ class PersistCommand extends Command
 
         // 将所有数据写入数据库
         try {
-            if ($table === 'all') {
+            if ('all' === $table) {
                 RdsPersist::exec();
             }
             else {
                 RdsPersist::execTable($table);
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->error(sys_gen_mk(self::class, $e->getMessage()));
         }
-
     }
 }

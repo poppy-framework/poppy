@@ -14,6 +14,7 @@ use Poppy\Framework\Helper\TreeHelper;
 use Poppy\System\Classes\Contracts\ApiSignContract;
 use Poppy\System\Classes\File\FileManager;
 use Poppy\System\Models\PamAccount;
+use Throwable;
 
 /**
  * 表单生成
@@ -24,6 +25,7 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 生成树选择
+     *
      * @param string $name     名称
      * @param array  $tree     需要生成的树
      * @param string $selected 选择
@@ -31,7 +33,6 @@ class FormBuilder extends CollectiveFormBuilder
      * @param string $id       ID KEY
      * @param string $title    Title KEY
      * @param string $pid      PID KEY
-     * @return HtmlString
      */
     public function tree(string $name, array $tree, $selected = '', $options = [], $id = 'id', $title = 'title', $pid = 'pid'): HtmlString
     {
@@ -48,11 +49,11 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * radio 选择器(支持后台)
+     *
      * @param string      $name    名字
      * @param array       $lists   列表
      * @param string|null $value   值
      * @param array       $options 选项
-     * @return string
      */
     public function radios(string $name, $lists = [], $value = null, $options = []): string
     {
@@ -63,7 +64,7 @@ class FormBuilder extends CollectiveFormBuilder
         foreach ($lists as $key => $val) {
             $options['id']    = $id . '_' . $key;
             $options['title'] = $val;
-            $str              .= $this->radio($name, $key, (string) $value === (string) $key, $options);
+            $str .= $this->radio($name, $key, (string) $value === (string) $key, $options);
         }
 
         return $str;
@@ -71,11 +72,11 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 选择器
+     *
      * @param string $name    名字
      * @param array  $lists   数组
      * @param null   $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function checkboxes(string $name, $lists = [], $value = null, $options = []): string
     {
@@ -88,7 +89,7 @@ class FormBuilder extends CollectiveFormBuilder
             $arrValues = array_values($value);
         }
         elseif (is_string($value)) {
-            if (strpos($value, ',') !== false) {
+            if (false !== strpos($value, ',')) {
                 $arrValues = explode(',', $value);
             }
             else {
@@ -99,7 +100,7 @@ class FormBuilder extends CollectiveFormBuilder
         foreach ($lists as $key => $val) {
             $options['title']    = $val;
             $options['lay-skin'] = 'primary';
-            $str                 .= $this->checkbox($name, $key, in_array($key, $arrValues, false), $options);
+            $str .= $this->checkbox($name, $key, in_array($key, $arrValues, false), $options);
         }
 
         return $str;
@@ -107,13 +108,14 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 代码编辑器
+     *
      * @param string      $name  名字
      * @param string|null $value 值
-     * @return HtmlString
      */
-    public function code(string $name, string $value = null): HtmlString
+    public function code(string $name, ?string $value = null): HtmlString
     {
         $value = htmlentities((string) $value);
+
         return $this->textarea($name, $value, [
             'class' => 'layui-textarea layui-textarea-code',
             'style' => 'font-family: monospace;',
@@ -123,13 +125,14 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 代码编辑器
+     *
      * @param string $name 名字
      * @param string $type 类型
-     * @return HtmlString
      */
     public function captcha(string $name, string $type = 'default'): HtmlString
     {
         $src = captcha_src($type);
+
         return $this->image(captcha_src($type), $name, [
             'onclick' => "this.src='" . $src . "'+Math.random()",
             'class'   => 'J_captcha',
@@ -139,11 +142,12 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 编辑器
+     *
      * @param string $name    名字
      * @param string $value   值
      * @param array  $options 选项
-     * @return string
-     * @throws \Throwable
+     *
+     * @throws Throwable
      */
     public function editor(string $name, $value = null, $options = []): string
     {
@@ -186,11 +190,11 @@ class FormBuilder extends CollectiveFormBuilder
 
     /**
      * 生成排序链接
+     *
      * @param string $name       名字
      * @param string $value      值
      * @param string $route_name 路由名字
      * @param bool   $pjax       是否是 Pjax 请求
-     * @return string
      */
     public function order(string $name, $value = '', $route_name = '', $pjax = false): string
     {
@@ -231,11 +235,11 @@ HTML;
 
     /**
      * 提示组件
+     *
      * @param string      $description 描述
      * @param string|null $name        名字
-     * @return string
      */
-    public function tip(string $description, string $name = null): string
+    public function tip(string $description, ?string $name = null): string
     {
         if (!$name) {
             $icon = '<i class="bi bi-info-circle">&nbsp;</i>';
@@ -254,10 +258,10 @@ TIP;
 
     /**
      * 上传缩略图
+     *
      * @param string $name    名字
      * @param null   $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function thumb(string $name, $value = null, array $options = []): string
     {
@@ -287,7 +291,8 @@ TIP;
         $iconStr = $readonly ? '' : <<<CONTENT
  <i id="{$id}_del" class="layui-icon layui-icon-close-fill"></i>
 CONTENT;
-        return /** @lang text */
+
+        return /* @lang text */
             <<<CONTENT
 <div class="layui-form-thumb {$display_str} {$sizeClass}" id="{$id}_wrap">
     <button id="{$id}" class="layui-btn form_thumb-upload" type="button">
@@ -338,10 +343,10 @@ CONTENT;
 
     /**
      * 上传缩略图
+     *
      * @param string $name    名字
      * @param null   $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function upload(string $name, $value = null, $options = []): string
     {
@@ -391,7 +396,8 @@ CONTENT;
 
         $display_str = !$value ? 'class="hidden"' : '';
         $uploadUrl   = route('py-system:api_v1.upload.file');
-        return /** @lang text */
+
+        return /* @lang text */
             <<<CONTENT
 <div class="layui-form-upload" style="padding-left:5px;">
     <button id="{$id}" class="layui-btn layui-btn-primary" type="button">上传</button>
@@ -445,10 +451,10 @@ CONTENT;
 
     /**
      * 多图上传组件
+     *
      * @param string $name    form 名称
      * @param null   $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function multiThumb(string $name, $value = null, array $options = []): string
     {
@@ -466,14 +472,14 @@ CONTENT;
             $token = $options['token'] ?? '';
         }
         $ext = 'jpg|png|gif|jpeg|webp';
-        if ($type === 'video') {
+        if ('video' === $type) {
             $ext = 'mp4';
         }
-        if ($type === 'picture') {
+        if ('picture' === $type) {
             $ext = 'mp4|jpg|png|gif|jpeg|webp';
         }
         $value = (array) $this->getValueAttribute($name, $value);
-        if (strpos($name, '[]') === false) {
+        if (false === strpos($name, '[]')) {
             $name .= '[]';
         }
 
@@ -517,7 +523,8 @@ HAHA;
         $uploadUrl    = route('py-system:api_v1.upload.image');
         $autoUpload   = $auto ? '' : '<button type="button" class="layui-btn layui-btn-sm" id="' . $id . '_upload" disabled>开始上传</button>';
         $autoDoUpload = $auto ? 'obj.upload(index, file);' : '';
-        return /** @lang text */
+
+        return /* @lang text */
             <<<MULTI
 <div class="layui-upload upload--multi">
     <div class="layui-btn-group">
@@ -666,10 +673,10 @@ MULTI;
 
     /**
      * 多图复制拖拽上传组件
+     *
      * @param string $name    form 名称
      * @param null   $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function parseMultiThumb(string $name, $value = null, array $options = []): string
     {
@@ -687,14 +694,14 @@ MULTI;
             $token = $options['token'] ?? '';
         }
         $ext = 'jpg|png|gif|jpeg|webp';
-        if ($type === 'video') {
+        if ('video' === $type) {
             $ext = 'mp4';
         }
-        if ($type === 'picture') {
+        if ('picture' === $type) {
             $ext = 'mp4|jpg|png|gif|jpeg|webp';
         }
         $value = (array) $this->getValueAttribute($name, $value);
-        if (strpos($name, '[]') === false) {
+        if (false === strpos($name, '[]')) {
             $name .= '[]';
         }
 
@@ -737,12 +744,13 @@ SORT;
 HAHA;
         }
         $uploadUrl = route('py-system:api_v1.upload.image');
-        $handle    .= '
+        $handle .= '
         <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="' . $id . '_delete">删除选中图片</button>
         <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="' . $id . '_select_all">全选</button>
         <button type="button" class="layui-btn layui-btn-warm layui-btn-sm" id="' . $id . '_unselect_all">取消全选</button>
     </div>';
-        return /** @lang text */
+
+        return /* @lang text */
             <<<MULTI
 <div class="layui-upload upload--multi">
     <div class="layui-row">
@@ -986,9 +994,9 @@ MULTI;
 
     /**
      * 显示上传的单图
+     *
      * @param string|array $url     需要显示的地址
      * @param array        $options 选项
-     * @return string
      */
     public function showThumb($url, array $options = []): string
     {
@@ -996,19 +1004,19 @@ MULTI;
         $pop_size   = $options['pop_size'] ?? '300';
         $strOptions = $this->html->attributes($options);
         $style      = '';
-        if ($size === 'xs') {
+        if ('xs' === $size) {
             $style = 'max-width:32px;max-height:32px;';
         }
-        if ($size === 'sm') {
+        if ('sm' === $size) {
             $style = 'max-width:50px;max-height:50px;';
         }
-        if ($size === 'l') {
+        if ('l' === $size) {
             $style = 'max-width:80px;max-height:80px;';
         }
-        if ($size === 'xl') {
+        if ('xl' === $size) {
             $style = 'max-width:120px;max-height:120px;';
         }
-        if ($size === 'ori') {
+        if ('ori' === $size) {
             $style = '';
         }
         if (is_string($url) || is_null($url)) {
@@ -1022,11 +1030,10 @@ MULTI;
         foreach ($url as $_url) {
             $ext       = FileHelper::ext($_url);
             $parse_str .= '<div class="multi-img" style="' . $style . '">';
-            if ($ext === 'mp4') {
+            if ('mp4' === $ext) {
                 $parse_str .= '<video controls class="layui-upload-img" style="' . $style . '">
                     <source src="' . $_url . '" type="video/mp4">
                 </video>';
-
             }
             else {
                 $parse_str .= '<img src="' . $_url . '" class="layui-upload-img J_image_preview" data-width="' . $pop_size . 'px" data-height="' . $pop_size . 'px" style="' . $style . '">';
@@ -1035,15 +1042,16 @@ MULTI;
         }
 
         $parse_str .= '</div>';
+
         return $parse_str;
     }
 
     /**
      * 日期选择器
+     *
      * @param string $name    名字
      * @param string $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function timePicker(string $name, $value = '', $options = []): string
     {
@@ -1053,10 +1061,7 @@ MULTI;
     }
 
     /**
-     * @param string      $name
      * @param string|null $value
-     * @param array       $options
-     * @return string
      */
     public function timeRangePicker(string $name, $value = '', array $options = []): string
     {
@@ -1068,10 +1073,10 @@ MULTI;
 
     /**
      * 生成日期时间选择器
+     *
      * @param string $name    名字
      * @param string $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function datetimePicker(string $name, $value = '', $options = []): string
     {
@@ -1080,13 +1085,12 @@ MULTI;
         ]));
     }
 
-
     /**
      * 日期选择器
+     *
      * @param string $name    名字
      * @param string $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function datetimeRangePicker(string $name, $value = '', $options = []): string
     {
@@ -1098,10 +1102,10 @@ MULTI;
 
     /**
      * 生成日期选择器
+     *
      * @param string $name    名字
      * @param string $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function datePicker(string $name, $value = '', array $options = []): string
     {
@@ -1113,7 +1117,7 @@ MULTI;
         $range = isset($options['layui-range']) && $options['layui-range'] ? 'true' : 'false';
         $attr  = $this->html->attributes($options);
 
-        return /** @lang text */
+        return /* @lang text */
             <<<HTML
 <input type="text" name="{$name}" value="{$value}" {$attr}>
 <script>
@@ -1128,13 +1132,12 @@ MULTI;
 HTML;
     }
 
-
     /**
      * 生成日期选择器
+     *
      * @param string $name    名字
      * @param string $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function yearPicker(string $name, $value = '', array $options = []): string
     {
@@ -1143,12 +1146,10 @@ HTML;
         ]));
     }
 
-
     /**
      * @param string $name    名字
      * @param string $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function dateRangePicker(string $name, $value = '', $options = []): string
     {
@@ -1161,7 +1162,6 @@ HTML;
      * @param string $name    名字
      * @param string $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function monthPicker(string $name, $value = '', $options = []): string
     {
@@ -1174,7 +1174,6 @@ HTML;
      * @param string $name    名字
      * @param string $value   值
      * @param array  $options 选项
-     * @return string
      */
     public function colorPicker(string $name, string $value = '', array $options = []): string
     {
@@ -1182,7 +1181,8 @@ HTML;
         $value            = (string) $this->getValueAttribute($name, $value);
         $options['class'] = 'layui-input ' . ($options['class'] ?? '');
         $attr             = $this->html->attributes($options);
-        return /** @lang text */
+
+        return /* @lang text */
             <<<HTML
 <div class="layui-inline">
     <input type="text" id="input_{$options['id']}" name="{$name}" readonly value="{$value}" placeholder="请选择颜色" {$attr}>
@@ -1205,12 +1205,8 @@ layui.use(function(){
 HTML;
     }
 
-
     /**
      * Tab
-     * @param array  $scopes
-     * @param string $selected
-     * @return string
      */
     public function scopes(array $scopes, string $selected = ''): string
     {
@@ -1224,7 +1220,8 @@ HTML;
             }
             $content .= "<li class=\"{$class}\"><a class='J_ignore' href=\"?_scope={$key}\">{$scope}</a></li>";
         }
-        return /** @lang text */ <<<HTML
+
+        return /* @lang text */ <<<HTML
 <div class="layui-tab">
     <ul class="layui-tab-title">
         {$content}
@@ -1234,11 +1231,7 @@ HTML;
     }
 
     /**
-     * @param string $name
-     * @param array  $list
      * @param string $value
-     * @param array  $options
-     * @return string
      */
     public function tags(string $name, array $list = [], $value = [], array $options = []): string
     {
@@ -1248,7 +1241,8 @@ HTML;
             'id'         => $id,
             'lay-ignore' => 'lay-ignore',
         ]));
-        return /** @lang text */
+
+        return /* @lang text */
             <<<HTML
 {$select}
 <script>
@@ -1263,14 +1257,10 @@ $(function() {
 HTML;
     }
 
-
     /**
      * 下拉复选框
-     * @param string                $name
-     * @param array                 $lists
-     * @param null|int|string|array $value
-     * @param array                 $options
-     * @return string
+     *
+     * @param int|string|array|null $value
      */
     public function multiSelect(string $name, array $lists = [], $value = null, array $options = []): string
     {
@@ -1280,12 +1270,12 @@ HTML;
         $width       = $options['width'] ?? '';
         $width       = $width ? 'w' . $width : '';
         $id          = 'select_' . Str::random(6);
-        $direction   = $options['direction'] ?? 'down';                            //下拉方向
-        $paging      = ($options['paging'] ?? false) ? 'true' : 'false';           //是否开启分页
-        $filter      = ($options['filter'] ?? false) ? 'true' : 'false';           //是否开启搜索
-        $size        = $options['size'] ?? 8;                                      //分页数量
-        $disabled    = ($options['disabled'] ?? false) ? 'true' : 'false';         //是否禁用
-        $autoRow     = ($options['auto_row'] ?? true) ? 'true' : 'false';          //是否换行
+        $direction   = $options['direction'] ?? 'down';                            // 下拉方向
+        $paging      = ($options['paging'] ?? false) ? 'true' : 'false';           // 是否开启分页
+        $filter      = ($options['filter'] ?? false) ? 'true' : 'false';           // 是否开启搜索
+        $size        = $options['size'] ?? 8;                                      // 分页数量
+        $disabled    = ($options['disabled'] ?? false) ? 'true' : 'false';         // 是否禁用
+        $autoRow     = ($options['auto_row'] ?? true) ? 'true' : 'false';          // 是否换行
 
         if (is_array($value) && count($value)) {
             $items = [];
@@ -1312,6 +1302,7 @@ HTML;
                         'selected' => in_array((string) ($item['value'] ?? ''), $value, true),
                     ]);
                 });
+
                 return $items;
             })->toJson(JSON_UNESCAPED_UNICODE);
         }
@@ -1322,6 +1313,7 @@ HTML;
                 if ($value && in_array((string) $key, $value, true)) {
                     $selected = true;
                 }
+
                 return [
                     'name'     => $item,
                     'value'    => $key,
@@ -1338,7 +1330,7 @@ HTML;
             $script = '';
         }
 
-        return /** @lang text */
+        return /* @lang text */
             <<<HTML
 {$script}
 <div id="{$id}" class="{$width}"></div>
@@ -1373,20 +1365,17 @@ HTML;
         $html = $this->select($name, $list, $selected, $selectAttributes, $optionsAttributes, $optgroupsAttributes);
     }
 
-
     /**
      * 可以拖拽的关键词
-     * @param string       $name
+     *
      * @param array|string $value
-     * @return string
      */
     public function keyword(string $name, $value = []): string
     {
-
         $value     = !is_null($value) ? (array) $value : [''];
         $strValue  = '';
         $funName   = Str::random(6) . 'AddKeyword';
-        $textEmpty = $this->text($name . '[]', '', ['class' => 'layui-input']);;
+        $textEmpty = $this->text($name . '[]', '', ['class' => 'layui-input']);
         foreach ($value as $v) {
             $text     = $this->text($name . '[]', $v, ['class' => 'layui-input']);
             $strValue .= <<<HTML
@@ -1396,7 +1385,8 @@ HTML;
 </div>
 HTML;
         }
-        return /** @lang text */
+
+        return /* @lang text */
             <<<HTML
 <div class="layui-form-auto-field clearfix layui-form-auto-field-{$name}">
     {$strValue}
@@ -1435,9 +1425,9 @@ HTML;
     /**
      * 答题组件
      * https://codepen.io/Qwghlm/pen/poJrmwx
-     * @param string       $name
+     *
      * @param array|string $value
-     * @return string
+     *
      * @deprecated
      */
     public function question(string $name, $value = []): string
@@ -1456,7 +1446,8 @@ HTML;
 </div>
 HTML;
         }
-        return /** @lang text */
+
+        return /* @lang text */
             <<<HTML
 <div class="layui-form-auto-field clearfix layui-form-auto-field-{$name}">
     {$strValue}

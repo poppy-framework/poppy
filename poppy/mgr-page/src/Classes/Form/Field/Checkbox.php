@@ -11,24 +11,21 @@ class Checkbox extends MultipleSelect
 {
     /**
      * 是否行内显示
-     * @var bool
      */
     protected bool $inline = true;
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $default = [];
 
     /**
      * 是否可以全选
-     * @var bool
      */
     protected bool $canCheckAll = false;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function fill($data): void
     {
@@ -62,17 +59,20 @@ class Checkbox extends MultipleSelect
 
     /**
      * 默认值, 当没有数据做填充的时候会取这个默认值(null 值的时候)
+     *
      * @param array|callable|string $default
+     *
      * @return $this
      */
     public function default($default): self
     {
         $this->default = (array) $default;
+
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function render()
     {
@@ -80,6 +80,7 @@ class Checkbox extends MultipleSelect
             'inline'      => $this->inline,
             'canCheckAll' => $this->canCheckAll,
         ]);
+
         return parent::render();
     }
 
@@ -91,6 +92,7 @@ class Checkbox extends MultipleSelect
     public function canCheckAll(): self
     {
         $this->canCheckAll = true;
+
         return $this;
     }
 
@@ -102,6 +104,7 @@ class Checkbox extends MultipleSelect
     public function inline(): self
     {
         $this->inline = true;
+
         return $this;
     }
 
@@ -113,6 +116,7 @@ class Checkbox extends MultipleSelect
     public function stacked(): self
     {
         $this->inline = false;
+
         return $this;
     }
 }

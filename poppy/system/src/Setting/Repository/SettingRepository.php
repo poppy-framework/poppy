@@ -26,15 +26,10 @@ class SettingRepository implements SettingContract
 {
     use KeyParserTrait, AppTrait;
 
-    /**
-     * @var RdsDb|null
-     */
     private static ?RdsDb $rds = null;
-
 
     /**
      * 是否存在数据表
-     * @var bool
      */
     private static bool $existTable = true;
 
@@ -46,7 +41,8 @@ class SettingRepository implements SettingContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws SettingKeyNotMatchException
      * @throws Exception
      */
@@ -60,11 +56,13 @@ class SettingRepository implements SettingContract
             self::$rds->hDel(PySystemDef::ckSetting(), $this->convertKey($key));
             $record->delete();
         }
+
         return true;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
      */
@@ -86,12 +84,15 @@ class SettingRepository implements SettingContract
 
         try {
             $record = $this->findRecord($key);
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e) {
             self::$existTable = false;
+
             return $default;
         }
         if (!$record) {
             $this->set($key, $default);
+
             return $default;
         }
 
@@ -101,7 +102,8 @@ class SettingRepository implements SettingContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
      */
@@ -111,6 +113,7 @@ class SettingRepository implements SettingContract
             foreach ($key as $_key => $_value) {
                 $this->set($_key, $_value);
             }
+
             return true;
         }
 
@@ -125,7 +128,7 @@ class SettingRepository implements SettingContract
         }
         if (!$record) {
             [$namespace, $group, $item] = $this->parseKey($key);
-            $record = SysConfig::create([
+            $record                     = SysConfig::create([
                 'namespace' => $namespace,
                 'group'     => $group,
                 'item'      => $item,
@@ -134,7 +137,7 @@ class SettingRepository implements SettingContract
             ]);
         }
         else {
-            $record->value = $serializeValue;
+            $record->value   = $serializeValue;
             $record->content = $value;
             $record->save();
         }
@@ -142,13 +145,14 @@ class SettingRepository implements SettingContract
         event(new SysConfigSavedEvent($record));
 
         self::$rds->hSet(PySystemDef::ckSetting(), $this->convertKey($key), $serializeValue);
+
         return true;
     }
 
     /**
      * 根据命名空间从数据库中获取数据
+     *
      * @param string $ng 命名空间和分组
-     * @return array
      */
     public function getNG(string $ng): array
     {
@@ -167,8 +171,6 @@ class SettingRepository implements SettingContract
 
     /**
      * 删除命名空间以及分组
-     * @param string $ng
-     * @return bool
      */
     public function removeNG(string $ng): bool
     {
@@ -189,16 +191,19 @@ class SettingRepository implements SettingContract
             self::$rds->hDel(PySystemDef::ckSetting(), $keys);
             try {
                 $Db->delete();
+
                 return true;
-            } catch (Throwable $e) {
+            }
+            catch (Throwable $e) {
                 return false;
             }
         }
+
         return false;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function clear(): void
     {
@@ -207,8 +212,6 @@ class SettingRepository implements SettingContract
 
     /**
      * 转换 KEY
-     * @param $key
-     * @return string
      */
     private function convertKey($key): string
     {
@@ -217,8 +220,8 @@ class SettingRepository implements SettingContract
 
     /**
      * Returns a record (cached)
+     *
      * @param string $key 获取的key
-     * @return SysConfig|null
      */
     private function findRecord(string $key): ?SysConfig
     {

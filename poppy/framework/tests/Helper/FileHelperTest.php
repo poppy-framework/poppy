@@ -14,7 +14,6 @@ use Poppy\Framework\Helper\TimeHelper;
  */
 class FileHelperTest extends TestCase
 {
-
     public function testExt(): void
     {
         $file = 'demo.jpg';

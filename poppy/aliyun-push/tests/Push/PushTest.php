@@ -2,7 +2,6 @@
 
 namespace Poppy\AliyunPush\Tests\Push;
 
-
 use Notification;
 use Poppy\AliyunPush\Classes\BindTag;
 use Poppy\AliyunPush\Classes\Config\Config;
@@ -22,7 +21,6 @@ use Poppy\Framework\Application\TestCase;
  */
 class PushTest extends TestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();
@@ -84,11 +82,9 @@ class PushTest extends TestCase
 
     /**
      * 绑定倩倩的设备号设定标签为 girl
-     * @return void
      */
     public function testBindGirl(): void
     {
-
         $Bind = new BindTag(Config::default());
         $qqId = 'a6e8a2f36e2d4da9a22762362a987476';
         $dyId = 'd733ae6c57754f22a4de519e0eafe816';

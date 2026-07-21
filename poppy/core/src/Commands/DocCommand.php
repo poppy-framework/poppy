@@ -15,7 +15,6 @@ use Symfony\Component\Process\Process;
  */
 class DocCommand extends Command
 {
-
     protected $signature = 'py-core:doc
 		{type : Document type to run. [api]}
 	';
@@ -77,19 +76,19 @@ class DocCommand extends Command
             case 'cs':
                 $this->info(
                     'Please Run Command:' . "\n" .
-                    '$(which php-cs-fixer) fix --config=' . framework_path('.php-cs-fixer.php') . ' --diff --dry-run --verbose'
+                    '$(which php-cs-fixer) fix --config=' . framework_path('.php-cs-fixer.php') . ' --diff --dry-run --verbose',
                 );
                 break;
             case 'cs-pf':
                 $this->info(
                     'Please Run Command:' . "\n" .
-                    '$(which php-cs-fixer) fix ' . framework_path() . ' --config=' . framework_path('.php-cs-fixer.php') . ' --diff --dry-run --verbose'
+                    '$(which php-cs-fixer) fix ' . framework_path() . ' --config=' . framework_path('.php-cs-fixer.php') . ' --diff --dry-run --verbose',
                 );
                 break;
             case 'log':
                 $this->info(
                     'Please Run Command:' . "\n" .
-                    'tail -20f storage/logs/laravel-`date +%F`.log'
+                    'tail -20f storage/logs/laravel-`date +%F`.log',
                 );
                 break;
             default:
@@ -108,6 +107,7 @@ class DocCommand extends Command
 
         if (!file_exists($path)) {
             $this->error('Err > 目录 `' . $path . '` 不存在');
+
             return;
         }
 
@@ -129,6 +129,7 @@ class DocCommand extends Command
             $f = ' -f "modules/.*/src/Http/Request/' . $mt . '/.*\.php$"';
             $f .= ' -f "poppy/.*/src/Http/Request/' . $mt . '/.*\.php$"';
             $f .= ' -f "vendor/poppy/.*/src/Http/Request/' . $mt . '/.*\.php$"';
+
             return $f;
         }, $arrMatches);
         $f          = implode(' ', $f);

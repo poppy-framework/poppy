@@ -12,7 +12,6 @@ use Poppy\System\Models\SysConfig;
 
 class AdContentRequest extends Request
 {
-
     protected bool $isValidate = false;
 
     public function attributes(): array
@@ -33,13 +32,12 @@ class AdContentRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         $tbName = (new SysAdContent())->getTable();
         $id     = Route::input('id');
+
         return [
             'place_id'   => [
                 Rule::required(),

@@ -14,7 +14,6 @@ use OpenApi\Attributes as OA;
  */
 abstract class BaseResponseBody
 {
-
     /**
      * @OA\Property(
      *     description="状态码",

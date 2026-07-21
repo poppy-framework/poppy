@@ -12,9 +12,8 @@ use Volc\Service\Sms as VolcSms;
 
 class VolcSmsProvider extends BaseSms implements SmsContract
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function send(string $type, $mobile, array $params = [], $sign = ''): bool
     {
@@ -33,6 +32,7 @@ class VolcSmsProvider extends BaseSms implements SmsContract
         // 支持数组/字串/多字串
         $mobile = array_reduce((array) $mobile, function ($carry, $mobile) {
             $mobile = str_replace('-', '', $mobile);
+
             return $carry ? $carry . ',' . $mobile : $mobile;
         }, '');
 
@@ -42,7 +42,6 @@ class VolcSmsProvider extends BaseSms implements SmsContract
             /**
              * @url https://www.volcengine.com/docs/6361/1109262
              */
-
             $body = [
                 'SmsAccount'    => $smsAccount,
                 'Sign'          => $this->sign,
@@ -54,7 +53,6 @@ class VolcSmsProvider extends BaseSms implements SmsContract
             $this->logger()->info('volc.request', [
                 'body' => $body,
             ]);
-
 
             $response = $client->sendSms([
                 'json' => $body,
@@ -99,7 +97,6 @@ class VolcSmsProvider extends BaseSms implements SmsContract
              *  }
              * }
              */
-
             $result = json_decode((string) $response->getContents(), true);
             $this->logger()->info('volc.response', [
                 'result' => $result,
@@ -126,6 +123,7 @@ class VolcSmsProvider extends BaseSms implements SmsContract
 
     /**
      * 初始化
+     *
      * @throws SmsException
      */
     private function initClient()

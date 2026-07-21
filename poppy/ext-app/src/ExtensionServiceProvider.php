@@ -8,23 +8,19 @@ use Illuminate\Support\ServiceProvider;
 use Poppy\Extension\App\Classes\AppClient;
 use Poppy\Extension\App\Http\MiddlewareServiceProvider;
 
-
 /**
  * App 请求
  */
 class ExtensionServiceProvider extends ServiceProvider
 {
-
     /**
      * Register the service provider.
-     * @return void
      */
     public function register(): void
     {
         $this->app->register(MiddlewareServiceProvider::class);
         $this->registerApp();
     }
-
 
     private function registerApp(): void
     {

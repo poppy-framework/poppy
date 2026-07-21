@@ -27,43 +27,33 @@ class Sts
      */
     protected array $tempKey;
 
-    /**
-     * @var string
-     */
     private string $url;
 
     private string $endpoint;
 
     /**
      * 子用户的key
-     * @var string
      */
     private string $tempAppKey;
 
     /**
      * 子用户的密钥
-     * @var string
      */
     private string $tempAppSecret;
 
-    /**
-     * @var string
-     */
     private string $bucket;
 
     /**
      * 角色资源描述符，在RAM的控制台的资源详情页上可以获取
+     *
      * @url https://ram.console.aliyun.com/#/role/list
      */
     private string $roleArn;
 
-
     /**
      * 子目录
-     * @var string
      */
     private string $subDirectory = '';
-
 
     public function __construct()
     {
@@ -76,13 +66,6 @@ class Sts
     }
 
     /**
-     * @param string $app_key
-     * @param string $app_secret
-     * @param string $bucket
-     * @param string $endpoint
-     * @param string $role_arn
-     * @param string $url_prefix
-     *
      * @return void
      */
     public function setConfig(string $app_key, string $app_secret, string $bucket, string $endpoint, string $role_arn, string $url_prefix = ''): self
@@ -93,23 +76,25 @@ class Sts
         $this->endpoint      = $endpoint;
         $this->roleArn       = $role_arn;
         $this->url           = $url_prefix;
+
         return $this;
     }
 
     public function setSubDirectory($directory = ''): self
     {
         $this->subDirectory = $directory;
+
         return $this;
     }
 
     /**
      * 返回 Ali 授权key
-     * @return array
+     *
      * @throws ApplicationException
      */
     public function tempOss(): array
     {
-        //加载aliyun配置
+        // 加载aliyun配置
         $bucket = $this->bucket;
 
         $date = Carbon::now()->format('Ym');
@@ -147,7 +132,6 @@ POLICY;
         $request->policy          = $policy;
 
         try {
-
             $response = $client->assumeRoleWithOptions($request, new RuntimeOptions([]));
         }
         catch (Exception $e) {
@@ -170,6 +154,7 @@ POLICY;
             }
         }
         $this->tempKey = $resp;
+
         return $this->tempKey;
     }
 
@@ -186,6 +171,7 @@ POLICY;
             'accessKeySecret' => $this->tempAppSecret,
         ]);
         $config->endpoint = 'sts.cn-hangzhou.aliyuncs.com';
+
         return new StsClient($config);
     }
 }

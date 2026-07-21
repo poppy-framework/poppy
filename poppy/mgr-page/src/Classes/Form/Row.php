@@ -40,9 +40,6 @@ class Row implements Renderable
 
     /**
      * Row constructor.
-     *
-     * @param Closure $callback
-     * @param Form $form
      */
     public function __construct(Closure $callback, Form $form)
     {
@@ -91,7 +88,7 @@ class Row implements Renderable
      * Add field.
      *
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return Field|void
      */

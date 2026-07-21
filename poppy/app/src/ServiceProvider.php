@@ -11,10 +11,9 @@ use Poppy\Framework\Support\PoppyServiceProvider;
 
 class ServiceProvider extends PoppyServiceProvider
 {
-
     /**
      * Bootstrap the module services.
-     * @return void
+     *
      * @throws ModuleNotFoundException
      */
     public function boot(): void
@@ -24,7 +23,6 @@ class ServiceProvider extends PoppyServiceProvider
 
     /**
      * Register the module services.
-     * @return void
      */
     public function register(): void
     {

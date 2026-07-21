@@ -9,12 +9,13 @@ use Poppy\Area\Models\SysArea;
 
 /**
  * 地区resource
+ *
  * @mixin SysArea
  */
 class AreaContentResource extends Resource
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function toArray($request)
     {

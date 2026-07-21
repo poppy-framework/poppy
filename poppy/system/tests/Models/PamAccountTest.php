@@ -31,7 +31,8 @@ class PamAccountTest extends TestCase
             else {
                 $this->fail('use `jwt:secret` generate token');
             }
-        } catch (AuthenticationException $e) {
+        }
+        catch (AuthenticationException $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -51,7 +52,6 @@ class PamAccountTest extends TestCase
         $exclude = TestingPam::exclude();
         $this->assertNotNull($exclude);
     }
-
 
     public function testPwdStrength(): void
     {

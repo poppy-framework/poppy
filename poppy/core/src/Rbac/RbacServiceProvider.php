@@ -4,11 +4,9 @@ declare(strict_types = 1);
 
 namespace Poppy\Core\Rbac;
 
-
 use Blade;
 use Illuminate\Support\ServiceProvider;
 use Poppy\Core\Rbac\Permission\PermissionManager;
-
 
 class RbacServiceProvider extends ServiceProvider
 {
@@ -23,6 +21,7 @@ class RbacServiceProvider extends ServiceProvider
 
     /**
      * Register the module services.
+     *
      * @return void
      */
     public function register()
@@ -62,6 +61,7 @@ class RbacServiceProvider extends ServiceProvider
 
     /**
      * Register the blade directives
+     *
      * @return void
      */
     private function bootRbacBladeDirectives()

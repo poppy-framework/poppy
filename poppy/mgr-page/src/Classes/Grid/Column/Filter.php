@@ -18,9 +18,6 @@ class Filter implements Renderable
      */
     protected $parent;
 
-    /**
-     * @param Column $column
-     */
     public function setParent(Column $column)
     {
         $this->parent = $column;
@@ -60,7 +57,7 @@ class Filter implements Renderable
         $query = $request->query();
         Arr::forget($query, [$this->getColumnName(), '_pjax']);
 
-        $question = $request->getBaseUrl() . $request->getPathInfo() == '/' ? '/?' : '?';
+        $question = '/' == $request->getBaseUrl() . $request->getPathInfo() ? '/?' : '?';
 
         return count($request->query()) > 0
             ? $request->url() . $question . http_build_query($query)
@@ -75,7 +72,7 @@ class Filter implements Renderable
     /**
      * @param string $key
      *
-     * @return array|null|string
+     * @return array|string|null
      */
     protected function trans($key)
     {

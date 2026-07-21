@@ -86,7 +86,6 @@ class ArrayHelperTest extends TestCase
         $this->assertEquals(['', [], '5'], $return);
     }
 
-
     public function testFindKey()
     {
         $arr = [

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Third Party Services
@@ -46,11 +45,11 @@ return [
     'kr36'      => [
         'demo' => [
             'secret'      => env('KR36_DEMO_SECRET'),
-            'description' => 'Demo'
+            'description' => 'Demo',
         ],
         'kjs' => [
             'secret'      => env('KR36_DEVELOP_SECRET'),
-            'description' => 'Demo'
-        ]
-    ]
+            'description' => 'Demo',
+        ],
+    ],
 ];

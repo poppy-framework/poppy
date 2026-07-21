@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\Core\Tests\Support;
 
-use Artisan;
 use Carbon\Carbon;
 use Exception;
 use Poppy\Framework\Application\TestCase;
@@ -14,24 +13,23 @@ use Throwable;
 
 class FunctionTest extends TestCase
 {
-
     public function testSysCacher(): void
     {
-        for ($i = 0; $i <= 2; $i++) {
+        for ($i = 0; $i <= 2; ++$i) {
             $timestamp = Carbon::now()->timestamp;
             $core      = sys_cacher('poppy.core.action.verification-clear', function () {
                 return Carbon::now()->timestamp;
             }, 2);
-            if ($i === 0) {
+            if (0 === $i) {
                 $this->assertEquals($timestamp, $core);
             }
             // 第一秒 未过期
-            if ($i === 1) {
+            if (1 === $i) {
                 $this->assertEquals($timestamp - 1, $core);
             }
 
             // 第二秒已经过期
-            if ($i === 2) {
+            if (2 === $i) {
                 $this->assertEquals($timestamp, $core);
             }
             sleep(1);
@@ -59,7 +57,8 @@ class FunctionTest extends TestCase
         $queryError = null;
         try {
             PamAccount::whereNotNull('column_not_exist')->first();
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $queryError = $e;
         }
         $resp = new Resp(112233, $this->faker()->words(12, true));
@@ -88,5 +87,4 @@ class FunctionTest extends TestCase
         sys_error(self::class, $queryError);
         $this->assertTrue(true);
     }
-
 }

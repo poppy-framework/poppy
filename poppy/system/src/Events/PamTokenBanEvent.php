@@ -11,21 +11,18 @@ use Poppy\System\Models\PamToken;
  */
 class PamTokenBanEvent
 {
-
     /**
      * @var string
      */
     public $type;
 
     /**
-     * @var \Poppy\System\Models\PamToken
+     * @var PamToken
      */
     public $token;
 
-
     /**
-     * @param PamToken $token
-     * @param string   $type [ip|通过IP禁用;device|通过设备禁用;token|通过Token禁用]
+     * @param string $type [ip|通过IP禁用;device|通过设备禁用;token|通过Token禁用]
      */
     public function __construct(PamToken $token, string $type)
     {

@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormUpload extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '文件上传';
-
 
     public function data(): array
     {

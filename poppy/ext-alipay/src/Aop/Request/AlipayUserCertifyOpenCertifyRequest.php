@@ -3,10 +3,12 @@
 declare(strict_types = 1);
 
 namespace Poppy\Extension\Alipay\Aop\Request;
+
 /**
  * ALIPAY API: alipay.user.certify.open.certify request
  *
  * @author auto create
+ *
  * @since  1.0, 2019-07-11 19:50:01
  */
 class AlipayUserCertifyOpenCertifyRequest
@@ -24,7 +26,7 @@ class AlipayUserCertifyOpenCertifyRequest
 
     private $prodCode;
 
-    private $apiVersion = "1.0";
+    private $apiVersion = '1.0';
 
     private $notifyUrl;
 
@@ -40,12 +42,12 @@ class AlipayUserCertifyOpenCertifyRequest
     public function setBizContent($bizContent)
     {
         $this->bizContent              = $bizContent;
-        $this->apiParas["biz_content"] = $bizContent;
+        $this->apiParas['biz_content'] = $bizContent;
     }
 
     public function getApiMethodName()
     {
-        return "alipay.user.certify.open.certify";
+        return 'alipay.user.certify.open.certify';
     }
 
     public function getNotifyUrl()
@@ -120,9 +122,6 @@ class AlipayUserCertifyOpenCertifyRequest
 
     public function setNeedEncrypt($needEncrypt)
     {
-
         $this->needEncrypt = $needEncrypt;
-
     }
-
 }

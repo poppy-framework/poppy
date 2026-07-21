@@ -12,7 +12,8 @@ use Poppy\MgrPage\Classes\Grid\ListBase;
 class ListGridUser extends ListBase
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns(): void
@@ -20,10 +21,8 @@ class ListGridUser extends ListBase
         $this->column('pam.username', 'UserName');
     }
 
-
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {

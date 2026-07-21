@@ -10,7 +10,6 @@ use Validator;
 
 class ValidationTest extends TestCase
 {
-
     public function testMobile(): void
     {
         $mobile    = '17787876656';
@@ -28,7 +27,6 @@ class ValidationTest extends TestCase
             $this->assertTrue(true);
         }
     }
-
 
     public function testIn(): void
     {
@@ -64,7 +62,6 @@ class ValidationTest extends TestCase
         }
     }
 
-
     public function testJson(): void
     {
         $json      = '{}';
@@ -79,10 +76,8 @@ class ValidationTest extends TestCase
         }
     }
 
-
     /**
      * 日期范围
-     * @return void
      */
     public function testDateRange(): void
     {
@@ -122,7 +117,6 @@ class ValidationTest extends TestCase
             $this->assertTrue(true);
         }
     }
-
 
     public function testChid(): void
     {
@@ -176,7 +170,6 @@ class ValidationTest extends TestCase
         }
     }
 
-
     public function testLength(): void
     {
         $str       = '我是中国人';
@@ -229,7 +222,6 @@ class ValidationTest extends TestCase
             $this->assertTrue(true);
         }
     }
-
 
     public function testStartWith(): void
     {

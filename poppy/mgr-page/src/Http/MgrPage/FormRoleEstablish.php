@@ -15,17 +15,11 @@ use Route;
 
 class FormRoleEstablish extends FormWidget
 {
-
     public $ajax = true;
-
 
     private int $id;
 
-    /**
-     * @var PamRole
-     */
     private PamRole $item;
-
 
     public function __construct(array $data = [])
     {
@@ -36,7 +30,6 @@ class FormRoleEstablish extends FormWidget
             $this->item = PamRole::findOrFail($id);
         }
     }
-
 
     /**
      * @throws AuthorizationException
@@ -50,6 +43,7 @@ class FormRoleEstablish extends FormWidget
         if ($Role->establish($validated, $this->id)) {
             return Resp::success('操作成功', '_top_reload|1;id|' . $Role->getRole()->id);
         }
+
         return Resp::error($Role->getError());
     }
 
@@ -62,6 +56,7 @@ class FormRoleEstablish extends FormWidget
                 'type'  => $this->item->type,
             ];
         }
+
         return [];
     }
 

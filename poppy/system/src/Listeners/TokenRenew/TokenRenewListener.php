@@ -13,9 +13,10 @@ class TokenRenewListener
 {
     /**
      * Handle the event.
+     *
      * @param TokenRenewEvent $event 用户账号
-     * @return void
-     * @throws ApplicationException |Exception
+     *
+     * @throws ApplicationException|Exception
      */
     public function handle(TokenRenewEvent $event): void
     {

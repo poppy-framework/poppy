@@ -14,7 +14,6 @@ use Throwable;
 
 class MailTest extends TestCase
 {
-
     private $mail;
 
     /**
@@ -40,7 +39,8 @@ class MailTest extends TestCase
         try {
             Mail::to($this->mail)->send(new TestMail($content));
             $this->assertTrue(true);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->assertFalse(false, $e->getMessage());
         }
     }
@@ -53,7 +53,8 @@ class MailTest extends TestCase
         try {
             Mail::to($this->mail)->send(new MaintainMail('Mail Title', 'Mail Content'));
             $this->assertTrue(true);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->assertFalse(false, $e->getMessage());
         }
     }

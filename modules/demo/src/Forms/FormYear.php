@@ -6,13 +6,12 @@ use Poppy\Framework\Validation\Rule;
 
 class FormYear extends FormBaseWidget
 {
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Year';
-
 
     /**
      * Build a form here.

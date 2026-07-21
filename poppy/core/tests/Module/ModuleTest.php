@@ -14,9 +14,7 @@ use Poppy\Framework\Application\TestCase;
 
 class ModuleTest extends TestCase
 {
-
     use CoreTrait;
-
 
     public function setUp(): void
     {

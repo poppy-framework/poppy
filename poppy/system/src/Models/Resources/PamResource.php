@@ -13,9 +13,8 @@ use Poppy\System\Models\SysConfig;
  */
 class PamResource extends Resource
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function toArray($request): array
     {
@@ -25,7 +24,7 @@ class PamResource extends Resource
             'mobile'         => $this->mobile,
             'email'          => $this->email,
             'type'           => $this->type,
-            'is_enable'      => $this->is_enable === SysConfig::YES ? 'Y' : 'N',
+            'is_enable'      => SysConfig::YES === $this->is_enable ? 'Y' : 'N',
             'disable_reason' => $this->disable_reason,
             'created_at'     => $this->created_at->toDatetimeString(),
         ];

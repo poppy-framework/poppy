@@ -10,7 +10,6 @@ trait HasQuickButton
 {
     /**
      * 快捷操作
-     * @var array
      */
     protected array $quickButtons = [];
 
@@ -27,7 +26,6 @@ trait HasQuickButton
     /**
      * Disable export.
      *
-     * @param bool $disable
      * @return $this
      */
     public function disableQuickButton(bool $disable = true): self
@@ -39,13 +37,12 @@ trait HasQuickButton
      * Get create url.
      *
      * @param array|Closure $buttons
-     * @return array
      */
     public function appendQuickButton($buttons): array
     {
         if (is_array($buttons) && count($buttons)) {
             foreach ($buttons as $button) {
-                if (!($button instanceof Renderable)) {
+                if (!$button instanceof Renderable) {
                     continue;
                 }
                 $this->quickButtons[] = $button;
@@ -57,13 +54,12 @@ trait HasQuickButton
             $buttons($operations);
             $this->operations = $operations;
         }
+
         return $this->quickButtons;
     }
 
     /**
      * Render create button for grid.
-     *
-     * @return string
      */
     public function renderQuickButton(): string
     {
@@ -72,11 +68,13 @@ trait HasQuickButton
             foreach ($this->quickButtons as $quickButton) {
                 $append .= $quickButton->render();
             }
+
             return $append;
         }
         if ($this->operations instanceof Operations) {
             return $this->operations->render();
         }
+
         return '';
     }
 }

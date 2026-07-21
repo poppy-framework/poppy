@@ -32,6 +32,7 @@ trait ViewTrait
      * @param array  $mergeData mergeData
      *
      * @return View
+     *
      * @throws BindingResolutionException
      */
     protected function view($template, array $data = [], $mergeData = [])

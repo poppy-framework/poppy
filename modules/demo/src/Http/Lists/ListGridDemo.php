@@ -15,9 +15,9 @@ use Poppy\MgrPage\Classes\Operations;
 
 class ListGridDemo extends ListBase
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns()
@@ -69,10 +69,8 @@ class ListGridDemo extends ListBase
         });
     }
 
-
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {
@@ -138,7 +136,6 @@ class ListGridDemo extends ListBase
             });
         };
     }
-
 
     public function quickButtons()
     {

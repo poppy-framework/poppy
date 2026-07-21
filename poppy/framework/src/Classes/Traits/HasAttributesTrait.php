@@ -11,12 +11,14 @@ trait HasAttributesTrait
 {
     /**
      * attributes
-     * @var array $attributes
+     *
+     * @var array
      */
     protected $attributes;
 
     /**
      * Get the instance as an array.
+     *
      * @return array
      */
     public function toArray()
@@ -26,8 +28,10 @@ trait HasAttributesTrait
 
     /**
      * get
+     *
      * @param string $offset  offset
      * @param null   $default default
+     *
      * @return null
      */
     public function get(string $offset, $default = null)
@@ -37,7 +41,9 @@ trait HasAttributesTrait
 
     /**
      * Whether a offset exists.
+     *
      * @param mixed $offset offset
+     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -47,8 +53,8 @@ trait HasAttributesTrait
 
     /**
      * Offset to retrieve.
+     *
      * @param mixed $offset offset
-     * @return mixed
      */
     public function offsetGet($offset)
     {
@@ -57,6 +63,7 @@ trait HasAttributesTrait
 
     /**
      * Offset to set.
+     *
      * @param mixed $offset offset
      * @param mixed $value  value
      */
@@ -67,6 +74,7 @@ trait HasAttributesTrait
 
     /**
      * Offset to unset.
+     *
      * @param mixed $offset offset
      */
     public function offsetUnset($offset)
@@ -76,6 +84,7 @@ trait HasAttributesTrait
 
     /**
      * Specify data which should be serialized to JSON.
+     *
      * @return array
      */
     public function jsonSerialize()

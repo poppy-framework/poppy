@@ -8,17 +8,14 @@ class PyVersionDef
 {
     /**
      * 当前最大版本号缓存
-     * @return string
      */
     public static function ckMaxVersion(): string
     {
         return 'max-version';
     }
 
-
     /**
      * 当前所有版本
-     * @return string
      */
     public static function ckVersions(): string
     {

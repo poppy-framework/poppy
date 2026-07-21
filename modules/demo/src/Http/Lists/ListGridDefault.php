@@ -9,9 +9,9 @@ use Poppy\MgrPage\Classes\Grid\ListBase;
 
 class ListGridDefault extends ListBase
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns()

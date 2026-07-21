@@ -17,15 +17,13 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Modules extends Repository
 {
-
-    /**
-     * @var bool
-     */
     protected bool $loadFromCache = true;
 
     /**
      * Initialize.
+     *
      * @param Collection $slugs 集合
+     *
      * @throws LoadConfigurationException
      */
     public function initialize(Collection $slugs)
@@ -62,40 +60,32 @@ class Modules extends Repository
         );
     }
 
-    /**
-     * @return Collection
-     */
     public function enabled(): Collection
     {
         return $this->filter(function (Module $module) {
-            return $module->get('enabled') === true;
+            return true === $module->get('enabled');
         });
     }
 
-    /**
-     * @return Collection
-     */
     public function loaded(): Collection
     {
         return $this->filter(function (Module $module) {
-            return $module->get('initialized') === true;
+            return true === $module->get('initialized');
         });
     }
 
-    /**
-     * @return Collection
-     */
     public function notLoaded(): Collection
     {
         return $this->filter(function (Module $module) {
-            return $module->get('initialized') === false;
+            return false === $module->get('initialized');
         });
     }
 
     /**
      * Load configuration from module configurations folder.
+     *
      * @param string $directory 字典
-     * @return Collection
+     *
      * @throws LoadConfigurationException
      */
     protected function loadConfigurations(string $directory): Collection
@@ -108,7 +98,7 @@ class Modules extends Repository
             // put it in filename key
             collect($files->files($directory))->each(function (SplFileInfo $file) use ($configurations, $files) {
                 $name = basename($file->getBasename(), '.yaml');
-                if ($name !== 'module' && $files->isReadable($file)) {
+                if ('module' !== $name && $files->isReadable($file)) {
                     $configurations->put($name, Yaml::parse(file_get_contents($file->getPathname())));
                 }
             });

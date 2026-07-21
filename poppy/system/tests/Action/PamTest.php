@@ -15,9 +15,9 @@ use Throwable;
 
 class PamTest extends TestCase
 {
-
     /**
      * 验证码注册
+     *
      * @throws ApplicationException
      */
     public function testCaptchaLogin(): void
@@ -39,13 +39,15 @@ class PamTest extends TestCase
             else {
                 $this->fail($Pam->getError());
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
     }
 
     /**
      * 空密码注册
+     *
      * @throws ApplicationException
      */
     public function testRegisterWithEmptyPassword(): void
@@ -61,7 +63,8 @@ class PamTest extends TestCase
             else {
                 $this->fail($Pam->getError());
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
 
@@ -77,7 +80,8 @@ class PamTest extends TestCase
                 else {
                     $this->assertTrue(true);
                 }
-            } catch (ApplicationException $e) {
+            }
+            catch (ApplicationException $e) {
                 $this->fail($e->getMessage());
             }
         }
@@ -101,11 +105,11 @@ class PamTest extends TestCase
             else {
                 $this->fail($Pam->getError());
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
     }
-
 
     /**
      * @throws ApplicationException
@@ -122,7 +126,6 @@ class PamTest extends TestCase
             $this->fail($Pam->getError());
         }
     }
-
 
     /**
      * @throws SettingKeyNotMatchException

@@ -7,21 +7,19 @@ namespace Poppy\MgrPage\Classes\Actions;
 use BadMethodCallException;
 use Exception;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
 
 /**
- * @method    success($title, $text = '', $options = [])
- * @method    error($title, $text = '', $options = [])
- * @method    warning($title, $text = '', $options = [])
- * @method    info($title, $text = '', $options = [])
- * @method    question($title, $text = '', $options = [])
- * @method    confirm($title, $text = '', $options = [])
- * @method    modalLarge()
- * @method    modalSmall()
+ * @method success($title, $text = '', $options = [])
+ * @method error($title, $text = '', $options = [])
+ * @method warning($title, $text = '', $options = [])
+ * @method info($title, $text = '', $options = [])
+ * @method question($title, $text = '', $options = [])
+ * @method confirm($title, $text = '', $options = [])
+ * @method modalLarge()
+ * @method modalSmall()
  */
 abstract class Action implements Renderable
 {
-
     /**
      * @var array
      */
@@ -57,16 +55,10 @@ abstract class Action implements Renderable
      */
     protected $attributes = [];
 
-
-
-    /**
-     * @return mixed
-     */
     public function render()
     {
         return $this->html();
     }
-
 
     /**
      * Get batch action title.
@@ -128,9 +120,6 @@ abstract class Action implements Renderable
         return $this->method;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCalledClass()
     {
         return str_replace('\\', '_', get_called_class());
@@ -145,8 +134,6 @@ abstract class Action implements Renderable
     }
 
     /**
-     * @param Request $request
-     *
      * @return $this
      */
     public function validate()
@@ -156,15 +143,12 @@ abstract class Action implements Renderable
 
     /**
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
      *
-     * @return mixed
      * @throws Exception
-     *
      */
     public function __call($method, $arguments = [])
     {
-
         throw new BadMethodCallException("Method {$method} does not exist.");
     }
 

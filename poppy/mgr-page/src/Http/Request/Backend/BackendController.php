@@ -17,9 +17,6 @@ abstract class BackendController extends Controller
 {
     use PoppyTrait;
 
-    /**
-     * @var PamAccount|null
-     */
     protected ?PamAccount $pam;
 
     public function __construct()
@@ -33,6 +30,7 @@ abstract class BackendController extends Controller
                     '_pam' => $this->pam,
                 ]);
             }
+
             return $next($request);
         });
         $this->withViews();
@@ -41,7 +39,6 @@ abstract class BackendController extends Controller
     /**
      * 当前用户
      * 因为这里的用户也不一定有值, 而且 $this->pam 中也存在此数据, 所以这里打算废弃此引用
-     * @return PamAccount|null
      */
     public function pam(): ?PamAccount
     {
@@ -50,6 +47,7 @@ abstract class BackendController extends Controller
 
     /**
      * seo
+     *
      * @param mixed ...$args args
      */
     protected function seo(...$args): void
@@ -60,8 +58,8 @@ abstract class BackendController extends Controller
             'poppy.framework.description' => sys_setting('py-system::site.description'),
         ]);
         [$title, $description] = parse_seo($args);
-        $title       = $title ? $title . '-' . config('poppy.framework.title') : config('poppy.framework.title');
-        $description = $description ?: config('poppy.framework.description');
+        $title                 = $title ? $title . '-' . config('poppy.framework.title') : config('poppy.framework.title');
+        $description           = $description ?: config('poppy.framework.description');
 
         $this->title = $title;
 

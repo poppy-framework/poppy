@@ -23,7 +23,6 @@ class Select extends Field
      */
     protected $config = [];
 
-
     protected $placeholder = '请选择';
 
     /**
@@ -47,19 +46,15 @@ class Select extends Field
         });
 
         $this->options = $opts->toArray();
+
         return $this;
     }
 
     /**
-     * @param array $groups
-     */
-
-    /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function render()
     {
-
         if ($this->options instanceof Closure) {
             if ($this->form) {
                 $this->options = $this->options->bindTo($this->form->model());
@@ -91,8 +86,6 @@ class Select extends Field
      *        ],
      *        ...
      *     ]
-     *
-     * @param array $groups
      *
      * @return $this
      */
@@ -148,6 +141,7 @@ class Select extends Field
 
     /**
      * 使用 layui 自带的 lay-search 来对搜索进行支持
+     *
      * @return $this
      */
     public function searchable(): self
@@ -155,6 +149,7 @@ class Select extends Field
         $this->attribute([
             'lay-search',
         ]);
+
         return $this;
     }
 
@@ -164,7 +159,6 @@ class Select extends Field
      * all configurations see https://select2.org/configuration/options-api
      *
      * @param string $key
-     * @param mixed  $val
      *
      * @return $this
      */

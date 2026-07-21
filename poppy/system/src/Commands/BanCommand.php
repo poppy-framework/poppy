@@ -30,11 +30,13 @@ class BanCommand extends Command
             PamAccount::TYPE_BACKEND,
         ], true)) {
             $this->error('Account Type 类型错误');
+
             return 1;
         }
 
         if (strlen($value) < 10) {
             $this->error('请输入正确的设备信息(IP/设备信息)');
+
             return 1;
         }
 
@@ -54,10 +56,12 @@ class BanCommand extends Command
 
         if (!$Ban->establish($data)) {
             $this->error($Ban->getError()->getMessage());
+
             return 1;
         }
 
         $this->info('添加成功');
+
         return 0;
     }
 }

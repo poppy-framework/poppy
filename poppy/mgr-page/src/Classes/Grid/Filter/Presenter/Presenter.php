@@ -19,8 +19,6 @@ abstract class Presenter
 
     /**
      * Set parent filter.
-     *
-     * @param FilterItem $filter
      */
     public function setParent(FilterItem $filter)
     {
@@ -29,8 +27,6 @@ abstract class Presenter
 
     /**
      * @see https://stackoverflow.com/questions/19901850/how-do-i-get-an-objects-unqualified-short-class-name
-     *
-     * @return string
      */
     public function view(): string
     {
@@ -39,18 +35,15 @@ abstract class Presenter
         return 'py-mgr-page::tpl.filter.' . strtolower($reflect->getShortName());
     }
 
-    /**
-     */
     public function type(): string
     {
         $reflect = new ReflectionClass(static::class);
+
         return strtolower($reflect->getShortName());
     }
 
     /**
      * Set default value for filter.
-     *
-     * @param $default
      *
      * @return $this
      */
@@ -63,8 +56,6 @@ abstract class Presenter
 
     /**
      * Blade template variables for this presenter.
-     *
-     * @return array
      */
     public function variables(): array
     {

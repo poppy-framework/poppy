@@ -12,7 +12,6 @@ use Poppy\Framework\Application\Event;
  */
 class PoppyMigrateRefreshed extends Event
 {
-
     /**
      * @var Collection 模块
      */
@@ -24,8 +23,7 @@ class PoppyMigrateRefreshed extends Event
     private $option;
 
     /**
-     * @param Collection $module
-     * @param array      $option
+     * @param array $option
      */
     public function __construct(Collection $module, $option = [])
     {

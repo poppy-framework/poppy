@@ -8,7 +8,6 @@ use OpenApi\Annotations as OA;
 use Poppy\Framework\Classes\Resp;
 use Poppy\System\Http\Request\ApiV1\WebApiController;
 use Poppy\Version\Http\Request\ApiV1\Web\Version\VersionVersionRequest;
-use Poppy\Version\Http\Request\ApiV1\Web\Version\VersionVersionResponseBody;
 use Poppy\Version\Models\SysAppVersion;
 
 /**
@@ -24,16 +23,20 @@ class VersionController extends WebApiController
      *     tags={"Version"},
      *     summary="[Version]App 版本检测",
      *     description="检测当前 App 版本. 通过请求头 x-os 识别平台 (默认 android). 返回最新版本信息及是否需要强制更新.",
+     *
      *     @OA\Parameter(
      *         name="version",
      *         in="query",
      *         required=false,
      *         description="当前版本号 (默认 1.0.0)",
+     *
      *         @OA\Schema(type="string", default="1.0.0", example="1.0.0")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="获取版本成功",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/PoppyVersionVersionVersionResponseBody")
      *     ),
      * )
@@ -58,6 +61,7 @@ class VersionController extends WebApiController
         }
 
         $isUpgrade = SysAppVersion::isUpgrade($os, $current);
+
         return Resp::success('获取版本成功', [
             'download_url' => sys_get($latestVersion, 'download_url'),
             'description'  => sys_get($latestVersion, 'description'),

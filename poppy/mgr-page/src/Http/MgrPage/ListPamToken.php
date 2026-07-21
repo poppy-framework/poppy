@@ -12,21 +12,21 @@ use Poppy\System\Models\PamToken;
 
 class ListPamToken extends ListBase
 {
-
     public $title = '登录用户管理';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns()
     {
-        $this->column('id', "ID")->sortable()->width(80);
-        $this->column('account_id', "用户ID");
-        $this->column('device_type', "设备类型");
-        $this->column('device_id', "设备ID");
-        $this->column('login_ip', "登录IP");
-        $this->column('expired_at', "过期时间");
+        $this->column('id', 'ID')->sortable()->width(80);
+        $this->column('account_id', '用户ID');
+        $this->column('device_type', '设备类型');
+        $this->column('device_id', '设备ID');
+        $this->column('login_ip', '登录IP');
+        $this->column('expired_at', '过期时间');
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var PamToken $item */
             $item = $actions->row;

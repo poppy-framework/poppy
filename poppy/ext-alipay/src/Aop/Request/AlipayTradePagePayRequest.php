@@ -3,10 +3,12 @@
 declare(strict_types = 1);
 
 namespace Poppy\Extension\Alipay\Aop\Request;
+
 /**
  * ALIPAY API: alipay.trade.page.pay request
  *
  * @author auto create
+ *
  * @since  1.0, 2019-08-02 16:40:01
  */
 class AlipayTradePagePayRequest
@@ -24,7 +26,7 @@ class AlipayTradePagePayRequest
 
     private $prodCode;
 
-    private $apiVersion = "1.0";
+    private $apiVersion = '1.0';
 
     private $notifyUrl;
 
@@ -40,12 +42,12 @@ class AlipayTradePagePayRequest
     public function setBizContent($bizContent)
     {
         $this->bizContent              = $bizContent;
-        $this->apiParas["biz_content"] = $bizContent;
+        $this->apiParas['biz_content'] = $bizContent;
     }
 
     public function getApiMethodName()
     {
-        return "alipay.trade.page.pay";
+        return 'alipay.trade.page.pay';
     }
 
     public function getNotifyUrl()
@@ -120,9 +122,6 @@ class AlipayTradePagePayRequest
 
     public function setNeedEncrypt($needEncrypt)
     {
-
         $this->needEncrypt = $needEncrypt;
-
     }
-
 }

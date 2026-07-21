@@ -9,7 +9,6 @@ use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
 class FormSettingAliyunPush extends FormSettingBase
 {
-
     protected $title = '推送配置';
 
     protected $group = 'py-aliyun-push::push';

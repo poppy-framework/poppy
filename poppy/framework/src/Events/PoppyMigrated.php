@@ -23,8 +23,7 @@ class PoppyMigrated extends Event
     private $option;
 
     /**
-     * @param Collection $module
-     * @param array      $option
+     * @param array $option
      */
     public function __construct(Collection $module, $option = [])
     {

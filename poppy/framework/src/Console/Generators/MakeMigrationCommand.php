@@ -12,11 +12,11 @@ use Poppy\Framework\Classes\Traits\MigrationTrait;
  */
 class MakeMigrationCommand extends Command
 {
-
     use MigrationTrait;
 
     /**
      * The name and signature of the console command.
+     *
      * @var string
      */
     protected $signature = 'poppy:migration
@@ -28,6 +28,7 @@ class MakeMigrationCommand extends Command
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Create a new module migration file';
@@ -56,6 +57,7 @@ class MakeMigrationCommand extends Command
 
         if (!app('files')->exists(base_path($options['--path']))) {
             $this->error('Path `' . $options['--path'] . '` not exists');
+
             return;
         }
 

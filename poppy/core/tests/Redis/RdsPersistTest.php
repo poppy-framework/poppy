@@ -45,7 +45,7 @@ class RdsPersistTest extends TestCase
 
         $items = [];
         $rand  = rand(4, 30);
-        for ($i = 0; $i < $rand; $i++) {
+        for ($i = 0; $i < $rand; ++$i) {
             $items[] = $item();
         }
 
@@ -56,9 +56,9 @@ class RdsPersistTest extends TestCase
         $this->assertEquals($maxId + $rand, DB::table('sys_test_persist')->max('id'));
     }
 
-
     /**
      * 修改测试
+     *
      * @throws TransactionException
      * @throws ApplicationException
      */
@@ -162,21 +162,20 @@ class RdsPersistTest extends TestCase
         $this->assertEquals(0, $result['preserve']);
         $this->assertEquals(8, $result['force']);
 
-
         $purColumn = function ($keys) {
             $columns = [];
             foreach ($keys as $key) {
                 preg_match('/(?<column>[a-zA-Z0-9_]+)(\[(?<operator>\+|-|\.)])?/i', $key, $match);
                 $columns[] = $match['column'];
             }
+
             return $columns;
         };
         $columns   = $purColumn(array_keys($update));
         $this->assertEquals('force', $columns[2]);
-
     }
 
-    public function testParseUpdateWithDiff():void
+    public function testParseUpdateWithDiff(): void
     {
         $init = [
             'add' => 0,
@@ -189,7 +188,7 @@ class RdsPersistTest extends TestCase
         $this->assertCount(2, array_keys($result));
     }
 
-    private function initOne():void
+    private function initOne(): void
     {
         // insert data
         DB::table('sys_test_persist')->insert([

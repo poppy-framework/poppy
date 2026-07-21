@@ -24,6 +24,7 @@ class BanController extends BackendController
 {
     /**
      * 设备
+     *
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -31,16 +32,17 @@ class BanController extends BackendController
     {
         $grid = new Grid(new PamBan());
         $grid->setLists(ListPamBan::class);
+
         return $grid->render();
     }
-
 
     public function status()
     {
         $type   = input('type');
         $key    = 'py-system::ban.status-' . $type;
         $status = sys_setting($key, SysConfig::STR_NO);
-        app('poppy.system.setting')->set($key, $status === 'Y' ? SysConfig::STR_NO : SysConfig::STR_YES);
+        app('poppy.system.setting')->set($key, 'Y' === $status ? SysConfig::STR_NO : SysConfig::STR_YES);
+
         return Resp::success('已切换', '_reload|1');
     }
 
@@ -48,15 +50,19 @@ class BanController extends BackendController
     {
         $type    = input('type');
         $key     = 'py-system::ban.type-' . $type;
-        $isBlank = sys_setting($key, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
+        $isBlank = PamBan::WB_TYPE_BLACK === sys_setting($key, PamBan::WB_TYPE_BLACK);
         app('poppy.system.setting')->set($key, $isBlank ? PamBan::WB_TYPE_WHITE : PamBan::WB_TYPE_BLACK);
+
         return Resp::success('已切换封禁模式', '_reload|1');
     }
 
     /**
      * 创建/编辑
+     *
      * @param null $id
+     *
      * @return array|JsonResponse|RedirectResponse|\Illuminate\Http\Response|Redirector|mixed|Resp|Response|string
+     *
      * @throws ApplicationException
      */
     public function establish($id = null)
@@ -64,23 +70,26 @@ class BanController extends BackendController
         $form = new FormBanEstablish();
         $form->setId($id);
         $form->setAccountType(input('type', PamAccount::TYPE_USER));
+
         return $form->render();
     }
 
     /**
      * 创建/编辑
+     *
      * @return array|JsonResponse|RedirectResponse|\Illuminate\Http\Response|Redirector|mixed|Resp|Response|string
      */
     public function setting()
     {
         $form = new FormSettingBan();
         $form->setAccountType(input('type', PamAccount::TYPE_USER));
+
         return $form->render();
     }
 
     /**
      * 删除
-     * @param $id
+     *
      * @return \Illuminate\Http\Response|JsonResponse|RedirectResponse
      */
     public function delete($id)
@@ -89,6 +98,7 @@ class BanController extends BackendController
         if (!$Ban->delete((int) $id)) {
             return Resp::error($Ban->getError());
         }
+
         return Resp::success('删除成功', '_reload|1');
     }
 }

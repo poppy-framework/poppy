@@ -12,7 +12,6 @@ use Poppy\Sms\Classes\ChuanglanSmsProvider;
  */
 class ChuanglanTest extends BaseSms
 {
-
     public function setUp(): void
     {
         parent::setUp();

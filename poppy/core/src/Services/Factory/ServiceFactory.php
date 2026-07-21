@@ -22,8 +22,10 @@ class ServiceFactory
 
     /**
      * 钩子
+     *
      * @param string $id     钩子标示符
      * @param array  $params 参数
+     *
      * @return null
      */
     public function parse(string $id, array $params = [])
@@ -41,11 +43,13 @@ class ServiceFactory
         if (is_callable([$this, $method])) {
             return $this->$method($hooks, $params);
         }
+
         return null;
     }
 
     /**
      * 分析数组
+     *
      * @throws ApplicationException
      */
     protected function parseArray(array $hooks): array
@@ -70,9 +74,10 @@ class ServiceFactory
 
     /**
      * 分析数组
+     *
      * @param array $hooks  Hook
      * @param array $params 参数
-     * @return array
+     *
      * @throws ApplicationException
      */
     protected function parseSimpleArray(array $hooks, $params = []): array
@@ -84,13 +89,16 @@ class ServiceFactory
             }
             $collect[] = $hook;
         });
+
         return $collect;
     }
 
     /**
      * 解析 Html, 多组
+     *
      * @param array $hooks  钩子
      * @param array $params 参数
+     *
      * @return string
      */
     protected function parseHtml(array $hooks, $params = [])
@@ -110,8 +118,10 @@ class ServiceFactory
 
     /**
      * 分析表单
+     *
      * @param string $builder 构建器
      * @param array  $params  参数
+     *
      * @return HtmlString|mixed
      */
     protected function parseForm($builder, $params)

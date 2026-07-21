@@ -7,13 +7,12 @@ use Poppy\MgrPage\Http\MgrPage\FormSettingSite;
 
 class SettingsKeyA implements ServiceArray
 {
-
     public function key(): string
     {
         return 'demo.key-a';
     }
 
-    public function data():array
+    public function data(): array
     {
         return [
             'title' => 'KEY-A',

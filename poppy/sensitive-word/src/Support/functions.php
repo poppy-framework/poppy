@@ -9,8 +9,10 @@ if (!function_exists('sensitive_words')) {
     /**
      * 词汇过滤
      * Check : 非法返回 false
+     *
      * @param string $words  词汇
      * @param string $action 动作
+     *
      * @return bool|array
      */
     function sensitive_words(string $words, string $action = Words::TYPE_CHECK)
@@ -24,7 +26,7 @@ if (!function_exists('sensitive_words')) {
 
         $isIllegal = false;
         if ($Sensitive) {
-            if ($action !== Words::TYPE_CHECK) {
+            if (Words::TYPE_CHECK !== $action) {
                 $Sensitive->setSearchAllIllegal(true);
             }
             $isIllegal = $Sensitive->illegal($words);

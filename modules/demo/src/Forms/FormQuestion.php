@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormQuestion extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Question(问题)';
-
 
     /**
      * Build a form here.
@@ -33,6 +31,5 @@ class FormQuestion extends FormBaseWidget
     ->help('关键词支持字符串,可以通过拖拽来调整顺序');
 CODE;
         $this->code('code', 'Code')->default($code);
-
     }
 }

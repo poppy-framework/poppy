@@ -9,9 +9,7 @@ use Poppy\MgrPage\Classes\Form\Field;
 
 class Radio extends Field
 {
-
     protected $inline = true;
-
 
     /**
      * Set options.
@@ -51,7 +49,7 @@ class Radio extends Field
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function render()
     {

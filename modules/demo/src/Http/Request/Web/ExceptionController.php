@@ -29,11 +29,13 @@ use Poppy\System\Models\PamAccount;
  */
 class ExceptionController extends WebController
 {
-
     /**
      * @api               {get} demo/exception/{type} [Demo]FirstOrFail 异常
+     *
      * @apiVersion        1.0.0
+     *
      * @apiName           DemoWebExceptionFirstOrFail
+     *
      * @apiGroup          Demo
      */
 
@@ -45,8 +47,10 @@ class ExceptionController extends WebController
         $method = Str::studly($type);
         if (is_callable([$this, $method])) {
             $this->$method();
+
             return Resp::error('异常, 未拦截');
         }
+
         return Resp::success('无异常');
     }
 
@@ -55,16 +59,16 @@ class ExceptionController extends WebController
         PamAccount::findOrFail(PamAccount::max('id') + 1);
     }
 
-
     /**
      * 此 curl 应该报错并应该搜集异常
+     *
      * @return void
      */
     public function curl()
     {
         $curl = new Curl();
         $curl->setHeaders([
-            'x-exception' => null
+            'x-exception' => null,
         ]);
         $curl->get('https://www.baidu.com');
     }
@@ -93,7 +97,6 @@ class ExceptionController extends WebController
     }
 
     /**
-     * @return mixed
      * @throws AuthenticationException
      */
     public function authentication()
@@ -103,7 +106,6 @@ class ExceptionController extends WebController
 
     public function validationAuto(ExceptionAutoRequest $request)
     {
-
     }
 
     /**
@@ -124,8 +126,6 @@ class ExceptionController extends WebController
         $input = $request->validated();
     }
 
-    /**
-     */
     public function query()
     {
         PamAccount::where('column_not_exist', 'some-thing')->first();
@@ -133,7 +133,6 @@ class ExceptionController extends WebController
 
     public function validationPolicy(ExceptionPolicyRequest $request)
     {
-
     }
 
     /**
@@ -141,9 +140,6 @@ class ExceptionController extends WebController
      */
     public function application()
     {
-        throw (new ApplicationException())->setContext([
-            'user' => 'duoli',
-            'data' => URL::full(),
-        ]);
+        throw (new ApplicationException())->setContext(['user' => 'duoli', 'data' => URL::full()]);
     }
 }

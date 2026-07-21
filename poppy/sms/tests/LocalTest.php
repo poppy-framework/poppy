@@ -12,7 +12,6 @@ use Poppy\Sms\Classes\LocalSmsProvider;
  */
 class LocalTest extends BaseSms
 {
-
     /**
      * 测试短信发送
      */

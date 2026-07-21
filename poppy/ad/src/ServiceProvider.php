@@ -10,14 +10,15 @@ use Poppy\Framework\Support\PoppyServiceProvider;
 
 class ServiceProvider extends PoppyServiceProvider
 {
-
     protected array $policies = [
         Models\SysAdPlace::class => Models\Policies\AdPlacePolicy::class,
     ];
 
     /**
      * Bootstrap the module services.
+     *
      * @return void
+     *
      * @throws ModuleNotFoundException
      */
     public function boot()
@@ -27,6 +28,7 @@ class ServiceProvider extends PoppyServiceProvider
 
     /**
      * Register the module services.
+     *
      * @return void
      */
     public function register()

@@ -12,15 +12,11 @@ class Row
 {
     /**
      * Row number.
-     *
-     * @var
      */
     public $number;
 
     /**
      * Row data.
-     *
-     * @var
      */
     protected $data;
 
@@ -38,9 +34,6 @@ class Row
 
     /**
      * Constructor.
-     *
-     * @param $number
-     * @param $data
      */
     public function __construct($number, $data, $keyName)
     {
@@ -51,8 +44,6 @@ class Row
 
     /**
      * Get the value of the model's primary key.
-     *
-     * @return mixed
      */
     public function getKey()
     {
@@ -104,8 +95,6 @@ class Row
 
     /**
      * Set attributes.
-     *
-     * @param array $attributes
      */
     public function setAttributes(array $attributes)
     {
@@ -132,8 +121,6 @@ class Row
 
     /**
      * Get data of this row.
-     *
-     * @return mixed
      */
     public function model()
     {
@@ -142,10 +129,6 @@ class Row
 
     /**
      * Getter.
-     *
-     * @param mixed $attr
-     *
-     * @return mixed
      */
     public function __get($attr)
     {
@@ -156,7 +139,6 @@ class Row
      * Get or set value of column in this row.
      *
      * @param string $name
-     * @param mixed  $value
      *
      * @return $this|mixed
      */
@@ -179,8 +161,6 @@ class Row
 
     /**
      * Output column value.
-     *
-     * @param mixed $value
      *
      * @return mixed|string
      */

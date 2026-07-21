@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-
 namespace Poppy\App\Http\Middlewares;
 
 use Closure;
@@ -15,12 +14,11 @@ use Poppy\Framework\Classes\Resp;
  */
 class AppSignMiddleware
 {
-
     /**
      * Handle an incoming request.
+     *
      * @param Request $request 请求
      * @param Closure $next    后续处理
-     * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
@@ -29,6 +27,7 @@ class AppSignMiddleware
         if (!$Sign->check($request->all())) {
             return Resp::error($Sign->getError());
         }
+
         return $next($request);
     }
 }

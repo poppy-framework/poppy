@@ -17,7 +17,6 @@ use Poppy\System\Http\Request\Web\WebController;
  */
 class HelperController extends WebController
 {
-
     /**
      * 主页
      */
@@ -36,7 +35,6 @@ class HelperController extends WebController
         return (new FormTreeHelper())->render();
     }
 
-
     public function imgStr(): void
     {
         ImgHelper::buildStr('Qianqian Li');
@@ -45,7 +43,7 @@ class HelperController extends WebController
     public function imgBmp(): void
     {
         $gd = imagecreatefrombmp(poppy_path('demo', 'tests/files/bear.bmp'));
-        header("Content-type:image/jpg");
+        header('Content-type:image/jpg');
         imagepng($gd);
         imagedestroy($gd);
     }
@@ -56,6 +54,7 @@ class HelperController extends WebController
         $content->title('表单示例')
             ->description('这里列出了所有表单的可能性的选项')
             ->body(new FormEntrance());
+
         return $content;
     }
 }

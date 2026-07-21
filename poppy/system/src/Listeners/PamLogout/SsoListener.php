@@ -15,13 +15,11 @@ use Throwable;
 class SsoListener
 {
     /**
-     * @param PamLogoutEvent $event
-     * @return void
      * @throws Throwable
      */
     public function handle(PamLogoutEvent $event): void
     {
-        if ($event->pam->type === PamAccount::TYPE_BACKEND) {
+        if (PamAccount::TYPE_BACKEND === $event->pam->type) {
             return;
         }
         $token = jwt_token();

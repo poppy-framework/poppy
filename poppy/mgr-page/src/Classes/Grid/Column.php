@@ -31,6 +31,7 @@ use RuntimeException;
 
 /**
  * Class Column.
+ *
  * @method $this switch ($states = [])
  * @method $this image($width = 20, $height = 20)
  * @method $this link($href = '', $target = '_blank')
@@ -40,6 +41,7 @@ use RuntimeException;
  * @method $this qrcode($formatter = null, $width = 150, $height = 150)
  * @method $this prefix($prefix, $delimiter = '&nbsp;')
  * @method $this suffix($suffix, $delimiter = '&nbsp;')
+ *
  * @property string $fixed
  * @property string $width
  * @property string $sortable
@@ -59,8 +61,6 @@ class Column
 
     /**
      * Displayer for grid column.
-     *
-     * @var array
      */
     public static array $displayers = [
         'switch'       => SwitchDisplay::class,
@@ -76,8 +76,6 @@ class Column
 
     /**
      * Defined columns.
-     *
-     * @var array
      */
     public static array $defined = [];
 
@@ -88,14 +86,8 @@ class Column
      */
     protected static $originalGridModels;
 
-    /**
-     * @var array
-     */
     protected static array $htmlAttributes = [];
 
-    /**
-     * @var array
-     */
     protected static array $rowAttributes = [];
 
     /**
@@ -110,35 +102,23 @@ class Column
 
     /**
      * Name of column.
-     *
-     * @var string
      */
     protected string $name;
 
     /**
      * Label of column.
-     *
-     * @var string
      */
     protected string $label;
 
-
-    /**
-     * @var string
-     */
     protected string $template = '';
 
     /**
      * Original value of column.
-     *
-     * @var mixed
      */
     protected $original;
 
     /**
      * Attributes of column.
-     *
-     * @var array
      */
     protected array $attributes = [];
 
@@ -178,6 +158,7 @@ class Column
 
     /**
      * 定义宽度
+     *
      * @var string
      */
     protected $width = 0;
@@ -187,29 +168,23 @@ class Column
      */
     private $editable = false;
 
-
     /**
      * 是否转义
-     * @var bool
      */
     private bool $escape = false;
 
     /**
      * 列定位
+     *
      * @var string
      */
     private $fixed = '';
 
     /**
      * 是否是最小宽度
-     * @var bool
      */
     private bool $minWidth;
 
-    /**
-     * @param string $name
-     * @param string $label
-     */
     public function __construct(string $name, string $label = '')
     {
         $this->name  = $name;
@@ -218,8 +193,6 @@ class Column
 
     /**
      * Set grid instance for column.
-     *
-     * @param Grid $grid
      */
     public function setGrid(Grid $grid)
     {
@@ -231,27 +204,26 @@ class Column
     public function editable(): self
     {
         $this->editable = true;
+
         return $this;
     }
-
 
     public function disableEscape(): self
     {
         $this->escape = false;
+
         return $this;
     }
 
     public function enableEscape(): self
     {
         $this->escape = true;
+
         return $this;
     }
 
-
     /**
      * Set model for column.
-     *
-     * @param $model
      */
     public function setModel($model)
     {
@@ -263,19 +235,19 @@ class Column
     /**
      * Set style of this column.
      *
-     * @param string $style
-     *
      * @return $this
      */
     public function style(string $style = ''): self
     {
         $this->style = $style . ($this->style ? ';' . $this->style : '');
+
         return $this;
     }
 
     public function template(string $tmpl = ''): self
     {
         $this->template = $tmpl;
+
         return $this;
     }
 
@@ -283,15 +255,16 @@ class Column
      * Set the width of column.
      *
      * @param string|int $width
+     *
      * @return $this
      */
     public function width($width, bool $min = false): self
     {
         $this->width    = $width;
         $this->minWidth = $min;
+
         return $this;
     }
-
 
     public function widthAsId(): self
     {
@@ -315,22 +288,21 @@ class Column
 
     /**
      * 标识列为可排序
-     * @return Column
      */
     public function sortable(): self
     {
         $this->sortable = true;
+
         return $this;
     }
 
     /**
      * 标识列为可fix 显示
-     * @param string $position
-     * @return Column
      */
     public function fixed(string $position = 'right'): self
     {
         $this->fixed = $position;
+
         return $this;
     }
 
@@ -345,7 +317,6 @@ class Column
     {
         return $this->addFilter(...func_get_args());
     }
-
 
     /**
      * Set column as searchable.
@@ -372,8 +343,6 @@ class Column
 
     /**
      * Bind search query to grid model.
-     *
-     * @param Model $model
      */
     public function bindSearchQuery(Model $model)
     {
@@ -386,8 +355,6 @@ class Column
 
     /**
      * Add a display callback.
-     *
-     * @param Closure $callback
      *
      * @return $this
      */
@@ -422,8 +389,7 @@ class Column
 
     /**
      * 替换输出, 并指定默认值, 可以用于状态值替换, 使用KV
-     * @param array  $values
-     * @param string $default
+     *
      * @return $this
      */
     public function using(array $values, string $default = ''): self
@@ -455,11 +421,13 @@ class Column
 
     /**
      * 当前列存在, 但是数据暂时隐藏掉
+     *
      * @return $this
      */
     public function hide(): self
     {
         $this->grid->hideColumns($this->name);
+
         return $this;
     }
 
@@ -491,7 +459,7 @@ class Column
 
     /**
      * 使用 gravatar 来显示头像图
-     * @param int $size
+     *
      * @return $this
      */
     public function gravatar(int $size = 25): self
@@ -502,6 +470,7 @@ class Column
                 md5(strtolower($value)),
                 $size
             );
+
             return "<img src='$src' alt='{$value}' class='img img-circle'/>";
         });
     }
@@ -520,6 +489,7 @@ class Column
             if (in_array($value, $values, true)) {
                 return '<i class="fa fa-refresh fa-spin text-info"></i>';
             }
+
             return Arr::get($others, $value, $value);
         });
     }
@@ -545,8 +515,6 @@ class Column
     /**
      * Returns a string formatted according to the given format string.
      *
-     * @param string $format
-     *
      * @return $this
      */
     public function date(string $format): self
@@ -558,9 +526,6 @@ class Column
 
     /**
      * Display column as boolean , `✓` for true, and `✗` for false.
-     *
-     * @param array $map
-     * @param bool  $default
      *
      * @return $this
      */
@@ -649,15 +614,12 @@ class Column
         if ($this->template) {
             $defines['templet'] = $this->template;
         }
+
         return $defines;
     }
 
     /**
      * Fill all data to every column.
-     *
-     * @param array $data
-     *
-     * @return mixed
      */
     public function fill(array $data)
     {
@@ -701,12 +663,13 @@ class Column
 
             return $this;
         }
+
         return $this->resolveDisplayer($method, $arguments);
     }
 
     /**
      * 获取类属性
-     * @param string $key
+     *
      * @return string
      */
     public function __get(string $key)
@@ -716,9 +679,6 @@ class Column
 
     /**
      * Extend column displayer.
-     *
-     * @param $name
-     * @param $displayer
      */
     public static function extend($name, $displayer)
     {
@@ -729,7 +689,6 @@ class Column
      * Define a column globally.
      *
      * @param string $name
-     * @param mixed  $definition
      */
     public static function define($name, $definition)
     {
@@ -738,8 +697,6 @@ class Column
 
     /**
      * 设置列的原始数据
-     *
-     * @param Collection $collection
      */
     public static function setOriginalGridModels(Collection $collection)
     {
@@ -750,8 +707,6 @@ class Column
      * Get column attributes.
      *
      * @param string $name
-     *
-     * @return mixed
      */
     public static function getAttributes($name, $key = null)
     {
@@ -805,10 +760,7 @@ class Column
     /**
      * Call all of the "display" callbacks column.
      *
-     * @param mixed $value
-     * @param int   $key
-     *
-     * @return mixed
+     * @param int $key
      */
     protected function callDisplayCallbacks($value, $key)
     {
@@ -818,8 +770,8 @@ class Column
             $callback = $this->bindOriginalRowModel($callback, $key);
             $value    = call_user_func_array($callback, [$value, $this]);
 
-            if (($value instanceof static) &&
-                ($last = array_pop($this->displayCallbacks))
+            if (($value instanceof static)
+                && ($last = array_pop($this->displayCallbacks))
             ) {
                 $last  = $this->bindOriginalRowModel($last, $key);
                 $value = call_user_func($last, $previous);
@@ -832,8 +784,7 @@ class Column
     /**
      * Set original grid data to column.
      *
-     * @param Closure $callback
-     * @param int     $key
+     * @param int $key
      *
      * @return Closure
      */
@@ -891,6 +842,7 @@ class Column
      * Convert characters to HTML entities recursively.
      *
      * @param array|string $item
+     *
      * @return array|string
      */
     protected function htmlEntityEncode($item)
@@ -910,9 +862,6 @@ class Column
     /**
      * Find a displayer to display column.
      *
-     * @param string $method
-     * @param array  $arguments
-     *
      * @return $this
      */
     protected function resolveDisplayer(string $method, array $arguments): self
@@ -920,14 +869,13 @@ class Column
         if (array_key_exists($method, static::$displayers)) {
             return $this->callBuiltinDisplayer(static::$displayers[$method], $arguments);
         }
+
         return $this->callSupportDisplayer($method, $arguments);
     }
 
     /**
      * Call Illuminate/Support displayer.
      *
-     * @param string $method
-     * @param array  $arguments
      * @return $this
      */
     protected function callSupportDisplayer(string $method, array $arguments): self
@@ -947,9 +895,6 @@ class Column
 
     /**
      * Call Builtin displayer.
-     *
-     * @param string $abstract
-     * @param array  $arguments
      *
      * @return $this
      */

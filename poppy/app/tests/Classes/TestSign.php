@@ -15,7 +15,6 @@ use Poppy\Framework\Exceptions\ApplicationException;
 
 class TestSign extends TestCase
 {
-
     /**
      * @throws ApplicationException
      * @throws Exception
@@ -44,7 +43,7 @@ class TestSign extends TestCase
             ],
         ];
 
-        $appid = $App->getItem()->id;;
+        $appid      = $App->getItem()->id;
         $Sign       = new DefaultAppSign();
         $calcParams = $Sign->sign($params, $appid, $App->getItem()->secret);
         if (!$Sign->check($calcParams)) {
@@ -56,9 +55,9 @@ class TestSign extends TestCase
         $this->assertTrue(true);
     }
 
-
     /**
      * 权限验证
+     *
      * @throws AppNotExistsException
      * @throws ApplicationException
      * @throws Exception
@@ -76,7 +75,7 @@ class TestSign extends TestCase
             $this->fail($App->getError()->getMessage());
         }
 
-        $appid = $App->getItem()->id;;
+        $appid = $App->getItem()->id;
         // 移除
         sys_tag('py-app')->del(AppDef::ckItem($appid));
 

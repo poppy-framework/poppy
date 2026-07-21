@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormSlider extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Slider(滑动选择)';
-
 
     /**
      * Build a form here.

@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-
 class CreateSysAreaTable extends Migration
 {
     /**
@@ -28,7 +27,6 @@ class CreateSysAreaTable extends Migration
             $table->charset   = 'utf8';
             $table->collation = 'utf8_general_ci';
         });
-
     }
 
     /**

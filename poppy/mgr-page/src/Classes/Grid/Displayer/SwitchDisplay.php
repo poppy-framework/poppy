@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 
 class SwitchDisplay extends AbstractDisplayer
 {
-
     protected array $states = [
         '1' => '开',
         '0' => '关',
@@ -25,15 +24,15 @@ class SwitchDisplay extends AbstractDisplayer
         }
         $name = $this->column->name;
 
-        if ($type === 'Y/N') {
-            $checked = $this->value === 'Y' ? 'checked' : '';
+        if ('Y/N' === $type) {
+            $checked = 'Y' === $this->value ? 'checked' : '';
         }
         else {
             $checked = $this->value ? 'checked' : '';
         }
 
-
         $id = Str::random();
+
         return <<<EOT
     <div class="layui-field-checkbox-item">
         <input type="checkbox" class="layui-field-checkbox" lay-ignore $checked id="$id" data-field="$name" data-type="$type" lay-event="switch" />
@@ -41,5 +40,4 @@ class SwitchDisplay extends AbstractDisplayer
     </div>
 EOT;
     }
-
 }

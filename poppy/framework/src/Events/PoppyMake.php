@@ -18,6 +18,7 @@ class PoppyMake extends Event
 
     /**
      * PoppyMake constructor.
+     *
      * @param string $slug slug
      */
     public function __construct(string $slug)

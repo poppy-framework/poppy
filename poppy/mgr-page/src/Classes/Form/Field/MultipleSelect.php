@@ -18,7 +18,7 @@ class MultipleSelect extends Select
     protected $otherKey;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function fill($data): void
     {
@@ -40,14 +40,14 @@ class MultipleSelect extends Select
         if (is_null($first)) {
             $this->value = null;
 
-            // MultipleSelect value store as an ont-to-many relationship.
+        // MultipleSelect value store as an ont-to-many relationship.
         }
         elseif (is_array($first)) {
             foreach ($relations as $relation) {
                 $this->value[] = Arr::get($relation, "pivot.{$this->getOtherKey()}");
             }
 
-            // MultipleSelect value store as a column.
+        // MultipleSelect value store as a column.
         }
         else {
             $this->value = $relations;
@@ -55,7 +55,7 @@ class MultipleSelect extends Select
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setOriginal($data)
     {
@@ -74,14 +74,14 @@ class MultipleSelect extends Select
         if (is_null($first)) {
             $this->original = null;
 
-            // MultipleSelect value store as an ont-to-many relationship.
+        // MultipleSelect value store as an ont-to-many relationship.
         }
         elseif (is_array($first)) {
             foreach ($relations as $relation) {
                 $this->original[] = Arr::get($relation, "pivot.{$this->getOtherKey()}");
             }
 
-            // MultipleSelect value store as a column.
+        // MultipleSelect value store as a column.
         }
         else {
             $this->original = $relations;
@@ -99,8 +99,8 @@ class MultipleSelect extends Select
      * Get other key for this many-to-many relation.
      *
      * @return string
-     * @throws Exception
      *
+     * @throws Exception
      */
     protected function getOtherKey()
     {
@@ -108,8 +108,8 @@ class MultipleSelect extends Select
             return $this->otherKey;
         }
 
-        if (is_callable([$this->form->model(), $this->column]) &&
-            ($relation = $this->form->model()->{$this->column}()) instanceof BelongsToMany
+        if (is_callable([$this->form->model(), $this->column])
+            && ($relation = $this->form->model()->{$this->column}()) instanceof BelongsToMany
         ) {
             /* @var BelongsToMany $relation */
             $fullKey      = $relation->getQualifiedRelatedPivotKeyName();

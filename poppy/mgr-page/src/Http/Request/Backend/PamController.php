@@ -51,6 +51,7 @@ class PamController extends BackendController
 
     /**
      * Display a listing of the resource.
+     *
      * @throws ApplicationException|Throwable
      */
     public function index()
@@ -104,7 +105,6 @@ class PamController extends BackendController
         return (new FormPamSetting())->render();
     }
 
-
     public function mobile()
     {
         return (new FormPamMobile())->render();
@@ -117,11 +117,13 @@ class PamController extends BackendController
         if (!$Pam->clearMobile($id)) {
             return Resp::error($Pam->getError());
         }
+
         return Resp::success('已清除此用户手机通行证', '_top_reload|1');
     }
 
     /**
      * @return Response|JsonResponse|RedirectResponse|string
+     *
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -138,6 +140,7 @@ class PamController extends BackendController
 
     /**
      * @return Response|JsonResponse|RedirectResponse|string
+     *
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -153,13 +156,15 @@ class PamController extends BackendController
         if (!$Ban->type($id, $type)) {
             return Resp::error($Ban->getError());
         }
+
         return Resp::success('禁用成功', '_top_reload|1');
     }
 
     /**
      * 删除用户的指定 Token
-     * @param $id
+     *
      * @return JsonResponse|RedirectResponse|Response
+     *
      * @throws Exception
      */
     public function deleteToken($id)
@@ -170,6 +175,7 @@ class PamController extends BackendController
         (new Sso())->banToken($item);
 
         event(new PamTokenBanEvent($item, 'token'));
+
         return Resp::error('删除用户成功, 用户已无法访问(需重新登录)', '_top_reload|1');
     }
 }

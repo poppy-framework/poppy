@@ -16,13 +16,15 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * 回调执行
+ *
  * @see        NotifyProJob
  * @deprecated 4.1 使用增强型替代, 对传参可以自定义
+ *
  * @removed    5.0
  */
 class NotifyJob extends Job implements ShouldQueue
 {
-    use  Queueable;
+    use Queueable;
 
     /**
      * @var string 请求网址
@@ -46,6 +48,7 @@ class NotifyJob extends Job implements ShouldQueue
 
     /**
      * 统计用户计算数量
+     *
      * @param string $url      请求的URL 地址
      * @param string $method   请求的方法
      * @param array  $params   请求的参数
@@ -79,11 +82,10 @@ class NotifyJob extends Job implements ShouldQueue
 
         $curl    = new Client();
         $options = [
-
             'timeout' => 10,
         ];
         try {
-            if ($this->method === 'post') {
+            if ('post' === $this->method) {
                 $resp = $curl->post($this->url, array_merge($options, [
                     'form_params' => $this->params,
                 ]));
@@ -94,7 +96,8 @@ class NotifyJob extends Job implements ShouldQueue
                 ]));
             }
             sys_info(self::class, $this->log($resp));
-        } catch (GuzzleException $e) {
+        }
+        catch (GuzzleException $e) {
             if ($this->execNum < count($timeMap)) {
                 $delayDesc = 'next will exec at (' . Carbon::now()->addSeconds($timeMap[$this->execNum])->toDateTimeString() . ')(' . $timeMap[$this->execNum] . 's)';
                 sys_error(self::class, $this->log($e, $delayDesc));
@@ -108,9 +111,8 @@ class NotifyJob extends Job implements ShouldQueue
 
     /**
      * 生成记录日志
+     *
      * @param GuzzleException|ResponseInterface $result
-     * @param string                            $append
-     * @return string
      */
     private function log($result, string $append = ''): string
     {

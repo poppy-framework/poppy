@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Poppy\MgrPage\Classes\Grid\Filter\Presenter;
 
@@ -11,6 +11,7 @@ class MultipleSelect extends Select
     public function size($size = 8): self
     {
         $this->size = $size;
+
         return $this;
     }
 

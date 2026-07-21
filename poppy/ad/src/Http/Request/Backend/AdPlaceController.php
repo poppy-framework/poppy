@@ -27,6 +27,7 @@ class AdPlaceController extends BackendController
 {
     /**
      * 广告位列表
+     *
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -37,6 +38,7 @@ class AdPlaceController extends BackendController
 
     /**
      * 创建/编辑广告位
+     *
      * @return Factory|JsonResponse|RedirectResponse|Response|Redirector|View
      */
     public function establish()
@@ -46,7 +48,9 @@ class AdPlaceController extends BackendController
 
     /**
      * 删除广告位
+     *
      * @param int $id 广告位ID
+     *
      * @return JsonResponse|RedirectResponse|Response
      */
     public function delete(int $id)

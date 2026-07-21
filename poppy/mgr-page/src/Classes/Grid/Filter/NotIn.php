@@ -7,7 +7,7 @@ namespace Poppy\MgrPage\Classes\Grid\Filter;
 class NotIn extends In
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected string $query = 'whereNotIn';
 }

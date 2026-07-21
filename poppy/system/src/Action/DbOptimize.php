@@ -13,14 +13,12 @@ use Poppy\System\Classes\PySystemDef;
  */
 class DbOptimize
 {
-
     /**
      * 是否开启
-     * @return bool
      */
     public function isOpen(): bool
     {
-        return sys_tag('py-system-persist')->get(PySystemDef::ckDbOptimize('is_open')) === 'Y';
+        return 'Y' === sys_tag('py-system-persist')->get(PySystemDef::ckDbOptimize('is_open'));
     }
 
     /**
@@ -69,8 +67,7 @@ class DbOptimize
             'bindings' => $event->bindings,
             'time'     => $event->time,
         ]);
+
         return true;
     }
-
-
 }

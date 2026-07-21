@@ -15,35 +15,35 @@
 <div>
     {!! Form::thumb('test') !!} <br> 这里的 pam 必须传递, 作为上传图片时候的身份验证
 </div>
-<pre class="layui-code"><?php echo '{{' ?> Form::thumb('thumb', null, ['pam' => $pam])}}</pre>
+<pre class="layui-code"><?php echo '{{'; ?> Form::thumb('thumb', null, ['pam' => $pam])}}</pre>
 <fieldset class="layui-elem-field layui-field-title">
     <legend>Y/N 选择</legend>
 </fieldset>
 <div>
     {!! Form::radios('is_enable',['N', 'Y']) !!}
 </div>
-<pre class="layui-code"><?php echo '{{' ?> Form::radios('is_enable', ['N', 'Y']) }}</pre>
+<pre class="layui-code"><?php echo '{{'; ?> Form::radios('is_enable', ['N', 'Y']) }}</pre>
 <fieldset class="layui-elem-field layui-field-title">
     <legend>Checkbox选择</legend>
 </fieldset>
 <div>
     {!! Form::checkboxes('is_enable[]', ['N', 'Y']) !!}
 </div>
-<pre class="layui-code"><?php echo '{{' ?> Form::checkboxes('is_enable[]', ['N', 'Y']) }}</pre>
+<pre class="layui-code"><?php echo '{{'; ?> Form::checkboxes('is_enable[]', ['N', 'Y']) }}</pre>
 <fieldset class="layui-elem-field layui-field-title">
     <legend>信息提示</legend>
 </fieldset>
 <div>
     {!! Form::tip('描述内容, 点击弹出显示详细') !!}
 </div>
-<pre class="layui-code"><?php echo '{{' ?> Form::tip('描述内容, 点击弹出显示详细') }}</pre>
+<pre class="layui-code"><?php echo '{{'; ?> Form::tip('描述内容, 点击弹出显示详细') }}</pre>
 <fieldset class="layui-elem-field layui-field-title">
     <legend>日期组件</legend>
 </fieldset>
 <div>
     {!! Form::datePicker('date', null, ['class' => 'layui-input']) !!}
 </div>
-<pre class="layui-code"><?php echo '{!! ' ?>
+<pre class="layui-code"><?php echo '{!! '; ?>
         Form::datePicker('date', null, ['class' => 'layui-input']) !!}</pre>
 <fieldset class="layui-elem-field layui-field-title">
     <legend>日期范围</legend>
@@ -51,28 +51,28 @@
 <div>
     {!! Form::dateRangePicker('date', null, ['class' => 'layui-input']) !!}
 </div>
-<pre class="layui-code"><?php echo '{!! ' ?> Form::dateRangePicker('date', null, ['class' => 'layui-input']) !!}</pre>
+<pre class="layui-code"><?php echo '{!! '; ?> Form::dateRangePicker('date', null, ['class' => 'layui-input']) !!}</pre>
 <fieldset class="layui-elem-field layui-field-title">
     <legend>月份范围</legend>
 </fieldset>
 <div>
     {!! Form::monthPicker('month', null, ['class' => 'layui-input']) !!}
 </div>
-<pre class="layui-code"><?php echo '{!! ' ?> Form::monthPicker('month', null, ['class' => 'layui-input']) !!}</pre>
+<pre class="layui-code"><?php echo '{!! '; ?> Form::monthPicker('month', null, ['class' => 'layui-input']) !!}</pre>
 <fieldset class="layui-elem-field layui-field-title">
     <legend>图片地址(生成随机图片地址, 布局使用)</legend>
 </fieldset>
 <div>
     {!! Html::image($faker->imageUrl(100, 50)) !!}
 </div>
-<pre class="layui-code"><?php echo '{!! ' ?> Html::image($faker->imageUrl(100, 50)) !!}</pre>
+<pre class="layui-code"><?php echo '{!! '; ?> Html::image($faker->imageUrl(100, 50)) !!}</pre>
 <fieldset class="layui-elem-field layui-field-title">
     <legend>多图上传</legend>
 </fieldset>
 <div>
     {!! Form::multiThumb('images', [], ['number' => 200]) !!}
 </div>
-<pre class="layui-code"><?php echo '{!! ' ?> Form::multiThumb('images', []) !!}</pre>
+<pre class="layui-code"><?php echo '{!! '; ?> Form::multiThumb('images', []) !!}</pre>
 {!! Form::close() !!}
 <script>
 layui.form.render();

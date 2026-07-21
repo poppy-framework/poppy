@@ -13,6 +13,7 @@ use Poppy\Framework\Validation\Rule;
  *     schema="PoppyContentContentDetailRequest",
  *     description="内容详情请求",
  *     required={"id"},
+ *
  *     @OA\Property(property="id", type="integer", description="内容 ID"),
  *     @OA\Property(property="cat_slug", type="string", nullable=true, description="分类标识 (用于过滤 prev/next)"),
  *     @OA\Property(property="cat_id", type="integer", nullable=true, description="分类 ID"),

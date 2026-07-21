@@ -5,10 +5,7 @@ declare(strict_types = 1);
 use Carbon\Carbon;
 use Illuminate\Cache\TaggableStore;
 use Illuminate\Cache\TaggedCache;
-use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Poppy\Core\Classes\PyCoreDef;
 use Poppy\Core\Redis\RdsDb;
 use Poppy\Core\Redis\RdsStore;
 use Poppy\Core\Services\Factory\ServiceFactory;
@@ -22,11 +19,11 @@ if (!function_exists('sys_cache')) {
      *
      * @return Cache|TaggedCache
      */
-    function sys_cache(string $tag = null)
+    function sys_cache(?string $tag = null)
     {
         $cache = app('cache');
         if ($tag && ($cache->getStore() instanceof TaggableStore)) {
-            if (strpos(trim($tag, '\\'), '\\') !== false) {
+            if (false !== strpos(trim($tag, '\\'), '\\')) {
                 $tag = strtolower(substr($tag, 0, strpos($tag, '\\')));
             }
 
@@ -44,7 +41,6 @@ if (!function_exists('sys_tag')) {
      * @param string $tag 标签
      * @param string $db  数据库名称
      *
-     * @return RdsDb
      * @since 4.1
      */
     function sys_tag(string $tag, string $db = ''): RdsDb
@@ -53,23 +49,15 @@ if (!function_exists('sys_tag')) {
     }
 }
 
-
 if (!function_exists('sys_cacher')) {
     /**
      * 缓存器, 随机秒数缓存器, 不在同一时刻读取值
-     *
-     * @param string $key
-     * @param mixed  $value
-     * @param int    $second
-     *
-     * @return mixed
      */
     function sys_cacher(string $key, $value, int $second = 30)
     {
         return RdsStore::seconds($key, $value, $second);
     }
 }
-
 
 if (!function_exists('sys_db')) {
     /**
@@ -78,8 +66,8 @@ if (!function_exists('sys_db')) {
      * @param string       $table 数据表
      * @param array|string $keys  密钥
      *
-     * @return array
      * @deprecated 4.3
+     *
      * @removed    5.0
      */
     function sys_db(string $table, $keys = []): array
@@ -88,15 +76,9 @@ if (!function_exists('sys_db')) {
     }
 }
 
-
 if (!function_exists('sys_hook')) {
     /**
      * Hook 调用
-     *
-     * @param string $id
-     * @param array  $params
-     *
-     * @return mixed
      */
     function sys_hook(string $id, array $params = [])
     {
@@ -104,28 +86,21 @@ if (!function_exists('sys_hook')) {
     }
 }
 
-
 if (!function_exists('sys_gen_mk')) {
     /**
      * 根据异常类型生成符合条件格式的日志
-     *
-     * @param string $tag
-     * @param mixed  $info
-     * @param bool   $request
-     *
-     * @return string
      */
     function sys_gen_mk(string $tag, $info, bool $request = false): string
     {
         $jsonMark = JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
 
         $req = [];
-        if ($request && Request::path() !== '/') {
+        if ($request && '/' !== Request::path()) {
             $req = [
                 'url'     => '[' . Request::method() . ']' . Request::path(),
                 'headers' => Request::header(),
             ];
-            if (strtolower(Request::method()) === 'post') {
+            if ('post' === strtolower(Request::method())) {
                 $req['data'] = input();
             }
             else {
@@ -140,6 +115,7 @@ if (!function_exists('sys_gen_mk')) {
             catch (JsonException $e) {
                 $je = '';
             }
+
             return "[{$tag}]:" . $info . (($request && $req) ? PHP_EOL . $je : '');
         };
 
@@ -167,6 +143,7 @@ if (!function_exists('sys_gen_mk')) {
                 'info'  => ['message:' . $info->getMessage(), 'code' . $info->getCode()],
                 'trace' => collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 4))->map(function ($arr) {
                     unset($arr['args']);
+
                     return $arr;
                 }),
             ];
@@ -180,6 +157,7 @@ if (!function_exists('sys_gen_mk')) {
 
         try {
             $content = json_encode($content, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+
             return "[{$tag}]:" . $content;
         }
         catch (JsonException $e) {
@@ -193,13 +171,11 @@ if (!function_exists('sys_mark')) {
      * 系统 Debug 标识符, 方便快速进行定位
      *
      * @param string|object $object
-     * @param string        $class
      * @param string|array  $append
-     * @param bool          $with_time
      *
-     * @return string
      * @see        sys_gen_mk()
      * @deprecated 4.1
+     *
      * @removed    5.0
      */
     function sys_mark($object, string $class, $append = '', bool $with_time = false): string
@@ -250,6 +226,7 @@ if (!function_exists('sys_mark')) {
 
         $time = Carbon::now()->format('Y-m-d h:i:s');
         $env  = config('app.env');
+
         return ($with_time ? "[$time] {$env}.INFO:" : '') . '(' . $doName . '.' . $className . ') ' . $content;
     }
 }
@@ -281,7 +258,6 @@ if (!function_exists('sys_debug')) {
         app('log')->debug(sys_gen_mk($tag, $info, $with_request));
     }
 }
-
 
 if (!function_exists('sys_info')) {
     /**

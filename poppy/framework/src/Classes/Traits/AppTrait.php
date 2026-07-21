@@ -15,32 +15,34 @@ trait AppTrait
 {
     /**
      * error
-     * @var Resp $error
+     *
+     * @var Resp
      */
     protected $error;
 
     /**
      * success
-     * @var Resp $success
+     *
+     * @var Resp
      */
     protected $success;
 
     /**
      * 获取错误
-     * @return Resp
      */
     public function getError(): Resp
     {
         if (is_null($this->error)) {
-            return (new Resp(Resp::INNER_ERROR, '内部错误'));
+            return new Resp(Resp::INNER_ERROR, '内部错误');
         }
+
         return $this->error;
     }
 
     /**
      * 设置错误
+     *
      * @param string|MessageBag $error error
-     * @return bool
      */
     public function setError($error): bool
     {
@@ -77,7 +79,6 @@ trait AppTrait
 
     /**
      * Get success messages;
-     * @return Resp
      */
     public function getSuccess(): Resp
     {
@@ -90,12 +91,12 @@ trait AppTrait
             }
             $this->success = new Resp(Resp::SUCCESS, $this->success);
         }
+
         return $this->success;
     }
 
     /**
      * @param Resp|string $success 设置的成功信息
-     * @return bool
      */
     public function setSuccess($success): bool
     {

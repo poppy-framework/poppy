@@ -9,7 +9,6 @@ use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
 class FormSettingChuanglan extends FormSettingBase
 {
-
     protected $title = '创蓝短信配置';
 
     protected $withContent = true;

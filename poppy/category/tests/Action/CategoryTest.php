@@ -16,18 +16,13 @@ class CategoryTest extends TestCase
 
     /**
      * 分类的类型
-     * @var string
      */
     private static string $type = 'testing';
 
-    /**
-     * @var Category
-     */
     private Category $act;
 
     /**
      * 需要删除的 ID
-     * @var array
      */
     private array $ids;
 
@@ -38,14 +33,14 @@ class CategoryTest extends TestCase
     }
 
     /**
-     * @return void
      * @throws Exception
      */
     public function testSort(): void
     {
         try {
             SysCategory::where('type', self::$type)->delete();
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             $this->fail($e->getMessage());
         }
 

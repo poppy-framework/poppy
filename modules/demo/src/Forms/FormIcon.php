@@ -6,13 +6,12 @@ use Poppy\Framework\Validation\Rule;
 
 class FormIcon extends FormBaseWidget
 {
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '图标选择(暂时不处理)';
-
 
     /**
      * Build a form here.

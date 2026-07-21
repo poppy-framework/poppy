@@ -31,20 +31,26 @@ class UploadController extends JwtApiController
      *     tags={"System"},
      *     summary="[Upload]图片上传",
      *     description="图片上传, 支持 form / base64 / url 三种方式. form 走标准 multipart/form-data 上传; base64 接收 data URI 或裸 base64; url 拉取远程图片存储. 命中 demo 模式返回示例 URL.",
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="图片上传请求体, 见 SystemUploadImageRequest schema",
+     *
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
+     *
      *             @OA\Schema(ref="#/components/schemas/PoppySystemUploadImageRequest")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="上传成功 (非 wang-editor 来源) 或 wang-editor 格式 errno=0",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/PoppySystemUploadResponseBody")
      *     ),
      * )
+     *
      * @throws ApplicationException|JsonException
      */
     public function image(UploadImageRequest $request)
@@ -91,7 +97,7 @@ class UploadController extends JwtApiController
         }
 
         $urls = [];
-        if ($type === 'form') {
+        if ('form' === $type) {
             $allowFileExtensions = config('poppy.system.upload.allow_extensions', Upload::ALLOW_UPLOAD_EXTENSIONS);
             $Image->setExtension($allowFileExtensions);
             $image = Request::file('image');
@@ -102,7 +108,7 @@ class UploadController extends JwtApiController
             $allowImageExtensions = config('poppy.system.upload.allow_image_extensions', Upload::ALLOW_IMAGE_EXTENSIONS);
             $allowImageMimes      = config('poppy.system.upload.allow_image_mimes', Upload::ALLOW_IMAGE_MIMES);
             foreach ($image as $_img) {
-                if ($_img === null) {
+                if (null === $_img) {
                     return Resp::error('图片内容为空, 请检查是否上传图片或者支持类型是否正确');
                 }
 
@@ -124,7 +130,7 @@ class UploadController extends JwtApiController
                 }
             }
         }
-        elseif ($type === 'base64') {
+        elseif ('base64' === $type) {
             $image = $request->input('image');
 
             if (!is_array($image) && UtilHelper::isJson($image)) {
@@ -146,7 +152,7 @@ class UploadController extends JwtApiController
                     $mime_type = substr($mime_info, $slashes_index + 1, $length);
                     $Image->setMimeType($mime_type);
                 }
-                else if (count($data) === 1) {
+                elseif (1 === count($data)) {
                     $_img = $data[0];
                     $Image->setMimeType('');
                 }
@@ -165,7 +171,7 @@ class UploadController extends JwtApiController
                 }
             }
         }
-        elseif ($type === 'url') {
+        elseif ('url' === $type) {
             $image = $request->input('image');
             if (!is_array($image)) {
                 $image = [$image];
@@ -188,7 +194,7 @@ class UploadController extends JwtApiController
 
         // 上传图
         if (count($urls)) {
-            if ($from === 'wang-editor') {
+            if ('wang-editor' === $from) {
                 $data = collect($urls)->map(function ($url) {
                     return [
                         'url'  => $url,
@@ -196,21 +202,24 @@ class UploadController extends JwtApiController
                         'href' => '',
                     ];
                 });
+
                 return response()->json([
                     'errno' => 0,
                     'data'  => $data->toArray(),
                 ]);
             }
+
             return Resp::success('上传成功', [
                 'url' => $urls,
             ]);
         }
-        if ($from === 'wang-editor') {
+        if ('wang-editor' === $from) {
             return response()->json([
                 'errno'   => 1,
                 'message' => $Image->getError(),
             ]);
         }
+
         return Resp::error($Image->getError());
     }
 
@@ -220,17 +229,22 @@ class UploadController extends JwtApiController
      *     tags={"System"},
      *     summary="[Upload]文件上传",
      *     description="文件上传, 支持音视频 (audio/video) 与 images / file. 不支持图片 (image 请使用 upload/image). images 类型会自动按 district 短边压缩.",
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="文件上传请求体, 见 SystemUploadFileRequest schema",
+     *
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
+     *
      *             @OA\Schema(ref="#/components/schemas/PoppySystemUploadFileRequest")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="上传成功",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/PoppySystemUploadResponseBody")
      *     ),
      * )
@@ -253,7 +267,7 @@ class UploadController extends JwtApiController
         $urls = [];
 
         // 默认图片压缩到 1080 短边压缩
-        if ($type === 'images') {
+        if ('images' === $type) {
             $Uploader->setResizeDistrict($district);
         }
         $file = Request::file('file');

@@ -17,24 +17,24 @@ namespace Poppy\Sms\Classes\Chuanglan;
 
 class SmsApi
 {
+    // 参数的配置 请登录zz.253.com 获取以下API信息 ↓↓↓↓↓↓↓
+    public $apiSendUrl = 'http://XXX/msg/send/json'; // 创蓝发送短信接口URL
 
-    //参数的配置 请登录zz.253.com 获取以下API信息 ↓↓↓↓↓↓↓
-    public $apiSendUrl = 'http://XXX/msg/send/json'; //创蓝发送短信接口URL
+    public $apiVariableUrl = 'http://XXX/msg/variable/json'; // 创蓝变量短信接口URL
 
-    public $apiVariableUrl = 'http://XXX/msg/variable/json';//创蓝变量短信接口URL
-
-    public $apiBalanceQueryUrl = 'http://XXX/msg/balance/json';//创蓝短信余额查询接口URL
+    public $apiBalanceQueryUrl = 'http://XXX/msg/balance/json'; // 创蓝短信余额查询接口URL
 
     public $apiSendCtyUrl = 'https://intapi.253.com/send/json'; // 创蓝国际单发短信接口URL
 
     public $apiAccount = ''; // 创蓝API账号
 
-    public $apiPassword = '';// 创蓝API密码
+    public $apiPassword = ''; // 创蓝API密码
 
-    //参数的配置 请登录zz.253.com 获取以上API信息 ↑↑↑↑↑↑↑
+    // 参数的配置 请登录zz.253.com 获取以上API信息 ↑↑↑↑↑↑↑
 
     /**
      * ChuanglanSmsApi constructor.
+     *
      * @param string $api_account
      * @param string $api_password
      */
@@ -59,7 +59,7 @@ class SmsApi
      */
     public function sendSMS($mobile, $msg, $needstatus = 'true')
     {
-        //创蓝接口参数
+        // 创蓝接口参数
         $postArr = [
             'account'  => $this->apiAccount,
             'password' => $this->apiPassword,
@@ -67,6 +67,7 @@ class SmsApi
             'phone'    => $mobile,
             'report'   => $needstatus,
         ];
+
         return $this->curlPost($this->apiSendUrl, $postArr);
     }
 
@@ -78,7 +79,7 @@ class SmsApi
      */
     public function sendVariableSMS($msg, $params)
     {
-        //创蓝接口参数
+        // 创蓝接口参数
         $postArr = [
             'account'  => $this->apiAccount,
             'password' => $this->apiPassword,
@@ -95,11 +96,12 @@ class SmsApi
      *
      * @param string $mobile 手机号码
      * @param string $msg    短信内容
+     *
      * @return mixed|string
      */
     public function sendCtySMS($mobile, $msg)
     {
-        //创蓝接口参数
+        // 创蓝接口参数
         $postArr = [
             'account'  => $this->apiAccount,
             'password' => $this->apiPassword,
@@ -117,20 +119,20 @@ class SmsApi
      */
     public function queryBalance()
     {
-        //查询参数
+        // 查询参数
         $postArr = [
             'account'  => $this->apiAccount,
             'password' => $this->apiPassword,
         ];
+
         return $this->curlPost($this->apiBalanceQueryUrl, $postArr);
     }
 
     /**
      * 通过CURL发送HTTP请求
+     *
      * @param string $url        //请求URL
      * @param array  $postFields //请求参数
-     * @return mixed
-     *
      */
     private function curlPost($url, $postFields)
     {
@@ -138,10 +140,10 @@ class SmsApi
         $ch         = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json; charset=utf-8',   //json版本需要填写  Content-Type: application/json;
-            ]
+            'Content-Type: application/json; charset=utf-8',   // json版本需要填写  Content-Type: application/json;
+        ]
         );
-        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4); //若果报错 name lookup timed out 报错时添加这一行代码
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4); // 若果报错 name lookup timed out 报错时添加这一行代码
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
@@ -155,14 +157,14 @@ class SmsApi
         else {
             $rsp = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             if (200 !== $rsp) {
-                $result = "请求状态 " . $rsp . " " . curl_error($ch);
+                $result = '请求状态 ' . $rsp . ' ' . curl_error($ch);
             }
             else {
                 $result = $ret;
             }
         }
         curl_close($ch);
+
         return $result;
     }
-
 }

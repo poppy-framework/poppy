@@ -15,7 +15,6 @@ use Throwable;
  */
 class SearchController extends WebController
 {
-
     /**
      * @throws Throwable
      * @throws ApplicationException

@@ -40,7 +40,6 @@ class Sso
 
     /**
      * SSO 类型
-     * @var string
      */
     private string $ssoType;
 
@@ -59,11 +58,10 @@ class Sso
     }
 
     /**
-     * @param PamAccount $pam
-     * @param string     $device_id   设备 ID
-     * @param string     $device_type 设备类型
-     * @param string     $token       token
-     * @return bool
+     * @param string $device_id   设备 ID
+     * @param string $device_type 设备类型
+     * @param string $token       token
+     *
      * @throws Exception
      */
     public function handle(PamAccount $pam, string $device_id, string $device_type, string $token): bool
@@ -76,7 +74,7 @@ class Sso
 
         // 不对空 os 进行拦截
         $emptyHold = (string) sys_setting('py-system::pam.sso_os_empty_hold') ?: SysConfig::STR_NO;
-        if (!$device_type && $emptyHold === SysConfig::STR_NO) {
+        if (!$device_type && SysConfig::STR_NO === $emptyHold) {
             return true;
         }
 
@@ -93,10 +91,9 @@ class Sso
 
         // 分组不设限
         $groupType = $this->groupType($device_type);
-        if ($groupType === self::GROUP_UNLIMITED) {
+        if (self::GROUP_UNLIMITED === $groupType) {
             return true;
         }
-
 
         $tokenMd5  = md5($token);
         $pamId     = $pam->id;
@@ -118,7 +115,7 @@ class Sso
                 break;
             case self::SSO_GROUP:
                 // 同组内进行互踢
-                if ($groupType === self::GROUP_KICKED) {
+                if (self::GROUP_KICKED === $groupType) {
                     // 查询同组的设备类型
                     $totalGroups = [];
                     foreach ($this->groups as $group) {
@@ -131,7 +128,6 @@ class Sso
                     $logoutUsers = PamToken::where('account_id', $pam->id)
                         ->where('device_id', '!=', $device_id)
                         ->whereIn('device_type', $totalGroups)->get();
-
                 }
                 break;
         }
@@ -143,7 +139,7 @@ class Sso
         }
 
         // 创建/更新用户的设备类型
-        /** @var PamToken $current */
+        /* @var PamToken $current */
         PamToken::updateOrInsert([
             'account_id' => $pamId,
             'device_id'  => $device_id,
@@ -157,16 +153,17 @@ class Sso
         ]);
 
         $this->validateUser($pamId);
+
         return true;
     }
 
     /**
      * 凭证续期
-     * @param PamAccount $pam
-     * @param string     $device_id   设备 ID
-     * @param string     $device_type 设备类型
-     * @param string     $token       token
-     * @return bool
+     *
+     * @param string $device_id   设备 ID
+     * @param string $device_type 设备类型
+     * @param string $token       token
+     *
      * @throws Exception
      */
     public function renew(PamAccount $pam, string $device_id, string $device_type, string $token): bool
@@ -227,13 +224,12 @@ class Sso
         event(new TokenRenewAfterEvent($pamToken, $oldTokenHash));
 
         $this->validateUser($pam->id);
+
         return true;
     }
 
     /**
      * 使用户可用
-     * @param $pamId
-     * @return void
      */
     public function validateUser($pamId): void
     {
@@ -243,13 +239,12 @@ class Sso
 
     /**
      * 禁用用户和 token
-     * @param int $pamId
-     * @return void
+     *
      * @throws Exception
      */
     public function banUser(int $pamId): void
     {
-        if ($this->ssoType === self::SSO_NONE) {
+        if (self::SSO_NONE === $this->ssoType) {
             return;
         }
         PamToken::where('account_id', $pamId)->delete();
@@ -257,12 +252,9 @@ class Sso
         sys_tag('py-system-persist')->hDel(PySystemDef::ckPersistSsoValid(), $pamId);
     }
 
-
     /**
      * 根据 Token 禁用并移除 Token
-     * @param PamToken $pt
-     * @param bool     $delete
-     * @return void
+     *
      * @throws Exception
      */
     public function banToken(PamToken $pt, bool $delete = true): void
@@ -284,9 +276,7 @@ class Sso
         }
     }
 
-
     /**
-     * @return int
      * @throws Exception
      */
     public function clearExpired(): int
@@ -305,13 +295,15 @@ class Sso
 
     /**
      * SSO 退出登录
+     *
      * @param int    $id    用户 ID
      * @param string $token JWT Token
+     *
      * @throws Throwable
      */
     public function logout(int $id, string $token): void
     {
-        if ($this->ssoType === self::SSO_NONE) {
+        if (self::SSO_NONE === $this->ssoType) {
             return;
         }
         $tokenHash = md5($token);
@@ -327,31 +319,34 @@ class Sso
 
     /**
      * 是否启用 sso 登录
-     * @return bool
      */
     public static function isEnable(): bool
     {
         $ssoType = (string) sys_setting('py-system::pam.sso_type');
-        return !($ssoType === '' || $ssoType === self::SSO_NONE);
+
+        return !('' === $ssoType || self::SSO_NONE === $ssoType);
     }
 
     /**
      * @param string|null $key          Key
      * @param bool        $check_exists 检测键值是否存在
+     *
      * @return array|string
      */
-    public static function kvType(string $key = null, bool $check_exists = false)
+    public static function kvType(?string $key = null, bool $check_exists = false)
     {
         $desc = [
             self::SSO_NONE       => '不启用',
             self::SSO_DEVICE_NUM => '数量限制模式',
             self::SSO_GROUP      => '分组模式',
         ];
+
         return kv($desc, $key, $check_exists);
     }
 
     /**
      * 返回组说明
+     *
      * @return array|string
      */
     public function groupDesc($str = false)
@@ -362,15 +357,15 @@ class Sso
                 $deviceTypes = implode(',', $group);
                 $groups[]    = "{$gk}({$deviceTypes})";
             }
+
             return implode(', ', $groups);
         }
+
         return $this->groups;
     }
 
     /**
      * 是否 OS 不设限
-     * @param string $os
-     * @return string
      */
     public function groupType(string $os): string
     {
@@ -386,11 +381,11 @@ class Sso
         if (Str::contains($name, self::GROUP_KICKED)) {
             return self::GROUP_KICKED;
         }
+
         return '';
     }
 
     /**
-     * @param $account_id
      * @return array{data: array, expired:array}
      */
     private function userTokenData($account_id): array
@@ -400,6 +395,7 @@ class Sso
         $tokens->each(function (PamToken $pt) use (&$data) {
             $data[$pt->token_hash] = "{$pt->device_type}|{$pt->expired_at}|{$pt->id}";
         });
+
         return $data;
     }
 }

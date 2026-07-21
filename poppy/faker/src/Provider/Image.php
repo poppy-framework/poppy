@@ -10,19 +10,18 @@ use RuntimeException;
  */
 class Image extends Base
 {
-
     /**
      * Generate the URL that will return a random image
      *
      * Set randomize too false to remove the random GET parameter at the end of the url.
      * https://devtool.tech/placeholder
-     * @param integer     $width
-     * @param integer     $height
+     *
+     * @param int         $width
+     * @param int         $height
      * @param string|null $word
      * @param string      $font_color
      * @param string      $bg_color
      * @param string      $font_size
-     * @return string
      */
     public static function imageUrl($width = 640, $height = 480, $word = '', $font_color = 'eae0d0', $bg_color = '282828', $font_size = ''): string
     {
@@ -45,6 +44,7 @@ class Image extends Base
         if ($font_size) {
             $url .= 'fontSize=' . $font_size . '&';
         }
+
         return $baseUrl . rtrim($url, '&?');
     }
 
@@ -57,7 +57,9 @@ class Image extends Base
      * @param int  $width
      * @param int  $height
      * @param bool $fullPath
+     *
      * @return false|RuntimeException|string
+     *
      * @example '/path/to/dir/13b73edae8443990be1aa8f1a483bc27.jpg'
      */
     public static function image($dir = null, $width = 640, $height = 480, $fullPath = true)
@@ -82,7 +84,7 @@ class Image extends Base
             $fp = fopen($filepath, 'w');
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_FILE, $fp);
-            $success = curl_exec($ch) && curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200;
+            $success = curl_exec($ch) && 200 === curl_getinfo($ch, CURLINFO_HTTP_CODE);
             fclose($fp);
             curl_close($ch);
 

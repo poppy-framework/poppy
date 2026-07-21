@@ -10,9 +10,9 @@ class Password extends Text
     {
         $this->addVariables([
             'type' => 'password',
-
         ]);
         $this->defaultAttribute('autocomplete', 'new-password');
+
         return parent::render();
     }
 }

@@ -45,8 +45,6 @@ abstract class FilterItem
 
     /**
      * Label of presenter.
-     *
-     * @var string
      */
     protected string $label;
 
@@ -60,41 +58,24 @@ abstract class FilterItem
      */
     protected $defaultValue;
 
-    /**
-     * @var string
-     */
     protected string $column;
 
     /**
      * Presenter object.
-     *
-     * @var Presenter|null
      */
     protected ?Presenter $presenter;
 
     /**
      * Query for filter.
-     *
-     * @var string
      */
     protected string $query = 'where';
 
-    /**
-     * @var Filter
-     */
     protected Filter $parent;
 
-    /**
-     * @var string
-     */
     protected string $view = 'py-mgr-page::tpl.filter.where';
-
 
     /**
      * AbstractFilter constructor.
-     *
-     * @param        $column
-     * @param string $label
      */
     public function __construct($column, string $label = '')
     {
@@ -105,20 +86,15 @@ abstract class FilterItem
         $this->setupDefaultPresenter();
     }
 
-    /**
-     * @param Filter $filter
-     * @return FilterItem
-     */
     public function setParent(Filter $filter): self
     {
         $this->parent = $filter;
+
         return $this;
     }
 
-
     /**
      * 是否可以渲染
-     * @return bool
      */
     public function isRender(): bool
     {
@@ -144,8 +120,6 @@ abstract class FilterItem
     /**
      * Get previous filter.
      *
-     * @param int $step
-     *
      * @return FilterItem[]|mixed
      */
     public function previous(int $step = 1)
@@ -157,8 +131,6 @@ abstract class FilterItem
 
     /**
      * Get next filter.
-     *
-     * @param int $step
      *
      * @return FilterItem[]|mixed
      */
@@ -172,9 +144,7 @@ abstract class FilterItem
     /**
      * Get query condition from filter.
      *
-     * @param array $inputs
-     *
-     * @return array|mixed|null|void
+     * @return array|mixed|void|null
      */
     public function condition(array $inputs)
     {
@@ -193,8 +163,6 @@ abstract class FilterItem
      * Select filter.
      *
      * @param array|Collection $options
-     *
-     * @return Select
      */
     public function select($options = []): Select
     {
@@ -203,8 +171,6 @@ abstract class FilterItem
 
     /**
      * @param array|Collection $options
-     *
-     * @return MultipleSelect
      */
     public function multipleSelect($options = []): MultipleSelect
     {
@@ -213,14 +179,11 @@ abstract class FilterItem
 
     /**
      * @param array|Collection $options
-     *
-     * @return Radio
      */
     public function radio($options = []): Radio
     {
         return $this->setPresenter(new Radio($options));
     }
-
 
     /**
      * Render this filter.
@@ -235,12 +198,7 @@ abstract class FilterItem
     }
 
     /**
-     * @param $method
-     * @param $params
-     *
-     * @return mixed
      * @throws Exception
-     *
      */
     public function __call($method, $params)
     {
@@ -280,13 +238,12 @@ abstract class FilterItem
     /**
      * Set element id.
      *
-     * @param string $id
-     *
      * @return $this
      */
     public function setId(string $id): self
     {
         $this->id = $this->formatId($id);
+
         return $this;
     }
 
@@ -314,12 +271,11 @@ abstract class FilterItem
 
     /**
      * Set presenter object of filter.
-     * @param Presenter $presenter
-     * @return mixed
      */
     public function setPresenter(Presenter $presenter)
     {
         $presenter->setParent($this);
+
         return tap($presenter, function () use ($presenter) {
             $this->presenter = $presenter;
         });
@@ -335,10 +291,6 @@ abstract class FilterItem
 
     /**
      * Format label.
-     *
-     * @param string $label
-     *
-     * @return string
      */
     protected function formatLabel(string $label): string
     {
@@ -358,7 +310,7 @@ abstract class FilterItem
     {
         $columns = explode('.', $column);
 
-        if (count($columns) === 1) {
+        if (1 === count($columns)) {
             $name = $columns[0];
         }
         else {
@@ -376,8 +328,6 @@ abstract class FilterItem
     /**
      * Format id.
      *
-     * @param string $column
-     *
      * @return array|string
      */
     protected function formatId(string $column)
@@ -387,14 +337,12 @@ abstract class FilterItem
 
     /**
      * Build conditions of filter.
-     *
-     * @return mixed
      */
     protected function buildCondition()
     {
         $column = explode('.', $this->column);
 
-        if (count($column) === 1) {
+        if (1 === count($column)) {
             return [$this->query => func_get_args()];
         }
 
@@ -423,12 +371,11 @@ abstract class FilterItem
 
     /**
      * Variables for filter view.
-     *
-     * @return array
      */
     protected function variables(): array
     {
         $variables = $this->presenter ? $this->presenter->variables() : [];
+
         return array_merge([
             'id'        => $this->id,
             'column'    => $this->column,

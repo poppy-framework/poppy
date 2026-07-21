@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\Framework\Classes\Traits;
 
-
 /**
  * MigrationTrait
  */
@@ -38,4 +37,3 @@ trait MigrationTrait
         return poppy_path($module, 'resources/migrations');
     }
 }
-

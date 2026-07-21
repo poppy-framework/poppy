@@ -19,7 +19,6 @@ use Poppy\System\Http\Request\Web\WebController;
  */
 class JsController extends WebController
 {
-
     use PjaxTrait;
 
     public function __construct()
@@ -32,15 +31,16 @@ class JsController extends WebController
 
     /**
      * 前台代码
+     *
      * @return Factory|JsonResponse|RedirectResponse|Response|View
      */
     public function index()
     {
         $type = input('type');
-        if ($type === 'pjax-error') {
+        if ('pjax-error' === $type) {
             return $this->pjaxError('Pjax 请求错误 : 提交的时间和日期不符');
         }
-        if ($type === 'top-request') {
+        if ('top-request' === $type) {
             return Resp::success('Top Request 响应信息', [
                 '_top' => [
                     'operation' => 'doWhat',
@@ -48,18 +48,20 @@ class JsController extends WebController
             ]);
         }
         if (is_post()) {
-            if ($type === 'submit') {
+            if ('submit' === $type) {
                 return Resp::success('J_submit 提交, title:' . input('title'));
             }
-            if ($type === 'validate') {
+            if ('validate' === $type) {
                 return Resp::success('J_validate 提交, title:' . input('title'));
             }
-            if ($type === 'sleep') {
+            if ('sleep' === $type) {
                 sleep(3);
+
                 return Resp::success('Sleep 3s:');
             }
-            if ($type === 'sleep-500') {
+            if ('sleep-500' === $type) {
                 sleep(500);
+
                 return Resp::success('Sleep 500s:');
             }
 
@@ -79,8 +81,10 @@ class JsController extends WebController
             if (Str::endsWith($type, '_location')) {
                 return Resp::success($type, $type . '|' . route('demo:web.js.location'));
             }
+
             return Resp::success($type, $type . '|1');
         }
+
         return view('demo::web.js.popup');
     }
 

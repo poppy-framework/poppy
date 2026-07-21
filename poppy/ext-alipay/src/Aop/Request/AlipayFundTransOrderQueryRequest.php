@@ -8,6 +8,7 @@ namespace Poppy\Extension\Alipay\Aop\Request;
  * ALIPAY API: alipay.fund.trans.order.query request
  *
  * @author auto create
+ *
  * @since  1.0, 2019-12-17 21:02:19
  */
 class AlipayFundTransOrderQueryRequest
@@ -25,7 +26,7 @@ class AlipayFundTransOrderQueryRequest
 
     private $prodCode;
 
-    private $apiVersion = "1.0";
+    private $apiVersion = '1.0';
 
     private $notifyUrl;
 
@@ -41,12 +42,12 @@ class AlipayFundTransOrderQueryRequest
     public function setBizContent($bizContent)
     {
         $this->bizContent              = $bizContent;
-        $this->apiParas["biz_content"] = $bizContent;
+        $this->apiParas['biz_content'] = $bizContent;
     }
 
     public function getApiMethodName()
     {
-        return "alipay.fund.trans.order.query";
+        return 'alipay.fund.trans.order.query';
     }
 
     public function getNotifyUrl()
@@ -121,9 +122,6 @@ class AlipayFundTransOrderQueryRequest
 
     public function setNeedEncrypt($needEncrypt)
     {
-
         $this->needEncrypt = $needEncrypt;
-
     }
-
 }

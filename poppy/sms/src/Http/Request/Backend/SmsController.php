@@ -22,7 +22,6 @@ use Poppy\System\Exceptions\SettingValueOutOfRangeException;
  */
 class SmsController extends BackendController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -43,15 +42,16 @@ class SmsController extends BackendController
         }
         $templates = $this->action()->getTemplates();
         $items     = $templates->where('scope', $scope);
+
         return view('py-sms::backend.sms.index', [
             'scope' => $scope,
             'items' => $items,
         ]);
     }
 
-
     /**
      * 短信模板c2e
+     *
      * @return Factory|JsonResponse|RedirectResponse|Response|View
      */
     public function establish()
@@ -61,12 +61,15 @@ class SmsController extends BackendController
 
     /**
      * 删除短信模板
-     * @param null|string $id id
+     *
+     * @param string|null $id id
+     *
      * @return JsonResponse|RedirectResponse|Response
+     *
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
      */
-    public function destroy(string $id = null)
+    public function destroy(?string $id = null)
     {
         $Sms = $this->action();
         if (!$Sms->destroy($id)) {
@@ -76,7 +79,6 @@ class SmsController extends BackendController
         return Resp::success('操作成功', '_parent_reload|1');
     }
 
-
     /**
      * 短信配置
      */
@@ -85,9 +87,6 @@ class SmsController extends BackendController
         return (new FormSettingSms())->render();
     }
 
-    /**
-     * @return Sms
-     */
     private function action(): Sms
     {
         return new Sms();

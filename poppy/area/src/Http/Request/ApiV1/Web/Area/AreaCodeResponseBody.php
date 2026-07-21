@@ -19,8 +19,10 @@ class AreaCodeResponseBody extends BaseResponseBody
      * @OA\Property(
      *     description="地区树",
      *     type="array",
+     *
      *     @OA\Items(
      *         type="object",
+     *
      *         @OA\Property(property="id", type="integer", description="ID"),
      *         @OA\Property(property="title", type="string", description="地区名称"),
      *         @OA\Property(property="code", type="string", description="地区编码 (左 6 位)"),

@@ -4,13 +4,11 @@ declare(strict_types = 1);
 
 namespace Poppy\Core\Tests\Redis;
 
-
 use Illuminate\Support\Str;
 use Poppy\Framework\Exceptions\ApplicationException;
 
 class RdsHashTest extends RdsBaseTest
 {
-
     public function testHSet()
     {
         $key    = $this->key('h-set');
@@ -88,7 +86,7 @@ class RdsHashTest extends RdsBaseTest
         $randMax = $this->faker()->randomNumber(3);
         $len     = $this->rds->hlen($key);
         $this->assertEquals(0, $len);
-        for ($i = 0; $i < $randMax; $i++) {
+        for ($i = 0; $i < $randMax; ++$i) {
             $this->rds->hSet($key, $field . '-' . $i, $field . '-' . $randMax);
         }
         $len = $this->rds->hlen($key);
@@ -135,7 +133,7 @@ class RdsHashTest extends RdsBaseTest
         $this->assertEquals(0, $len);
         $values = [];
         $array  = [];
-        for ($i = 0; $i < $randMax; $i++) {
+        for ($i = 0; $i < $randMax; ++$i) {
             $values['str-' . $i]  = [$i];
             $array['array-' . $i] = [$i];
         }
@@ -217,7 +215,7 @@ class RdsHashTest extends RdsBaseTest
         $this->rds->del($key);
         $randMax = $this->faker()->randomNumber(2);
         $values  = [];
-        for ($i = 0; $i < $randMax; $i++) {
+        for ($i = 0; $i < $randMax; ++$i) {
             $values[$this->faker()->userName . '-' . $i] = $this->faker()->url . '?q=' . Str::random(64);
         }
         $this->rds->hMSet($key, $values);

@@ -16,37 +16,18 @@ use Poppy\Framework\Helper\StrHelper;
  */
 class AliPush
 {
-
     use AppTrait;
 
-    /**
-     * @var self|null
-     */
     private static ?self $instance = null;
 
-    /**
-     * @var int
-     */
     private int $cutNum = 1000;
 
-    /**
-     * @var Config
-     */
     private Config $config;
 
-    /**
-     * @var string
-     */
     private string $target;
 
-    /**
-     * @var
-     */
     private $regTags;
 
-    /**
-     * @var mixed
-     */
     private $title;
 
     /**
@@ -61,14 +42,16 @@ class AliPush
 
     /**
      * 附加的查询项目
+     *
      * @var array[]
      */
     private array $query = [];
 
     /**
      * 发送
+     *
      * @param array $params 参数
-     * @return bool
+     *
      * @throws PushException
      */
     public function send(array $params): bool
@@ -84,7 +67,7 @@ class AliPush
         $this->title     = $params['title'];
         $this->body      = $params['body'] ?? '';
         $this->extras    = json_encode($params['extra'] ?? [], JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        $this->query     = $params['query'] ?? ['base' => [], 'android' => [], 'ios' => [],];
+        $this->query     = $params['query'] ?? ['base' => [], 'android' => [], 'ios' => []];
 
         $devices = StrHelper::parseKey(strtolower($params['device_type'] ?? 'android|notice;ios|notice'));
 
@@ -113,33 +96,34 @@ class AliPush
                 dispatch(new SenderJob($message, $this->config));
             }
         });
+
         return true;
     }
 
     public function setConfig(Config $config): self
     {
         $this->config = $config;
+
         return $this;
     }
 
     /**
      * 获取实例
-     * @return self
      */
     final public static function getInstance(): self
     {
         if (is_null(self::$instance)) {
             self::$instance = new self();
         }
+
         return self::$instance;
     }
 
     /**
      * 返回批量处理过的通知数据
-     * @param string $push_type
-     * @param array  $ids ID
-     * @param string $device_type
-     * @return array
+     *
+     * @param array $ids ID
+     *
      * @throws PushException
      */
     private function toBatches(string $push_type, array $ids, string $device_type = ''): array
@@ -155,10 +139,10 @@ class AliPush
 
         /* 消息不支持 extParams , 消息的 body 体是Json Map 类型的数据
          * ---------------------------------------- */
-        if ($push_type === PushMessage::PUSH_TYPE_MESSAGE) {
+        if (PushMessage::PUSH_TYPE_MESSAGE === $push_type) {
             $message->setBody($this->extras);
         }
-        elseif ($push_type === PushMessage::PUSH_TYPE_NOTICE) {
+        elseif (PushMessage::PUSH_TYPE_NOTICE === $push_type) {
             if (!$this->body) {
                 throw new PushException('通知内容不能为空');
             }
@@ -174,7 +158,7 @@ class AliPush
 
         switch ($this->target) {
             // 设备分批
-            case PushMessage::TARGET_DEVICE;
+            case PushMessage::TARGET_DEVICE:
                 if (!count($ids)) {
                     throw new PushException('用户设备号不能为空');
                 }
@@ -185,17 +169,18 @@ class AliPush
                         ->setTargetValue($strIds);
                 }
                 break;
-            case PushMessage::TARGET_TAG;
+            case PushMessage::TARGET_TAG:
                 if (!$this->regTags) {
                     throw new PushException('用户标签不能为空');
                 }
                 $broadcasts[] = (clone $message)
                     ->setTargetValue($this->regTags);
                 break;
-            case PushMessage::TARGET_ALL;
+            case PushMessage::TARGET_ALL:
                 $broadcasts[] = (clone $message)->setTargetValue(PushMessage::TARGET_VALUE_ALL);
                 break;
         }
+
         return $broadcasts;
     }
 
@@ -208,6 +193,7 @@ class AliPush
             $params['body'] = $params['content'];
         }
         unset($params['broadcast_type'], $params['content']);
+
         return $params;
     }
 }

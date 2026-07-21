@@ -9,8 +9,6 @@ class TestingUtil
 {
     /**
      * 获取随机用户名
-     * @param $array
-     * @return mixed
      */
     public static function randomKey($array)
     {

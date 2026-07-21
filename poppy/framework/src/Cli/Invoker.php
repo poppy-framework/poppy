@@ -19,7 +19,7 @@ class Invoker
     {
         $param = $parameters[1] ?? 'clear';
 
-        if ($param !== 'clear') {
+        if ('clear' !== $param) {
             echo 'Error Param.';
         }
 
@@ -29,7 +29,6 @@ class Invoker
                 $this->path . '/storage/framework/',
             ])
             ->depth('== 0');
-
 
         // check if there are any search results
         if ($Finder->hasResults()) {
@@ -42,6 +41,7 @@ class Invoker
         @unlink($this->path . '/storage/app/poppy.json');
 
         echo 'Poppy Clear succeeded.';
+
         return true;
     }
 }

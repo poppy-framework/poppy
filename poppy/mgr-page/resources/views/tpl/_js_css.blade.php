@@ -1,5 +1,5 @@
 <?php
-$_type = $_type ?? [];
+$_type ??= [];
 ?>
 {{--js--}}
 @if (true)

@@ -32,7 +32,9 @@ class AppController extends BackendController
 
     /**
      * 列表
+     *
      * @return JsonResponse|RedirectResponse|Response|string
+     *
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -40,11 +42,13 @@ class AppController extends BackendController
     {
         $grid = new Grid(new SysApp());
         $grid->setLists(ListSysApp::class);
+
         return $grid->render();
     }
 
     /**
      * Show the form for creating a new resource.
+     *
      * @throws Throwable
      */
     public function establish()
@@ -54,13 +58,16 @@ class AppController extends BackendController
 
     /**
      * 删除分类
+     *
      * @param int $id 分类ID
+     *
      * @return JsonResponse|RedirectResponse|Response
      */
     public function status(int $id, int $status)
     {
         $App = new App();
         $App->status($id, $status);
+
         return Resp::success('更改应用状态成功', '_reload|1');
     }
 }

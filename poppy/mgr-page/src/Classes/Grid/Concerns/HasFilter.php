@@ -21,8 +21,6 @@ trait HasFilter
 
     /**
      * 获取筛选
-     *
-     * @return Filter
      */
     public function getFilter(): Filter
     {
@@ -31,7 +29,9 @@ trait HasFilter
 
     /**
      * 执行查询器
+     *
      * @param bool $toArray
+     *
      * @return array|Collection|mixed
      */
     public function applyFilter($toArray = true)
@@ -41,7 +41,6 @@ trait HasFilter
 
     /**
      * Set the grid filter.
-     * @param Closure $callback
      */
     public function filter(Closure $callback)
     {
@@ -52,6 +51,7 @@ trait HasFilter
      * Render the grid filter.
      *
      * @return Factory|View|string
+     *
      * @throws Throwable
      */
     public function renderFilter()

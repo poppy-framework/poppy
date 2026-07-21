@@ -10,13 +10,11 @@ use Throwable;
  */
 class FilterButton extends AbstractTool
 {
-    /**
-     * @var string
-     */
     protected string $view = 'py-mgr-page::tpl.filter.button';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws Throwable
      */
     public function render()
@@ -29,9 +27,6 @@ class FilterButton extends AbstractTool
         return view($this->view, $variables)->render();
     }
 
-    /**
-     * @return Filter
-     */
     protected function filter(): Filter
     {
         return $this->grid->getFilter();

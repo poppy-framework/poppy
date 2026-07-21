@@ -12,7 +12,6 @@ use Route;
 
 class AppEstablishRequest extends Request
 {
-
     public function attributes(): array
     {
         return [
@@ -28,12 +27,11 @@ class AppEstablishRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         $id = Route::input('id');
+
         return [
             'title'        => [
                 Rule::required(),

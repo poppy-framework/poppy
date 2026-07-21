@@ -7,18 +7,15 @@ use Illuminate\Http\Request;
 
 class FormEntrance extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '表单项目';
 
     /**
      * Handle the form request.
-     *
-     * @param Request $request
      *
      * @return RedirectResponse
      */
@@ -51,7 +48,6 @@ CODE;
             else {
                 $this->html("<a href='" . route_url('demo:web.form.index', $file) . "'>$file</a>");
             }
-
         }
 
         if (input('code')) {

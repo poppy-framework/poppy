@@ -102,11 +102,8 @@ class Model
 
     /**
      * Create a new grid model instance.
-     *
-     * @param EloquentModel $model
-     * @param Grid|null     $grid
      */
-    public function __construct(EloquentModel $model, Grid $grid = null)
+    public function __construct(EloquentModel $model, ?Grid $grid = null)
     {
         $this->model = $model;
 
@@ -234,8 +231,6 @@ class Model
     /**
      * Set parent grid instance.
      *
-     * @param Grid $grid
-     *
      * @return $this
      */
     public function setGrid(Grid $grid)
@@ -254,8 +249,6 @@ class Model
     }
 
     /**
-     * @param Relation $relation
-     *
      * @return $this
      */
     public function setRelation(Relation $relation)
@@ -284,11 +277,9 @@ class Model
     /**
      * Set collection callback.
      *
-     * @param Closure|null $callback
-     *
      * @return $this
      */
-    public function collection(Closure $callback = null)
+    public function collection(?Closure $callback = null)
     {
         $this->collectionCallback = $callback;
 
@@ -337,7 +328,7 @@ class Model
         $this->setSort();
 
         $this->queries->reject(function ($query) {
-            return $query['method'] == 'paginate';
+            return 'paginate' == $query['method'];
         })->each(function ($query) {
             $this->model = $this->model->{$query['method']}(...$query['arguments']);
         });
@@ -347,8 +338,6 @@ class Model
 
     /**
      * Add conditions to grid model.
-     *
-     * @param array $conditions
      *
      * @return $this
      */
@@ -401,14 +390,11 @@ class Model
     public function resetOrderBy()
     {
         $this->queries = $this->queries->reject(function ($query) {
-            return $query['method'] == 'orderBy' || $query['method'] == 'orderByDesc';
+            return 'orderBy' == $query['method'] || 'orderByDesc' == $query['method'];
         });
     }
 
     /**
-     * @param string $method
-     * @param array  $arguments
-     *
      * @return $this
      */
     public function __call(string $method, array $arguments)
@@ -421,29 +407,21 @@ class Model
         return $this;
     }
 
-
-    /**
-     * @param mixed    $id
-     * @param string $field
-     * @param string $value
-     * @return bool
-     */
     public function edit($id, string $field, string $value): bool
     {
         $pk = $this->originalModel->getKeyName();
-        if (!$pk){
+        if (!$pk) {
             return false;
         }
         $this->originalModel->where($pk, $id)->update([
             $field => $value,
         ]);
+
         return true;
     }
 
     /**
      * Set the relationships that should be eager loaded.
-     *
-     * @param mixed $relations
      *
      * @return $this|Model
      */
@@ -476,11 +454,6 @@ class Model
         return $this->__call('with', (array) $relations);
     }
 
-    /**
-     * @param $key
-     *
-     * @return mixed
-     */
     public function __get($key)
     {
         $data = $this->buildData();
@@ -492,8 +465,8 @@ class Model
 
     /**
      * @return Collection
-     * @throws Exception
      *
+     * @throws Exception
      */
     protected function get()
     {
@@ -528,8 +501,6 @@ class Model
     /**
      * If current page is greater than last page, then redirect to last page.
      *
-     * @param LengthAwarePaginator $paginator
-     *
      * @return void
      */
     protected function handleInvalidPage(LengthAwarePaginator $paginator)
@@ -552,7 +523,7 @@ class Model
         $paginate = $this->findQueryByMethod('paginate');
 
         $this->queries = $this->queries->reject(function ($query) {
-            return $query['method'] == 'paginate';
+            return 'paginate' == $query['method'];
         });
 
         if (!$this->usePaginate) {
@@ -603,8 +574,6 @@ class Model
 
     /**
      * Find query by method name.
-     *
-     * @param $method
      *
      * @return static
      */
@@ -668,7 +637,7 @@ class Model
         [$relationName, $relationColumn] = explode('.', $column);
 
         if ($this->queries->contains(function ($query) use ($relationName) {
-            return $query['method'] == 'with' && in_array($relationName, $query['arguments']);
+            return 'with' == $query['method'] && in_array($relationName, $query['arguments']);
         })) {
             $relation = $this->model->$relationName();
 
@@ -699,11 +668,9 @@ class Model
      *
      * `HasOne` and `BelongsTo` relation has different join parameters.
      *
-     * @param Relation $relation
-     *
      * @return array
-     * @throws Exception
      *
+     * @throws Exception
      */
     protected function joinParameters(Relation $relation)
     {
@@ -734,8 +701,6 @@ class Model
 
     /**
      * Don't snake case attributes.
-     *
-     * @param EloquentModel $model
      *
      * @return void
      */

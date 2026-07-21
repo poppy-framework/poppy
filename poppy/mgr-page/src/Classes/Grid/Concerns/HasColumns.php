@@ -19,7 +19,6 @@ use Poppy\MgrPage\Classes\Grid\Column;
 
 trait HasColumns
 {
-
     use Macroable {
         __call as macroCall;
     }
@@ -27,10 +26,6 @@ trait HasColumns
     /**
      * Add a column to Grid.
      *
-     * @param string $name
-     * @param string $label
-     *
-     * @return Column
      * @throws ApplicationException
      */
     public function column(string $name, string $label = ''): Column
@@ -48,9 +43,6 @@ trait HasColumns
 
     /**
      * Dynamically add columns to the grid view.
-     *
-     * @param string $method
-     * @param array  $parameters
      *
      * @return Column
      */
@@ -77,16 +69,11 @@ trait HasColumns
         return $this->addColumn($method, $label);
     }
 
-    /**
-     * @return Collection
-     */
     public function getColumns(): Collection
     {
         return $this->columns;
     }
 
-    /**
-     */
     protected function applyColumnOrderBy()
     {
         $order = input('_order', 'desc');
@@ -102,7 +89,9 @@ trait HasColumns
      *
      * @param string $name
      * @param string $label
+     *
      * @return Column
+     *
      * @throws ApplicationException
      */
     protected function addRelationColumn($name, $label = '')
@@ -213,11 +202,12 @@ trait HasColumns
             return false;
         }
 
-        if ($relation instanceof HasOne ||
-            $relation instanceof BelongsTo ||
-            $relation instanceof MorphOne
+        if ($relation instanceof HasOne
+            || $relation instanceof BelongsTo
+            || $relation instanceof MorphOne
         ) {
             $this->model()->with($method);
+
             return $this->addColumn($method, $label)->setRelation(Str::snake($method));
         }
 

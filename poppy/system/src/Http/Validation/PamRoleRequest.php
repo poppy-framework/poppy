@@ -13,13 +13,11 @@ use Route;
 
 class PamRoleRequest extends Request
 {
-
     protected bool $isValidate = false;
 
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @return bool
      * @throws AuthorizationException
      */
     public function authorize(): bool
@@ -27,8 +25,10 @@ class PamRoleRequest extends Request
         if ($id = Route::input('id')) {
             $role = PamRole::findOrFail($id);
             $this->scene('edit');
+
             return $this->can('edit', $role);
         }
+
         return $this->can('create', PamRole::class);
     }
 
@@ -54,12 +54,11 @@ class PamRoleRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         $tbRole = (new PamRole())->getTable();
+
         return [
             'title' => [
                 Rule::required(),

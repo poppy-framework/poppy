@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Core 模块的使用配置
  */
@@ -10,7 +11,6 @@ use Poppy\System\Models\PamRole;
 use Poppy\System\Models\PamRoleAccount;
 
 return [
-
     /* 维护邮箱地址
      * ---------------------------------------- */
     'op_mail' => env('CORE_OP_MAIL', ''),
@@ -27,5 +27,4 @@ return [
         'account_fk'      => 'account_id',
         'permission_fk'   => 'permission_id',
     ],
-
 ];

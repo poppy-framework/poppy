@@ -23,7 +23,6 @@ class IpTest extends TestCase
         $this->assertEquals('中国 山东 济南', $area);
     }
 
-
     public function testQqwry()
     {
         $area = (new Qqwry())->area('39.71.122.222');

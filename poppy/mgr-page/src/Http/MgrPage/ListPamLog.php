@@ -15,7 +15,6 @@ use Poppy\MgrPage\Classes\Operations;
  */
 class ListPamLog extends ListBase
 {
-
     public $title = '登录日志';
 
     /**
@@ -23,14 +22,13 @@ class ListPamLog extends ListBase
      */
     public function columns()
     {
-        $this->column('id', "ID")->sortable()->width(80);
-        $this->column('pam.username', "用户名");
-        $this->column('created_at', "操作时间");
-        $this->column('ip', "IP地址");
-        $this->column('type', "状态");
-        $this->column('area_text', "说明");
+        $this->column('id', 'ID')->sortable()->width(80);
+        $this->column('pam.username', '用户名');
+        $this->column('created_at', '操作时间');
+        $this->column('ip', 'IP地址');
+        $this->column('type', '状态');
+        $this->column('area_text', '说明');
     }
-
 
     public function filter(): Closure
     {

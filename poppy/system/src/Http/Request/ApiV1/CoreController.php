@@ -20,9 +20,11 @@ class CoreController extends JwtApiController
      *     tags={"System"},
      *     summary="[Core]多语言包",
      *     description="获取当前语言 (zh) 的多语言翻译键值对, 用于前端 i18n.",
+     *
      *     @OA\Response(
      *         response=200,
      *         description="翻译信息",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/PoppySystemCoreTranslateResponseBody")
      *     ),
      * )
@@ -35,16 +37,17 @@ class CoreController extends JwtApiController
         ]);
     }
 
-
     /**
      * @OA\Post(
      *     path="/api_v1/system/core/info",
      *     tags={"System"},
      *     summary="[Core]系统信息",
      *     description="获取系统配置信息. data 字段由 hook `poppy.system.api_info` 注入, 实际键值由宿主应用扩展决定.",
+     *
      *     @OA\Response(
      *         response=200,
      *         description="获取系统配置信息",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/PoppySystemCoreInfoResponseBody")
      *     ),
      * )
@@ -53,7 +56,7 @@ class CoreController extends JwtApiController
     {
         $hook   = sys_hook('poppy.system.api_info');
         $system = array_merge([], $hook);
+
         return Resp::success('获取系统配置信息', $system);
     }
-
 }

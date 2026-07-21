@@ -6,13 +6,12 @@ namespace Demo\Forms;
 
 class FormTips extends FormBaseWidget
 {
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Tip';
-
 
     /**
      * Build a form here.

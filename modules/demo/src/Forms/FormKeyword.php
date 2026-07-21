@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormKeyword extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'keyword(关键词)';
-
 
     /**
      * Build a form here.
@@ -33,6 +31,5 @@ class FormKeyword extends FormBaseWidget
     ->help('关键词支持字符串,可以通过拖拽来调整顺序');
 CODE;
         $this->code('code', 'Code')->default($code);
-
     }
 }

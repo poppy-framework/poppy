@@ -8,6 +8,7 @@ namespace Poppy\Extension\Alipay\Aop\Request;
  * ALIPAY API: alipay.trade.refund request
  *
  * @author auto create
+ *
  * @since  1.0, 2020-06-09 15:10:19
  */
 class AlipayTradeRefundRequest
@@ -25,7 +26,7 @@ class AlipayTradeRefundRequest
 
     private $prodCode;
 
-    private $apiVersion = "1.0";
+    private $apiVersion = '1.0';
 
     private $notifyUrl;
 
@@ -41,12 +42,12 @@ class AlipayTradeRefundRequest
     public function setBizContent($bizContent)
     {
         $this->bizContent              = $bizContent;
-        $this->apiParas["biz_content"] = $bizContent;
+        $this->apiParas['biz_content'] = $bizContent;
     }
 
     public function getApiMethodName()
     {
-        return "alipay.trade.refund";
+        return 'alipay.trade.refund';
     }
 
     public function getNotifyUrl()
@@ -121,9 +122,6 @@ class AlipayTradeRefundRequest
 
     public function setNeedEncrypt($needEncrypt)
     {
-
         $this->needEncrypt = $needEncrypt;
-
     }
-
 }

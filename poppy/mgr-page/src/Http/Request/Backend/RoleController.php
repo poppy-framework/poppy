@@ -26,7 +26,6 @@ use View;
  */
 class RoleController extends BackendController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -41,6 +40,7 @@ class RoleController extends BackendController
 
     /**
      * Display a listing of the resource.
+     *
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -52,7 +52,7 @@ class RoleController extends BackendController
 
     /**
      * 编辑 / 创建
-     * @return mixed
+     *
      * @throws Throwable
      */
     public function establish()
@@ -62,8 +62,11 @@ class RoleController extends BackendController
 
     /**
      * Remove the specified resource from storage.
+     *
      * @param int $id 角色id
+     *
      * @return JsonResponse|RedirectResponse|Response
+     *
      * @throws Exception
      */
     public function delete(int $id)
@@ -78,7 +81,9 @@ class RoleController extends BackendController
 
     /**
      * 带单列表
+     *
      * @param int $id 角色id
+     *
      * @return Factory|JsonResponse|RedirectResponse|Response
      */
     public function menu(int $id)
@@ -102,9 +107,9 @@ class RoleController extends BackendController
             if (Str::contains($key, 'py-')) {
                 return 'poppy';
             }
+
             return 'module';
         });
-
 
         return view('py-mgr-page::backend.role.menu', [
             'permission' => $groupedPermission,
@@ -112,10 +117,6 @@ class RoleController extends BackendController
         ]);
     }
 
-    /**
-     *
-     * @return Role
-     */
     private function action(): Role
     {
         return (new Role())->setPam($this->pam);

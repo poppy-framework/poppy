@@ -7,11 +7,11 @@ use Poppy\System\Classes\Traits\PamTrait;
 
 class FormEditor extends FormBaseWidget
 {
-
     use PamTrait;
 
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Editor';

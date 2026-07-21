@@ -6,14 +6,12 @@ use Poppy\Framework\Validation\Rule;
 
 class FormDecimal extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '数字输入';
-
 
     /**
      * Build a form here.

@@ -29,14 +29,16 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         elseif (file_exists($fileInVendor)) {
             $app = require_once $fileInVendor;
         }
-        if ($app !== null) {
+        if (null !== $app) {
             $app->make(Kernel::class)->bootstrap();
         }
+
         return $app;
     }
 
     /**
      * Run Vendor Test
+     *
      * @param array $vendors test here is must class
      */
     public function poppyTestVendor(array $vendors = []): void
@@ -48,8 +50,8 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
 
     /**
      * 输出变量/使用 STD 标准输出, 不会出现测试错误
+     *
      * @param array|string $vars 需要输出的内容
-     * @param string       $description
      */
     protected function outputVariables($vars, string $description = ''): void
     {
@@ -59,7 +61,8 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         if (is_array($vars)) {
             try {
                 fwrite(STDOUT, print_r(json_encode($vars, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL, true));
-            } catch (JsonException $e) {
+            }
+            catch (JsonException $e) {
                 fwrite(STDERR, 'Wrong format with error format with output variables');
             }
         }
@@ -70,9 +73,6 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
 
     /**
      * 读取模块 Json 文件
-     * @param $module
-     * @param $path
-     * @return array
      */
     protected function readJson($module, $path): array
     {
@@ -82,15 +82,17 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
             if (UtilHelper::isJson($config)) {
                 try {
                     return json_decode($config, true, 512, JSON_THROW_ON_ERROR);
-                } catch (JsonException $e) {
+                }
+                catch (JsonException $e) {
                     return [];
                 }
             }
+
             return [];
         }
+
         return [];
     }
-
 
     /**
      * @throws ApplicationException

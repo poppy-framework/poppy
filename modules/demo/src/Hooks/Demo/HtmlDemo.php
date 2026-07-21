@@ -9,9 +9,8 @@ use Poppy\Core\Services\Contracts\ServiceHtml;
  */
 class HtmlDemo implements ServiceHtml
 {
-
     public function output()
     {
-        return "<div></div>";
+        return '<div></div>';
     }
 }

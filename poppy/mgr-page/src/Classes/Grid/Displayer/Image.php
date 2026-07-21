@@ -15,6 +15,7 @@ class Image extends AbstractDisplayer
 
         return collect((array) $this->value)->filter()->map(function ($path) use ($width, $height) {
             $url = FileManager::previewImage($path, $width);
+
             return "<img src='$url'
             data-src='$path'
             style='max-width:{$width}px;max-height:{$height}px' class='J_image_preview' />";

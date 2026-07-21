@@ -11,10 +11,10 @@ class SearchHelper
 {
     /**
      * 获取排序的key
+     *
      * @param string $default_order 默认的排序
      * @param array  $allowed       允许的key
      * @param string $input_key     默认的input键
-     * @return string
      */
     public static function key(string $default_order, array $allowed = [], string $input_key = '_order'): string
     {
@@ -24,10 +24,10 @@ class SearchHelper
         }
 
         $orderKey = $default_order;
-        if (strpos($order, '_desc') !== false) {
+        if (false !== strpos($order, '_desc')) {
             $orderKey = str_replace('_desc', '', $order);
         }
-        if (strpos($order, '_asc') !== false) {
+        if (false !== strpos($order, '_asc')) {
             $orderKey = str_replace('_asc', '', $order);
         }
         if (in_array($orderKey, $allowed, true)) {
@@ -39,16 +39,16 @@ class SearchHelper
 
     /**
      * 排序类型
+     *
      * @param string $key key
-     * @return string
      */
     public static function order(string $key = '_order'): string
     {
         $order = (string) input($key);
-        if (strpos($order, '_desc') !== false) {
+        if (false !== strpos($order, '_desc')) {
             return 'desc';
         }
-        if (strpos($order, '_asc') !== false) {
+        if (false !== strpos($order, '_asc')) {
             return 'asc';
         }
 

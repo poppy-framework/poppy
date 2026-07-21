@@ -10,8 +10,7 @@ use Poppy\MgrPage\Classes\Grid\Filter;
 class ListSearchLike extends ListSearchWhere
 {
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {

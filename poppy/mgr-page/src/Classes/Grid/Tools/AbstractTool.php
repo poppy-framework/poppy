@@ -9,20 +9,12 @@ use Poppy\MgrPage\Classes\Grid;
 
 abstract class AbstractTool implements Renderable
 {
-    /**
-     * @var Grid
-     */
     protected Grid $grid;
 
-    /**
-     * @var bool
-     */
     protected bool $disabled = false;
 
     /**
      * Toggle this button.
-     *
-     * @param bool $disable
      *
      * @return $this
      */
@@ -41,9 +33,6 @@ abstract class AbstractTool implements Renderable
         return !$this->disabled;
     }
 
-    /**
-     * @return Grid
-     */
     public function getGrid(): Grid
     {
         return $this->grid;
@@ -52,13 +41,12 @@ abstract class AbstractTool implements Renderable
     /**
      * Set parent grid.
      *
-     * @param Grid $grid
-     *
      * @return $this
      */
     public function setGrid(Grid $grid): self
     {
         $this->grid = $grid;
+
         return $this;
     }
 

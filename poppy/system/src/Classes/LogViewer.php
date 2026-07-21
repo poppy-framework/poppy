@@ -7,15 +7,13 @@ namespace Poppy\System\Classes;
 use File;
 use Psr\Log\LogLevel;
 use ReflectionClass;
-use ReflectionException;
 
 /**
  * 日志查看器
  */
 class LogViewer
 {
-
-    const MAX_FILE_SIZE = 20428800;
+    public const MAX_FILE_SIZE = 20428800;
 
     /**
      * @var string file
@@ -87,13 +85,17 @@ class LogViewer
             self::$file = $log_file[0];
         }
 
-        if (File::size(self::$file) > self::MAX_FILE_SIZE) return null;
+        if (File::size(self::$file) > self::MAX_FILE_SIZE) {
+            return null;
+        }
 
         $file = File::get(self::$file);
 
         preg_match_all($pattern, $file, $headings);
 
-        if (!is_array($headings)) return $log;
+        if (!is_array($headings)) {
+            return $log;
+        }
 
         $log_data = preg_split($pattern, $file);
 
@@ -102,19 +104,21 @@ class LogViewer
         }
 
         foreach ($headings as $h) {
-            for ($i = 0, $j = count($h); $i < $j; $i++) {
+            for ($i = 0, $j = count($h); $i < $j; ++$i) {
                 foreach ($log_levels as $level_key => $level_value) {
                     if (strpos(strtolower($h[$i]), '.' . $level_value)) {
                         preg_match('/^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\].*?\.' . $level_key . ': (.*?)( in .*?:[0-9]+)?$/', $h[$i], $current);
 
-                        if (!isset($current[2])) continue;
+                        if (!isset($current[2])) {
+                            continue;
+                        }
                         $log[] = [
                             'level'       => $level_value,
                             'level_class' => self::$levelsClasses[$level_value],
                             'level_img'   => self::$levelsImgs[$level_value],
                             'date'        => $current[1],
                             'text'        => $current[2],
-                            'in_file'     => isset($current[3]) ? $current[3] : null,
+                            'in_file'     => $current[3] ?? null,
                             'stack'       => preg_replace("/^\n*/", '', $log_data[$i]),
                         ];
                     }
@@ -127,6 +131,7 @@ class LogViewer
 
     /**
      * @param bool $basename 基础文件名
+     *
      * @return array
      */
     public static function getFiles($basename = false)

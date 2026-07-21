@@ -17,38 +17,28 @@ use Route;
 
 class FormCategoryEstablish extends FormWidget
 {
-
     public $ajax = true;
 
     /**
      * 类型
-     * @var string
      */
     private string $type;
 
-    /**
-     * @var int
-     */
     private int $id;
 
-    /**
-     * @var null|SysCategory
-     */
     private ?SysCategory $item = null;
-
 
     /**
      * 分类
-     * @var Category
      */
     private Category $category;
 
     public function __construct($data = [])
     {
         parent::__construct($data);
-        $this->type     = (string)input('type');
+        $this->type     = (string) input('type');
         $this->category = new Category();
-        $id             = (int)Route::input('id');
+        $id             = (int) Route::input('id');
         $id && $this->category->init($id);
 
         if ($id) {
@@ -76,6 +66,7 @@ class FormCategoryEstablish extends FormWidget
                 'id'          => $this->category->getItem()->id,
             ]);
         }
+
         return Resp::error($this->category->getError());
     }
 

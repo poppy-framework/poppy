@@ -12,6 +12,7 @@ use Poppy\Framework\Validation\Rule;
  * @OA\Schema(
  *     schema="DemoRespSuccessRequest",
  *     description="成功响应示例请求 (演示 meta 行为: location 跳转 / reload 重载)",
+ *
  *     @OA\Property(property="location", type="string", nullable=true, description="跳转地址, 传入后响应携带 _location meta 触发前端跳转", example="/dashboard"),
  *     @OA\Property(property="reload", type="string", nullable=true, description="是否触发前端重载 (任意真值都生效)", enum={"1", "true", "Y"}),
  * )

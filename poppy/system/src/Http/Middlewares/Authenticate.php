@@ -16,13 +16,10 @@ use Poppy\System\Models\SysConfig;
  */
 class Authenticate extends IlluminateAuthenticate
 {
-
     private bool $isJwt = false;
 
     /**
      * 检测跳转地址
-     * @param $guards
-     * @return string
      */
     public static function detectLocation($guards): string
     {
@@ -33,17 +30,19 @@ class Authenticate extends IlluminateAuthenticate
         if (in_array(PamAccount::GUARD_WEB, $guards, true) && $userLogin = config('poppy.system.user_location')) {
             $location = $userLogin;
         }
+
         return $location;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function handle($request, Closure $next, ...$guards)
     {
         try {
             $this->authenticate($request, $guards);
-        } catch (AuthenticationException $e) {
+        }
+        catch (AuthenticationException $e) {
             if ($this->isJwt || $request->expectsJson()) {
                 return response()->json([
                     'status'  => 401,
@@ -60,11 +59,12 @@ class Authenticate extends IlluminateAuthenticate
 
             return response('Unauthorized.', 401);
         }
+
         return $next($request);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function authenticate($request, array $guards)
     {
@@ -82,12 +82,13 @@ class Authenticate extends IlluminateAuthenticate
             if (app('auth')->guard($guard)->check()) {
                 /** @var PamAccount $user */
                 $user = app('auth')->guard($guard)->user();
-                if ($user->is_enable === SysConfig::NO) {
+                if (SysConfig::NO === $user->is_enable) {
                     $reason      = '用户被禁用' . ($user->disable_reason ? ', 原因: ' . $user->disable_reason : '') . ', 解禁时间 : ' . $user->disable_end_at;
                     $this->isJwt = (bool) jwt_token();
                     throw new AuthenticationException($reason, $guards);
                 }
                 app('auth')->shouldUse($guard);
+
                 return true;
             }
         }

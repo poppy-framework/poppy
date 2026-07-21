@@ -7,15 +7,14 @@ use Poppy\Framework\Validation\Rule;
 
 class FormDate extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '日期输入框';
 
-    public function data():array
+    public function data(): array
     {
         return [
             'date' => Carbon::now()->toDateString(),
@@ -27,7 +26,6 @@ class FormDate extends FormBaseWidget
      */
     public function form()
     {
-
         $this->date('date', '日期输入')->placeholder('输入正确日期格式')->rules([
             Rule::dateFormat('Y-m-d'),
         ])->help('日期输入框');

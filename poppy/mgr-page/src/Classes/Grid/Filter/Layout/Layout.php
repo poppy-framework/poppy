@@ -17,20 +17,12 @@ class Layout
      */
     protected Collection $columns;
 
-    /**
-     * @var Column
-     */
     protected Column $current;
 
-    /**
-     * @var Filter
-     */
     protected Filter $parent;
 
     /**
      * Layout constructor.
-     *
-     * @param Filter $filter
      */
     public function __construct(Filter $filter)
     {
@@ -41,8 +33,6 @@ class Layout
 
     /**
      * Add a filter to layout column.
-     *
-     * @param FilterItem $filter
      */
     public function addFilter(FilterItem $filter)
     {
@@ -53,7 +43,6 @@ class Layout
      * Add a new column in layout.
      *
      * @param int|float $width
-     * @param Closure   $closure
      */
     public function column($width, Closure $closure)
     {
@@ -72,20 +61,18 @@ class Layout
 
     /**
      * Get all columns in filter layout.
-     *
-     * @return Collection
      */
     public function columns(): Collection
     {
         if ($this->columns->isEmpty()) {
             $this->columns->push($this->current);
         }
+
         return $this->columns;
     }
 
     /**
      * 过滤条件数量
-     * @return int
      */
     public function filterCount(): int
     {
@@ -93,6 +80,7 @@ class Layout
         foreach ($this->columns as $column) {
             $count += $column->filterCount();
         }
+
         return $count;
     }
 }

@@ -11,10 +11,6 @@ use SimpleXMLElement;
 
 class Factory
 {
-
-    /**
-     * @var SmsContract|null
-     */
     private static ?SmsContract $instance = null;
 
     /**
@@ -30,9 +26,10 @@ class Factory
             }
             $sender      = $hooks[$sendType];
             $senderClass = $sender['provider'] ?? LocalSmsProvider::class;
-            /** @var SmsContract|AppTrait $Sms */
+            /* @var SmsContract|AppTrait $Sms */
             self::$instance = new $senderClass();
         }
+
         return self::$instance;
     }
 }

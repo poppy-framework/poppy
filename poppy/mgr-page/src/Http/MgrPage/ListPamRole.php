@@ -17,11 +17,11 @@ use Poppy\System\Models\PamRole;
 
 class ListPamRole extends ListBase
 {
-
     public $title = '角色管理';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns(): void
@@ -49,8 +49,7 @@ class ListPamRole extends ListBase
     }
 
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {
@@ -62,10 +61,10 @@ class ListPamRole extends ListBase
         };
     }
 
-
     public function quickButtons(): Closure
     {
         $user = Auth::user();
+
         return function (Operations $operations) use ($user) {
             if ($user->can('create', PamRole::class)) {
                 $operations->create(route('py-mgr-page:backend.role.establish'));

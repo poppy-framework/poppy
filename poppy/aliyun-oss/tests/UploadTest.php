@@ -22,7 +22,6 @@ use Throwable;
  */
 class UploadTest extends BaseAliyun
 {
-
     private static ?Client $client = null;
 
     private array $config = [];
@@ -45,11 +44,9 @@ class UploadTest extends BaseAliyun
             'py-aliyun-oss::oss.endpoint'      => $this->confEndpoint,
             'py-aliyun-oss::oss.url_prefix'    => $this->confUrlPrefix,
         ]);
-
     }
 
     /**
-     * @return void
      * @throws LoadConfigurationException
      * @throws GuzzleException
      * @throws OssException
@@ -74,7 +71,6 @@ class UploadTest extends BaseAliyun
 
             $copyAimPath = 'testing/oss/copy-demo.jpg';
             $aimUrl      = $Upload->getReturnUrl() . $copyAimPath;
-
 
             $Upload->copyTo($copyAimPath);
             $resp = self::$client->get($aimUrl);

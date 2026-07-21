@@ -8,9 +8,7 @@ use Poppy\System\Models\PamAccount;
 
 class FormMultiImage extends FormBaseWidget
 {
-
     protected $title = 'MultiImage';
-
 
     /**
      * @throws ApplicationException
@@ -79,7 +77,5 @@ CODE;
             Rule::urls(),
         ])->number(50)->token($token)->auto(true)->help('多个图片');
         $this->divider();
-
-
     }
 }

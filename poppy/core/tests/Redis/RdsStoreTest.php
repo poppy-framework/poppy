@@ -14,11 +14,11 @@ class RdsStoreTest extends TestCase
      */
     public function testInLock(): void
     {
-        for ($start = 1; $start <= 20; $start++) {
+        for ($start = 1; $start <= 20; ++$start) {
             RdsStore::inLock('testing_atomic_lock', 1);
             // 100 ms
             usleep(100000);
-            if ($start % 10 === 0) {
+            if (0 === $start % 10) {
                 $this->assertEquals(false, RdsStore::inLock('testing_atomic_lock', 1), 'Lock');
             }
             else {

@@ -7,6 +7,7 @@ namespace Poppy\Framework\Filesystem;
 use FilesystemIterator;
 use Illuminate\Filesystem\Filesystem as FilesystemBase;
 use ReflectionClass;
+use ReflectionException;
 
 /**
  * File helper
@@ -16,12 +17,12 @@ class Filesystem extends FilesystemBase
     /**
      * @var string default file permission mask as a string ("777")
      */
-    public $filePermissions = null;
+    public $filePermissions;
 
     /**
      * @var string default folder permission mask as a string ("777")
      */
-    public $folderPermissions = null;
+    public $folderPermissions;
 
     /**
      * @var array known path symbols and their prefixes
@@ -30,17 +31,20 @@ class Filesystem extends FilesystemBase
 
     /**
      * Determine if the given path contains no files.
+     *
      * @param string $directory directory
+     *
      * @return bool
      */
     public function isDirectoryEmpty(string $directory)
     {
-        if (!is_readable($directory))
+        if (!is_readable($directory)) {
             return null;
+        }
 
         $handle = opendir($directory);
         while (false !== ($entry = readdir($handle))) {
-            if ($entry != '.' && $entry != '..') {
+            if ('.' != $entry && '..' != $entry) {
                 closedir($handle);
 
                 return false;
@@ -54,7 +58,9 @@ class Filesystem extends FilesystemBase
 
     /**
      * Converts a file size in bytes to human readable format.
+     *
      * @param int $bytes bytes
+     *
      * @return string
      */
     public function sizeToString(int $bytes)
@@ -75,7 +81,7 @@ class Filesystem extends FilesystemBase
             return $bytes = $bytes . ' bytes';
         }
 
-        if ($bytes == 1) {
+        if (1 == $bytes) {
             return $bytes . ' byte';
         }
 
@@ -85,7 +91,9 @@ class Filesystem extends FilesystemBase
     /**
      * Returns a public file path from an absolute one
      * eg: /home/mysite/public_html/welcome -> /welcome
+     *
      * @param string $path Absolute path
+     *
      * @return string
      */
     public function localToPublic($path)
@@ -93,7 +101,7 @@ class Filesystem extends FilesystemBase
         $result     = null;
         $publicPath = public_path();
 
-        if (strpos($path, $publicPath) === 0) {
+        if (0 === strpos($path, $publicPath)) {
             $result = str_replace('\\', '/', substr($path, strlen($publicPath)));
         }
 
@@ -103,19 +111,24 @@ class Filesystem extends FilesystemBase
     /**
      * Returns true if the specified path is an absolute/local path
      * to the application.
+     *
      * @param string $path path
+     *
      * @return bool
      */
     public function isLocalPath($path)
     {
-        return strpos($path, base_path()) === 0;
+        return 0 === strpos($path, base_path());
     }
 
     /**
      * Finds the path to a class
+     *
      * @param mixed $className Class name or object
+     *
      * @return string The file path
-     * @throws \ReflectionException
+     *
+     * @throws ReflectionException
      */
     public function fromClass($className)
     {
@@ -127,8 +140,10 @@ class Filesystem extends FilesystemBase
     /**
      * Determine if a file exists with case insensitivity
      * supported for the file only.
+     *
      * @param string $path path
-     * @return mixed  Sensitive path or false
+     *
+     * @return mixed Sensitive path or false
      */
     public function existsInsensitive($path)
     {
@@ -154,8 +169,10 @@ class Filesystem extends FilesystemBase
 
     /**
      * Normalizes the directory separator, often used by Win systems.
+     *
      * @param string $path Path name
-     * @return string       Normalized path
+     *
+     * @return string Normalized path
      */
     public function normalizePath($path)
     {
@@ -165,14 +182,16 @@ class Filesystem extends FilesystemBase
     /**
      * Converts a path using path symbol. Returns the original path if
      * no symbol is used and no default is specified.
+     *
      * @param string $path    path
      * @param mixed  $default default
+     *
      * @return string
      */
     public function symbolizePath($path, $default = false)
     {
         if (!$firstChar = $this->isPathSymbol($path)) {
-            return $default === false ? $path : $default;
+            return false === $default ? $path : $default;
         }
 
         $_path = substr($path, 1);
@@ -182,7 +201,9 @@ class Filesystem extends FilesystemBase
 
     /**
      * Returns true if the path uses a symbol.
+     *
      * @param string $path path
+     *
      * @return bool
      */
     public function isPathSymbol($path)
@@ -197,9 +218,11 @@ class Filesystem extends FilesystemBase
 
     /**
      * Write the contents of a file.
+     *
      * @param string $path     path
      * @param string $contents contents
      * @param bool   $lock     lock
+     *
      * @return int
      */
     public function put($path, $contents, $lock = false)
@@ -212,8 +235,10 @@ class Filesystem extends FilesystemBase
 
     /**
      * Copy a file to a new location.
+     *
      * @param string $path   path
      * @param string $target contents
+     *
      * @return bool
      */
     public function copy($path, $target)
@@ -226,16 +251,19 @@ class Filesystem extends FilesystemBase
 
     /**
      * Create a directory.
+     *
      * @param string $path      path
      * @param int    $mode      mode
      * @param bool   $recursive recursive
      * @param bool   $force     force
+     *
      * @return bool
      */
     public function makeDirectory($path, $mode = 0777, $recursive = false, $force = false)
     {
-        if ($mask = $this->getFolderPermissions())
+        if ($mask = $this->getFolderPermissions()) {
             $mode = $mask;
+        }
 
         /*
          * Find the green leaves
@@ -244,8 +272,12 @@ class Filesystem extends FilesystemBase
             $chmodPath = $path;
             while (true) {
                 $basePath = dirname($chmodPath);
-                if ($chmodPath == $basePath) break;
-                if ($this->isDirectory($basePath)) break;
+                if ($chmodPath == $basePath) {
+                    break;
+                }
+                if ($this->isDirectory($basePath)) {
+                    break;
+                }
                 $chmodPath = $basePath;
             }
         }
@@ -274,8 +306,10 @@ class Filesystem extends FilesystemBase
 
     /**
      * Modify file/folder permissions
+     *
      * @param string   $path path
      * @param int|null $mask mask
+     *
      * @return void
      */
     public function chmod($path, $mask = null)
@@ -295,9 +329,11 @@ class Filesystem extends FilesystemBase
 
     /**
      * Modify file/folder permissions recursively
+     *
      * @param string      $path          path
      * @param string|null $fileMask      fileMask
      * @param string|null $directoryMask directoryMask
+     *
      * @return void
      */
     public function chmodRecursive($path, $fileMask = null, $directoryMask = null)
@@ -316,6 +352,7 @@ class Filesystem extends FilesystemBase
 
         if (!$this->isDirectory($path)) {
             $this->chmod($path, $fileMask);
+
             return;
         }
 
@@ -334,6 +371,7 @@ class Filesystem extends FilesystemBase
 
     /**
      * Returns the default file permission mask to use.
+     *
      * @return string Permission mask as octal (0777) or null
      */
     public function getFilePermissions()
@@ -345,6 +383,7 @@ class Filesystem extends FilesystemBase
 
     /**
      * Returns the default folder permission mask to use.
+     *
      * @return string Permission mask as octal (0777) or null
      */
     public function getFolderPermissions()
@@ -356,8 +395,10 @@ class Filesystem extends FilesystemBase
 
     /**
      * Match filename against a pattern.
+     *
      * @param string|array $fileName fileName
      * @param string       $pattern  pattern
+     *
      * @return bool
      */
     public function fileNameMatch($fileName, $pattern)

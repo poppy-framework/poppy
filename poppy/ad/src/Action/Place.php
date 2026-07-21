@@ -16,26 +16,21 @@ class Place
 {
     use AppTrait;
 
-    /**
-     * @var SysAdPlace $item
-     */
     private SysAdPlace $item;
-
 
     /**
      * 编辑/创建 广告位
+     *
      * @param array    $data 传入数据
      *                       string  title       名称
      *                       int     width       宽度
      *                       int     height      高度
      *                       string  thumb       示意图
      *                       string  introduce   介绍
-     * @param null|int $id   广告位ID
-     * @return bool
+     * @param int|null $id   广告位ID
      */
-    public function establish(array $data, int $id = null): bool
+    public function establish(array $data, ?int $id = null): bool
     {
-
         $initDb = [
             'title'     => (string) sys_get($data, 'title'),
             'width'     => (string) sys_get($data, 'width'),
@@ -61,8 +56,8 @@ class Place
 
     /**
      * 删除数据
+     *
      * @param int $id 活动ID
-     * @return bool
      */
     public function delete(int $id): bool
     {
@@ -74,7 +69,8 @@ class Place
 
         try {
             $this->item->delete();
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return $this->setError($e->getMessage());
         }
 
@@ -83,6 +79,7 @@ class Place
 
     /**
      * 初始化
+     *
      * @param int $id 活动 ID
      */
     public function init(int $id): void

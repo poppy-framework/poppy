@@ -12,7 +12,6 @@ use Poppy\Framework\Helper\TreeHelper;
  */
 class TreeHelperTest extends TestCase
 {
-
     protected $trees;
 
     public function setUp(): void

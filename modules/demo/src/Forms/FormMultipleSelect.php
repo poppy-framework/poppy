@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormMultipleSelect extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'MultipleSelect';
-
 
     public function data(): array
     {
@@ -50,6 +48,5 @@ class FormMultipleSelect extends FormBaseWidget
             ->options($options)->attribute($conf);
         $this->multipleSelect('string', '字符')
             ->options($options)->attribute($conf);
-
     }
 }

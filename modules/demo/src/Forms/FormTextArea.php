@@ -8,10 +8,10 @@ class FormTextArea extends FormBaseWidget
 {
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'TextArea';
-
 
     /**
      * Build a form here.

@@ -26,8 +26,8 @@ class AdPlacePolicy
 
     /**
      * 编辑
+     *
      * @param PamAccount $pam 账号
-     * @return bool
      */
     public function create(PamAccount $pam): bool
     {
@@ -36,13 +36,12 @@ class AdPlacePolicy
 
     /**
      * 编辑
+     *
      * @param PamAccount $pam  账号
      * @param PamRole    $role 角色
-     * @return bool
      */
     public function edit(PamAccount $pam, PamRole $role): bool
     {
         return true;
     }
-
 }

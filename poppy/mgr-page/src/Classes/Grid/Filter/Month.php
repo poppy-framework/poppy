@@ -10,17 +10,14 @@ use Illuminate\Support\Arr;
 class Month extends Date
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected string $query = 'whereBetween';
-
 
     protected string $fieldName = 'month';
 
     /**
      * Get condition of this filter.
-     *
-     * @param array $inputs
      *
      * @return array|void
      */

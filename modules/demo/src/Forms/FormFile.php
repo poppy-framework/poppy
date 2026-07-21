@@ -7,10 +7,9 @@ use Poppy\System\Models\PamAccount;
 
 class FormFile extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'File';

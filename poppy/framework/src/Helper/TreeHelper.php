@@ -11,53 +11,58 @@ class TreeHelper
 {
     /**
      * 生成树型结构所需要的2维数组
+     *
      * @var array
      */
     public $arr = [];
 
     /**
      * Tree
+     *
      * @var array
      */
     public $tree = [];
 
     /**
      * ID
+     *
      * @var int
      */
     private $keyId;
 
     /**
      * PID
+     *
      * @var int
      */
     private $keyPid;
 
     /**
      * Title
+     *
      * @var string
      */
     private $keyTitle;
 
     /**
      * 生成树型结构所需修饰符号，可以换成图片
+     *
      * @var array
      */
     public $icon = ['&nbsp;│', '&nbsp;├', '&nbsp;└'];
 
     /**
      * Space
+     *
      * @var string
      */
     public $space = '&nbsp;';
 
-    /**
-     * @access private
-     */
     public $ret = '';
 
     /**
      * 构造函数，初始化类
+     *
      * @param array  $arr     2维数组，例如：
      *                        array(
      *                        1 => array('id'=>'1','pid'=>0,'name'=>'一级栏目一'),
@@ -71,6 +76,7 @@ class TreeHelper
      * @param string $k_id    id key
      * @param string $k_pid   pid key
      * @param string $k_title title key
+     *
      * @return bool
      */
     public function init($arr = [], $k_id = 'id', $k_pid = 'pid', $k_title = 'name')
@@ -95,7 +101,9 @@ class TreeHelper
 
     /**
      * 得到父级数组
+     *
      * @param int id id
+     *
      * @return array|bool
      */
     public function getParent($id)
@@ -119,7 +127,9 @@ class TreeHelper
 
     /**
      * 得到子级数组
+     *
      * @param int
+     *
      * @return array|bool
      */
     public function getChild($id)
@@ -138,8 +148,10 @@ class TreeHelper
 
     /**
      * 得到当前位置数组
+     *
      * @param int   $id       id
      * @param array $newArray newArray
+     *
      * @return array|bool
      */
     public function getPos($id, &$newArray)
@@ -165,12 +177,12 @@ class TreeHelper
 
     /**
      * 得到树型结构
+     *
      * @param int    $my_id       ID，表示获得这个ID下的所有子级
      * @param string $str         生成树型结构的基本代码，例如："<option value=\$id \$selected>\$spacer\$name</option>"
      * @param int    $selected_id 被选中的ID，比如在做树型下拉框的时候需要用到
      * @param string $adds        是否添加指示标志
      * @param string $str_group   分组
-     * @return string
      */
     public function getTree($my_id, $str, $selected_id = 0, $adds = '', $str_group = ''): string
     {
@@ -192,7 +204,7 @@ class TreeHelper
                 $selected = $node_id == $selected_id ? 'selected="selected"' : '';
                 @extract($node);
                 $nstr = '';
-                if ($node[$this->keyPid] == 0 && isset($node['str_group'])) {
+                if (0 == $node[$this->keyPid] && isset($node['str_group'])) {
                     eval("\$nstr = \"$str_group\";");
                 }
                 else {
@@ -201,7 +213,7 @@ class TreeHelper
                 $this->ret .= $nstr;
                 $nbsp      = $this->space;
                 $this->getTree($node_id, $str, $selected_id, $adds . $k . $nbsp, $str_group);
-                $number++;
+                ++$number;
             }
         }
 
@@ -210,9 +222,11 @@ class TreeHelper
 
     /**
      * 获取树数组
+     *
      * @param int    $id   id
      * @param string $adds 追加
      * @param string $type 类型
+     *
      * @return array
      */
     public function getTreeArray($id, $adds = '', $type = 'default')
@@ -234,10 +248,10 @@ class TreeHelper
                 $this->tree[$node[$this->keyId]] = $spacer . $node[$this->keyTitle];
                 $nbsp                            = $this->space;
                 $this->getTreeArray($node_id, $adds . $k . $nbsp);
-                $number++;
+                ++$number;
             }
         }
-        if ($type == 'default') {
+        if ('default' == $type) {
             return $this->tree;
         }
 
@@ -254,10 +268,12 @@ class TreeHelper
 
     /**
      * 同上一方法类似,但允许多选
+     *
      * @param int    $myid id
      * @param string $str  字串
      * @param int    $sid  id
      * @param string $adds 附加信息
+     *
      * @return string
      */
     public function getTreeMulti($myid, $str, $sid = 0, $adds = '')
@@ -283,7 +299,7 @@ class TreeHelper
                 eval("\$nstr = \"$str\";");
                 $this->ret .= $nstr;
                 $this->getTreeMulti($kid, $str, $sid, $adds . $k . '&nbsp;');
-                $number++;
+                ++$number;
             }
         }
 
@@ -292,11 +308,13 @@ class TreeHelper
 
     /**
      * 树分类
+     *
      * @param int    $myid 要查询的ID
      * @param string $str  第一种HTML代码方式
      * @param string $str2 第二种HTML代码方式
      * @param int    $sid  默认选中
      * @param string $adds 前缀
+     *
      * @return string
      */
     public function getTreeCategory($myid, $str, $str2, $sid = 0, $adds = '')
@@ -326,7 +344,7 @@ class TreeHelper
                 }
                 $this->ret .= $nstr;
                 $this->getTreeCategory($id, $str, $str2, $sid, $adds . $k . '&nbsp;');
-                $number++;
+                ++$number;
             }
         }
 
@@ -335,8 +353,10 @@ class TreeHelper
 
     /**
      * 是否存在
+     *
      * @param string $list 位置
      * @param string $item 条目
+     *
      * @return bool|int
      */
     private function has($list, $item)

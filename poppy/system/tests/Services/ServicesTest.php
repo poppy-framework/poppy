@@ -7,7 +7,6 @@ use Poppy\Framework\Application\TestCase;
 
 class ServicesTest extends TestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();

@@ -16,11 +16,11 @@ use Poppy\Version\Models\SysAppVersion;
 
 class ListSysAppVersion extends ListBase
 {
-
     public $title = '版本管理';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns()
@@ -39,8 +39,7 @@ class ListSysAppVersion extends ListBase
     }
 
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {

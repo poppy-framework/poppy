@@ -51,14 +51,8 @@ class Pam
      */
     private int $parentId = 0;
 
-    /**
-     * @var bool
-     */
     private bool $isRegister = false;
 
-    /**
-     * @return bool
-     */
     public function getIsRegister(): bool
     {
         return $this->isRegister;
@@ -66,10 +60,11 @@ class Pam
 
     /**
      * 验证验登录
+     *
      * @param string $passport 通行证
-     * @param string $captcha 验证码
-     * @param string $guard 认证 Guard
-     * @return bool
+     * @param string $captcha  验证码
+     * @param string $guard    认证 Guard
+     *
      * @throws Throwable
      */
     public function captchaLogin(string $passport, string $captcha, string $guard): bool
@@ -109,20 +104,21 @@ class Pam
 
         try {
             event(new LoginBannedEvent($this->pam, $guard));
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return $this->setError($e);
         }
 
         event(new LoginSuccessEvent($this->pam, $guard));
+
         return true;
     }
 
-
     /**
      * 后台验证码登录
-     * @param string $mobile 通行证
+     *
+     * @param string $mobile  通行证
      * @param string $captcha 验证码
-     * @return bool
      */
     public function beCaptchaLogin(string $mobile, string $captcha): bool
     {
@@ -144,16 +140,19 @@ class Pam
 
         try {
             event(new LoginBannedEvent($this->pam, PamAccount::GUARD_BACKEND));
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return $this->setError($e);
         }
 
         event(new LoginSuccessEvent($this->pam, PamAccount::GUARD_BACKEND));
+
         return true;
     }
 
     /**
      * 设置父级ID
+     *
      * @param int $parent_id 父级id
      */
     public function setParentId(int $parent_id): void
@@ -163,10 +162,11 @@ class Pam
 
     /**
      * 用户注册
-     * @param string           $passport passport
-     * @param string           $password 密码
+     *
+     * @param string           $passport  passport
+     * @param string           $password  密码
      * @param string|array|int $role_name 用户角色名称
-     * @return bool
+     *
      * @throws Throwable
      */
     public function register(string $passport, string $password = '', $role_name = PamRole::FE_USER): bool
@@ -194,14 +194,14 @@ class Pam
         ];
 
         // 完善主账号类型规则
-        if ($type === PamAccount::REG_TYPE_USERNAME) {
+        if (PamAccount::REG_TYPE_USERNAME === $type) {
             if (preg_match('/\s+/', $passport)) {
                 return $this->setError(trans('py-system::action.pam.user_name_not_space'));
             }
             // 注册用户时候的正则匹配
             if ($this->parentId) {
                 // 子用户中必须包含 ':' 冒号
-                if (strpos($initDb[$type], ':') === false) {
+                if (false === strpos($initDb[$type], ':')) {
                     return $this->setError(trans('py-system::action.pam.sub_user_account_need_colon'));
                 }
                 // 初始化子用户数据
@@ -216,7 +216,7 @@ class Pam
         }
 
         // 密码不为空时候的检测
-        if ($password !== '') {
+        if ('' !== $password) {
             $rule['password'] += [
                 Rule::between(6, 20),
                 Rule::required(),
@@ -244,7 +244,7 @@ class Pam
 
         // 自动设置前缀
         $prefix = strtoupper(strtolower((string) sys_setting('py-system::pam.prefix', 'PF')));
-        if ($type !== PamAccount::REG_TYPE_USERNAME) {
+        if (PamAccount::REG_TYPE_USERNAME !== $type) {
             $hasAccountName = false;
             // 检查是否设置了前缀
             if (!$prefix) {
@@ -262,13 +262,12 @@ class Pam
         $initDb['is_enable'] = SysConfig::ENABLE;
 
         // 注册时候检测密码强度
-        if ($password !== '' && !$this->checkPwdStrength($initDb['type'], $password)) {
+        if ('' !== $password && !$this->checkPwdStrength($initDb['type'], $password)) {
             return false;
         }
 
         // 处理数据库
         DB::transaction(function () use ($initDb, $role, $password, $hasAccountName, $prefix, $type) {
-
             if (PamAccount::where($type, $initDb[$type])->exists()) {
                 throw new ApplicationException("账号 {$initDb[$type]} 已存在");
             }
@@ -283,11 +282,10 @@ class Pam
             if (!$hasAccountName) {
                 $formatAccountName = sprintf("%s_%'.09d", $prefix, $pam->id);
                 $pam->username     = $formatAccountName;
-
             }
 
             // 设置默认国际手机号, 后台自动生成(Backend 用户/Develop)
-            if (!isset($initDb['mobile']) && $initDb['type'] === PamAccount::TYPE_BACKEND) {
+            if (!isset($initDb['mobile']) && PamAccount::TYPE_BACKEND === $initDb['type']) {
                 $pam->mobile = PamAccount::dftMobile($pam->id);
             }
 
@@ -305,17 +303,18 @@ class Pam
             event(new PamRegisteredEvent($pam));
 
             $this->pam = $pam;
-
         });
+
         return true;
     }
 
     /**
      * 密码登录
-     * @param string $passport passport
-     * @param string $password 密码
+     *
+     * @param string $passport   passport
+     * @param string $password   密码
      * @param string $guard_name 类型
-     * @return bool
+     *
      * @throws ApplicationException
      */
     public function loginCheck(string $passport, string $password, string $guard_name = PamAccount::GUARD_WEB): bool
@@ -352,17 +351,21 @@ class Pam
 
             if (!$this->checkIsEnable($this->pam)) {
                 $guard->logout();
+
                 return false;
             }
 
             try {
                 event(new LoginBannedEvent($this->pam, $guard_name));
-            } catch (Throwable $e) {
+            }
+            catch (Throwable $e) {
                 $guard->logout();
+
                 return $this->setError($e);
             }
 
             event(new LoginSuccessEvent($pam, $guard_name));
+
             return true;
         }
 
@@ -374,14 +377,13 @@ class Pam
         event(new LoginFailedEvent($credentials));
 
         return $this->setError(trans('py-system::action.pam.login_fail_again'));
-
     }
 
     /**
      * 设置登录密码
-     * @param PamAccount $pam 用户
+     *
+     * @param PamAccount $pam      用户
      * @param string     $password 密码
-     * @return bool
      */
     public function setPassword(PamAccount $pam, string $password): bool
     {
@@ -417,8 +419,6 @@ class Pam
 
     /**
      * 清空后台登录用户的手机通行证
-     * @param int $id
-     * @return bool
      */
     public function clearMobile(int $id): bool
     {
@@ -430,14 +430,15 @@ class Pam
         $mobile      = PamAccount::dftMobile($pam->id);
         $pam->mobile = $mobile;
         $pam->save();
+
         return true;
     }
 
     /**
      * 设置后台登录用户的手机通行证
-     * @param PamAccount $pam 用户
+     *
+     * @param PamAccount $pam    用户
      * @param string     $mobile 密码
-     * @return bool
      */
     public function setMobile(PamAccount $pam, string $mobile): bool
     {
@@ -472,12 +473,8 @@ class Pam
         return true;
     }
 
-
     /**
      * 设置备注
-     * @param PamAccount $pam
-     * @param string     $note
-     * @return void
      */
     public function setNote(PamAccount $pam, string $note): void
     {
@@ -487,9 +484,9 @@ class Pam
 
     /**
      * 设置角色
-     * @param PamAccount|mixed $pam 账号数据
+     *
+     * @param PamAccount|mixed $pam   账号数据
      * @param array            $roles 角色名
-     * @return bool
      */
     public function setRoles($pam, array $roles): bool
     {
@@ -503,8 +500,8 @@ class Pam
 
     /**
      * 生成支持 passport 格式的数组
+     *
      * @param array|Request $credentials 待转化的数据
-     * @return array
      */
     public function passportData($credentials): array
     {
@@ -523,12 +520,10 @@ class Pam
         ];
     }
 
-
     /**
      * 更换账号主体, 支持除非ID外的更换方式
+     *
      * @param string|numeric|PamAccount $old_passport
-     * @param string                    $new_passport
-     * @return bool
      */
     public function rebind($old_passport, string $new_passport): bool
     {
@@ -540,29 +535,30 @@ class Pam
             $old_passport = PamAccount::fullFilledPassport($old_passport);
             $pam          = PamAccount::passport($old_passport);
         }
-        else if ($old_passport instanceof PamAccount) {
+        elseif ($old_passport instanceof PamAccount) {
             $pam = $old_passport;
         }
         if (!$pam) {
             return $this->setError('原账号不存在, 无法更换');
         }
         $newPassportType = PamAccount::passportType($new_passport);
-        if ($newPassportType === 'id') {
+        if ('id' === $newPassportType) {
             return $this->setError('用户ID 无法更换, 请检查输入');
         }
         $pam->{$newPassportType} = PamAccount::fullFilledPassport($new_passport);
         $pam->save();
 
         event(new PamRebindEvent($pam));
+
         return true;
     }
 
     /**
      * 后台用户禁用
-     * @param int    $id 用户id
-     * @param string $to 解禁时间
+     *
+     * @param int    $id     用户id
+     * @param string $to     解禁时间
      * @param string $reason 禁用原因
-     * @return bool
      */
     public function disable(int $id, string $to, string $reason): bool
     {
@@ -588,7 +584,7 @@ class Pam
 
         /** @var PamAccount $pam */
         $pam = PamAccount::find($id);
-        //当前用户已禁用
+        // 当前用户已禁用
         if (!$pam->is_enable) {
             return $this->setError(trans('py-system::action.pam.account_disabled'));
         }
@@ -611,9 +607,9 @@ class Pam
 
     /**
      * 后台用户启用
-     * @param int    $id 用户Id
+     *
+     * @param int    $id     用户Id
      * @param string $reason 原因
-     * @return bool
      */
     public function enable(int $id, string $reason = ''): bool
     {
@@ -621,7 +617,7 @@ class Pam
         if (!$pam) {
             return $this->setError('用户不存在');
         }
-        if ($pam->is_enable === SysConfig::YES) {
+        if (SysConfig::YES === $pam->is_enable) {
             return $this->setError(trans('py-system::action.pam.account_enabled'));
         }
 
@@ -665,27 +661,28 @@ class Pam
 
     /**
      * 清除登录日志
-     * @return bool
+     *
      * @throws Exception
      */
     public function clearLog(): bool
     {
         $days = sys_setting('py-system::log.days');
-        if ($days === FormSettingLog::DAYS_FOREVER) {
+        if (FormSettingLog::DAYS_FOREVER === $days) {
             return true;
         }
 
         $days = ((int) $days) ?: 180;
         // 删除 xx 天以外的登录日志, 默认 180 天
         PamLog::where('created_at', '<', Carbon::now()->subDays($days))->delete();
+
         return true;
     }
 
     /**
      * 修改密码
+     *
      * @param string $old_password 老密码
-     * @param string $password 新密码
-     * @return bool
+     * @param string $password     新密码
      */
     public function changePassword(string $old_password, string $password): bool
     {
@@ -721,32 +718,34 @@ class Pam
         $desc = collect($diffStrength)->map(function ($type) {
             return PamAccount::kvPwdStrength($type);
         })->implode(', ');
+
         return $this->setError('密码强度不足, 必须包含 ' . $desc);
     }
 
     /**
      * 验证用户权限
+     *
      * @param PamAccount $pam 用户
-     * @return bool
      */
     public function checkIsEnable(PamAccount $pam): bool
     {
-        if ($pam->is_enable === SysConfig::NO) {
+        if (SysConfig::NO === $pam->is_enable) {
             $now = Carbon::now();
             // 当前时间大于禁用时间(已解禁)
             if ($now->gt($pam->disable_end_at)) {
                 $this->enable($pam->id, '用户登录, 超过封禁时间, 自动解禁');
+
                 return true;
             }
+
             return $this->setError("该账号因 $pam->disable_reason 被封禁至 $pam->disable_end_at");
         }
+
         return true;
     }
 
-
     /**
      * 用户自定义的 Session 生命周期
-     * @param PamAccount $pam
      */
     public function setSessionLifetime(PamAccount $pam): void
     {
@@ -760,7 +759,6 @@ class Pam
 
     /**
      * 设置记录登录时长的有效期
-     * @return void
      */
     public function setRememberTokenExpired(): void
     {
@@ -777,10 +775,8 @@ class Pam
         $cookieJar->queue($auth->getRecallerName(), $cookieValue, $rememberTokenExpireMinutes);
     }
 
-
     /**
      * 是否记住了自动登录
-     * @return bool
      */
     public function isRemember(): bool
     {
@@ -789,6 +785,7 @@ class Pam
 
     /**
      * 获取后台的Auth
+     *
      * @return Guard|SessionGuard
      */
     public function auth()

@@ -12,7 +12,6 @@ use Poppy\System\Classes\Contracts\FileContract;
  */
 class FileManager
 {
-
     public const TYPE_IMAGES = 'images';
     public const TYPE_FILE   = 'file';
     public const TYPE_VIDEO  = 'video';
@@ -20,8 +19,6 @@ class FileManager
 
     /**
      * 获取可用扩展
-     * @param string $type
-     * @return array
      */
     public static function kvExt(string $type): array
     {
@@ -39,13 +36,12 @@ class FileManager
             self::TYPE_VIDEO  => ['mp4', 'rm', 'rmvb', 'wmv', 'webm', 'mpg', 'mov', '3gp'],
             self::TYPE_AUDIO  => ['mp3', 'm4a', 'wav', 'aac'],
         ];
+
         return kv($desc, $type);
     }
 
     /**
      * 获取描述
-     * @param string $type
-     * @return string
      */
     public static function kvDesc(string $type): string
     {
@@ -55,23 +51,21 @@ class FileManager
             self::TYPE_VIDEO  => '请选择视频文件',
             self::TYPE_FILE   => '选择文件',
         ];
+
         return kv($desc, $type);
     }
 
-
     /**
      * 上传的前缀地址
-     * @return string
      */
     public static function prefix(): string
     {
         return app(FileContract::class)->getReturnUrl();
     }
 
-
     /**
      * 规则预览
-     * @return array
+     *
      * @since 4.2
      */
     public static function previewRules(): array
@@ -89,6 +83,7 @@ class FileManager
                 }
             }
         }
+
         return $rules;
     }
 
@@ -128,17 +123,17 @@ class FileManager
                 }
                 break;
         }
+
         return $url;
     }
 
-
     /**
      * 重新定义大小
-     * @param int      $width 原始宽度
-     * @param int      $height 原始高度
+     *
+     * @param int      $width        原始宽度
+     * @param int      $height       原始高度
      * @param int      $min_district 最小限制值
      * @param int|null $max_district 最大限制值
-     * @return array
      */
     public static function resizedSize(int $width, int $height, int $min_district, ?int $max_district): array
     {
@@ -157,7 +152,7 @@ class FileManager
             $rateMin = $min_district / $min;
             $rateMax = $max_district / $max;
             $minRate = min($rateMax, $rateMin);
-            if ($direction === 'horizontal') {
+            if ('horizontal' === $direction) {
                 // 以小的比值作为伸缩比
                 $r_height = $min_district;
                 $r_width  = (int) round($max * $minRate);
@@ -170,21 +165,22 @@ class FileManager
         }
 
         // 压缩短边
-        else if ($compressMin) {
-            $r_width  = $direction === 'horizontal' ? null : $min_district;
-            $r_height = $direction === 'vertical' ? null : $min_district;
+        elseif ($compressMin) {
+            $r_width  = 'horizontal' === $direction ? null : $min_district;
+            $r_height = 'vertical' === $direction ? null : $min_district;
         }
 
         // 压缩长边
-        else if ($compressMax) {
-            $r_width  = $direction === 'horizontal' ? $max_district : null;
-            $r_height = $direction === 'vertical' ? $max_district : null;
+        elseif ($compressMax) {
+            $r_width  = 'horizontal' === $direction ? $max_district : null;
+            $r_height = 'vertical' === $direction ? $max_district : null;
         }
         else {
             $r_width  = $width;
             $r_height = $height;
             $resize   = false;
         }
+
         return ['width' => $r_width, 'height' => $r_height, 'resize' => $resize];
     }
 }

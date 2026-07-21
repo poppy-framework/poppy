@@ -13,17 +13,18 @@ class EnvHelper
 {
     /**
      * 返回 IP 信息
+     *
      * @return string 返回IP
      */
     public static function ip(): string
     {
-        $_SERVER['HTTP_X_FORWARDED_FOR'] = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
-        $_SERVER['REMOTE_ADDR']          = $_SERVER['REMOTE_ADDR'] ?? '';
-        $_SERVER['HTTP_CLIENT_IP']       = $_SERVER['HTTP_CLIENT_IP'] ?? '';
+        $_SERVER['HTTP_X_FORWARDED_FOR'] ??= '';
+        $_SERVER['REMOTE_ADDR'] ??= '';
+        $_SERVER['HTTP_CLIENT_IP'] ??= '';
 
         if ($_SERVER['HTTP_X_FORWARDED_FOR'] && $_SERVER['REMOTE_ADDR']) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            if (strpos($ip, ',') !== false) {
+            if (false !== strpos($ip, ',')) {
                 $tmp = explode(',', $ip);
                 $ip  = trim(reset($tmp));
             }
@@ -43,6 +44,7 @@ class EnvHelper
 
     /**
      * 当前执行的脚本文件的名称
+     *
      * @return string 当前文件的名称
      */
     public static function self(): string
@@ -54,6 +56,7 @@ class EnvHelper
 
     /**
      * 来源地址
+     *
      * @return string 来源地址
      */
     public static function referer(): string
@@ -63,6 +66,7 @@ class EnvHelper
 
     /**
      * 返回服务器的名称
+     *
      * @return string 返回服务器名称
      */
     public static function domain(): string
@@ -79,7 +83,7 @@ class EnvHelper
             return 'http://';
         }
 
-        return (string) $_SERVER['SERVER_PORT'] === '443' ? 'https://' : 'http://';
+        return '443' === (string) $_SERVER['SERVER_PORT'] ? 'https://' : 'http://';
     }
 
     /**
@@ -91,7 +95,7 @@ class EnvHelper
             return '';
         }
 
-        return (int) $_SERVER['SERVER_PORT'] === '80' ? '' : ':' . $_SERVER['SERVER_PORT'];
+        return '80' === (int) $_SERVER['SERVER_PORT'] ? '' : ':' . $_SERVER['SERVER_PORT'];
     }
 
     /**
@@ -115,12 +119,11 @@ class EnvHelper
         }
         $uri = StrHelper::htmlSpecialChars($uri);
 
-        return self::scheme() . self::host() . (strpos(self::host(), ':') === false ? self::port() : '') . $uri;
+        return self::scheme() . self::host() . (false === strpos(self::host(), ':') ? self::port() : '') . $uri;
     }
 
     /**
      * 获取主机
-     * @return string
      */
     public static function host(): string
     {
@@ -128,16 +131,15 @@ class EnvHelper
     }
 
     /**
-     * @return string   没有查询的完整的URL地址, 基于当前页面
+     * @return string 没有查询的完整的URL地址, 基于当前页面
      */
     public static function nqUrl(): string
     {
-        return self::scheme() . self::host() . (strpos(self::host(), ':') === false ? self::port() : '') . self::self();
+        return self::scheme() . self::host() . (false === strpos(self::host(), ':') ? self::port() : '') . self::self();
     }
 
     /**
      * 请求的unix 时间戳
-     * @return int
      */
     public static function time(): int
     {
@@ -146,7 +148,7 @@ class EnvHelper
 
     /**
      * 浏览器头部
-     * @return string
+     *
      * @see        Request::userAgent()
      * @deprecated 4.1
      */
@@ -157,21 +159,19 @@ class EnvHelper
 
     /**
      * 是否是代理
-     * @return bool
      */
     public static function isProxy(): bool
     {
         return
-            (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) ||
-            isset($_SERVER['HTTP_VIA']) ||
-            isset($_SERVER['HTTP_PROXY_CONNECTION']) ||
-            isset($_SERVER['HTTP_USER_AGENT_VIA']) ||
-            isset($_SERVER['HTTP_CACHE_INFO']);
+            (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+            || isset($_SERVER['HTTP_VIA'])
+            || isset($_SERVER['HTTP_PROXY_CONNECTION'])
+            || isset($_SERVER['HTTP_USER_AGENT_VIA'])
+            || isset($_SERVER['HTTP_CACHE_INFO']);
     }
 
     /**
      * 是否win 服务器
-     * @return bool
      */
     public static function isWindows(): bool
     {
@@ -179,12 +179,11 @@ class EnvHelper
             return false;
         }
 
-        return stripos(PHP_OS, 'WIN') !== false;
+        return false !== stripos(PHP_OS, 'WIN');
     }
 
     /**
      * 获取客户端OS
-     * @return string
      */
     public static function os(): string
     {
@@ -210,7 +209,9 @@ class EnvHelper
 
     /**
      * 最大上传的文件大小
+     *
      * @param bool $format 是否格式化
+     *
      * @return mixed|string
      */
     public static function maxUploadSize(bool $format = true)
@@ -228,8 +229,6 @@ class EnvHelper
 
     /**
      * IP 是否是内网地址
-     * @param string $ip
-     * @return bool
      */
     public static function isInternalIp(string $ip): bool
     {
@@ -237,14 +236,15 @@ class EnvHelper
         if (!$ip) {
             return false;
         }
-        $net_local = ip2long('127.255.255.255') >> 24; //127.x.x.x
-        $net_a     = ip2long('10.255.255.255') >> 24;  //A类网预留ip的网络地址
-        $net_b     = ip2long('172.31.255.255') >> 20;  //B类网预留ip的网络地址
-        $net_c     = ip2long('192.168.255.255') >> 16; //C类网预留ip的网络地址
+        $net_local = ip2long('127.255.255.255') >> 24; // 127.x.x.x
+        $net_a     = ip2long('10.255.255.255') >> 24;  // A类网预留ip的网络地址
+        $net_b     = ip2long('172.31.255.255') >> 20;  // B类网预留ip的网络地址
+        $net_c     = ip2long('192.168.255.255') >> 16; // C类网预留ip的网络地址
+
         return
-            $ip >> 24 === $net_local ||
-            $ip >> 24 === $net_a ||
-            $ip >> 20 === $net_b ||
-            $ip >> 16 === $net_c;
+            $ip >> 24 === $net_local
+            || $ip >> 24 === $net_a
+            || $ip >> 20 === $net_b
+            || $ip >> 16 === $net_c;
     }
 }

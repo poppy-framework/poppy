@@ -50,9 +50,9 @@ class InspectCommand extends Command
      */
     private array $nameRules = [];
 
-
     /**
      * Execute the console command.
+     *
      * @throws ReflectionException
      */
     public function handle(): void
@@ -124,7 +124,6 @@ class InspectCommand extends Command
         }
     }
 
-
     private function inspectValidation(): void
     {
         $ref     = new ReflectionClass(Rule::class);
@@ -165,7 +164,6 @@ class InspectCommand extends Command
         else {
             $this->info('Inspect: Validation OK');
         }
-
     }
 
     private function inspectTrans(): void
@@ -173,14 +171,17 @@ class InspectCommand extends Command
         $export = $this->option('export');
         try {
             $content = app('files')->get($export);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->error(sys_gen_mk(self::class, $e->getMessage()));
+
             return;
         }
         if (preg_match_all("/trans\((.*)?['\"]/", $content, $matches, PREG_PATTERN_ORDER)) {
             $uniTrans = array_unique($matches[1]);
             if (!count($uniTrans)) {
                 $this->error(sys_gen_mk(self::class, '没有可以匹配的条目'));
+
                 return;
             }
             $trans = [];
@@ -222,13 +223,11 @@ class InspectCommand extends Command
                         $keys[] = $prefix . '::util.policy.' . Str::snake($model) . '.' . $name;
                     }
                 }
-
             }
         }
         else {
             $this->info("{$slug} has no policies.");
         }
-
 
         $directory = poppy_path($slug, 'src/Models');
         if (app('files')->exists($directory)) {
@@ -257,7 +256,6 @@ class InspectCommand extends Command
             }
             $this->table(['Keys'], $needModifies);
         }
-
     }
 
     /**
@@ -276,13 +274,14 @@ class InspectCommand extends Command
                 $unUniformedKeys[] = [
                     $name,
                 ];
+
                 return;
             }
 
             $module   = Str::before($name, ':');
             $seoKey   = str_replace([':', '.', '::'], ['::', '_', '::seo.'], $name);
             $transKey = trans($seoKey);
-            if ($transKey === $seoKey || $transKey === '') {
+            if ($transKey === $seoKey || '' === $transKey) {
                 $key = str_replace([$module . ':', '.'], ['', '_'], $name);
                 // 取消 API 的重命名
                 if (Str::startsWith($key, 'api')) {
@@ -299,7 +298,6 @@ class InspectCommand extends Command
             $this->warn('[Inspect: Uniformed Route Url]');
             $this->table(['Route Name'], $unUniformedKeys);
         }
-
 
         $this->warn('[Inspect: Seo Names]');
         if ($seoList) {
@@ -324,9 +322,8 @@ class InspectCommand extends Command
         foreach ($files as $file) {
             $pathName = $file->getPathname();
 
-
             // 排除指定的类
-            if (Str::contains($pathName, ['functions.php', 'ServiceProvider', 'Http/Routes/',]) || !Str::endsWith($pathName, '.php')) {
+            if (Str::contains($pathName, ['functions.php', 'ServiceProvider', 'Http/Routes/']) || !Str::endsWith($pathName, '.php')) {
                 continue;
             }
 
@@ -335,7 +332,8 @@ class InspectCommand extends Command
 
             try {
                 $refection = new ReflectionClass($className);
-            } catch (Throwable $e) {
+            }
+            catch (Throwable $e) {
                 $classTable[] = [
                     $slug,
                     $e->getMessage(),
@@ -350,14 +348,14 @@ class InspectCommand extends Command
                     continue;
                 }
                 // action variable do not need
-                if (strpos($className, '\\Models\\') !== false && in_array($property->getName(), [
-                        'timestamps', 'table', 'fillable', 'primaryKey', 'dates',
-                    ], true)) {
+                if (false !== strpos($className, '\\Models\\') && in_array($property->getName(), [
+                    'timestamps', 'table', 'fillable', 'primaryKey', 'dates',
+                ], true)) {
                     continue;
                 }
-                if (strpos($className, '\\Commands\\') !== false && in_array($property->getName(), [
-                        'signature', 'description',
-                    ], true)) {
+                if (false !== strpos($className, '\\Commands\\') && in_array($property->getName(), [
+                    'signature', 'description',
+                ], true)) {
                     continue;
                 }
 
@@ -376,13 +374,12 @@ class InspectCommand extends Command
                         $slug,
                         '',
                         '',
-                        'param : => ' . '$' . Str::camel($property->getName()),
+                        'param : => $' . Str::camel($property->getName()),
                     ];
                 }
-
             }
             $methods = $refection->getMethods();
-            if ($methods === null) {
+            if (null === $methods) {
                 continue;
             }
 
@@ -394,11 +391,9 @@ class InspectCommand extends Command
                     in_array($methodName, [
                         'handle', '',
                     ], true)
-                    &&
-                    (
-                        strpos($className, '\\Listeners\\') !== false
-                        ||
-                        strpos($className, '\\Middlewares\\') !== false
+                    && (
+                        false !== strpos($className, '\\Listeners\\')
+                        || false !== strpos($className, '\\Middlewares\\')
                     )) {
                     continue;
                 }
@@ -443,13 +438,13 @@ class InspectCommand extends Command
                             $desc = $param['var_desc'] ?? '';
                             $type = $param['var_type'] ?? '';
                             if (!$desc || !$type) {
-                                $commentDesc    .= "{$name} ";
+                                $commentDesc .= "{$name} ";
                                 $varCommentDesc = '';
                                 if (!$type) {
-                                    $varCommentDesc .= 'type:' . ',';
+                                    $varCommentDesc .= 'type:,';
                                 }
                                 if (!$desc) {
-                                    $varCommentDesc .= 'desc:' . ',';
+                                    $varCommentDesc .= 'desc:,';
                                 }
                                 $commentDesc .= $varCommentDesc ? '[' . rtrim($varCommentDesc, ',') . ']' : '';
                                 $commentDesc .= "\n";
@@ -508,7 +503,7 @@ class InspectCommand extends Command
             if ($this->option('module')) {
                 $num   = 1;
                 $table = collect($table)->filter(function ($item) {
-                    return stripos($item[0], $this->option('module')) === 0;
+                    return 0 === stripos($item[0], $this->option('module'));
                 })->map(function ($item) use (&$num) {
                     array_unshift($item, $num++);
 
@@ -541,6 +536,7 @@ class InspectCommand extends Command
 
         if (!count($folders)) {
             $this->warn('slug `' . $slug . '` has no file to check name');
+
             return;
         }
 
@@ -552,14 +548,14 @@ class InspectCommand extends Command
         $checkFile = function (SplFileInfo $file) use ($slug) {
             $pathName = $file->getPathname();
             $fileName = $file->getFilename();
-            if (strpos($pathName, '/Events/') !== false && substr(pathinfo($fileName)['filename'], -5) !== 'Event') {
+            if (false !== strpos($pathName, '/Events/') && 'Event' !== substr(pathinfo($fileName)['filename'], -5)) {
                 $this->nameRules[] = [
                     'slug' => $slug,
                     'file' => $fileName,
                     'path' => $pathName,
                 ];
             }
-            if (strpos($pathName, '/Listeners/') !== false && substr(pathinfo($fileName)['filename'], -8) !== 'Listener') {
+            if (false !== strpos($pathName, '/Listeners/') && 'Listener' !== substr(pathinfo($fileName)['filename'], -8)) {
                 $this->nameRules[] = [
                     'slug' => $slug,
                     'file' => $fileName,
@@ -567,7 +563,7 @@ class InspectCommand extends Command
                 ];
             }
 
-            if ((strpos($pathName, '/Policies/') !== false) && substr(pathinfo($fileName)['filename'], -6) !== 'Policy') {
+            if ((false !== strpos($pathName, '/Policies/')) && 'Policy' !== substr(pathinfo($fileName)['filename'], -6)) {
                 $this->nameRules[] = [
                     'slug' => $slug,
                     'file' => $fileName,
@@ -575,7 +571,6 @@ class InspectCommand extends Command
                 ];
             }
         };
-
 
         foreach ($iterator as $file) {
             $checkFile($file);
@@ -606,20 +601,20 @@ class InspectCommand extends Command
                 continue;
             }
 
-
             $fileName = Str::after($pathName, 'Http/Request/');
 
             $relativePath = $file->getRelativePath();
             $className    = $this->className($slug, $relativePath, $file->getFilename());
             try {
                 $refection = new ReflectionClass($className);
-            } catch (Throwable $e) {
+            }
+            catch (Throwable $e) {
                 $this->warn($slug . $e->getMessage());
                 continue;
             }
 
             $methods = $refection->getMethods();
-            if ($methods === null) {
+            if (null === $methods) {
                 continue;
             }
 
@@ -650,7 +645,7 @@ class InspectCommand extends Command
                 if (!$comment) {
                     $item[] = '[comment: missing]';
                 }
-                else if (Str::contains($comment, '@api ')) {
+                elseif (Str::contains($comment, '@api ')) {
                     if (preg_match('/\* @api\s+\{(post|get)}[a-z0-9_\/\s]+(.*)/', $comment, $matches)) {
                         $item[] = $matches[2];
                     }
@@ -680,6 +675,7 @@ class InspectCommand extends Command
         $directory = poppy_path($slug, 'src/Action');
         if (!app('files')->exists($directory)) {
             $this->info("{$slug} has no action.");
+
             return;
         }
         $files = app('files')->allFiles($directory);
@@ -697,13 +693,14 @@ class InspectCommand extends Command
 
             try {
                 $refection = new ReflectionClass($className);
-            } catch (Throwable $e) {
+            }
+            catch (Throwable $e) {
                 $this->warn($slug . $e->getMessage());
                 continue;
             }
 
             $methods = $refection->getMethods();
-            if ($methods === null) {
+            if (null === $methods) {
                 continue;
             }
 
@@ -712,14 +709,10 @@ class InspectCommand extends Command
                 // 排除继承的方法
                 if (
                     $method->class !== $className
-                    ||
-                    $method->isPrivate()
-                    ||
-                    $method->isProtected()
-                    ||
-                    $method->isConstructor()
-                    ||
-                    Str::startsWith($methodName, ['set', 'get'])
+                    || $method->isPrivate()
+                    || $method->isProtected()
+                    || $method->isConstructor()
+                    || Str::startsWith($methodName, ['set', 'get'])
                 ) {
                     continue;
                 }
@@ -755,13 +748,11 @@ class InspectCommand extends Command
         $this->table(['module', 'action', 'do', 'description'], $table);
     }
 
-
     /**
      * 权限定义和控制器对比
      */
     private function inspectPerms(): void
     {
-
         Artisan::call('poppy:optimize');
 
         $permissions = [];
@@ -781,15 +772,15 @@ class InspectCommand extends Command
                         if ($refection->isAbstract()) {
                             continue;
                         }
-                    } catch (Throwable $e) {
+                    }
+                    catch (Throwable $e) {
                         $this->warn($slug . $e->getMessage());
                         continue;
                     }
-                    $ctlPermissions = (new $className)::$permission;
+                    $ctlPermissions = (new $className())::$permission;
                     $permissions    = array_merge($permissions, $ctlPermissions);
                 }
             }
-
 
             $directory = poppy_path($slug, 'src/Models/Policies');
             if (app('files')->exists($directory)) {
@@ -806,21 +797,20 @@ class InspectCommand extends Command
                         if (!$refection->hasMethod('getPermissionMap')) {
                             continue;
                         }
-                    } catch (Throwable $e) {
+                    }
+                    catch (Throwable $e) {
                         $this->warn($slug . $e->getMessage());
                         continue;
                     }
-                    $ctlPermissions = (new $className)::getPermissionMap();
+                    $ctlPermissions = (new $className())::getPermissionMap();
                     $permissions    = array_merge($permissions, $ctlPermissions);
                 }
             }
         });
 
-
         $menus = $this->coreModule()->menus();
 
         $menus->each(function ($menu) use (&$permissions) {
-
             $groups = $menu['groups'] ?? [];
             foreach ($groups as $group) {
                 $gc = $group['children'] ?? [];
@@ -848,7 +838,6 @@ class InspectCommand extends Command
 
         $notDefined = array_diff($permissions, $definedPermissions->toArray());
 
-
         $this->table(['Inspect Permission: Permission Defined But Not Used'], collect($notUsed)->map(fn($item) => [$item]));
 
         $this->table(['Inspect Permission: Permission Used But Not Defined'], collect($notDefined)->map(fn($item) => [$item]));
@@ -856,10 +845,10 @@ class InspectCommand extends Command
 
     /**
      * 生成类名
+     *
      * @param string $module        模块
      * @param string $relative_path 相对路径
      * @param string $file_name     文件名
-     * @return string
      */
     private function className(string $module, string $relative_path, string $file_name): string
     {
@@ -881,11 +870,9 @@ class InspectCommand extends Command
             if (Str::contains($relative_path, ['Provider/en_', 'Provider/zh_'])) {
                 $className .= '\\' . $path;
             }
-
             else {
                 $className .= '\\' . ucfirst(Str::camel($path));
             }
-
         }
         $basename  = pathinfo($file_name);
         $className .= '\\' . $basename['filename'];
@@ -895,8 +882,8 @@ class InspectCommand extends Command
 
     /**
      * 是否驼峰类型
+     *
      * @param string $str 字符串
-     * @return bool
      */
     private function isCamelCase(string $str): bool
     {

@@ -8,11 +8,11 @@ use Poppy\System\Classes\Traits\PamTrait;
 
 class FormImage extends FormBaseWidget
 {
-
     use PamTrait;
 
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Image';
@@ -23,6 +23,7 @@ class FormImage extends FormBaseWidget
     public function data(): array
     {
         $faker = py_faker();
+
         return [
             'image_rec'        => $faker->imageUrl(),
             'image_rec_r'      => $faker->imageUrl(480, 640),
@@ -106,6 +107,5 @@ CODE;
     ->help('超高图预览');
 CODE;
         $this->code('image_max_height-code', 'Code@超高图')->default($code);
-
     }
 }

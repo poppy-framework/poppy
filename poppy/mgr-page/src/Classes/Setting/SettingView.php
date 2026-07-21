@@ -30,14 +30,16 @@ class SettingView
             });
             $forms = collect($groupHook[$path]['forms'])->map(function ($form_class) {
                 $form = app($form_class);
-                if (!($form instanceof FormSettingBase)) {
+                if (!$form instanceof FormSettingBase) {
                     throw new ApplicationException('设置表单需要继承 `FormSettingBase` Class');
                 }
+
                 return $form;
             });
             if (is_post()) {
                 /** @var FormSettingBase $cur */
                 $cur = $forms->offsetGet($index);
+
                 return $cur->render();
             }
 
@@ -48,7 +50,8 @@ class SettingView
                 'cur'   => $forms->offsetGet($index),
                 'path'  => $path,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return Resp::error($e->getMessage());
         }
     }

@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\Core\Rbac\Middlewares;
 
-
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -13,7 +12,6 @@ use Poppy\Core\Exceptions\PermissionException;
 use Poppy\Core\Rbac\Traits\RbacUserTrait;
 use Poppy\Framework\Classes\Resp;
 use Route;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +29,10 @@ class RbacPermission
 
     /**
      * Handle an incoming request.
+     *
      * @param Request $request 请求
      * @param Closure $next    后续处理
-     * @return mixed
+     *
      * @throws PermissionException
      */
     public function handle($request, Closure $next)
@@ -70,6 +69,7 @@ class RbacPermission
                 return $next($request);
             }
             $title = $this->corePermission()->cachedPermissionKv($methodPermission);
+
             return Resp::error("用户无独立 [{$title}] 权限, 无法访问");
         }
 
@@ -81,8 +81,10 @@ class RbacPermission
                 return $next($request);
             }
             $title = $this->corePermission()->cachedPermissionKv($globalPermission);
+
             return Resp::error("用户无全局 [{$title}] 权限, 无法访问");
         }
+
         return $next($request);
     }
 }

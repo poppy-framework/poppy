@@ -13,6 +13,7 @@ use Poppy\Framework\Validation\Rule;
  *     schema="PoppySystemUploadFileRequest",
  *     description="文件上传请求 (multipart/form-data). 支持音视频, 不支持图片.",
  *     required={"file", "type"},
+ *
  *     @OA\Property(property="file", type="string", format="binary", description="文件内容 (支持多文件上传)"),
  *     @OA\Property(property="type", type="string", description="上传类型", enum={"audio", "video", "images", "file"}, example="audio"),
  *     @OA\Property(property="folder", type="string", nullable=true, description="(4.0) 文件存储目录", default=""),
@@ -21,7 +22,6 @@ use Poppy\Framework\Validation\Rule;
  */
 class UploadFileRequest extends Request
 {
-
     public function getType(): string
     {
         return (string) $this->input('type', 'audio');

@@ -54,3 +54,22 @@ Laravel 6 + Poppy 框架伪多模块业务系统，覆盖账号/认证、内容�
 | `event-conventions.md` | Event/Listener/Job 开发模板、幂等约定         |
 | `http-conventions.md`  | HTTP 接口、Request/Controller、模板与分页规范 |
 | `cross-module.md`      | 跨模块改动清单、引用约束、完成汇报格式        |
+
+
+### 质量校验「新增」
+
+- 代码风格 : 使用 PHP CS Fixer 校式化代码保障风格一致性
+
+```
+# 格式化所有文件
+/opt/homebrew/bin/php -d memory_limit=-1 $(which php-cs-fixer) fix --config=./vendor/poppy/framework/.php-cs-fixer.php --diff --verbose
+# 格式化指定文件
+/opt/homebrew/bin/php -d memory_limit=-1 $(which php-cs-fixer) fix --config=./vendor/poppy/framework/.php-cs-fixer.php {file or directory to format}
+`````
+
+- 语法 Lint
+
+```
+# 格式化指定文件或者目录
+./vendor/bin/phplint --configuration=./vendor/poppy/framework/.phplint.yaml {file or directory to check}
+```

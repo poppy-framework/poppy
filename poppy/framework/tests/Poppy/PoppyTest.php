@@ -26,7 +26,6 @@ class PoppyTest extends TestCase
         $this->assertEquals('Poppy\System', $namespace);
     }
 
-
     public function testPath()
     {
         $path = poppy_path('module.site', 'src/models/Default.php');

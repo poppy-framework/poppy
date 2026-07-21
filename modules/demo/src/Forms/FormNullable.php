@@ -6,14 +6,12 @@ use Poppy\Framework\Validation\Rule;
 
 class FormNullable extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'NullAble';
-
 
     /**
      * Build a form here.

@@ -14,15 +14,14 @@ class BindTag extends BaseClient
 {
     /**
      * @param string       $device_type 设备类型 [ANDROID|IOS]
-     * @param string       $tag 标签
-     * @param string|array $client_key 客户端代码
-     * @return bool
+     * @param string       $tag         标签
+     * @param string|array $client_key  客户端代码
      */
     public function bindDevice(string $device_type, string $tag, $client_key): bool
     {
         $device_type = strtolower($device_type);
 
-        if ($device_type === 'android') {
+        if ('android' === $device_type) {
             $appKey = $this->androidAppKey;
         }
         else {
@@ -41,6 +40,7 @@ class BindTag extends BaseClient
 
         $response     = $client->bindTag($request);
         $this->result = $response->body->toMap();
+
         return true;
     }
 }

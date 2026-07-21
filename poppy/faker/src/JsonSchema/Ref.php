@@ -4,21 +4,14 @@ declare(strict_types = 1);
 
 namespace Poppy\Faker\JsonSchema;
 
-
 use RuntimeException;
 use SplFileInfo;
 use stdClass;
 
 final class Ref
 {
-    /**
-     * @var Faker
-     */
     private Faker $faker;
 
-    /**
-     * @var string
-     */
     private string $schemaDir;
 
     public function __construct(Faker $faker, $schemaDir)
@@ -27,10 +20,10 @@ final class Ref
         $this->schemaDir = $schemaDir;
     }
 
-    public function __invoke(stdClass $schema, stdClass $parentSchema = null)
+    public function __invoke(stdClass $schema, ?stdClass $parentSchema = null)
     {
         $path = (string) $schema->{'$ref'};
-        if ($path[0] === '#') {
+        if ('#' === $path[0]) {
             $parentSchema = $parentSchema instanceof stdClass ? $parentSchema : $schema;
 
             return $this->inlineRef($parentSchema, $path);
@@ -50,9 +43,9 @@ final class Ref
         return $this->faker->generate($prop, null);
     }
 
-    private function externalRef(string $path, stdClass $parentSchema = null)
+    private function externalRef(string $path, ?stdClass $parentSchema = null)
     {
-        $jsonFileName = substr($path, 0, 2) === './' ? substr($path, 2) : $path;
+        $jsonFileName = './' === substr($path, 0, 2) ? substr($path, 2) : $path;
         $jsonPath     = sprintf('%s/%s', $this->schemaDir, $jsonFileName);
         $realPath     = (string) realpath($jsonPath);
         if (is_int(strpos($jsonPath, '#'))) {
@@ -71,7 +64,7 @@ final class Ref
     private function inlineRefInExternalRef(string $jsonPath)
     {
         $paths = explode('#', $jsonPath);
-        if (count($paths) !== 2) {
+        if (2 !== count($paths)) {
             throw new RuntimeException("JSON file not exits:{$jsonPath}");
         }
         $schemaFile = $paths[0];

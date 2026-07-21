@@ -12,7 +12,6 @@ use Poppy\Framework\Support\PoppyServiceProvider;
 
 class ServiceProvider extends PoppyServiceProvider
 {
-
     protected array $listens = [
         // poppy
         PoppyOptimizedEvent::class => [
@@ -22,7 +21,9 @@ class ServiceProvider extends PoppyServiceProvider
 
     /**
      * Bootstrap the module services.
+     *
      * @return void
+     *
      * @throws ModuleNotFoundException
      */
     public function boot()
@@ -37,6 +38,7 @@ class ServiceProvider extends PoppyServiceProvider
 
     /**
      * Register the module services.
+     *
      * @return void
      */
     public function register()
@@ -53,12 +55,10 @@ class ServiceProvider extends PoppyServiceProvider
         $this->registerSchedule();
     }
 
-
     private function registerSchedule()
     {
         app('events')->listen('console.schedule', function (Schedule $schedule) {});
     }
-
 
     private function registerConsole()
     {

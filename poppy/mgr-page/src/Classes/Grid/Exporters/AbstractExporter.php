@@ -22,10 +22,8 @@ abstract class AbstractExporter implements ExporterInterface
 
     /**
      * Create a new exporter instance.
-     *
-     * @param $grid
      */
-    public function __construct(Grid $grid = null)
+    public function __construct(?Grid $grid = null)
     {
         if ($grid) {
             $this->setGrid($grid);
@@ -34,8 +32,6 @@ abstract class AbstractExporter implements ExporterInterface
 
     /**
      * Set grid for exporter.
-     *
-     * @param Grid $grid
      *
      * @return $this
      */
@@ -69,8 +65,7 @@ abstract class AbstractExporter implements ExporterInterface
     }
 
     /**
-     * @param callable $callback
-     * @param int      $count
+     * @param int $count
      *
      * @return bool
      */
@@ -121,7 +116,7 @@ abstract class AbstractExporter implements ExporterInterface
      */
     public function withScope($scope)
     {
-        if ($scope === Exporter::SCOPE_ALL) {
+        if (Exporter::SCOPE_ALL === $scope) {
             return $this;
         }
 
@@ -129,12 +124,12 @@ abstract class AbstractExporter implements ExporterInterface
         $scope    = $arrScope[0];
         $args     = $arrScope[1] ?? '';
 
-        if ($scope === Exporter::SCOPE_CURRENT_PAGE) {
+        if (Exporter::SCOPE_CURRENT_PAGE === $scope) {
             $this->grid->model()->usePaginate();
             $this->page = $args ?: 1;
         }
 
-        if ($scope === Exporter::SCOPE_SELECTED_ROWS) {
+        if (Exporter::SCOPE_SELECTED_ROWS === $scope) {
             $selected = explode(',', $args);
             $this->grid->model()->whereIn($this->grid->getKeyName(), $selected);
         }
@@ -143,7 +138,7 @@ abstract class AbstractExporter implements ExporterInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     abstract public function export();
 }

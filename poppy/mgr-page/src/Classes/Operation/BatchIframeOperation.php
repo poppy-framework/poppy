@@ -11,44 +11,43 @@ use Illuminate\Support\Str;
  */
 final class BatchIframeOperation extends Operation
 {
-
     protected string $renderType = 'button';
 
     /**
      * 宽度
-     * @var int
      */
     private int $width = 550;
 
     /**
      * 高度
-     * @var int
      */
     private int $height = 550;
 
     /**
      * 预览
+     *
      * @param int $width 宽度
+     *
      * @return void
      */
     public function width(int $width = 550): self
     {
         $this->width = $width;
+
         return $this;
     }
 
     public function height(int $height = 550): self
     {
         $this->height = $height;
+
         return $this;
     }
-
 
     public function widthNormal(): self
     {
         return $this->width(700);
     }
-
 
     public function widthLarge(): self
     {
@@ -66,6 +65,7 @@ final class BatchIframeOperation extends Operation
         if ($this->height) {
             $this->attributes['data-height'] = $this->height;
         }
+
         return parent::render();
     }
 }

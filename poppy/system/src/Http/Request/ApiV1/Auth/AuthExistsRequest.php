@@ -12,6 +12,7 @@ use Poppy\Framework\Validation\Rule;
  * @OA\Schema(
  *     schema="PoppySystemAuthExistsRequest",
  *     required={"passport"},
+ *
  *     @OA\Property(property="passport", type="string", description="通行证"),
  *     @OA\Property(property="is_data", type="string", description="是否以Data形式返回 [Y|N]", example="N")
  * )

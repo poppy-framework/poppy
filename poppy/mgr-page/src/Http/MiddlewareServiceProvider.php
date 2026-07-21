@@ -2,7 +2,6 @@
 
 namespace Poppy\MgrPage\Http;
 
-
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 

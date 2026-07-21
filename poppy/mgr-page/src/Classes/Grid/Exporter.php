@@ -36,8 +36,6 @@ class Exporter
 
     /**
      * Create a new Exporter instance.
-     *
-     * @param Grid $grid
      */
     public function __construct(Grid $grid)
     {
@@ -48,8 +46,6 @@ class Exporter
 
     /**
      * Set export query name.
-     *
-     * @param $name
      */
     public static function setQueryName($name)
     {
@@ -58,9 +54,6 @@ class Exporter
 
     /**
      * Extends new exporter driver.
-     *
-     * @param $driver
-     * @param $extend
      */
     public static function extend($driver, $extend)
     {

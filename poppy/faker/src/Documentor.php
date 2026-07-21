@@ -2,13 +2,15 @@
 
 namespace Poppy\Faker;
 
+use DateTime;
+use InvalidArgumentException;
+use ReflectionMethod;
+use ReflectionObject;
+
 class Documentor
 {
     protected $generator;
 
-    /**
-     * @param Generator $generator
-     */
     public function __construct(Generator $generator)
     {
         $this->generator = $generator;
@@ -25,9 +27,9 @@ class Documentor
         foreach ($providers as $provider) {
             $providerClass              = get_class($provider);
             $formatters[$providerClass] = [];
-            $refl                       = new \ReflectionObject($provider);
-            foreach ($refl->getMethods(\ReflectionMethod::IS_PUBLIC) as $reflmethod) {
-                if ($reflmethod->getDeclaringClass()->getName() == 'Poppy\Faker\Provider\Base' && $providerClass != 'Poppy\Faker\Provider\Base') {
+            $refl                       = new ReflectionObject($provider);
+            foreach ($refl->getMethods(ReflectionMethod::IS_PUBLIC) as $reflmethod) {
+                if ('Poppy\Faker\Provider\Base' == $reflmethod->getDeclaringClass()->getName() && 'Poppy\Faker\Provider\Base' != $providerClass) {
                     continue;
                 }
                 $methodName = $reflmethod->name;
@@ -40,18 +42,19 @@ class Documentor
                     if ($reflparameter->isDefaultValueAvailable()) {
                         $parameter .= ' = ' . var_export($reflparameter->getDefaultValue(), true);
                     }
-                    $parameters [] = $parameter;
+                    $parameters[] = $parameter;
                 }
                 $parameters = $parameters ? '(' . join(', ', $parameters) . ')' : '';
                 try {
                     $example = $this->generator->format($methodName);
-                } catch (\InvalidArgumentException $e) {
+                }
+                catch (InvalidArgumentException $e) {
                     $example = '';
                 }
                 if (is_array($example)) {
                     $example = "array('" . join("', '", $example) . "')";
                 }
-                elseif ($example instanceof \DateTime) {
+                elseif ($example instanceof DateTime) {
                     $example = "DateTime('" . $example->format('Y-m-d H:i:s') . "')";
                 }
                 elseif ($example instanceof Generator || $example instanceof UniqueGenerator) { // modifier

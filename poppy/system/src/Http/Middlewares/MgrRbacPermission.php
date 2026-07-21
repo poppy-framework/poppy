@@ -12,19 +12,21 @@ use Poppy\System\Models\PamRole;
 
 /**
  * RBAC 权限限定, 使用 标准 rbac, 不对超级管理员做特殊处理
+ *
  * @see        RbacPermission
  * @deprecated 4.2
+ *
  * @removed    5.0
  */
 class MgrRbacPermission extends CoreRbacPermission
 {
     /**
      * Handle an incoming request.
+     *
      * @param PamAccount|RbacUserTrait $user
-     * @return bool
      */
     public function passed($user): bool
     {
-        return $user->type === PamAccount::TYPE_BACKEND && $user->hasRole(PamRole::BE_ROOT);
+        return PamAccount::TYPE_BACKEND === $user->type && $user->hasRole(PamRole::BE_ROOT);
     }
 }

@@ -1,0 +1,19 @@
+{
+    "name": "modules/demo",
+    "description": "An Demo module.",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Mark Zhao",
+            "email": "zhaody901@126.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Demo\\": "src/"
+        }
+    }
+}

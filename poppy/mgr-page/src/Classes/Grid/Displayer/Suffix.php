@@ -2,11 +2,13 @@
 
 namespace Poppy\MgrPage\Classes\Grid\Displayer;
 
+use Closure;
+
 class Suffix extends AbstractDisplayer
 {
     public function display($suffix = null, $delimiter = '&nbsp;')
     {
-        if ($suffix instanceof \Closure) {
+        if ($suffix instanceof Closure) {
             $suffix = $suffix->call($this->row, $this->getValue());
         }
 

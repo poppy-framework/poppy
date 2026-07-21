@@ -7,14 +7,12 @@ use Illuminate\Support\Arr;
 class Gt extends FilterItem
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected string $view = 'py-mgr-page::tpl.filter.gt';
 
     /**
      * Get condition of this filter.
-     *
-     * @param array $inputs
      *
      * @return array|mixed|void
      */

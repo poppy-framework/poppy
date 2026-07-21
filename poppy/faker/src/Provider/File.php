@@ -2,14 +2,16 @@
 
 namespace Poppy\Faker\Provider;
 
+use InvalidArgumentException;
+
 class File extends Base
 {
-
     /**
      * MIME types from the apache.org file. Some types are truncated.
      *
      * @var array Map of MIME types => file extension(s)
-     * @link http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
+     *
+     * @see http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
      */
     protected static array $mimeTypes = [
         'application/atom+xml'                                                      => 'atom',
@@ -542,6 +544,7 @@ class File extends Base
      * Get a random MIME type
      *
      * @return string
+     *
      * @example 'video/avi'
      */
     public static function mimeType()
@@ -553,6 +556,7 @@ class File extends Base
      * Get a random file extension (without a dot)
      *
      * @return string
+     *
      * @example avi
      */
     public static function fileExtension()
@@ -565,23 +569,24 @@ class File extends Base
     /**
      * Copy a random file from the source directory to the target directory and returns the filename/fullpath
      *
-     * @param string  $sourceDirectory The directory to look for random file taking
-     * @param string  $targetDirectory
-     * @param boolean $fullPath        Whether to have the full path or just the filename
+     * @param string $sourceDirectory The directory to look for random file taking
+     * @param string $targetDirectory
+     * @param bool   $fullPath        Whether to have the full path or just the filename
+     *
      * @return string
      */
     public static function file($sourceDirectory = '/tmp', $targetDirectory = '/tmp', $fullPath = true)
     {
         if (!is_dir($sourceDirectory)) {
-            throw new \InvalidArgumentException(sprintf('Source directory %s does not exist or is not a directory.', $sourceDirectory));
+            throw new InvalidArgumentException(sprintf('Source directory %s does not exist or is not a directory.', $sourceDirectory));
         }
 
         if (!is_dir($targetDirectory)) {
-            throw new \InvalidArgumentException(sprintf('Target directory %s does not exist or is not a directory.', $targetDirectory));
+            throw new InvalidArgumentException(sprintf('Target directory %s does not exist or is not a directory.', $targetDirectory));
         }
 
         if ($sourceDirectory == $targetDirectory) {
-            throw new \InvalidArgumentException('Source and target directories must differ.');
+            throw new InvalidArgumentException('Source and target directories must differ.');
         }
 
         // Drop . and .. and reset array keys
@@ -590,7 +595,7 @@ class File extends Base
         });
 
         if (empty($files)) {
-            throw new \InvalidArgumentException(sprintf('Source directory %s is empty.', $sourceDirectory));
+            throw new InvalidArgumentException(sprintf('Source directory %s is empty.', $sourceDirectory));
         }
 
         $sourceFullPath = $sourceDirectory . DIRECTORY_SEPARATOR . static::randomElement($files);

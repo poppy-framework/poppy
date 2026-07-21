@@ -10,10 +10,9 @@ use Illuminate\Support\Arr;
 class BetweenDate extends FilterItem
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected string $view = 'py-mgr-page::tpl.filter.between_date';
-
 
     protected bool $withTime = false;
 
@@ -24,8 +23,6 @@ class BetweenDate extends FilterItem
 
     /**
      * Get condition of this filter.
-     *
-     * @param array $inputs
      *
      * @return array|void
      */
@@ -45,6 +42,7 @@ class BetweenDate extends FilterItem
             $start = Carbon::parse($start)->startOfDay()->toDateTimeString();
             $end   = Carbon::parse($end)->endOfDay()->toDateTimeString();
         }
+
         return $this->buildCondition([
             [$this->column, '<=', trim($end)],
             [$this->column, '>=', trim($start)],
@@ -54,6 +52,7 @@ class BetweenDate extends FilterItem
     public function variables(): array
     {
         $variables = parent::variables();
+
         return array_merge($variables, ['variables' => $this->variables]);
     }
 

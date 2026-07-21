@@ -40,12 +40,15 @@ class VersionController extends BackendController
     {
         $grid = new Grid(new SysAppVersion());
         $grid->setLists(ListSysAppVersion::class);
+
         return $grid->render();
     }
 
     /**
      * 创建/编辑
+     *
      * @param null $id
+     *
      * @throws ApplicationException
      */
     public function establish($id = null)
@@ -53,6 +56,7 @@ class VersionController extends BackendController
         $form = new FormVersionEstablish();
         $form->setPlatform(input('platform'));
         $form->setId($id);
+
         return $form->render();
     }
 
@@ -64,19 +68,19 @@ class VersionController extends BackendController
         return (new FormSettingVersion())->render();
     }
 
-
     public function clearCache()
     {
         sys_tag('py-version')->del([
             PyVersionDef::ckMaxVersion(),
-            PyVersionDef::ckVersions()
+            PyVersionDef::ckVersions(),
         ]);
+
         return Resp::success('已清理');
     }
 
     /**
      * 删除
-     * @param $id
+     *
      * @return Response|JsonResponse|RedirectResponse
      */
     public function delete($id)
@@ -85,6 +89,7 @@ class VersionController extends BackendController
         if (!$Version->delete((int) $id)) {
             return Resp::error('删除失败');
         }
+
         return Resp::success('删除成功', '_top_reload|1');
     }
 }

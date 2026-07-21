@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- *
- *
  * @method static Builder|DemoWebapp newModelQuery()
  * @method static Builder|DemoWebapp newQuery()
  * @method static Builder|DemoWebapp query()
+ *
  * @mixin Eloquent
  */
 class DemoComment extends Model

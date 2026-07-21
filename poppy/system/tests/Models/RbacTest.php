@@ -20,7 +20,6 @@ class RbacTest extends TestCase
     use DbTrait;
 
     /**
-     * @return void
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -57,7 +56,6 @@ class RbacTest extends TestCase
         // 缓存存在
         $this->assertTrue(sys_tag('py-core-rbac')->exists($key));
     }
-
 
     public function testPermissions()
     {

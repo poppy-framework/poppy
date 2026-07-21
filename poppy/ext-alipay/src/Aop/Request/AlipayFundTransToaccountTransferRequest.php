@@ -3,14 +3,19 @@
 declare(strict_types = 1);
 
 namespace Poppy\Extension\Alipay\Aop\Request;
+
 /**
  * ALIPAY API: alipay.fund.trans.toaccount.transfer request
  *
  * @see        AlipayFundTransUniTransferRequest
+ *
  * @url        https://opendocs.alipay.com/apis/api_28/alipay.fund.trans.toaccount.transfer
  * @url        https://opendocs.alipay.com/open/00ou7f 资金支付升级指南
+ *
  * @deprecated 2020-10-13
+ *
  * @author     auto create
+ *
  * @since      1.0, 2019-12-17 20:57:45
  */
 class AlipayFundTransToaccountTransferRequest
@@ -28,7 +33,7 @@ class AlipayFundTransToaccountTransferRequest
 
     private $prodCode;
 
-    private $apiVersion = "1.0";
+    private $apiVersion = '1.0';
 
     private $notifyUrl;
 
@@ -44,12 +49,12 @@ class AlipayFundTransToaccountTransferRequest
     public function setBizContent($bizContent)
     {
         $this->bizContent              = $bizContent;
-        $this->apiParas["biz_content"] = $bizContent;
+        $this->apiParas['biz_content'] = $bizContent;
     }
 
     public function getApiMethodName()
     {
-        return "alipay.fund.trans.toaccount.transfer";
+        return 'alipay.fund.trans.toaccount.transfer';
     }
 
     public function getNotifyUrl()
@@ -124,9 +129,6 @@ class AlipayFundTransToaccountTransferRequest
 
     public function setNeedEncrypt($needEncrypt)
     {
-
         $this->needEncrypt = $needEncrypt;
-
     }
-
 }

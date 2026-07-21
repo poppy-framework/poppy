@@ -19,7 +19,9 @@ class ModulesHook extends Repository
 
     /**
      * Initialize.
+     *
      * @param Collection $data 集合
+     *
      * @throws ApplicationException
      */
     public function initialize(Collection $data)

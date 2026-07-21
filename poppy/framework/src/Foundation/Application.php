@@ -15,19 +15,21 @@ class Application extends ApplicationBase
 {
     /**
      * 请求执行上下文
-     * @var string
      */
     protected string $executionContext = '';
 
     /**
      * namespace
+     *
      * @var string
      */
     protected $namespace = 'app';
 
     /**
      * register "matched" event
+     *
      * @param Closure $callback callback
+     *
      * @return void
      */
     public function routeMatched(Closure $callback)
@@ -35,19 +37,19 @@ class Application extends ApplicationBase
         $this['router']->matched($callback);
     }
 
-
     /**
      * 检测运行上下文
-     * @return bool
      */
     public function runningInBackend(): bool
     {
-        return $this->executionContext == 'backend';
+        return 'backend' == $this->executionContext;
     }
 
     /**
      * 检测运行环境
+     *
      * @param string $context context
+     *
      * @return mixed
      */
     public function isRunningIn(string $context): bool
@@ -57,7 +59,7 @@ class Application extends ApplicationBase
 
     /**
      * 设置运行上下文
-     * @param string $context
+     *
      * @return void
      */
     public function setExecutionContext(string $context)
@@ -67,13 +69,13 @@ class Application extends ApplicationBase
 
     /**
      * 检测数据库是否链接
-     * @return bool
      */
     public function hasDatabase(): bool
     {
         try {
             $this['db.connection']->getPdo();
-        } catch (Throwable $ex) {
+        }
+        catch (Throwable $ex) {
             return false;
         }
 
@@ -82,7 +84,6 @@ class Application extends ApplicationBase
 
     /**
      * Get application installation status.
-     * @return bool
      */
     public function isInstalled(): bool
     {
@@ -99,16 +100,14 @@ class Application extends ApplicationBase
 
     /**
      * Get cached config path.
-     * @return string
      */
     public function getCachedConfigPath(): string
     {
         return $this['path.storage'] . '/framework/config.php';
     }
 
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function databasePath($path = ''): string
     {
@@ -123,7 +122,6 @@ class Application extends ApplicationBase
 
     /**
      * Get cached routes path.
-     * @return string
      */
     public function getCachedRoutesPath(): string
     {
@@ -132,7 +130,6 @@ class Application extends ApplicationBase
 
     /**
      * Get cached packages path.
-     * @return string
      */
     public function getCachedPackagesPath(): string
     {
@@ -141,7 +138,6 @@ class Application extends ApplicationBase
 
     /**
      * Get cached services file path.
-     * @return string
      */
     public function getCachedServicesPath(): string
     {
@@ -152,7 +148,6 @@ class Application extends ApplicationBase
      * Get the path to the bootstrap directory.
      *
      * @param string $path Optionally, a path to append to the bootstrap path
-     * @return string
      */
     public function bootstrapPath($path = ''): string
     {
@@ -161,7 +156,6 @@ class Application extends ApplicationBase
 
     /**
      * Get the path to the cached packages.php file.
-     * @return string
      */
     public function getCachedClassesPath(): string
     {
@@ -170,8 +164,8 @@ class Application extends ApplicationBase
 
     /**
      * Get poppy framework path or assigned path.
+     *
      * @param string $path path
-     * @return string
      */
     public function frameworkPath(string $path = ''): string
     {
@@ -186,7 +180,6 @@ class Application extends ApplicationBase
 
     /**
      * Get poppy module path.
-     * @return string
      */
     public function modulePath(): string
     {
@@ -195,6 +188,7 @@ class Application extends ApplicationBase
 
     /**
      * 绑定路径到 container
+     *
      * @return void
      */
     protected function bindPathsInContainer()

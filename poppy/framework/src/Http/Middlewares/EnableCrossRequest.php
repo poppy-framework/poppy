@@ -21,6 +21,7 @@ class EnableCrossRequest
 
     /**
      * EnableCrossRequest constructor.
+     *
      * @param ResponseFactory $response response
      */
     public function __construct(ResponseFactory $response)
@@ -30,9 +31,9 @@ class EnableCrossRequest
 
     /**
      * Middleware handler.
+     *
      * @param Request $request request
      * @param Closure $next    next
-     * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
@@ -48,7 +49,7 @@ class EnableCrossRequest
 
     protected function respWithHeaders($headers, $request, $next)
     {
-        if ($request->getMethod() === 'OPTIONS') {
+        if ('OPTIONS' === $request->getMethod()) {
             return $this->response->make('OK', 200, $headers->toArray());
         }
 

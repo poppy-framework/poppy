@@ -4,10 +4,8 @@ declare(strict_types = 1);
 
 namespace Poppy\Core\Classes;
 
-
 class PyCoreDef
 {
-
     public const MIN_DEBUG     = 0;
     public const MIN_ONE_HOUR  = 60;
     public const MIN_SIX_HOUR  = 360;
@@ -17,11 +15,10 @@ class PyCoreDef
     public const MIN_ONE_WEEK  = 10080;
     public const MIN_ONE_MONTH = 43200;
 
-
     /**
      * 持久化
+     *
      * @param string $key 持久化KEY
-     * @return string
      */
     public static function ckPersistPersist(string $key): string
     {
@@ -30,7 +27,6 @@ class PyCoreDef
 
     /**
      * 模型注释
-     * @return string
      */
     public static function ckLangModels(): string
     {
@@ -39,8 +35,6 @@ class PyCoreDef
 
     /**
      * 模块注释
-     * @param string $type
-     * @return string
      */
     public static function ckModule(string $type): string
     {
@@ -49,7 +43,6 @@ class PyCoreDef
 
     /**
      * 权限
-     * @return string
      */
     public static function ckPermissionKv(): string
     {
@@ -58,7 +51,6 @@ class PyCoreDef
 
     /**
      * 权限
-     * @return string
      */
     public static function ckPermissionNames(): string
     {
@@ -67,8 +59,8 @@ class PyCoreDef
 
     /**
      * 缓存器
+     *
      * @param string $key 标识KEY
-     * @return string
      */
     public static function ckCacher(string $key): string
     {
@@ -77,8 +69,8 @@ class PyCoreDef
 
     /**
      * Rbac 角色缓存
+     *
      * @param int|string $id
-     * @return string
      */
     public static function rbacCkRolePermissions($id): string
     {
@@ -87,8 +79,8 @@ class PyCoreDef
 
     /**
      * 用户角色缓存
+     *
      * @param int|string $id
-     * @return string
      */
     public static function rbacCkUserRoles($id): string
     {
@@ -97,7 +89,6 @@ class PyCoreDef
 
     /**
      * 过期的KEY/Field
-     * @return string
      */
     public static function ckRdsKeyFieldExpired(): string
     {
@@ -106,8 +97,6 @@ class PyCoreDef
 
     /**
      * 锁定 KEY
-     * @param $key
-     * @return string
      */
     public static function ckPersistRdsLock($key): string
     {

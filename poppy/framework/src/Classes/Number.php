@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\Framework\Classes;
 
-/**
+/*
  * This file is part of the Moontoast\Math library
  *
  * Copyright 2013 Moontoast, Inc.
@@ -32,21 +32,19 @@ use Poppy\Framework\Exceptions\ArithmeticException;
 /**
  * Represents a number for use with Binary Calculator computations
  *
- * @link http://www.php.net/bcmath
+ * @see http://www.php.net/bcmath
  */
 class Number
 {
     /**
      * Number value, as a string
      *
-     * @var string $numberValue
+     * @var string
      */
     protected $numberValue;
 
     /**
      * The scale for the current number
-     *
-     * @var int $numberScale
      */
     protected int $numberScale = 0;
 
@@ -56,7 +54,7 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
-     * @param int   $scale (optional) Specifies the default number of digits after the decimal
+     * @param int   $scale  (optional) Specifies the default number of digits after the decimal
      *                      place to be used in operations for this BigNumber
      */
     public function __construct($number, $scale = 2)
@@ -86,7 +84,7 @@ class Number
     {
         // Use substr() to find the negative sign at the beginning of the
         // number, rather than using signum() to determine the sign.
-        if (substr($this->numberValue, 0, 1) === '-') {
+        if ('-' === substr($this->numberValue, 0, 1)) {
             $this->numberValue = substr($this->numberValue, 1);
         }
 
@@ -99,8 +97,10 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return $this
-     * @link http://www.php.net/bcadd
+     *
+     * @see http://www.php.net/bcadd
      */
     public function add($number)
     {
@@ -118,7 +118,7 @@ class Number
      * Finds the next highest integer value by rounding up the current number
      * if necessary
      *
-     * @link http://www.php.net/ceil
+     * @see http://www.php.net/ceil
      */
     public function ceil()
     {
@@ -127,7 +127,7 @@ class Number
         if ($this->isPositive()) {
             // 14 is the magic precision number
             $number = bcadd($number, '0', 14);
-            if (substr($number, -15) != '.00000000000000') {
+            if ('.00000000000000' != substr($number, -15)) {
                 $number = bcadd($number, '1', 0);
             }
         }
@@ -146,8 +146,10 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return int
-     * @link http://www.php.net/bccomp
+     *
+     * @see http://www.php.net/bccomp
      */
     public function compareTo($number)
     {
@@ -163,6 +165,7 @@ class Number
      * Returns the current value converted to an arbitrary base
      *
      * @param int $base The base to convert the current number to
+     *
      * @return string String representation of the number in the given base
      */
     public function convertToBase(int $base)
@@ -185,15 +188,18 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return $this
+     *
      * @throws ArithmeticException if $number is zero
-     * @link http://www.php.net/bcdiv
+     *
+     * @see http://www.php.net/bcdiv
      */
     public function divide($number)
     {
         $number = $this->filterNumber($number);
 
-        if ($number == '0') {
+        if ('0' == $number) {
             throw new ArithmeticException('Division by zero');
         }
 
@@ -211,7 +217,7 @@ class Number
      * Finds the next lowest integer value by rounding down the current number
      * if necessary
      *
-     * @link http://www.php.net/floor
+     * @see http://www.php.net/floor
      */
     public function floor()
     {
@@ -220,7 +226,7 @@ class Number
         if ($this->isNegative()) {
             // 14 is the magic precision number
             $number = bcadd($number, '0', 14);
-            if (substr($number, -15) != '.00000000000000') {
+            if ('.00000000000000' != substr($number, -15)) {
                 $number = bcsub($number, '1', 0);
             }
         }
@@ -236,12 +242,10 @@ class Number
      *
      * If no scale was set, this will default to the value of bcmath.scale
      * in php.ini.
-     *
-     * @return int
      */
     public function getScale(): int
     {
-        if ($this->numberScale === null) {
+        if (null === $this->numberScale) {
             return (int) ini_get('bcmath.scale');
         }
 
@@ -262,7 +266,6 @@ class Number
     /**
      * 增加
      * Increases the value of the current number by one
-     *
      */
     public function increment()
     {
@@ -275,11 +278,12 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return bool
      */
     public function isEqualTo($number)
     {
-        return $this->compareTo($number) == 0;
+        return 0 == $this->compareTo($number);
     }
 
     /**
@@ -288,11 +292,12 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return bool
      */
     public function isGreaterThan($number)
     {
-        return $this->compareTo($number) == 1;
+        return 1 == $this->compareTo($number);
     }
 
     /**
@@ -301,6 +306,7 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return bool
      */
     public function isGreaterThanOrEqualTo($number)
@@ -314,11 +320,12 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return bool
      */
     public function isLessThan($number)
     {
-        return $this->compareTo($number) == -1;
+        return -1 == $this->compareTo($number);
     }
 
     /**
@@ -327,6 +334,7 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return bool
      */
     public function isLessThanOrEqualTo($number)
@@ -342,7 +350,7 @@ class Number
      */
     public function isNegative()
     {
-        return $this->signum() == -1;
+        return -1 == $this->signum();
     }
 
     /**
@@ -353,7 +361,7 @@ class Number
      */
     public function isPositive()
     {
-        return $this->signum() == 1;
+        return 1 == $this->signum();
     }
 
     /**
@@ -362,15 +370,18 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return $this
+     *
      * @throws ArithmeticException if $number is zero
-     * @link http://www.php.net/bcmod
+     *
+     * @see http://www.php.net/bcmod
      */
     public function mod($number)
     {
         $number = $this->filterNumber($number);
 
-        if ($number == '0') {
+        if ('0' == $number) {
             throw new ArithmeticException('Division by zero');
         }
 
@@ -388,8 +399,10 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return $this
-     * @link http://www.php.net/bcmul
+     *
+     * @see http://www.php.net/bcmul
      */
     public function multiply($number)
     {
@@ -417,8 +430,10 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return $this
-     * @link http://www.php.net/bcpow
+     *
+     * @see http://www.php.net/bcpow
      */
     public function pow($number)
     {
@@ -450,15 +465,18 @@ class Number
      *                   representation of a base 10 number
      * @param mixed $mod May be of any type that can be cast to a string
      *                   representation of a base 10 number
+     *
      * @return $this
+     *
      * @throws ArithmeticException if $number is zero
-     * @link http://www.php.net/bcpowmod
+     *
+     * @see http://www.php.net/bcpowmod
      */
     public function powMod($pow, $mod)
     {
         $mod = $this->filterNumber($mod);
 
-        if ($mod === '0') {
+        if ('0' === $mod) {
             throw new ArithmeticException('Division by zero');
         }
 
@@ -482,7 +500,6 @@ class Number
      * Rounds the current number to the nearest integer
      *
      * @param int $precision precision
-     * @return Number
      */
     public function round($precision = 0): self
     {
@@ -511,6 +528,7 @@ class Number
      *
      * @param int $scale Specifies the default number of digits after the decimal
      *                   place to be used in operations for this BigNumber
+     *
      * @return $this
      */
     public function setScale(int $scale)
@@ -526,6 +544,7 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return $this
      */
     public function setValue($number)
@@ -547,6 +566,7 @@ class Number
      * Shifts the current number $bits to the left
      *
      * @param int $bits bits
+     *
      * @return $this
      */
     public function shiftLeft(int $bits)
@@ -564,6 +584,7 @@ class Number
      * Shifts the current number $bits to the right
      *
      * @param int $bits bits
+     *
      * @return $this
      */
     public function shiftRight(int $bits)
@@ -598,7 +619,7 @@ class Number
      * 求平方根
      * Finds the square root of the current number
      *
-     * @link http://www.php.net/bcsqrt
+     * @see http://www.php.net/bcsqrt
      */
     public function sqrt()
     {
@@ -616,8 +637,10 @@ class Number
      *
      * @param mixed $number May be of any type that can be cast to a string
      *                      representation of a base 10 number
+     *
      * @return $this
-     * @link http://www.php.net/bcsub
+     *
+     * @see http://www.php.net/bcsub
      */
     public function subtract($number)
     {
@@ -634,9 +657,10 @@ class Number
      * 进制转换
      * Converts a number between arbitrary bases (from 2 to 36)
      *
-     * @param string|int $number The number to convert
+     * @param string|int $number   The number to convert
      * @param int        $fromBase (optional) The base $number is in; defaults to 10
-     * @param int        $toBase (optional) The base to convert $number to; defaults to 16
+     * @param int        $toBase   (optional) The base to convert $number to; defaults to 16
+     *
      * @return string
      */
     public static function baseConvert($number, $fromBase = 10, $toBase = 16)
@@ -652,7 +676,9 @@ class Number
      *
      * @param string|int $number The number to convert
      * @param int        $toBase The base to convert $number to
+     *
      * @return string
+     *
      * @throws InvalidArgumentException if $toBase is outside the range 2 to 36
      */
     public static function convertFromBase10($number, int $toBase)
@@ -668,10 +694,10 @@ class Number
         $returnDigitCount = 0;
 
         while (bcdiv($number, bcpow((string) $toBase, (string) $returnDigitCount)) > ($toBase - 1)) {
-            $returnDigitCount++;
+            ++$returnDigitCount;
         }
 
-        for ($i = $returnDigitCount; $i >= 0; $i--) {
+        for ($i = $returnDigitCount; $i >= 0; --$i) {
             $pow       = bcpow((string) $toBase, (string) $i);
             $c         = bcdiv($number, $pow);
             $number    = bcsub($number, bcmul($c, $pow));
@@ -685,9 +711,11 @@ class Number
      * 转换成 10 进制
      * Converts a number from an arbitrary base (from 2 to 36) to base 10
      *
-     * @param string|int $number The number to convert
+     * @param string|int $number   The number to convert
      * @param int        $fromBase The base $number is in
+     *
      * @return string
+     *
      * @throws InvalidArgumentException if $fromBase is outside the range 2 to 36
      */
     public static function convertToBase10($number, int $fromBase)
@@ -700,7 +728,7 @@ class Number
         $len       = strlen($number);
         $base10Num = '0';
 
-        for ($i = $len; $i > 0; $i--) {
+        for ($i = $len; $i > 0; --$i) {
             $c = ord($number[$len - $i]);
 
             if ($c >= ord('0') && $c <= ord('9')) {
@@ -731,6 +759,7 @@ class Number
      * Changes the default scale used by all Binary Calculator functions
      *
      * @param int $scale scale
+     *
      * @return void
      */
     public static function setDefaultScale(int $scale)
@@ -743,7 +772,6 @@ class Number
      * Filters a number, converting it to a string value
      *
      * @param mixed $number number
-     * @return string
      */
     protected function filterNumber($number): string
     {

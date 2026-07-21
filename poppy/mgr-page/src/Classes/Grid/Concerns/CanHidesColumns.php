@@ -18,8 +18,6 @@ trait CanHidesColumns
     /**
      * Remove column selector on grid.
      *
-     * @param bool $disable
-     *
      * @return Grid|mixed
      */
     public function disableColumnSelector(bool $disable = true): bool
@@ -27,9 +25,6 @@ trait CanHidesColumns
         return $this->option('show_column_selector', !$disable);
     }
 
-    /**
-     * @return bool
-     */
     public function showColumnSelector(): bool
     {
         return $this->option('show_column_selector');
@@ -78,8 +73,6 @@ trait CanHidesColumns
 
     /**
      * Get all visible column names.
-     *
-     * @return array
      */
     public function visibleColumnNames(): array
     {
@@ -98,8 +91,6 @@ trait CanHidesColumns
 
     /**
      * Get default visible column names.
-     *
-     * @return array
      */
     public function getDefaultVisibleColumnNames(): array
     {

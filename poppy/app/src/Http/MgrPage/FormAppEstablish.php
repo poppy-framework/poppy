@@ -18,25 +18,16 @@ use Route;
 
 class FormAppEstablish extends FormWidget
 {
-
     use CoreTrait;
 
     public $ajax = true;
 
-    /**
-     * @var int
-     */
     private int $id;
 
-    /**
-     * @var null|SysApp
-     */
     private ?SysApp $item = null;
-
 
     /**
      * 分类
-     * @var App
      */
     private App $app;
 
@@ -62,6 +53,7 @@ class FormAppEstablish extends FormWidget
                 'id'          => $this->app->getItem()->id,
             ]);
         }
+
         return Resp::error($this->app->getError());
     }
 
@@ -72,7 +64,6 @@ class FormAppEstablish extends FormWidget
 
     public function form(): void
     {
-
         $this->text('title', '应用名称')->rules([
             Rule::required(),
         ]);
@@ -93,7 +84,7 @@ class FormAppEstablish extends FormWidget
 
         $permissions = [];
         $this->corePermission()->permissions()->each(function (Permission $permission) use (&$permissions) {
-            if ($permission->type() === 'app') {
+            if ('app' === $permission->type()) {
                 $permissions[$permission->key()] = $permission->description();
             }
         });

@@ -12,10 +12,11 @@ use Poppy\Sms\Http\RouteServiceProvider;
 
 class ServiceProvider extends PoppyServiceProvider
 {
-
     /**
      * Bootstrap the application events.
+     *
      * @return void
+     *
      * @throws ModuleNotFoundException
      */
     public function boot()
@@ -25,6 +26,7 @@ class ServiceProvider extends PoppyServiceProvider
 
     /**
      * Register the service provider.
+     *
      * @return void
      */
     public function register()
@@ -35,7 +37,7 @@ class ServiceProvider extends PoppyServiceProvider
         $this->mergeConfigFrom(dirname(__DIR__) . '/resources/config/sms.php', 'poppy.sms');
 
         $this->app->bind('poppy.sms', function () {
-            return new SmsProvider;
+            return new SmsProvider();
         });
 
         $this->app->alias('poppy.sms', SmsContract::class);
@@ -43,6 +45,7 @@ class ServiceProvider extends PoppyServiceProvider
 
     /**
      * Get the services provided by the provider.
+     *
      * @return array
      */
     public function provides()

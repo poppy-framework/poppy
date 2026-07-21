@@ -13,7 +13,6 @@ use Poppy\System\Http\Request\Web\WebController;
  */
 class ContentController extends WebController
 {
-
     /**
      * 主页
      */
@@ -24,9 +23,9 @@ class ContentController extends WebController
         $content->title('表单示例')
             ->description('这里列出了所有表单的可能性的选项')
             ->body($form);
+
         return $content;
     }
-
 
     public function form()
     {
@@ -34,6 +33,7 @@ class ContentController extends WebController
         $content->title('表单示例')
             ->description('这里列出了所有表单的可能性的选项')
             ->body(new FormEntrance());
+
         return $content;
     }
 }

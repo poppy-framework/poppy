@@ -15,7 +15,6 @@ use Poppy\Framework\Classes\Traits\AppTrait;
 use Poppy\Framework\Classes\Traits\KeyParserTrait;
 use Poppy\MgrPage\Classes\Widgets\FormWidget;
 use Poppy\System\Classes\Traits\PamTrait;
-use Poppy\System\Exceptions\FormException;
 use Poppy\System\Setting\Repository\SettingRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -26,36 +25,40 @@ abstract class FormSettingBase extends FormWidget
 
     /**
      * 是否设置用户
+     *
      * @var bool
      */
     public $ajax = true;
 
     /**
      * 是否 Inbox
+     *
      * @var bool
      */
     public $inbox = false;
 
     /**
      * 是否显示标题
+     *
      * @var string
      */
     protected $title = '';
 
     /**
      * 是否包含框架内容
+     *
      * @var bool
      */
     protected $withContent = false;
 
     /**
      * 定义分组
+     *
      * @var string
      */
     protected $group = '';
 
     /**
-     * @param Request $request
      * @return Response|JsonResponse|RedirectResponse
      */
     public function handle(Request $request)
@@ -70,7 +73,7 @@ abstract class FormSettingBase extends FormWidget
                 continue;
             }
             if (is_null($all[$key] ?? null)) {
-                $value = $field->getType() === 'checkbox' ? [] : '';
+                $value = 'checkbox' === $field->getType() ? [] : '';
             }
             else {
                 $value = $all[$key];
@@ -80,11 +83,11 @@ abstract class FormSettingBase extends FormWidget
                 return Resp::error($field->label() . '设置不符合规范:' . $Setting->getError()->getMessage());
             }
         }
+
         return Resp::success('更新配置成功');
     }
 
     /**
-     * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -99,12 +102,10 @@ abstract class FormSettingBase extends FormWidget
             }
             $data[$key] = $Setting->get($this->group . '.' . $key);
         }
+
         return $data;
     }
 
-    /**
-     * @return string
-     */
     public function getGroup(): string
     {
         return $this->group;

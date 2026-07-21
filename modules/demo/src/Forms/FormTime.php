@@ -6,14 +6,12 @@ use Poppy\Framework\Validation\Rule;
 
 class FormTime extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Time';
-
 
     /**
      * Build a form here.

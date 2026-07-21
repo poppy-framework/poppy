@@ -16,6 +16,7 @@ class CategoryEstablishRequest extends Request
         $tableName = (new SysCategory())->getTable();
         $id        = Route::input('id');
         $type      = input('type');
+
         return [
             'type'      => [
                 Rule::required(),

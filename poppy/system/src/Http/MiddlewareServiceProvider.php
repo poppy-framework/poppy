@@ -8,7 +8,6 @@ use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Poppy\System\Http\Middlewares\CrossRequest;
-use Poppy\System\Http\Middlewares\RequestIdMiddleware;
 
 class MiddlewareServiceProvider extends ServiceProvider
 {
@@ -55,7 +54,6 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-auth_session',
         ]);
 
-
         /*
         |--------------------------------------------------------------------------
         | Api Middleware
@@ -75,7 +73,6 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-sso',          // 单点登录
             'sys-auth:jwt_web', // 用户登录
         ]);
-
 
         // cors for api
         /** @var \Illuminate\Foundation\Http\Kernel $kernelContract */

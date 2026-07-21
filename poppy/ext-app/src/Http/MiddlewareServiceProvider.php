@@ -10,9 +10,6 @@ use Poppy\Extension\App\Http\Middlewares\JsonAppSignMiddleware;
 
 class MiddlewareServiceProvider extends ServiceProvider
 {
-    /**
-     * @param Router $router
-     */
     public function boot(Router $router): void
     {
         $router->aliasMiddleware('py-ext-app.sign-json', JsonAppSignMiddleware::class);

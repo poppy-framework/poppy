@@ -8,5 +8,4 @@ use Poppy\Framework\Exceptions\BaseException;
 
 class FormException extends BaseException
 {
-
 }

@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Facade;
  */
 class XmlFacade extends Facade
 {
-
     /**
      * Get the registered name of the component.
      *

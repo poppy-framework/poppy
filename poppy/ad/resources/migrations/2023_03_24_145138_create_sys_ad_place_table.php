@@ -8,10 +8,8 @@ class CreateSysAdPlaceTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up():void
+    public function up(): void
     {
         Schema::create('sys_ad_place', function (Blueprint $table) {
             $table->increments('id')->comment('id');
@@ -26,10 +24,8 @@ class CreateSysAdPlaceTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down():void
+    public function down(): void
     {
         Schema::dropIfExists('sys_ad_place');
     }

@@ -1,18 +1,17 @@
 <?php
 
 declare(strict_types = 1);
+
 namespace Poppy\Extension\Webhook\Tests\MsgType;
 
-use Poppy\Framework\Application\TestCase;
 use Poppy\Extension\Webhook\DingTalk\MsgType\Markdown;
+use Poppy\Framework\Application\TestCase;
 
 /**
  * Class MarkdownTest
- * @package Iamzz\Dingtalk\Tests\MsgType
  */
 class MarkdownTest extends TestCase
 {
-
     public function testToJson(): void
     {
         $title = '杭州天气 @ Poppy';

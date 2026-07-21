@@ -23,6 +23,7 @@ class UploadResponseBody extends BaseResponseBody
      *         property="url",
      *         type="array",
      *         description="上传成功后的文件 URL 列表",
+     *
      *         @OA\Items(type="string", format="uri")
      *     ),
      * )

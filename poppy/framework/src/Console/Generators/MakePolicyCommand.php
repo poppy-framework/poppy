@@ -13,6 +13,7 @@ class MakePolicyCommand extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.
+     *
      * @var string
      */
     protected $signature = 'poppy:policy
@@ -22,19 +23,20 @@ class MakePolicyCommand extends GeneratorCommand
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Create a new module policy class';
 
     /**
      * String to store the command type.
+     *
      * @var string
      */
     protected $type = 'Module policy';
 
     /**
      * Get the stub file for the generator.
-     * @return string
      */
     protected function getStub(): string
     {
@@ -43,8 +45,8 @@ class MakePolicyCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
+     *
      * @param string $rootNamespace namespace
-     * @return string
      */
     protected function getDefaultNamespace($rootNamespace): string
     {

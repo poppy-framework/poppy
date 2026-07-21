@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Poppy\Category\Http\MgrPage;
@@ -16,11 +17,11 @@ use Poppy\System\Models\SysConfig;
 
 class ListSysCategory extends ListBase
 {
-
     public $title = '分类管理';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns(): void
@@ -28,7 +29,7 @@ class ListSysCategory extends ListBase
         $this->column('id', 'ID')->sortable()->width(80);
         $this->column('list_order', '排序')->editable()->sortable()->width(100);
         $this->column('name', '标识')->display(function ($value) {
-            /** @var $this SysCategory */
+            /* @var $this SysCategory */
             return $value ? $this->type . '-' . $value : '';
         })->width(150);
         $this->column('title', '标题');
@@ -47,8 +48,7 @@ class ListSysCategory extends ListBase
     }
 
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {
@@ -70,20 +70,20 @@ class ListSysCategory extends ListBase
     public function quickButtons(): Closure
     {
         $scope = input(Scope::QUERY_NAME);
+
         return function (Operations $operations) use ($scope) {
             $operations->create(route_url('py-category:backend.category.establish', null, ['type' => $scope]), '新建' . $this->cateTitle() . '分类');
         };
     }
 
-
     /**
      * 类别标题
-     * @return string
      */
     private function cateTitle(): string
     {
         $type  = input(Scope::QUERY_NAME, SysCategory::TYPE_DEFAULT);
         $types = SysCategory::kvType();
+
         return $types[$type] ?? '类别';
     }
 }

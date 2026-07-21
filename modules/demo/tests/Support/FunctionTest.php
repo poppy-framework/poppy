@@ -8,7 +8,6 @@ use Poppy\System\Models\PamAccount;
 
 class FunctionTest extends TestCase
 {
-
     public function testMobile(): void
     {
         $user = PamAccount::where('type', PamAccount::TYPE_USER)->where('mobile', '!=', '')->pluck('id', 'mobile');

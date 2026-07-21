@@ -10,17 +10,14 @@ use Poppy\MgrPage\Classes\Grid\Filter\Presenter\DateTime as DatetimePresenter;
 class Date extends FilterItem
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected string $query = 'whereDate';
 
-    /**
-     * @var string
-     */
     protected string $fieldName = 'date';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct($column, $label = '')
     {
@@ -31,8 +28,6 @@ class Date extends FilterItem
 
     /**
      * Date filter.
-     *
-     * @return DatetimePresenter
      */
     protected function date(): DatetimePresenter
     {
@@ -41,8 +36,6 @@ class Date extends FilterItem
 
     /**
      * Month filter.
-     *
-     * @return DatetimePresenter
      */
     protected function month(): DatetimePresenter
     {
@@ -51,8 +44,6 @@ class Date extends FilterItem
 
     /**
      * Year filter.
-     *
-     * @return DatetimePresenter
      */
     protected function year(): DatetimePresenter
     {
@@ -63,8 +54,6 @@ class Date extends FilterItem
      * Datetime filter.
      *
      * @param array|Collection $options
-     *
-     * @return DatetimePresenter
      */
     private function datetime($options = []): DatetimePresenter
     {

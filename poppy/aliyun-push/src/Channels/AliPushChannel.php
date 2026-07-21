@@ -12,7 +12,6 @@ use Poppy\AliyunPush\Contracts\AliPushChannel as AliPushChannelContract;
 use Poppy\AliyunPush\Exceptions\PushException;
 use Poppy\Framework\Exceptions\ApplicationException;
 
-
 /**
  * 阿里推送频道
  */
@@ -20,8 +19,9 @@ class AliPushChannel
 {
     /**
      * Send the given notification.
-     * @param mixed                               $notifiable
+     *
      * @param Notification|AliPushChannelContract $notification
+     *
      * @throws PushException
      * @throws ApplicationException
      */
@@ -35,9 +35,7 @@ class AliPushChannel
 
         $Push = AliPush::getInstance()->setConfig(Config::default());
         if (!$Push->send($notify)) {
-            throw (new ApplicationException($Push->getError()))->setContext([
-                'notify' => $notify,
-            ]);
+            throw (new ApplicationException($Push->getError()))->setContext(['notify' => $notify]);
         }
     }
 }

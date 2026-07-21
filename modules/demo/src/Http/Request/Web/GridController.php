@@ -19,7 +19,6 @@ use Throwable;
  */
 class GridController extends WebController
 {
-
     /**
      * @throws Throwable
      * @throws ApplicationException
@@ -30,7 +29,6 @@ class GridController extends WebController
             ->setLists('\Demo\Http\Lists\ListGrid' . ucfirst($type))
             ->render();
     }
-
 
     /**
      * @throws Throwable
@@ -47,6 +45,7 @@ class GridController extends WebController
             $item = $actions->row;
             $actions->iframe('编辑', DemoDef::IFRAME_INBOX_NONE)->icon('plus');
         },])->fixed()->width(120);
+
         return $grid->render();
     }
 

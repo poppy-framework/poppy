@@ -28,25 +28,28 @@ class HomeController extends DevelopController
         $all = sys_tag('py-system-persist')->hGetAll($key);
         if ($do = input('do')) {
             switch ($do) {
-                case 'on';
-                case 'off';
+                case 'on':
+                case 'off':
                     $table = input('table');
-                    if ($do === 'on') {
+                    if ('on' === $do) {
                         sys_tag('py-system-persist')->hSet($key, $table, 1);
                     }
                     else {
                         sys_tag('py-system-persist')->hDel($key, $table);
                     }
+
                     return Resp::success('操作成功', '_reload|1');
                 case 'open':
                 case 'close':
-                    sys_tag('py-system-persist')->set(PySystemDef::ckDbOptimize('is_open'), $do === 'open' ? 'Y' : 'N');
+                    sys_tag('py-system-persist')->set(PySystemDef::ckDbOptimize('is_open'), 'open' === $do ? 'Y' : 'N');
+
                     return Resp::success('操作成功', '_reload|1');
             }
         }
 
         if ($del = input('del')) {
             sys_tag('py-system-persist')->del(PySystemDef::ckDbOptimize($del));
+
             return Resp::success('已删除', '_reload|1');
         }
 
@@ -70,6 +73,7 @@ class HomeController extends DevelopController
         if ($table) {
             $sql = sys_tag('py-system-persist')->hGetAll(PySystemDef::ckDbOptimize($table));
         }
+
         return view('py-mgr-page::develop.home.optimize', [
             'tables'  => $tableData,
             'table'   => $table,

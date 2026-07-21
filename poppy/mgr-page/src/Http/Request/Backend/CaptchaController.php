@@ -21,16 +21,17 @@ use Validator;
  */
 class CaptchaController extends BackendController
 {
-
     /**
      * 发送后台通行证的验证码
+     *
      * @return JsonResponse|RedirectResponse|Response
+     *
      * @throws ValidationException
      */
     public function send()
     {
         $validator = Validator::make(input(), [
-            'passport' => [Rule::required(), Rule::mobile(),],
+            'passport' => [Rule::required(), Rule::mobile()],
             'captcha'  => [Rule::required(), 'captcha'],
         ], [], [
             'passport' => '手机号',
@@ -58,8 +59,10 @@ class CaptchaController extends BackendController
             $captcha = $Verification->getCaptcha();
             try {
                 event(new CaptchaSendEvent($passport, $captcha));
+
                 return Resp::success('验证码发送成功' . (!is_production() ? ', 验证码:' . $captcha : ''));
-            } catch (Throwable $e) {
+            }
+            catch (Throwable $e) {
                 return Resp::error($e);
             }
         }

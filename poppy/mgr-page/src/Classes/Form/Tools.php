@@ -37,8 +37,6 @@ class Tools implements Renderable
 
     /**
      * Create a new Tools instance.
-     *
-     * @param Builder $builder
      */
     public function __construct(Builder $builder)
     {
@@ -49,8 +47,6 @@ class Tools implements Renderable
 
     /**
      * Append a tools.
-     *
-     * @param mixed $tool
      *
      * @return $this
      */
@@ -64,8 +60,6 @@ class Tools implements Renderable
     /**
      * Prepend a tool.
      *
-     * @param mixed $tool
-     *
      * @return $this
      */
     public function prepend($tool)
@@ -78,7 +72,6 @@ class Tools implements Renderable
     /**
      * Disable `list` tool.
      *
-     * @param bool $disable
      * @return $this
      */
     public function disableList(bool $disable = true)
@@ -96,7 +89,6 @@ class Tools implements Renderable
     /**
      * Disable `delete` tool.
      *
-     * @param bool $disable
      * @return $this
      */
     public function disableDelete(bool $disable = true)
@@ -114,7 +106,6 @@ class Tools implements Renderable
     /**
      * Disable `edit` tool.
      *
-     * @param bool $disable
      * @return $this
      */
     public function disableView(bool $disable = true)
@@ -150,7 +141,7 @@ class Tools implements Renderable
 
         foreach ($this->tools as $tool) {
             $renderMethod = 'render' . ucfirst($tool);
-            $output       .= $this->$renderMethod();
+            $output .= $this->$renderMethod();
         }
 
         return $output . $this->renderCustomTools($this->appends);
@@ -188,9 +179,8 @@ class Tools implements Renderable
         if ($key) {
             return $this->getListPath() . '/' . $key;
         }
-        else {
-            return $this->getListPath();
-        }
+
+        return $this->getListPath();
     }
 
     /**
@@ -256,8 +246,6 @@ HTML;
      * Render custom tools.
      *
      * @param Collection $tools
-     *
-     * @return mixed
      */
     protected function renderCustomTools($tools)
     {

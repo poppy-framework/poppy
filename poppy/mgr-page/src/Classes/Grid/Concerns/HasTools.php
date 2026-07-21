@@ -28,7 +28,6 @@ trait HasTools
     /**
      * Disable export.
      *
-     * @param bool $disable
      * @return $this
      */
     public function disableTools(bool $disable = true): self
@@ -39,20 +38,17 @@ trait HasTools
     /**
      * Setup grid tools.
      *
-     * @param Closure $callback
-     *
      * @return void
      */
     public function tools(Closure $callback): self
     {
         $callback($this->tools);
+
         return $this;
     }
 
     /**
      * Render custom tools.
-     *
-     * @return string
      */
     public function renderHeaderTools(): string
     {
@@ -62,12 +58,12 @@ trait HasTools
     /**
      * Setup grid tools.
      *
-     * @param Grid $grid
      * @return $this
      */
     protected function initTools(Grid $grid): self
     {
         $this->tools = new Tools($grid);
+
         return $this;
     }
 }

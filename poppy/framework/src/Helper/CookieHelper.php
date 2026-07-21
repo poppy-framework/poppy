@@ -11,8 +11,8 @@ class CookieHelper
 {
     /**
      * 判断Cookie是否存在
+     *
      * @param string $name name
-     * @return bool
      */
     public static function has(string $name): bool
     {
@@ -21,8 +21,8 @@ class CookieHelper
 
     /**
      * 获取某个Cookie值
+     *
      * @param string $name name
-     * @return string
      */
     public static function get(string $name): string
     {
@@ -31,12 +31,12 @@ class CookieHelper
 
     /**
      * 设置某个 Cookie 的值
+     *
      * @param string      $name   cookie name
      * @param string|null $value  cookie value
      * @param int         $expire expired time
      * @param string      $path   path
      * @param string      $domain domain
-     * @return bool
      */
     public static function set(string $name, $value, $expire = 0, $path = '', $domain = ''): bool
     {
@@ -54,6 +54,7 @@ class CookieHelper
 
     /**
      * 删除某个Cookie值
+     *
      * @param string $name name
      */
     public static function remove(string $name): void

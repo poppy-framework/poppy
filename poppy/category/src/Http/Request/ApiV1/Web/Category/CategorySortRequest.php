@@ -13,6 +13,7 @@ use Poppy\Framework\Validation\Rule;
  *     schema="PoppyCategoryCategorySortRequest",
  *     description="分类排序请求",
  *     required={"type", "id", "position", "aim_id"},
+ *
  *     @OA\Property(property="type", type="integer", description="分类分组 (kvType 键)"),
  *     @OA\Property(property="id", type="integer", description="当前 ID"),
  *     @OA\Property(property="position", type="string", description="相对目标 ID 的位置", enum={"gt", "lt"}, example="gt"),

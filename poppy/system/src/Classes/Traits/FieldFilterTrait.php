@@ -11,7 +11,6 @@ trait FieldFilterTrait
 {
     /**
      * @param int $id 用户id
-     * @return mixed
      */
     public function account($id)
     {

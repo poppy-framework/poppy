@@ -8,10 +8,6 @@ use Poppy\MgrPage\Classes\Form\Field;
 
 class Link extends Field
 {
-
-    /**
-     * @var string
-     */
     protected string $class = 'layui-btn-primary';
 
     /**
@@ -19,12 +15,10 @@ class Link extends Field
      */
     protected $url = '#';
 
-
     public function __construct($label = '')
     {
         $this->label = $label;
     }
-
 
     public function info(): self
     {
@@ -32,7 +26,6 @@ class Link extends Field
 
         return $this;
     }
-
 
     public function warn(): self
     {
@@ -48,18 +41,21 @@ class Link extends Field
             'data-width'  => $width,
             'data-height' => $height,
         ]);
+
         return $this;
     }
 
     public function small(): self
     {
         $this->class .= ' layui-btn-sm';
+
         return $this;
     }
 
     public function url($url): self
     {
         $this->url = $url;
+
         return $this;
     }
 
@@ -72,6 +68,7 @@ class Link extends Field
         $this->attribute([
             'class' => 'layui-btn ' . $this->class,
         ]);
+
         return parent::render();
     }
 }

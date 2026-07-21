@@ -8,12 +8,7 @@ use Illuminate\Contracts\Support\Renderable;
 
 trait UseItems
 {
-
-    /**
-     * @var array
-     */
     protected array $items = [];
-
 
     /**
      * Append an action.
@@ -30,6 +25,7 @@ trait UseItems
         else {
             $this->items[] = $action;
         }
+
         return $this;
     }
 }

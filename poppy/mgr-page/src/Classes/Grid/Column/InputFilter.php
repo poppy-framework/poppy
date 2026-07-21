@@ -25,7 +25,7 @@ class InputFilter extends Filter
     /**
      * Add a binding to the query.
      *
-     * @param string $value
+     * @param string     $value
      * @param Model|null $model
      */
     public function addBinding($value, Model $model)
@@ -34,7 +34,7 @@ class InputFilter extends Filter
             return;
         }
 
-        if ($this->type == 'like') {
+        if ('like' == $this->type) {
             $model->where($this->getColumnName(), 'like', "%{$value}%");
 
             return;
@@ -57,7 +57,6 @@ class InputFilter extends Filter
      */
     public function render()
     {
-
         $active = empty($value) ? '' : 'text-yellow';
 
         return <<<EOT

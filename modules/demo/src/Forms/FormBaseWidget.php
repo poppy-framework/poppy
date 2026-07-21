@@ -13,13 +13,11 @@ use Poppy\MgrPage\Classes\Widgets\FormWidget;
 
 abstract class FormBaseWidget extends FormWidget
 {
-
     public $ajax = true;
 
     /**
      * Handle the form request.
      *
-     * @param Request $request
      * @return Response|JsonResponse|RedirectResponse
      */
     public function handle(Request $request)

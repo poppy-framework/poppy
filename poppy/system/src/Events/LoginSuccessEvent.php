@@ -16,14 +16,10 @@ class LoginSuccessEvent
      */
     public PamAccount $pam;
 
-    /**
-     * @var string
-     */
     public string $guard;
 
     /**
      * 来源
-     * @var string
      */
     public string $type;
 
@@ -31,6 +27,6 @@ class LoginSuccessEvent
     {
         $this->pam   = $pam;
         $this->guard = $guard;
-        $this->type  = $type === '' ? 'login' : $type;
+        $this->type  = '' === $type ? 'login' : $type;
     }
 }

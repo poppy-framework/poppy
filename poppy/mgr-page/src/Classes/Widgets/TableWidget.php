@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 use Poppy\Framework\Classes\Resp;
 use Poppy\MgrPage\Classes\Layout\Content;
+use Throwable;
 
 class TableWidget extends Widget implements Renderable
 {
@@ -26,9 +27,6 @@ class TableWidget extends Widget implements Renderable
 
     /**
      * Table constructor.
-     *
-     * @param array $headers
-     * @param array $rows
      */
     public function __construct(array $headers = [], array $rows = [])
     {
@@ -41,8 +39,6 @@ class TableWidget extends Widget implements Renderable
     /**
      * Set table headers.
      *
-     * @param array $headers
-     *
      * @return $this
      */
     public function setHeaders(array $headers = []): self
@@ -52,21 +48,20 @@ class TableWidget extends Widget implements Renderable
         return $this;
     }
 
-
     /**
      * 不使用容器显示
+     *
      * @return $this
      */
     public function withoutContent(): self
     {
         $this->withContent = false;
+
         return $this;
     }
 
     /**
      * Set table rows.
-     *
-     * @param array $rows
      *
      * @return $this
      */
@@ -80,12 +75,14 @@ class TableWidget extends Widget implements Renderable
             return $this;
         }
         $this->rows = $rows;
+
         return $this;
     }
 
     /**
      * Render the table.
-     * @throws \Throwable
+     *
+     * @throws Throwable
      */
     public function render()
     {
@@ -106,8 +103,7 @@ class TableWidget extends Widget implements Renderable
         if ($this->withContent) {
             return (new Content())->body($content);
         }
-        else {
-            return $content;
-        }
+
+        return $content;
     }
 }

@@ -17,9 +17,9 @@ use Poppy\Framework\Support\Abstracts\Repository;
  */
 class ModulesMenu extends Repository
 {
-
     /**
      * Initialize.
+     *
      * @param Collection $collection 集合
      */
     public function initialize(Collection $collection)
@@ -46,6 +46,7 @@ class ModulesMenu extends Repository
                             }
                         })->toArray();
                         $definition['groups'] = $parsedGroups;
+
                         return $definition;
                     })->toArray();
                 });
@@ -81,7 +82,6 @@ class ModulesMenu extends Repository
                     $reCollection->put($slug, $definition);
                 });
 
-
                 $items   = $reCollection;
                 $handled = collect();
                 $collect = collect();
@@ -104,10 +104,11 @@ class ModulesMenu extends Repository
 
     /**
      * 根据用户返回合适的菜单
+     *
      * @param string                              $type               指定用户的类型
      * @param bool                                $is_full_permission 是否是全部权限
-     * @param null|RbacUserTrait|RbacUserContract $pam                用户
-     * @return Collection
+     * @param RbacUserTrait|RbacUserContract|null $pam                用户
+     *
      * @throws PermissionException
      */
     public function withPermission(string $type, bool $is_full_permission = false, $pam = null): Collection
@@ -125,7 +126,6 @@ class ModulesMenu extends Repository
                 $children = collect();
 
                 collect($group['children'])->each(function ($link) use ($children, $pam, $is_full_permission) {
-
                     /* 三级菜单的权限
                      * ---------------------------------------- */
                     if ($link['children'] ?? []) {
@@ -149,7 +149,7 @@ class ModulesMenu extends Repository
                             $children->push($link);
                         }
                     }
-                    else if (($link['route'] ?? '') && ($link['permission'] ?? '')) {
+                    elseif (($link['route'] ?? '') && ($link['permission'] ?? '')) {
                         // 管理员拥有所有权限
                         if ($is_full_permission) {
                             $children->push($link);
@@ -170,13 +170,13 @@ class ModulesMenu extends Repository
                 $menu->push($module);
             }
         });
+
         return $menu;
     }
 
     /**
      * @param string $type  类型
      * @param array  $perms perms
-     * @return Collection
      */
     public function withType(string $type, array $perms = []): Collection
     {
@@ -235,8 +235,8 @@ class ModulesMenu extends Repository
 
     /**
      * 解析链接
+     *
      * @param array $group 数据数组
-     * @return array
      */
     private function parseLink(array $group): ?array
     {
@@ -278,6 +278,7 @@ class ModulesMenu extends Repository
                 return null;
             }
         }
+
         return $group;
     }
 }

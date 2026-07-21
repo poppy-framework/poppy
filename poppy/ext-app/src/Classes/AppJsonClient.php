@@ -12,30 +12,23 @@ use Poppy\Extension\App\Classes\Sign\JsonAppSign;
 
 class AppJsonClient
 {
-
     private const ERR_JSON = 901;
 
     /**
      * 应用 ID
-     * @var int |string
+     *
+     * @var int|string
      */
     private $appid;
 
     /**
      * 密钥
-     * @var string
      */
     private string $secret = '';
 
-
-    /**
-     * @var GuzzleClient
-     */
     private GuzzleClient $client;
 
-
     private string $baseUrl;
-
 
     private bool $log = false;
 
@@ -47,9 +40,9 @@ class AppJsonClient
 
     /**
      * 发送应用 GET 请求
-     * @param string $url
-     * @param array  $query
+     *
      * @return array|mixed
+     *
      * @throws JsonException
      */
     public function get(string $url, array $query = [])
@@ -62,8 +55,10 @@ class AppJsonClient
             $content = $resp->getBody()->getContents();
             $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             $this->log($url, __METHOD__, $query, $data);
+
             return $data;
-        } catch (GuzzleException|JsonException $e) {
+        }
+        catch (GuzzleException|JsonException $e) {
             return $this->handleException($e, $url, __METHOD__, $query);
         }
     }
@@ -92,17 +87,19 @@ class AppJsonClient
             $content = $resp->getBody()->getContents();
             $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             $this->log($url, __METHOD__, $form_params, $data);
+
             return $data;
-        } catch (GuzzleException|JsonException $e) {
+        }
+        catch (GuzzleException|JsonException $e) {
             return $this->handleException($e, $url, __METHOD__, $params);
         }
     }
 
     /**
      * 发送应用 POST 请求
-     * @param string $url
-     * @param array  $form_params
+     *
      * @return array|mixed
+     *
      * @throws JsonException
      */
     public function post(string $url, array $form_params = [])
@@ -116,16 +113,17 @@ class AppJsonClient
             $content = $resp->getBody()->getContents();
             $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             $this->log($url, __METHOD__, $form_params, $data);
+
             return $data;
-        } catch (GuzzleException|JsonException $e) {
+        }
+        catch (GuzzleException|JsonException $e) {
             return $this->handleException($e, $url, __METHOD__, $form_params);
         }
     }
 
     /**
      * 发送应用 JSON 请求
-     * @param string $url
-     * @param array  $params
+     *
      * @return array|mixed
      */
     public function json(string $url, array $params = [])
@@ -139,39 +137,40 @@ class AppJsonClient
             $content = $resp->getBody()->getContents();
             $data    = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             $this->log($url, __METHOD__, $params, $data);
+
             return $data;
-        } catch (GuzzleException|JsonException $e) {
+        }
+        catch (GuzzleException|JsonException $e) {
             return $this->handleException($e, $url, __METHOD__, $params);
         }
     }
 
     /**
      * @param int|string $appid
-     * @return AppJsonClient
      */
     public function setAppid($appid): AppJsonClient
     {
         $this->appid = $appid;
+
         return $this;
     }
 
-    /**
-     * @param string $secret
-     * @return AppJsonClient
-     */
     public function setSecret(string $secret): AppJsonClient
     {
         $this->secret = $secret;
+
         return $this;
     }
 
     /**
      * 启用日志
+     *
      * @return $this
      */
     public function enableLog(): self
     {
         $this->log = true;
+
         return $this;
     }
 
@@ -190,10 +189,6 @@ class AppJsonClient
 
     /**
      * @param GuzzleException|JsonException $e
-     * @param string                        $url
-     * @param string                        $method
-     * @param array                         $params
-     * @return array
      */
     private function handleException($e, string $url, string $method, array $params): array
     {
@@ -207,6 +202,7 @@ class AppJsonClient
             'params'    => $params,
             'exception' => $data,
         ]);
+
         return $data;
     }
 

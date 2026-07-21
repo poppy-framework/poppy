@@ -13,11 +13,10 @@ use Poppy\System\Models\PamBan;
 
 class FormBanEstablish extends FormWidget
 {
-
-    use PamTrait, AppTrait;
+    use PamTrait;
+    use AppTrait;
 
     public $ajax = true;
-
 
     private $id;
 
@@ -27,7 +26,8 @@ class FormBanEstablish extends FormWidget
     private $item;
 
     /**
-     * 账号类型
+     * 账号类型.
+     *
      * @var string
      */
     private $accountType;
@@ -38,9 +38,10 @@ class FormBanEstablish extends FormWidget
     }
 
     /**
-     * 设置id
-     * @param $id
+     * 设置id.
+     *
      * @return $this
+     *
      * @throws ApplicationException
      */
     public function setId($id)
@@ -53,6 +54,7 @@ class FormBanEstablish extends FormWidget
                 throw new ApplicationException('无设备信息');
             }
         }
+
         return $this;
     }
 

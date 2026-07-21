@@ -13,6 +13,7 @@ class MakeRequestCommand extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.
+     *
      * @var string
      */
     protected $signature = 'poppy:request
@@ -22,19 +23,20 @@ class MakeRequestCommand extends GeneratorCommand
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Create a new module form request class';
 
     /**
      * String to store the command type.
+     *
      * @var string
      */
     protected $type = 'Module request';
 
     /**
      * Get the stub file for the generator.
-     * @return string
      */
     protected function getStub(): string
     {
@@ -43,8 +45,8 @@ class MakeRequestCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
+     *
      * @param string $rootNamespace namespace
-     * @return string
      */
     protected function getDefaultNamespace($rootNamespace): string
     {

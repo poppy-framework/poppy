@@ -2,6 +2,8 @@
 
 namespace Poppy\Faker;
 
+use OverflowException;
+
 /**
  * Proxy for other generators, to return only unique values. Works with
  * Poppy\Faker\Generator\Base->unique()
@@ -15,8 +17,7 @@ class UniqueGenerator
     protected $uniques = [];
 
     /**
-     * @param Generator $generator
-     * @param integer $maxRetries
+     * @param int $maxRetries
      */
     public function __construct(Generator $generator, $maxRetries = 10000)
     {
@@ -26,8 +27,8 @@ class UniqueGenerator
 
     /**
      * Catch and proxy all generator calls but return only unique values
+     *
      * @param string $attribute
-     * @return mixed
      */
     public function __get($attribute)
     {
@@ -36,9 +37,9 @@ class UniqueGenerator
 
     /**
      * Catch and proxy all generator calls with arguments but return only unique values
+     *
      * @param string $name
-     * @param array $arguments
-     * @return mixed
+     * @param array  $arguments
      */
     public function __call($name, $arguments)
     {
@@ -48,11 +49,12 @@ class UniqueGenerator
         $i = 0;
         do {
             $res = call_user_func_array([$this->generator, $name], $arguments);
-            $i++;
+            ++$i;
             if ($i > $this->maxRetries) {
-                throw new \OverflowException(sprintf('Maximum retries of %d reached without finding a unique value', $this->maxRetries));
+                throw new OverflowException(sprintf('Maximum retries of %d reached without finding a unique value', $this->maxRetries));
             }
-        } while (array_key_exists(serialize($res), $this->uniques[$name]));
+        }
+        while (array_key_exists(serialize($res), $this->uniques[$name]));
         $this->uniques[$name][serialize($res)] = null;
 
         return $res;

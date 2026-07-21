@@ -6,13 +6,12 @@ namespace Demo\Forms;
 
 class FormSelect extends FormBaseWidget
 {
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Select';
-
 
     /**
      * Build a form here.
@@ -48,6 +47,5 @@ CODE);
         'c' => 'orange',
     ])->searchable();
 CODE);
-
     }
 }

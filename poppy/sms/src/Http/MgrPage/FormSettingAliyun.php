@@ -9,7 +9,6 @@ use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
 class FormSettingAliyun extends FormSettingBase
 {
-
     protected $title = '阿里云短信配置';
 
     protected $withContent = true;
@@ -19,7 +18,7 @@ class FormSettingAliyun extends FormSettingBase
     /**
      * Build a form here.
      */
-    public function form():void
+    public function form(): void
     {
         $this->text('aliyun_access_key', '阿里云 Key')->rules([
             Rule::nullable(),

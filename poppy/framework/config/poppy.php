@@ -8,7 +8,6 @@ return [
     |
     */
     'framework' => [
-
     ],
 
     /*
@@ -18,7 +17,6 @@ return [
     |
     */
     'system'    => [
-
     ],
 
     /*
@@ -28,6 +26,5 @@ return [
     |
     */
     'mgr-page'  => [
-
     ],
 ];

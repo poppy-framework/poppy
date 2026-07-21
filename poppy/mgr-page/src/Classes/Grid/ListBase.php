@@ -26,7 +26,6 @@ abstract class ListBase implements ListContract
         __call as macroCall;
     }
 
-
     public $title = '';
 
     /**
@@ -34,15 +33,12 @@ abstract class ListBase implements ListContract
      */
     protected $grid;
 
-
     protected bool $showRowSelector = false;
-    protected bool $showExporter = false;
 
+    protected bool $showExporter = false;
 
     /**
      * Collection of all grid columns.
-     *
-     * @var Collection
      */
     protected Collection $columns;
 
@@ -58,7 +54,6 @@ abstract class ListBase implements ListContract
         $this->columns = collect();
     }
 
-
     public function isShowRowSelector(): bool
     {
         return $this->showRowSelector;
@@ -72,10 +67,10 @@ abstract class ListBase implements ListContract
     /**
      * Add a column to Grid.
      *
-     * @param string $name
      * @param string $label
      *
      * @return Column
+     *
      * @throws ApplicationException
      */
     public function column(string $name, $label = '')
@@ -93,9 +88,6 @@ abstract class ListBase implements ListContract
 
     /**
      * Dynamically add columns to the grid view.
-     *
-     * @param string $method
-     * @param array  $parameters
      *
      * @return Column
      */
@@ -122,9 +114,6 @@ abstract class ListBase implements ListContract
         return $this->addColumn($method, $label);
     }
 
-    /**
-     * @return Collection
-     */
     public function getColumns(): Collection
     {
         return $this->columns;
@@ -138,7 +127,6 @@ abstract class ListBase implements ListContract
 
     public function actions()
     {
-
     }
 
     public function quickButtons()
@@ -156,7 +144,9 @@ abstract class ListBase implements ListContract
      *
      * @param string $name
      * @param string $label
+     *
      * @return $this|bool|Column
+     *
      * @throws ApplicationException
      */
     protected function addRelationColumn($name, $label = '')
@@ -196,11 +186,6 @@ abstract class ListBase implements ListContract
 
     /**
      * Prepend column to grid.
-     *
-     * @param string $name
-     * @param string $label
-     *
-     * @return Column
      */
     protected function prependColumn(string $name = '', string $label = ''): Column
     {
@@ -214,16 +199,12 @@ abstract class ListBase implements ListContract
 
     /**
      * Add column to grid.
-     *
-     * @param string $name
-     * @param string $label
-     *
-     * @return Column
      */
     protected function addColumn(string $name = '', string $label = ''): Column
     {
         $column = new Column($name, $label);
         $column->setGrid($this->grid);
+
         return tap($column, function ($value) {
             $this->columns->push($value);
         });
@@ -266,11 +247,12 @@ abstract class ListBase implements ListContract
             return false;
         }
 
-        if ($relation instanceof HasOne ||
-            $relation instanceof BelongsTo ||
-            $relation instanceof MorphOne
+        if ($relation instanceof HasOne
+            || $relation instanceof BelongsTo
+            || $relation instanceof MorphOne
         ) {
             $this->model()->with($method);
+
             return $this->addColumn($method, $label)->setRelation(Str::snake($method));
         }
 
@@ -288,7 +270,8 @@ abstract class ListBase implements ListContract
 
     /**
      * 当前的数据模型
-     * @return Model|\Poppy\MgrPage\Classes\Grid\Model
+     *
+     * @return Model|Grid\Model
      */
     private function model()
     {

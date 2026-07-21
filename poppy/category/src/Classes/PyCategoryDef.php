@@ -8,7 +8,6 @@ class PyCategoryDef
 {
     /**
      * 存储标识和 ID 的映射
-     * @return string
      */
     public static function ckNameRefKey(): string
     {
@@ -17,7 +16,6 @@ class PyCategoryDef
 
     /**
      * 存储标识和 ID 的映射
-     * @return string
      */
     public static function ckIdRefTitle(): string
     {
@@ -26,7 +24,6 @@ class PyCategoryDef
 
     /**
      * 存储标识和 ID 的映射
-     * @return string
      */
     public static function ckIdRefName(): string
     {
@@ -35,7 +32,6 @@ class PyCategoryDef
 
     /**
      * 存储表示和 TypeName - ID 的映射
-     * @return string
      */
     public static function ckIdRefTypeName(): string
     {

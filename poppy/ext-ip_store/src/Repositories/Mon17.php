@@ -39,21 +39,22 @@ class Mon17 implements IpContract
 
     public function area($ip)
     {
-        if (empty($ip) === true) {
+        if (true === empty($ip)) {
             return 'N/A';
         }
 
         $nip   = gethostbyname($ip);
         $ipdot = explode('.', $nip);
 
-        if ($ipdot[0] < 0 || $ipdot[0] > 255 || count($ipdot) !== 4) {
+        if ($ipdot[0] < 0 || $ipdot[0] > 255 || 4 !== count($ipdot)) {
             return 'N/A';
         }
 
-        if (self::$fp === null) {
+        if (null === self::$fp) {
             try {
                 $this->init();
-            } catch (Exception $e) {
+            }
+            catch (Exception $e) {
                 return 'N/A';
             }
         }
@@ -74,7 +75,7 @@ class Mon17 implements IpContract
             }
         }
 
-        if ($index_offset === null) {
+        if (null === $index_offset) {
             return 'N/A';
         }
 
@@ -83,12 +84,13 @@ class Mon17 implements IpContract
         $area  = fread(self::$fp, $index_length['len']);
         $areas = explode("\t", $area);
         $areas = array_filter($areas, 'trim');
+
         return implode(' ', $areas);
     }
 
     public function __destruct()
     {
-        if (self::$fp !== null) {
+        if (null !== self::$fp) {
             fclose(self::$fp);
 
             self::$fp = null;
@@ -100,11 +102,11 @@ class Mon17 implements IpContract
      */
     private function init()
     {
-        if (self::$fp === null) {
+        if (null === self::$fp) {
             self::$ip = new self();
 
             self::$fp = fopen($this->storePath, 'rb');
-            if (self::$fp === false) {
+            if (false === self::$fp) {
                 throw new ApplicationException('Invalid 17monipdb.datx file!');
             }
 

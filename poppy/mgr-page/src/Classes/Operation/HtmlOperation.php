@@ -9,22 +9,20 @@ use Illuminate\Support\Str;
 
 /**
  * 请求操作
+ *
  * @deprecated 4.2
+ *
  * @removed    5.0
  */
 class HtmlOperation implements Renderable
 {
-
     /**
      * 标题
-     * @var string
      */
     protected string $title;
 
-
     /**
      * 地址
-     * @var string
      */
     protected string $url;
 
@@ -32,7 +30,6 @@ class HtmlOperation implements Renderable
      * @var array|mixed
      */
     private $attribute;
-
 
     public function __construct($btn_text, $url, $attribute = [])
     {
@@ -54,8 +51,6 @@ class HtmlOperation implements Renderable
 
     /**
      * Render CreateButton.
-     *
-     * @return string
      */
     public function render(): string
     {

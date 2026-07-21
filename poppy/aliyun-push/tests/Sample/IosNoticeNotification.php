@@ -7,13 +7,11 @@ use Poppy\AliyunPush\Channels\AliPushChannel;
 use Poppy\AliyunPush\Contracts\AliPushChannel as AliPushChannelContract;
 use Poppy\Framework\Exceptions\ApplicationException;
 
-
 class IosNoticeNotification extends Notification implements AliPushChannelContract
 {
-
     /**
      * Get the notification's delivery channels.
-     * @param mixed $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
@@ -22,7 +20,8 @@ class IosNoticeNotification extends Notification implements AliPushChannelContra
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function toAliPush(): array

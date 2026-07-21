@@ -5,7 +5,7 @@
 <div>
 	{!! Form::thumb('test') !!} <br> 这里的 pam 必须传递, 作为上传图片时候的身份验证
 </div>
-<pre class="layui-code"><?php echo '{{' ?> Form::thumb('thumb', null, ['pam' => $pam])}}</pre>
+<pre class="layui-code"><?php echo '{{'; ?> Form::thumb('thumb', null, ['pam' => $pam])}}</pre>
 {{--生成图片地址--}}
 <fieldset class="layui-elem-field layui-field-title">
 	<legend>图片地址(生成随机图片地址, 布局使用)</legend>
@@ -13,7 +13,7 @@
 <div>
 	{!! Html::image($faker->imageUrl(100, 50)) !!}
 </div>
-<pre class="layui-code"><?php echo '{!! ' ?> Html::image($faker->phUrl(100, 50)) !!}</pre>
+<pre class="layui-code"><?php echo '{!! '; ?> Html::image($faker->phUrl(100, 50)) !!}</pre>
 {{--生成图片地址--}}
 <fieldset class="layui-elem-field layui-field-title">
 	<legend>多图上传</legend>
@@ -27,7 +27,7 @@
 		'sequence' => true,
 	]) !!}
 </div>
-<pre class="layui-code"><?php echo '{!! ' ?> Form::multiThumb('images', []) !!}</pre>
+<pre class="layui-code"><?php echo '{!! '; ?> Form::multiThumb('images', []) !!}</pre>
 <fieldset class="layui-elem-field layui-field-title">
 	<legend>多图展示</legend>
 </fieldset>
@@ -39,7 +39,7 @@
 		'size' => 'xl',
 	]) !!}
 </div>
-<pre class="layui-code"><?php echo '{!! ' ?> Form::showThumb([
+<pre class="layui-code"><?php echo '{!! '; ?> Form::showThumb([
     'https://test-oss.iliexiang.com/static/demo/dabai.jpg',
     'https://test-oss.iliexiang.com/static/demo/holiday.mp4',
 ], [
@@ -53,7 +53,7 @@
 		'type' => 'file'
 	]) !!}
 </div>
-<pre class="layui-code"><?php echo '{!! ' ?> Form::upload('files', 'https://test-oss.iliexiang.com/static/demo/dev.rp', [
+<pre class="layui-code"><?php echo '{!! '; ?> Form::upload('files', 'https://test-oss.iliexiang.com/static/demo/dev.rp', [
     'type' => 'file'
 ]) !!}</pre>
 
@@ -62,7 +62,7 @@
 		'type' => 'video'
 	]) !!}
 </div>
-<pre class="layui-code"><?php echo '{!! ' ?> Form::upload('video', 'https://test-oss.iliexiang.com/static/demo/holiday.mp4', [
+<pre class="layui-code"><?php echo '{!! '; ?> Form::upload('video', 'https://test-oss.iliexiang.com/static/demo/holiday.mp4', [
     'type' => 'video'
 ]) !!}</pre>
 {!! Form::close() !!}

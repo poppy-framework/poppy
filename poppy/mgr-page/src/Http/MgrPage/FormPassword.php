@@ -17,7 +17,6 @@ use Poppy\System\Models\PamAccount;
 
 class FormPassword extends FormWidget
 {
-
     use PamTrait, AppTrait;
 
     public $ajax = true;
@@ -26,7 +25,6 @@ class FormPassword extends FormWidget
 
     public function handle(Request $request)
     {
-
         $old_password = input('old_password');
         $id           = input('account_id');
 
@@ -47,7 +45,6 @@ class FormPassword extends FormWidget
         app('auth')->guard(PamAccount::GUARD_BACKEND)->logout();
 
         return Resp::success('密码修改成功, 请重新登录', '_location|' . route('py-mgr-page:backend.home.login'));
-
     }
 
     public function data(): array
@@ -72,6 +69,6 @@ class FormPassword extends FormWidget
         ]);
         $this->password('password_confirmation', '重复密码')->rules([
             Rule::required(),
-        ]);;
+        ]);
     }
 }

@@ -14,13 +14,12 @@ class PushSender extends BaseClient
 {
     /**
      * 推送消息
-     * @var PushMessage
      */
     private PushMessage $message;
 
     /**
      * 发送 Android 信息
-     * @param PushMessage $message
+     *
      * @throws PushException
      */
     public function send(PushMessage $message): void
@@ -30,7 +29,6 @@ class PushSender extends BaseClient
         $this->checkEnv();
 
         $client = $this->initClient();
-
 
         $query = [
             'appKey'      => $this->isAndroid() ? $this->androidAppKey : $this->iosAppKey,
@@ -57,9 +55,9 @@ class PushSender extends BaseClient
             $query = array_merge($query, [
                 'androidExtParameters'             => $message->getExtParameters(),
                 'androidNotificationChannel'       => $this->androidChannel,
-                'androidNotificationHuaweiChannel' => 'NORMAL',//NORMAL：服务与通讯类消息LOW：资讯营销类消息
-                'androidNotificationHonorChannel'  => 'NORMAL',//NORMAL：服务与通讯类消息LOW：资讯营销类消息
-                'androidNotificationVivoChannel'   => '1',//1：系统类消息0：运营类消息（默认）
+                'androidNotificationHuaweiChannel' => 'NORMAL',// NORMAL：服务与通讯类消息LOW：资讯营销类消息
+                'androidNotificationHonorChannel'  => 'NORMAL',// NORMAL：服务与通讯类消息LOW：资讯营销类消息
+                'androidNotificationVivoChannel'   => '1',// 1：系统类消息0：运营类消息（默认）
             ]);
             if ($this->androidActivity) {
                 $query += [
@@ -98,32 +96,27 @@ class PushSender extends BaseClient
         }
     }
 
-
     /**
      * 是否发送 Android 消息
-     * @return bool
      */
     private function isAndroid(): bool
     {
-        return $this->message->getDeviceType() === PushMessage::DEVICE_TYPE_ANDROID;
+        return PushMessage::DEVICE_TYPE_ANDROID === $this->message->getDeviceType();
     }
 
     /**
      * 是否发送IOS 消息
-     * @return bool
      */
     private function isIos(): bool
     {
-        return $this->message->getDeviceType() === PushMessage::DEVICE_TYPE_IOS;
+        return PushMessage::DEVICE_TYPE_IOS === $this->message->getDeviceType();
     }
-
 
     /**
      * 是否是通知
-     * @return bool
      */
     private function isNotice(): bool
     {
-        return $this->message->getPushType() === PushMessage::PUSH_TYPE_NOTICE;
+        return PushMessage::PUSH_TYPE_NOTICE === $this->message->getPushType();
     }
 }

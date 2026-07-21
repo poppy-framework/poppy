@@ -6,7 +6,6 @@ namespace Poppy\MgrPage\Classes\Form\Field;
 
 class Time extends Date
 {
-
     protected $options = [
         'layui-type' => 'time',
     ];

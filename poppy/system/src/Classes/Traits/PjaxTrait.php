@@ -14,15 +14,15 @@ use Request;
 
 /**
  * Class Helpers.
+ *
  * @see        \Poppy\Framework\Classes\Traits\PjaxTrait
  * @deprecated 5.0
  */
 trait PjaxTrait
 {
-
     /**
      * Pjax 请求错误
-     * @param string $message
+     *
      * @return Application|ResponseFactory|JsonResponse|RedirectResponse|Response
      */
     public function pjaxError(string $message)

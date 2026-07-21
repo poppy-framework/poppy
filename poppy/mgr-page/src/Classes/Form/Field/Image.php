@@ -8,7 +8,6 @@ use Poppy\MgrPage\Classes\Form\Field;
 
 class Image extends Field
 {
-
     /**
      * @var string Token For Upload
      */
@@ -19,34 +18,36 @@ class Image extends Field
      */
     protected $sizeClass = 'form_thumb-normal';
 
-
     public function token(string $token)
     {
         $this->token = $token;
+
         return $this;
     }
 
     /**
      * 设置不同的图片大小
+     *
      * @param string $size [small:60|large:120|normal:85]
+     *
      * @return $this
      */
     public function size(string $size = 'normal')
     {
         $sizeClass = 'form_thumb-normal';
-        if ($size === 'normal') {
+        if ('normal' === $size) {
             $sizeClass = 'form_thumb-normal'; // 85
         }
-        if ($size === 'small') {
+        if ('small' === $size) {
             $sizeClass = 'form_thumb-small'; // 60
         }
-        if ($size === 'large') {
+        if ('large' === $size) {
             $sizeClass = 'form_thumb-large'; // 120
         }
         $this->sizeClass = $sizeClass;
+
         return $this;
     }
-
 
     public function render()
     {
@@ -54,6 +55,7 @@ class Image extends Field
             'token'     => $this->token,
             'sizeClass' => $this->sizeClass,
         ]);
+
         return parent::render();
     }
 }

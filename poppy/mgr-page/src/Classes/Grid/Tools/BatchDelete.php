@@ -2,7 +2,6 @@
 
 namespace Poppy\MgrPage\Classes\Grid\Tools;
 
-
 class BatchDelete extends BatchAction
 {
     public function __construct($title)

@@ -8,7 +8,6 @@ use Poppy\Framework\Application\TestCase;
 
 class PermissionTest extends TestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();

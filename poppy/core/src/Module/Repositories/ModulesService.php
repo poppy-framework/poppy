@@ -13,9 +13,9 @@ use Poppy\Framework\Support\Abstracts\Repository;
  */
 class ModulesService extends Repository
 {
-
     /**
      * Initialize.
+     *
      * @param Collection $data 集合
      */
     public function initialize(Collection $data)

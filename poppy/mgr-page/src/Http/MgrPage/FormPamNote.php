@@ -20,7 +20,6 @@ class FormPamNote extends FormWidget
      */
     private $pam;
 
-
     public function __construct($data = [])
     {
         parent::__construct($data);
@@ -33,6 +32,7 @@ class FormPamNote extends FormWidget
         $note = input('note');
         $Pam  = new Pam();
         $Pam->setNote($this->pam, $note);
+
         return Resp::success('设置成功', '_top_reload|1');
     }
 

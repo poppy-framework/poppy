@@ -11,7 +11,6 @@ class RdsBaseTest extends TestCase
 {
     /**
      * Redis Client
-     * @var RdsDb
      */
     protected RdsDb $rds;
 
@@ -23,8 +22,6 @@ class RdsBaseTest extends TestCase
 
     /**
      * 测试缓存KEY
-     * @param string $key
-     * @return string
      */
     protected function key(string $key): string
     {

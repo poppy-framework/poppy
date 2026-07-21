@@ -27,31 +27,26 @@ abstract class Controller extends BaseController
 
     /**
      * pagesize
-     * @var int $pagesize
      */
     protected int $pagesize = 15;
 
     /**
      * ip
-     * @var string $ip
      */
     protected string $ip;
 
     /**
      * now
-     * @var Carbon $now
      */
     protected Carbon $now;
 
     /**
      * route
-     * @var string|null $route
      */
     protected ?string $route;
 
     /**
      * title
-     * @var string|null $title
      */
     protected ?string $title;
 
@@ -89,13 +84,14 @@ abstract class Controller extends BaseController
 
     /**
      * seo
+     *
      * @param mixed ...$args args
      */
     protected function seo(...$args): void
     {
         [$title, $description] = parse_seo($args);
-        $title       = $title ? $title . '-' . config('poppy.framework.title') : config('poppy.framework.title');
-        $description = $description ?: config('poppy.framework.description');
+        $title                 = $title ? $title . '-' . config('poppy.framework.title') : config('poppy.framework.title');
+        $description           = $description ?: config('poppy.framework.description');
 
         $this->title = $title;
 

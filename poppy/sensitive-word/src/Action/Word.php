@@ -19,14 +19,8 @@ class Word
 {
     use AppTrait, PamTrait;
 
-    /**
-     * @var SysSensitiveWord|null
-     */
     protected ?SysSensitiveWord $item = null;
 
-    /**
-     * @var string
-     */
     protected string $wordTable;
 
     public function __construct()
@@ -36,8 +30,6 @@ class Word
 
     /**
      * 编辑/创建
-     * @param array $data
-     * @return bool
      */
     public function establish(array $data): bool
     {
@@ -83,7 +75,9 @@ class Word
 
     /**
      * 删除数据
+     *
      * @param array|int $id 敏感词id
+     *
      * @return bool|null
      */
     public function delete($id): bool
@@ -93,8 +87,10 @@ class Word
             SysSensitiveWord::whereIn('id', $id)->delete();
             // 移除词典
             sys_tag('py-sensitive-word')->del(PySensitiveWordDef::ckDict());
+
             return true;
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             return $this->setError($e->getMessage());
         }
     }

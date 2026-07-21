@@ -11,15 +11,11 @@ class Textarea extends Field
 {
     /**
      * Default rows of textarea.
-     *
-     * @var int
      */
     protected int $rows = 5;
 
     /**
      * Set rows of textarea.
-     *
-     * @param int $rows
      *
      * @return $this
      */
@@ -31,7 +27,8 @@ class Textarea extends Field
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws JsonException
      */
     public function render()

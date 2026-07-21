@@ -7,14 +7,12 @@ use Poppy\MgrPage\Classes\Widgets\FormWidget;
 
 class FormImageHelper extends FormWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'ImageHelper';
-
 
     /**
      * Build a form here.

@@ -14,15 +14,10 @@ class Column
      */
     protected Collection $filters;
 
-    /**
-     * @var int
-     */
     protected int $width;
 
     /**
      * Column constructor.
-     *
-     * @param int $width
      */
     public function __construct(int $width = 12)
     {
@@ -32,7 +27,6 @@ class Column
 
     /**
      * Add a filter item to this column.
-     * @param FilterItem $filter
      */
     public function addFilter(FilterItem $filter): void
     {
@@ -49,37 +43,33 @@ class Column
         return $this->filters;
     }
 
-
     /**
      * 过滤器数量
-     * @return int
      */
     public function filterCount(): int
     {
         $count = 0;
         foreach ($this->filters as $filter) {
             if ($filter->isRender()) {
-                $count += 1;
+                ++$count;
             }
         }
+
         return $count;
     }
 
     /**
      * Set column width.
-     * @param int $width
-     * @return Column
      */
     public function setWidth(int $width): self
     {
         $this->width = $width;
+
         return $this;
     }
 
     /**
      * Get column width.
-     *
-     * @return int
      */
     public function width(): int
     {

@@ -14,7 +14,7 @@ use Poppy\Sms\Exceptions\SmsException;
 class AliyunSmsProvider extends BaseSms implements SmsContract
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function send(string $type, $mobile, array $params = [], $sign = ''): bool
     {
@@ -32,7 +32,6 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
             /**
              * @url https://help.aliyun.com/document_detail/101414.htm
              */
-
             $request               = new SendSmsRequest();
             $request->phoneNumbers = $mobile;
             $request->signName     = $this->sign;
@@ -42,7 +41,7 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
             }
             $resp = $client->sendSms($request);
 
-            /**
+            /*
              * 返回的信息如下所示, 如果失败 Message 中是错误的信息
              * {
              *    "RequestId":"04B69136-3DF5-4418-9A8C-5A9278608259",
@@ -52,9 +51,10 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
              * }
              */
 
-            if ($resp->body->code === 'OK') {
+            if ('OK' === $resp->body->code) {
                 return true;
             }
+
             return $this->setError('Aliyun:' . $resp->body->message);
         }
         catch (SmsException $e) {
@@ -64,6 +64,7 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
 
     /**
      * 初始化
+     *
      * @throws SmsException
      */
     private function initClient(): Dysmsapi
@@ -79,6 +80,7 @@ class AliyunSmsProvider extends BaseSms implements SmsContract
             'accessKeySecret' => $accessKeySecret,
         ]);
         $config->endpoint = 'dysmsapi.aliyuncs.com';
+
         return new Dysmsapi($config);
     }
 }

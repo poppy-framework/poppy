@@ -12,7 +12,7 @@ trait ExtIpStoreTrait
     {
         if (preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $ip)) {
             $tmp = explode('.', $ip);
-            if ($tmp[0] == 10 || $tmp[0] == 127 || ($tmp[0] == 192 && $tmp[1] == 168) || ($tmp[0] == 172 && ($tmp[1] >= 16 && $tmp[1] <= 31))) {
+            if (10 == $tmp[0] || 127 == $tmp[0] || (192 == $tmp[0] && 168 == $tmp[1]) || (172 == $tmp[0] && ($tmp[1] >= 16 && $tmp[1] <= 31))) {
                 $this->localArea = 'LAN';
 
                 return true;

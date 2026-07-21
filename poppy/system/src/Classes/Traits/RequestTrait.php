@@ -29,9 +29,6 @@ trait RequestTrait
      */
     protected $param;
 
-    /**
-     * @return mixed
-     */
     public function getReqUrl()
     {
         return $this->reqUrl;
@@ -45,9 +42,6 @@ trait RequestTrait
         $this->reqUrl = $reqUrl;
     }
 
-    /**
-     * @return mixed
-     */
     public function getResp()
     {
         return $this->resp;
@@ -61,9 +55,6 @@ trait RequestTrait
         $this->resp = $result;
     }
 
-    /**
-     * @return mixed
-     */
     public function getParam()
     {
         return $this->param;
@@ -79,7 +70,6 @@ trait RequestTrait
 
     /**
      * 获取所有请求数据返回数据
-     * @return array
      */
     public function getReqResp(): array
     {
@@ -93,6 +83,7 @@ trait RequestTrait
 
     /**
      * 获取请求日志
+     *
      * @return array
      */
     public function getReqLog()

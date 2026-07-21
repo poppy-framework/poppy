@@ -13,25 +13,21 @@ class Hook extends Field
 {
     /**
      * 服务名称
-     * @var string
      */
     private string $service = '';
-    /**
-     * @var array
-     */
-    private array $params = [];
 
+    private array $params = [];
 
     /**
      * 设置服务内容和参数
-     * @param string $service
-     * @param array  $params
+     *
      * @return $this
      */
     public function service(string $service, array $params = []): self
     {
         $this->service = $service;
         $this->params  = $params;
+
         return $this;
     }
 
@@ -41,6 +37,7 @@ class Hook extends Field
             'service' => $this->service,
             'params'  => $this->params,
         ]);
+
         return parent::render();
     }
 }

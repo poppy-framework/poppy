@@ -8,7 +8,6 @@ use Poppy\System\Models\PamAccount;
 
 class FunctionsTest extends TestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();

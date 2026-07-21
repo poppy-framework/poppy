@@ -12,7 +12,6 @@ use Poppy\System\Events\PassportVerifyEvent;
 
 class ServiceProvider extends PoppyServiceProvider
 {
-
     protected array $policies = [
         DemoGrid::class => DemoGridPolicy::class,
     ];
@@ -25,7 +24,9 @@ class ServiceProvider extends PoppyServiceProvider
 
     /**
      * Bootstrap the module services.
+     *
      * @return void
+     *
      * @throws ModuleNotFoundException
      */
     public function boot()
@@ -35,6 +36,7 @@ class ServiceProvider extends PoppyServiceProvider
 
     /**
      * Register the module services.
+     *
      * @return void
      */
     public function register()

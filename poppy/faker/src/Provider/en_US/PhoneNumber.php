@@ -98,7 +98,7 @@ class PhoneNumber extends \Poppy\Faker\Provider\PhoneNumber
         $digits[] = self::numberBetween(2, 9);
         $digits[] = self::randomDigit();
 
-        if ($digits[1] === 1) {
+        if (1 === $digits[1]) {
             $digits[] = self::randomDigitNot(1);
         }
         else {

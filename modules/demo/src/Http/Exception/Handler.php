@@ -16,7 +16,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends \Poppy\Framework\Foundation\Exception\Handler
 {
-
     protected $internalDontReport = [
         AuthenticationException::class,
         AuthorizationException::class,

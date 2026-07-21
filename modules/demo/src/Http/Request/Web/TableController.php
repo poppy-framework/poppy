@@ -16,9 +16,9 @@ use Throwable;
  */
 class TableController extends WebController
 {
-
     /**
      * 简易表格
+     *
      * @throws Throwable
      */
     public function easy()
@@ -50,13 +50,14 @@ class TableController extends WebController
             })
             ->when($created_at, function (Builder $query) use ($created_at) {
                 [$start_at, $end_at] = explode(' - ', $created_at);
+
                 return $query->where('created_at', '>=', TimeHelper::dayStart($start_at))->where('created_at', '<', TimeHelper::dayStart($end_at));
             })
             ->paginate($this->pagesize)
             ->appends($request->all());
+
         return view('demo::web.table.manual', compact('items'));
     }
-
 
     public function pjaxError(Request $request)
     {
@@ -67,11 +68,12 @@ class TableController extends WebController
         $items      = DemoGrid::orderByDesc('id')
             ->when($created_at, function (Builder $query) use ($created_at) {
                 [$start_at, $end_at] = explode(' - ', $created_at);
+
                 return $query->where('created_at', '>=', TimeHelper::dayStart($start_at))->where('created_at', '<', TimeHelper::dayStart($end_at));
             })
             ->paginate($this->pagesize)
             ->appends($request->all());
+
         return view('demo::web.table.pjax_error', compact('items'));
     }
-
 }

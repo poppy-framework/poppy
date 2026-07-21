@@ -5,21 +5,18 @@ use Poppy\Framework\Cli\Invoker;
 
 $dir = dirname(__DIR__);
 
-if (!file_exists($dir . '/autoload.php')) {
-    $dir = __DIR__ . '/../vendor';
+if (false === strpos($dir, 'vendor/poppy')) {
+    $basePath = dirname(__DIR__, 3);
+}
+else {
+    $basePath = dirname(__DIR__, 2);
 }
 
-if (!file_exists($dir . '/autoload.php')) {
-    $dir = __DIR__ . '/../../..';
-}
-
-if (!file_exists($dir . '/autoload.php')) {
+if (!file_exists($basePath . '/vendor/autoload.php')) {
     echo 'Autoload not found.';
     exit(1);
 }
 
-require $dir . '/autoload.php';
-
-$basePath = dirname(realpath($dir));
+require $basePath . '/vendor/autoload.php';
 
 exit((new Invoker($basePath))(...$argv) ? 0 : 1);

@@ -17,9 +17,10 @@ class JsonAppSignMiddleware
 {
     /**
      * Handle an incoming request.
+     *
      * @param Request $request 请求
-     * @param Closure $next 后续处理
-     * @return mixed
+     * @param Closure $next    后续处理
+     *
      * @throws JsonException
      */
     public function handle(Request $request, Closure $next)
@@ -27,8 +28,10 @@ class JsonAppSignMiddleware
         $Sign = new JsonAppSign();
         if (!$Sign->check($request->all())) {
             $error = $Sign->getError();
+
             return Resp::web($error->getCode(), $error->getMessage());
         }
+
         return $next($request);
     }
 }

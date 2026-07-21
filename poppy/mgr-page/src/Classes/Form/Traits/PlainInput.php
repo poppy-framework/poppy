@@ -6,7 +6,6 @@ namespace Poppy\MgrPage\Classes\Form\Traits;
 
 trait PlainInput
 {
-
     protected function initPlainInput(): void
     {
         if (empty($this->view)) {

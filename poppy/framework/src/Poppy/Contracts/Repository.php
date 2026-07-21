@@ -14,22 +14,16 @@ interface Repository
     /**
      * Get all module manifest properties and store
      * in the respective container.
-     *
-     * @return bool
      */
     public function optimize(): bool;
 
     /**
      * Get all modules.
-     *
-     * @return Collection
      */
     public function all(): Collection;
 
     /**
      * Get all module slugs.
-     *
-     * @return Collection
      */
     public function slugs(): Collection;
 
@@ -38,8 +32,6 @@ interface Repository
      *
      * @param string $key   key
      * @param mixed  $value value
-     *
-     * @return Collection
      */
     public function where(string $key, $value): Collection;
 
@@ -47,8 +39,6 @@ interface Repository
      * Sort modules by given key in ascending order.
      *
      * @param string $key key
-     *
-     * @return Collection
      */
     public function sortBy(string $key): Collection;
 
@@ -56,8 +46,6 @@ interface Repository
      * Sort modules by given key in descending order.
      *
      * @param string $key key
-     *
-     * @return Collection
      */
     public function sortByDesc(string $key): Collection;
 
@@ -65,15 +53,11 @@ interface Repository
      * Determines if the given module exists.
      *
      * @param string $slug slug
-     *
-     * @return bool
      */
     public function exists(string $slug): bool;
 
     /**
      * Returns a count of all modules.
-     *
-     * @return int
      */
     public function count(): int;
 
@@ -81,8 +65,6 @@ interface Repository
      * Returns the modules defined manifest properties.
      *
      * @param string $slug slug
-     *
-     * @return Collection
      */
     public function getManifest(string $slug): Collection;
 
@@ -101,22 +83,16 @@ interface Repository
      *
      * @param string $property property
      * @param mixed  $value    value
-     *
-     * @return bool
      */
     public function set(string $property, $value): bool;
 
     /**
      * Get all enabled modules.
-     *
-     * @return Collection
      */
     public function enabled(): Collection;
 
     /**
      * Get all disabled modules.
-     *
-     * @return Collection
      */
     public function disabled(): Collection;
 
@@ -124,8 +100,6 @@ interface Repository
      * Determines if the specified module is enabled.
      *
      * @param string $slug slug
-     *
-     * @return bool
      */
     public function isEnabled(string $slug): bool;
 
@@ -133,15 +107,11 @@ interface Repository
      * Determines if the specified module is disabled.
      *
      * @param string $slug slug
-     *
-     * @return bool
      */
     public function isDisabled(string $slug): bool;
 
     /**
      * Module is poppy module
-     * @param string $slug
-     * @return bool
      */
     public function isPoppy(string $slug): bool;
 
@@ -149,8 +119,6 @@ interface Repository
      * Enables the specified module.
      *
      * @param string $slug slug
-     *
-     * @return bool
      */
     public function enable(string $slug): bool;
 
@@ -158,8 +126,6 @@ interface Repository
      * Disables the specified module.
      *
      * @param string $slug slug
-     *
-     * @return bool
      */
     public function disable(string $slug): bool;
 }

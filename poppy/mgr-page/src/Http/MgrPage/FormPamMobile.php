@@ -22,7 +22,6 @@ class FormPamMobile extends FormWidget
      */
     private $pam;
 
-
     /**
      * @throws ApplicationException
      */
@@ -36,7 +35,6 @@ class FormPamMobile extends FormWidget
         if (!$user->can('beMobile', $this->pam)) {
             throw new ApplicationException('你无权修改通行证');
         }
-
     }
 
     public function handle()
@@ -49,6 +47,7 @@ class FormPamMobile extends FormWidget
         if (!$Pam->setMobile($this->pam, $mobile)) {
             return Resp::error($Pam->getError());
         }
+
         return Resp::success('设置成功', '_top_reload|1');
     }
 

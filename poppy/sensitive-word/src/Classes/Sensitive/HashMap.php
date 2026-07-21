@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\SensitiveWord\Classes\Sensitive;
 
-
 use Poppy\SensitiveWord\Classes\Contracts\HashMapContract;
 
 /**
@@ -12,14 +11,12 @@ use Poppy\SensitiveWord\Classes\Contracts\HashMapContract;
  */
 class HashMap implements HashMapContract
 {
-    /**
-     * @var array $hashTable
-     */
     protected array $hashTable = [];
 
     /**
      * @param string $key   key
      * @param mixed  $value value
+     *
      * @return mixed
      */
     public function put(string $key, $value): self
@@ -31,6 +28,7 @@ class HashMap implements HashMapContract
 
     /**
      * @param string $key key
+     *
      * @return mixed|null
      */
     public function get(string $key)
@@ -44,7 +42,6 @@ class HashMap implements HashMapContract
 
     /**
      * 获取所有key
-     * @return array
      */
     public function keys(): array
     {
@@ -53,7 +50,6 @@ class HashMap implements HashMapContract
 
     /**
      * 获取所有值
-     * @return array
      */
     public function values(): array
     {

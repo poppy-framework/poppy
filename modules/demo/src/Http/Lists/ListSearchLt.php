@@ -9,10 +9,8 @@ use Poppy\MgrPage\Classes\Grid\Filter;
 
 class ListSearchLt extends ListSearchGt
 {
-
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {

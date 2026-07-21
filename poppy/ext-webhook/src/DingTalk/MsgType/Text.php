@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\Extension\Webhook\DingTalk\MsgType;
 
-
 /**
  * text类型
  */
@@ -12,8 +11,6 @@ class Text extends Message
 {
     /**
      * 消息内容
-     *
-     * @var string
      */
     private string $content;
 
@@ -38,7 +35,7 @@ class Text extends Message
     public function toJson(): string
     {
         $this->message['text']['content'] = $this->formatContent($this->content);
+
         return parent::toJson();
     }
-
 }

@@ -23,6 +23,7 @@ use Poppy\System\Models\SysConfig;
  * @property int         $height     高度
  * @property Carbon|null $created_at 创建时间
  * @property Carbon|null $updated_at 修改时间
+ *
  * @method static Builder|SysAdPlace filter($input = [], $filter = null)
  * @method static Builder|SysAdPlace pageFilter(PageInfo $pageInfo)
  * @method static Builder|SysAdPlace paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
@@ -30,6 +31,7 @@ use Poppy\System\Models\SysConfig;
  * @method static Builder|SysAdPlace whereBeginsWith($column, $value, $boolean = 'and')
  * @method static Builder|SysAdPlace whereEndsWith($column, $value, $boolean = 'and')
  * @method static Builder|SysAdPlace whereLike($column, $value, $boolean = 'and')
+ *
  * @mixin Eloquent
  */
 class SysAdPlace extends Model
@@ -49,7 +51,6 @@ class SysAdPlace extends Model
 
     /**
      * 获取广告位标题
-     * @return array
      */
     public static function title(): array
     {
@@ -69,8 +70,8 @@ class SysAdPlace extends Model
 
     /**
      * 通过广告位id获取广告位内容
+     *
      * @param int $id id
-     * @return array
      */
     public static function returnAdContent(int $id): array
     {

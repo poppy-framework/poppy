@@ -7,7 +7,7 @@ namespace Poppy\MgrPage\Classes\Form\Field;
 class DatetimeRange extends Date
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function render()
     {
@@ -16,6 +16,7 @@ class DatetimeRange extends Date
             'layui-type'  => 'datetime',
         ]);
         $this->attribute('style', 'width:300px');
+
         return parent::render();
     }
 }

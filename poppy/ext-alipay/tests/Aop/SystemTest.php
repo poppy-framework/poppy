@@ -10,10 +10,9 @@ use Poppy\Extension\Alipay\Tests\AlipayBaseTest;
 
 class SystemTest extends AlipayBaseTest
 {
-
     /**
      * 使用证书方式进行转账
-     * @return void
+     *
      * @throws Exception
      */
     public function testOauthToken(): void

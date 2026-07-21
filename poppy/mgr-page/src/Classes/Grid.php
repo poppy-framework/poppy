@@ -68,6 +68,7 @@ class Grid
 
     /**
      * 默认分页数
+     *
      * @var int
      */
     public $perPage = 15;
@@ -80,7 +81,7 @@ class Grid
     /**
      * @var LengthAwarePaginator
      */
-    protected $paginator = null;
+    protected $paginator;
 
     /**
      * The grid data model instance.
@@ -119,29 +120,21 @@ class Grid
 
     /**
      * Mark if the grid is built.
-     *
-     * @var bool
      */
     protected bool $isBuild = false;
 
     /**
      * All variables in grid view.
-     *
-     * @var array
      */
     protected array $variables = [];
 
     /**
      * Default primary key name.
-     *
-     * @var string
      */
     protected string $keyName = 'id';
 
     /**
      * View for grid to render.
-     *
-     * @var string
      */
     protected string $view = 'py-mgr-page::tpl.grid.table';
 
@@ -152,8 +145,6 @@ class Grid
 
     /**
      * Options for grid.
-     *
-     * @var array
      */
     protected array $options = [
         'show_tools'        => true,
@@ -166,9 +157,8 @@ class Grid
      * Create a new grid instance.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @param Closure|null                        $builder
      */
-    public function __construct($model, Closure $builder = null)
+    public function __construct($model, ?Closure $builder = null)
     {
         $this->model   = new Model($model, $this);
         $this->keyName = $model->getKeyName();
@@ -183,10 +173,8 @@ class Grid
 
     /**
      * Initialize with user pre-defined default disables and exporter, etc.
-     *
-     * @param Closure|null $callback
      */
-    public static function init(Closure $callback = null)
+    public static function init(?Closure $callback = null)
     {
         static::$initCallbacks[] = $callback;
     }
@@ -202,10 +190,6 @@ class Grid
     }
 
     /**
-     * @param string $grid_class
-     * @param string $field
-     * @param string $order
-     * @return Grid
      * @throws ApplicationException
      */
     public function setLists(string $grid_class, string $field = '', string $order = 'desc'): self
@@ -224,8 +208,7 @@ class Grid
         $List->actions();
         $this->columns = $List->getColumns();
         if ($order && is_callable([$this->model(), 'orderBy'])
-            &&
-            (($pk = $this->model()->getOriginalModel()->getKeyName()) || $field)
+            && (($pk = $this->model()->getOriginalModel()->getKeyName()) || $field)
         ) {
             $order = input('_order') ?: $order;
             $this->model()->orderBy(
@@ -248,14 +231,12 @@ class Grid
         $this->filter($List->filter());
         $this->appendQuickButton($List->quickButtons());
         $this->batchActions($List->batchAction());
+
         return $this;
     }
 
     /**
      * Get or set option for grid.
-     *
-     * @param string $key
-     * @param mixed  $value
      *
      * @return $this|mixed
      */
@@ -272,8 +253,6 @@ class Grid
 
     /**
      * Get primary key name of model.
-     *
-     * @return string
      */
     public function getKeyName(): string
     {
@@ -296,8 +275,6 @@ class Grid
 
     /**
      * Get the grid paginator.
-     *
-     * @return mixed
      */
     public function paginator()
     {
@@ -306,13 +283,12 @@ class Grid
         if ($this->paginator instanceof LengthAwarePaginator) {
             $this->paginator->appends(request()->all());
         }
+
         return $this->paginator;
     }
 
     /**
      * 设置分页的可选条目数
-     *
-     * @param array $perPages
      */
     public function perPages(array $perPages)
     {
@@ -322,7 +298,6 @@ class Grid
     /**
      * Disable row selector.
      *
-     * @param bool $disable
      * @return Grid|mixed
      */
     public function disableRowSelector(bool $disable = true): self
@@ -348,17 +323,14 @@ class Grid
 
     /**
      * Set grid row callback function.
-     *
-     * @param Closure|null $callable
      */
-    public function rows(Closure $callable = null)
+    public function rows(?Closure $callable = null)
     {
         $this->rowsCallback = $callable;
     }
 
     /**
      * Get current resource url.
-     * @return string
      */
     public function resource(): string
     {
@@ -382,8 +354,7 @@ class Grid
     /**
      * Set a view to render.
      *
-     * @param string $view
-     * @param array  $variables
+     * @param array $variables
      */
     public function setView(string $view, $variables = [])
     {
@@ -396,19 +367,18 @@ class Grid
 
     /**
      * Set grid title.
-     * @param string $title
+     *
      * @return $this
      */
     public function setTitle(string $title): self
     {
         $this->variables['title'] = $title;
+
         return $this;
     }
 
     /**
      * Set rendering callback.
-     *
-     * @param callable $callback
      *
      * @return $this
      */
@@ -423,6 +393,7 @@ class Grid
      * Get the string contents of the grid view.
      *
      * @return string
+     *
      * @throws Throwable
      */
     public function render()
@@ -445,6 +416,7 @@ class Grid
         $variables = $this->variables();
 
         $content = view($this->view, $variables)->render();
+
         return (new Content())->body($content);
     }
 
@@ -483,8 +455,6 @@ class Grid
 
     /**
      * 添加多选框列
-     *
-     * @return void
      */
     protected function prependRowSelectorColumn(): void
     {
@@ -539,6 +509,7 @@ class Grid
 
     /**
      * 添加多选 / 操作项目
+     *
      * @return void
      */
     protected function addDefaultColumns()
@@ -548,8 +519,6 @@ class Grid
 
     /**
      * Build the grid rows.
-     *
-     * @param array $data
      *
      * @return void
      */
@@ -566,8 +535,6 @@ class Grid
 
     /**
      * Get all variables will be used in grid view.
-     *
-     * @return array
      */
     protected function variables(): array
     {
@@ -602,12 +569,13 @@ class Grid
         if (!$this->model->edit($pk, $field, $value)) {
             return Resp::error('修改失败');
         }
+
         return Resp::success('修改成功');
     }
 
     /**
      * 查询并返回数据
-     * @param int $pagesize
+     *
      * @return Response|JsonResponse|RedirectResponse
      */
     private function inquire(int $pagesize = 15)

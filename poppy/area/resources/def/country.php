@@ -1,4 +1,6 @@
-<?php namespace System\Classes\Passport;
+<?php
+
+namespace System\Classes\Passport;
 
 return [
     // 常用

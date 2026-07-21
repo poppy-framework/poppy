@@ -9,5 +9,4 @@ namespace Poppy\Framework\Exceptions;
  */
 interface Warningable
 {
-
 }

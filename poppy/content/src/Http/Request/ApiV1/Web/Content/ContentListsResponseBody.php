@@ -23,8 +23,10 @@ class ContentListsResponseBody extends BaseResponseBody
      *         property="list",
      *         type="array",
      *         description="内容列表",
+     *
      *         @OA\Items(
      *             type="object",
+     *
      *             @OA\Property(property="id", type="integer", description="ID"),
      *             @OA\Property(property="path", type="string", description="分类路径"),
      *             @OA\Property(property="slug", type="string", description="分类标识"),

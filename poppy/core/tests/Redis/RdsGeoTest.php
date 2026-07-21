@@ -4,17 +4,15 @@ declare(strict_types = 1);
 
 namespace Poppy\Core\Tests\Redis;
 
-
 class RdsGeoTest extends RdsBaseTest
 {
-
     public function testGeo()
     {
         // Add
         $key = $this->key('geo');
         $this->rds->del($key);
         $count = 1000;
-        for ($i = 1; $i <= $count; $i++) {
+        for ($i = 1; $i <= $count; ++$i) {
             $this->rds->geoAdd($key, $this->faker()->longitude(), $this->faker()->latitude(), 'pos-' . $i);
         }
         $this->assertTrue(true);
@@ -36,8 +34,6 @@ class RdsGeoTest extends RdsBaseTest
         // 有一个未存在的, 返回null
         $dist = $this->rds->geoDist($key, 'pos-1', 'pos-no-exit');
         $this->assertNull($dist);
-
-
     }
 
     public function testRadius()
@@ -47,7 +43,7 @@ class RdsGeoTest extends RdsBaseTest
         $keyStore = $this->key('geo-store');
         $this->rds->del($key);
         $count = 1000;
-        for ($i = 1; $i <= $count; $i++) {
+        for ($i = 1; $i <= $count; ++$i) {
             $this->rds->geoAdd($key, $this->faker()->longitude(), $this->faker()->latitude(), 'pos-' . $i);
         }
 

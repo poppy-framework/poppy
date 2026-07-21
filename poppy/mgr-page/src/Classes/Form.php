@@ -76,15 +76,13 @@ class Form implements Renderable
     /**
      * Remove flag in `has many` form.
      */
-    const REMOVE_FLAG_NAME = '_remove_';
+    public const REMOVE_FLAG_NAME = '_remove_';
 
     /**
      * Available fields.
-     *
-     * @var array
      */
     public static array $availableFields = [
-        'switch' => Field\SwitchField::class
+        'switch' => Field\SwitchField::class,
     ];
 
     /**
@@ -161,7 +159,7 @@ class Form implements Renderable
     /**
      * @var Tab
      */
-    protected $tab = null;
+    protected $tab;
 
     /**
      * @var bool
@@ -170,11 +168,8 @@ class Form implements Renderable
 
     /**
      * Create a new form instance.
-     *
-     * @param          $model
-     * @param Closure  $callback
      */
-    public function __construct($model, Closure $callback = null)
+    public function __construct($model, ?Closure $callback = null)
     {
         $this->model = $model;
 
@@ -192,8 +187,6 @@ class Form implements Renderable
     }
 
     /**
-     * @param Field $field
-     *
      * @return $this
      */
     public function pushField(Field $field)
@@ -228,8 +221,6 @@ class Form implements Renderable
     /**
      * Generate a edit form.
      *
-     * @param $id
-     *
      * @return $this
      */
     public function edit($id)
@@ -245,8 +236,7 @@ class Form implements Renderable
     /**
      * Use tab to split form.
      *
-     * @param string  $title
-     * @param Closure $content
+     * @param string $title
      *
      * @return $this
      */
@@ -273,10 +263,6 @@ class Form implements Renderable
 
     /**
      * Destroy data entity and remove files.
-     *
-     * @param $id
-     *
-     * @return mixed
      */
     public function destroy($id)
     {
@@ -313,7 +299,8 @@ class Form implements Renderable
                 'status'  => true,
                 'message' => trans('admin.delete_succeeded'),
             ];
-        } catch (Exception $exception) {
+        }
+        catch (Exception $exception) {
             $response = [
                 'status'  => false,
                 'message' => $exception->getMessage() ?: trans('admin.delete_failed'),
@@ -370,7 +357,7 @@ class Form implements Renderable
      * @param int  $id
      * @param null $data
      *
-     * @return bool|ResponseFactory|JsonResponse|RedirectResponse|\Illuminate\Http\Response|mixed|null|Response
+     * @return bool|ResponseFactory|JsonResponse|RedirectResponse|\Illuminate\Http\Response|mixed|Response|null
      */
     public function update($id, $data = null)
     {
@@ -489,14 +476,14 @@ class Form implements Renderable
             if (Str::contains($column, '.')) {
                 [$relation] = explode('.', $column);
 
-                if (method_exists($this->model, $relation) &&
-                    $this->model->$relation() instanceof Relations\Relation
+                if (method_exists($this->model, $relation)
+                    && $this->model->$relation() instanceof Relations\Relation
                 ) {
                     $relations[] = $relation;
                 }
             }
-            elseif (method_exists($this->model, $column) &&
-                !method_exists(Model::class, $column)
+            elseif (method_exists($this->model, $column)
+                && !method_exists(Model::class, $column)
             ) {
                 $relations[] = $column;
             }
@@ -570,8 +557,6 @@ class Form implements Renderable
     /**
      * Add a row in form.
      *
-     * @param Closure $callback
-     *
      * @return $this
      */
     public function row(Closure $callback)
@@ -583,8 +568,6 @@ class Form implements Renderable
 
     /**
      * Tools setting for form.
-     *
-     * @param Closure $callback
      */
     public function tools(Closure $callback)
     {
@@ -592,13 +575,11 @@ class Form implements Renderable
     }
 
     /**
-     * @param Closure|null $callback
-     *
      * @return Tools
      */
-    public function header(Closure $callback = null)
+    public function header(?Closure $callback = null)
     {
-        if (func_num_args() == 0) {
+        if (0 == func_num_args()) {
             return $this->builder->getTools();
         }
 
@@ -628,8 +609,6 @@ class Form implements Renderable
     /**
      * Disable View Checkbox on footer.
      *
-     * @param bool $disable
-     *
      * @return $this
      */
     public function disableViewCheck(bool $disable = true)
@@ -641,8 +620,6 @@ class Form implements Renderable
 
     /**
      * Disable Editing Checkbox on footer.
-     *
-     * @param bool $disable
      *
      * @return $this
      */
@@ -656,8 +633,6 @@ class Form implements Renderable
     /**
      * Disable Creating Checkbox on footer.
      *
-     * @param bool $disable
-     *
      * @return $this
      */
     public function disableCreatingCheck(bool $disable = true)
@@ -669,12 +644,10 @@ class Form implements Renderable
 
     /**
      * Footer setting for form.
-     *
-     * @param Closure $callback
      */
-    public function footer(Closure $callback = null)
+    public function footer(?Closure $callback = null)
     {
-        if (func_num_args() == 0) {
+        if (0 == func_num_args()) {
             return $this->builder()->getFooter();
         }
 
@@ -692,7 +665,7 @@ class Form implements Renderable
     {
         $segments = explode('/', trim(\request()->getUri(), '/'));
 
-        if ($slice != 0) {
+        if (0 != $slice) {
             $segments = array_slice($segments, 0, $slice);
         }
 
@@ -708,7 +681,8 @@ class Form implements Renderable
     {
         try {
             return $this->builder->render();
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             return Resp::error($e->getMessage());
         }
     }
@@ -733,8 +707,7 @@ class Form implements Renderable
     /**
      * Add a new layout column.
      *
-     * @param int     $width
-     * @param Closure $closure
+     * @param int $width
      *
      * @return $this
      */
@@ -763,7 +736,6 @@ class Form implements Renderable
      * Setter.
      *
      * @param string $name
-     * @param mixed  $value
      *
      * @return array
      */
@@ -783,7 +755,7 @@ class Form implements Renderable
     public function __call($method, $arguments)
     {
         if ($className = static::findFieldClass($method)) {
-            $column = Arr::get($arguments, 0, ''); //[0];
+            $column = Arr::get($arguments, 0, ''); // [0];
 
             $element = new $className($column, array_slice($arguments, 1));
 
@@ -795,9 +767,6 @@ class Form implements Renderable
         return new Field\Nullable();
     }
 
-    /**
-     * @return Layout
-     */
     public function getLayout(): Layout
     {
         return $this->layout;
@@ -805,10 +774,8 @@ class Form implements Renderable
 
     /**
      * Initialize with user pre-defined default disables, etc.
-     *
-     * @param Closure $callback
      */
-    public static function init(Closure $callback = null)
+    public static function init(?Closure $callback = null)
     {
         static::$initCallbacks[] = $callback;
     }
@@ -895,8 +862,7 @@ class Form implements Renderable
     /**
      * Remove files in record.
      *
-     * @param Model $model
-     * @param bool  $forceDelete
+     * @param bool $forceDelete
      */
     protected function deleteFiles(Model $model, $forceDelete = false)
     {
@@ -917,8 +883,6 @@ class Form implements Renderable
     }
 
     /**
-     * @param MessageBag $message
-     *
      * @return $this|JsonResponse
      */
     protected function responseValidationError(MessageBag $message)
@@ -960,8 +924,6 @@ class Form implements Renderable
      * Prepare input data for insert or update.
      *
      * @param array $data
-     *
-     * @return mixed
      */
     protected function prepare($data = [])
     {
@@ -1037,8 +999,6 @@ class Form implements Renderable
     /**
      * Get RedirectResponse after update.
      *
-     * @param mixed $key
-     *
      * @return RedirectResponse
      */
     protected function redirectAfterUpdate($key)
@@ -1058,28 +1018,27 @@ class Form implements Renderable
      */
     protected function redirectAfterSaving($resourcesPath, $key)
     {
-        if (request('after-save') == 1) {
+        if (1 == request('after-save')) {
             // continue editing
             $url = rtrim($resourcesPath, '/') . "/{$key}/edit";
         }
-        elseif (request('after-save') == 2) {
+        elseif (2 == request('after-save')) {
             // continue creating
             $url = rtrim($resourcesPath, '/') . '/create';
         }
-        elseif (request('after-save') == 3) {
+        elseif (3 == request('after-save')) {
             // view resource
             $url = rtrim($resourcesPath, '/') . "/{$key}";
         }
         else {
             $url = request(Builder::PREVIOUS_URL_KEY) ?: $resourcesPath;
         }
+
         return redirect($url);
     }
 
     /**
      * Check if request is from editable.
-     *
-     * @param array $input
      *
      * @return bool
      */
@@ -1117,8 +1076,6 @@ class Form implements Renderable
     /**
      * Handle editable update.
      *
-     * @param array $input
-     *
      * @return array
      */
     protected function handleEditable(array $input = [])
@@ -1135,8 +1092,6 @@ class Form implements Renderable
     }
 
     /**
-     * @param array $input
-     *
      * @return array
      */
     protected function handleFileDelete(array $input = [])
@@ -1152,8 +1107,6 @@ class Form implements Renderable
     }
 
     /**
-     * @param array $input
-     *
      * @return array
      */
     protected function handleFileSort(array $input = [])
@@ -1180,8 +1133,7 @@ class Form implements Renderable
     /**
      * Handle orderable update.
      *
-     * @param int   $id
-     * @param array $input
+     * @param int $id
      *
      * @return bool
      */
@@ -1191,7 +1143,7 @@ class Form implements Renderable
             $model = $this->model->find($id);
 
             if ($model instanceof Sortable) {
-                $input['_orderable'] == 1 ? $model->moveOrderUp() : $model->moveOrderDown();
+                1 == $input['_orderable'] ? $model->moveOrderUp() : $model->moveOrderDown();
 
                 return true;
             }
@@ -1234,7 +1186,6 @@ class Form implements Renderable
                     }
                     break;
                 case $relation instanceof Relations\HasOne:
-
                     $related = $this->model->$name;
 
                     // if related is empty
@@ -1253,7 +1204,6 @@ class Form implements Renderable
                     break;
                 case $relation instanceof Relations\BelongsTo:
                 case $relation instanceof Relations\MorphTo:
-
                     $parent = $this->model->$name;
 
                     // if related is empty
@@ -1288,7 +1238,6 @@ class Form implements Renderable
                     break;
                 case $relation instanceof Relations\HasMany:
                 case $relation instanceof Relations\MorphMany:
-
                     foreach ($prepared[$name] as $related) {
                         /** @var Relations\Relation $relation */
                         $relation = $this->model()->$name();
@@ -1297,7 +1246,7 @@ class Form implements Renderable
 
                         $instance = $relation->findOrNew(Arr::get($related, $keyName));
 
-                        if ($related[static::REMOVE_FLAG_NAME] == 1) {
+                        if (1 == $related[static::REMOVE_FLAG_NAME]) {
                             $instance->delete();
 
                             continue;
@@ -1318,8 +1267,7 @@ class Form implements Renderable
     /**
      * Prepare input data for update.
      *
-     * @param array $updates
-     * @param bool  $oneToOneRelation If column is one-to-one relation.
+     * @param bool $oneToOneRelation if column is one-to-one relation
      *
      * @return array
      */
@@ -1366,8 +1314,8 @@ class Form implements Renderable
     protected function isInvalidColumn($columns, $containsDot = false)
     {
         foreach ((array) $columns as $column) {
-            if ((!$containsDot && Str::contains($column, '.')) ||
-                ($containsDot && !Str::contains($column, '.'))) {
+            if ((!$containsDot && Str::contains($column, '.'))
+                || ($containsDot && !Str::contains($column, '.'))) {
                 return true;
             }
         }
@@ -1377,8 +1325,6 @@ class Form implements Renderable
 
     /**
      * Prepare input data for insert.
-     *
-     * @param $inserts
      *
      * @return array
      */
@@ -1455,10 +1401,6 @@ class Form implements Renderable
 
     /**
      * Find field object by column.
-     *
-     * @param $column
-     *
-     * @return mixed
      */
     protected function getFieldByColumn($column)
     {
@@ -1491,8 +1433,6 @@ class Form implements Renderable
 
     /**
      * Set all fields value in form.
-     *
-     * @param $id
      *
      * @return void
      */
@@ -1549,8 +1489,6 @@ class Form implements Renderable
 
     /**
      * Don't snake case attributes.
-     *
-     * @param Model $model
      *
      * @return void
      */

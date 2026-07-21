@@ -21,31 +21,27 @@ class PoppyMigrateRollbackCommand extends Command
 
     /**
      * The console command name.
+     *
      * @var string
      */
     protected $name = 'poppy:migrate:rollback';
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Rollback the last database migrations for a specific or all modules';
 
     /**
      * The migrator instance.
-     * @var Migrator
      */
     protected Migrator $migrator;
 
-    /**
-     * @var Poppy
-     */
     protected Poppy $poppy;
 
     /**
      * Create a new command instance.
-     * @param Migrator $migrator
-     * @param Poppy    $poppy
      */
     public function __construct(Migrator $migrator, Poppy $poppy)
     {
@@ -80,7 +76,6 @@ class PoppyMigrateRollbackCommand extends Command
 
     /**
      * Get the console command arguments.
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -91,7 +86,6 @@ class PoppyMigrateRollbackCommand extends Command
 
     /**
      * Get the console command options.
-     * @return array
      */
     protected function getOptions(): array
     {
@@ -105,7 +99,6 @@ class PoppyMigrateRollbackCommand extends Command
 
     /**
      * Get all the migration paths.
-     * @return array
      */
     protected function getMigrationPaths(): array
     {

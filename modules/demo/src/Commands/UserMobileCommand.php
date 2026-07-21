@@ -1,4 +1,6 @@
-<?php namespace Demo\Commands;
+<?php
+
+namespace Demo\Commands;
 
 use Illuminate\Console\Command;
 use Poppy\System\Models\PamAccount;
@@ -15,6 +17,7 @@ class UserMobileCommand extends Command
 
     /**
      * 描述
+     *
      * @var string
      */
     protected $description = 'Update user not exists mobile.';

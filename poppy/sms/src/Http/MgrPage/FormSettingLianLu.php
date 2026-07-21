@@ -9,7 +9,6 @@ use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
 class FormSettingLianLu extends FormSettingBase
 {
-
     protected $title = '联麓短信配置';
 
     protected $withContent = true;

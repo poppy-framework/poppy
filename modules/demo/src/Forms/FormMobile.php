@@ -6,14 +6,12 @@ use Poppy\Framework\Validation\Rule;
 
 class FormMobile extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Mobile';
-
 
     /**
      * Build a form here.
@@ -42,6 +40,5 @@ CODE;
 ])->help('手机号输入框必填');
 CODE;
         $this->code('mobile-code', 'Code@Mobile')->default($code);
-
     }
 }

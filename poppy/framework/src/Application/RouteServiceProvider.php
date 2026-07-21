@@ -8,13 +8,12 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 
 abstract class RouteServiceProvider extends ServiceProvider
 {
-
     /**
      * 前缀
+     *
      * @var string
      */
     protected $prefix;
-
 
     public function __construct($app)
     {

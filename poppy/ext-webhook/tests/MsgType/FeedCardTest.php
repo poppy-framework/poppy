@@ -1,20 +1,17 @@
 <?php
 
 declare(strict_types = 1);
+
 namespace Poppy\Extension\Webhook\Tests\MsgType;
 
-
-use Poppy\Framework\Application\TestCase;
 use Poppy\Extension\Webhook\DingTalk\MsgType\FeedCard;
+use Poppy\Framework\Application\TestCase;
 
 /**
  * Class FeedCardTest
- *
- * @package Iamzz\Dingtalk\Tests\MsgType
  */
 class FeedCardTest extends TestCase
 {
-
     public function testToJson(): void
     {
         $data         = [

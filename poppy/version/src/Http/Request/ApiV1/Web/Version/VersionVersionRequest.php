@@ -12,6 +12,7 @@ use Poppy\Framework\Validation\Rule;
  * @OA\Schema(
  *     schema="PoppyVersionVersionVersionRequest",
  *     description="版本检测请求",
+ *
  *     @OA\Property(property="version", type="string", nullable=true, description="当前版本号, 默认 1.0.0", default="1.0.0", example="1.0.0"),
  * )
  */

@@ -10,7 +10,6 @@ use Poppy\Framework\Classes\Resp;
 
 class RespTest extends TestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();
@@ -66,6 +65,5 @@ class RespTest extends TestCase
         $resp = Resp::success('array', $value);
         $data = $resp->getData(true);
         $this->assertEquals(['my'], $data['data']);
-
     }
 }

@@ -13,6 +13,7 @@ use Poppy\Framework\Validation\Rule;
  *     schema="PoppySystemAuthResetPasswordRequest",
  *     description="重设密码",
  *     required={"password"},
+ *
  *     @OA\Property(property="verify_code", type="string", description="方式1: 通过验证码获取到的 验证串"),
  *     @OA\Property(property="passport", type="string", description="方式2: 手机号 + 验证码直接验证并修改"),
  *     @OA\Property(property="captcha", type="string", description="验证码 (方式2 时必填)"),
@@ -53,8 +54,6 @@ class AuthResetPasswordRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

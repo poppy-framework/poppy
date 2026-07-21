@@ -9,7 +9,6 @@ use Poppy\Framework\Validation\Rule;
 
 class PamConfirmedPasswordRequest extends Request
 {
-
     public function attributes(): array
     {
         return [
@@ -19,8 +18,6 @@ class PamConfirmedPasswordRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

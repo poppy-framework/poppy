@@ -9,7 +9,6 @@ namespace Poppy\MgrPage\Classes\Operation;
  */
 final class CopyOperation extends Operation
 {
-
     protected string $renderType = 'tag';
 
     private string $content;
@@ -21,13 +20,13 @@ final class CopyOperation extends Operation
         $this->icon    = 'clipboard';
     }
 
-
     public function render(): string
     {
         $this->classes[] = 'J_copy';
         $this->classes[] = 'cursor-pointer';
 
         $this->attributes['data-text'] = $this->content;
+
         return parent::render();
     }
 }

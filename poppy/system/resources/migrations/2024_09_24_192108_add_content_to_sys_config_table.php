@@ -8,6 +8,7 @@ class AddContentToSysConfigTable extends Migration
 {
     /**
      * Run the migrations.
+     *
      * @return void
      */
     public function up()
@@ -19,6 +20,7 @@ class AddContentToSysConfigTable extends Migration
 
     /**
      * Reverse the migrations.
+     *
      * @return void
      */
     public function down()

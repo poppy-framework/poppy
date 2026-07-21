@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Poppy\Framework\Classes;
 
@@ -25,6 +25,7 @@ class RsaCrypt
 
     /**
      * 设置私有 key
+     *
      * @param string $private_key 私钥
      */
     public function setPrivateKey(string $private_key)
@@ -34,6 +35,7 @@ class RsaCrypt
 
     /**
      * 设置公有key
+     *
      * @param string $public_key 公钥
      */
     public function setPublicKey(string $public_key)
@@ -44,8 +46,8 @@ class RsaCrypt
     /**
      * 使用私钥进行签名
      * Rsa2 进行签名
+     *
      * @param string $data 待签名的数据
-     * @return string
      */
     public function sign(string $data): string
     {
@@ -66,9 +68,9 @@ class RsaCrypt
 
     /**
      * 对签名进行验证
+     *
      * @param string $data 待验证的数据
      * @param string $sign 签名
-     * @return bool
      */
     public function verify(string $data = '', string $sign = ''): bool
     {
@@ -89,8 +91,8 @@ class RsaCrypt
 
     /**
      * 私钥加密
+     *
      * @param string $data 待加密的数据
-     * @return null|string
      */
     public function privateEncrypt(string $data = ''): ?string
     {
@@ -103,8 +105,8 @@ class RsaCrypt
 
     /**
      * 公钥加密
+     *
      * @param string $data 待加密的数据
-     * @return null|string
      */
     public function publicEncrypt(string $data = ''): ?string
     {
@@ -117,8 +119,8 @@ class RsaCrypt
 
     /**
      * 私钥解密
+     *
      * @param string $encrypted 待解密的数据
-     * @return null|string
      */
     public function privateDecrypt(string $encrypted = ''): ?string
     {
@@ -131,8 +133,8 @@ class RsaCrypt
 
     /**
      * 公钥解密
+     *
      * @param string $encrypted 待解密的数据
-     * @return null|string
      */
     public function publicDecrypt(string $encrypted = ''): ?string
     {
@@ -145,6 +147,7 @@ class RsaCrypt
 
     /**
      * 获取私钥
+     *
      * @return bool|resource
      */
     private static function getPrivateKey()
@@ -154,6 +157,7 @@ class RsaCrypt
 
     /**
      * 获取公钥
+     *
      * @return bool|resource
      */
     private static function getPublicKey()

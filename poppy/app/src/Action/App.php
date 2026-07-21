@@ -16,19 +16,10 @@ class App
 {
     use AppTrait;
 
-    /**
-     * @var SysApp $item
-     */
     private SysApp $item;
 
-    /**
-     * @var int $id
-     */
     private int $id;
 
-    /**
-     * @return SysApp
-     */
     public function getItem(): SysApp
     {
         return $this->item;
@@ -36,14 +27,14 @@ class App
 
     /**
      * 编辑/创建分类
+     *
      * @param array    $data 传入数据  <br>
      *                       {string}  title       名称 <br>
      *                       {int}     secret      密钥 <br>
      *                       {string}  type        类型
-     * @param null|int $id ID
-     * @return bool
+     * @param int|null $id   ID
      */
-    public function establish(array $data, int $id = null): bool
+    public function establish(array $data, ?int $id = null): bool
     {
         $initDb = [
             'title'        => (string) sys_get($data, 'title'),
@@ -74,8 +65,8 @@ class App
 
     /**
      * 切换状态
+     *
      * @param int $id 活动ID
-     * @param int $status
      */
     public function status(int $id, int $status): void
     {
@@ -89,6 +80,7 @@ class App
 
     /**
      * 初始化
+     *
      * @param int $id 活动 ID
      */
     public function init(int $id): void

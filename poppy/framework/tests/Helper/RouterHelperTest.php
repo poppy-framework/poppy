@@ -12,16 +12,15 @@ use Poppy\Framework\Helper\RouterHelper;
  */
 class RouterHelperTest extends TestCase
 {
-
     public function testNormalizeUrl(): void
     {
-        $url = "demo/content/form";
+        $url = 'demo/content/form';
         $this->assertEquals('/demo/content/form', RouterHelper::normalizeUrl($url));
     }
 
     public function testSegmentizeUrl(): void
     {
-        $url = "demo/content/form";
+        $url = 'demo/content/form';
         $this->assertEquals(['demo', 'content', 'form'], RouterHelper::segmentizeUrl($url));
     }
 
@@ -67,5 +66,4 @@ class RouterHelperTest extends TestCase
         $url = 'poppy.com?a=t';
         $this->assertEquals('a=t', RouterHelper::getSegmentDefaultValue($url));
     }
-
 }

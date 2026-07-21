@@ -17,7 +17,9 @@ class Ini
 {
     /**
      * Parses supplied INI contents in to a PHP array.
+     *
      * @param string $contents INI contents to parse
+     *
      * @return array
      */
     public function parse(string $contents)
@@ -31,7 +33,9 @@ class Ini
 
     /**
      * Parses supplied INI file contents in to a PHP array.
+     *
      * @param string $fileName file to read contents and parse
+     *
      * @return array
      */
     public function parseFile(string $fileName)
@@ -44,9 +48,11 @@ class Ini
     /**
      * Expands a single array property from traditional INI syntax.
      * If no key is given to the method, the entire array will be replaced.
+     *
      * @param array  $array array
      * @param string $key   key
      * @param mixed  $value value
+     *
      * @return array
      */
     public function expandProperty(&$array, $key, $value)
@@ -74,8 +80,10 @@ class Ini
 
     /**
      * Formats an INI file string from an array
+     *
      * @param array $vars  data to format
      * @param int   $level specifies the level of array value
+     *
      * @return string returns the INI file string
      */
     public function render($vars = [], $level = 1)
@@ -111,7 +119,9 @@ class Ini
      * replaces them with a valid character "|" so parse_ini_string
      * can function correctly. It also forces arrays to have unique
      * indexes so their integrity is maintained.
+     *
      * @param string $contents INI contents to parse
+     *
      * @return string
      */
     protected function parsePreProcess(string $contents)
@@ -122,7 +132,7 @@ class Ini
         $lastName = null;
 
         foreach ($contents as $key => $content) {
-            if (strpos($content, '=') === false) {
+            if (false === strpos($content, '=')) {
                 continue;
             }
 
@@ -138,11 +148,11 @@ class Ini
             }
 
             if (
-                ($lastName === null || $lastName == $varName) &&
-                strpos($varName, '[]') !== false
+                (null === $lastName || $lastName == $varName)
+                && false !== strpos($varName, '[]')
             ) {
                 $varName = str_replace('[]', '[' . $count . ']', $varName);
-                $count++;
+                ++$count;
             }
 
             $lastName       = $parts[0];
@@ -159,7 +169,9 @@ class Ini
      * - name[validation|regex|message]
      * Converts to:
      * - name => [validation => [regex => [message]]]
+     *
      * @param array $array array
+     *
      * @return array
      */
     protected function parsePostProcess($array)
@@ -179,7 +191,9 @@ class Ini
 
     /**
      * Renders section properties.
+     *
      * @param array $vars vars
+     *
      * @return string
      */
     protected function renderProperties($vars = [])
@@ -217,8 +231,10 @@ class Ini
 
     /**
      * Flatten a multi-dimensional associative array for traditional INI syntax.
+     *
      * @param array  $array   array
      * @param string $prepend prepend
+     *
      * @return array
      */
     protected function flattenProperties($array, $prepend = '')
@@ -245,7 +261,9 @@ class Ini
     /**
      * Converts a PHP value to make it suitable for INI format.
      * Strings are escaped.
+     *
      * @param string $value Specifies the value to process
+     *
      * @return string Returns the processed value
      */
     protected function evalValue(string $value)
@@ -262,13 +280,15 @@ class Ini
     /**
      * Checks if the array is the final node in a multidimensional array.
      * Checked supplied array is not associative and contains no array values.
+     *
      * @param array $array array
+     *
      * @return bool
      */
     protected function isFinalArray(array $array)
     {
-        return !empty($array) &&
-            !count(array_filter($array, 'is_array')) &&
-            !count(array_filter(array_keys($array), 'is_string'));
+        return !empty($array)
+            && !count(array_filter($array, 'is_array'))
+            && !count(array_filter(array_keys($array), 'is_string'));
     }
 }

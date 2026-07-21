@@ -11,12 +11,12 @@ use Poppy\MgrPage\Classes\Grid\Filter;
 class ListSearchQuery extends ListSearchWhere
 {
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {
         $hidden = DemoGrid::inRandomOrder()->value('account_id');
+
         return function (Filter $filter) use ($hidden) {
             $filter->query('account_id')->value($hidden);
         };

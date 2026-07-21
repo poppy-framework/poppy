@@ -26,7 +26,6 @@ class FormPamEnable extends FormWidget
         $this->pam = PamAccount::findOrFail($id);
     }
 
-
     public function handle()
     {
         $Pam    = (new Pam())->setPam(request()->user());
@@ -36,7 +35,6 @@ class FormPamEnable extends FormWidget
         }
 
         return Resp::success('当前用户启用', '_top_reload|1');
-
     }
 
     public function data(): array

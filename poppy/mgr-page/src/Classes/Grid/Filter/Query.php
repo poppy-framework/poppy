@@ -9,7 +9,6 @@ namespace Poppy\MgrPage\Classes\Grid\Filter;
  */
 class Query extends FilterItem
 {
-
     /**
      * @var string|int
      */
@@ -24,11 +23,12 @@ class Query extends FilterItem
     public function value($value = ''): self
     {
         $this->val = $value;
+
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function condition(array $inputs)
     {

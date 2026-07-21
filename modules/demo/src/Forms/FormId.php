@@ -4,15 +4,14 @@ namespace Demo\Forms;
 
 class FormId extends FormBaseWidget
 {
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Id';
 
-
-    public function data():array
+    public function data(): array
     {
         return [
             // 'id' => 5,

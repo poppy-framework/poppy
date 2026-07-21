@@ -25,12 +25,14 @@ abstract class Text extends Base
      * generates a weighted table with the specified number of words as the index and the
      * possible following words as the value.
      *
-     * @param integer $maxNbChars  Maximum number of characters the text should contain (minimum: 10)
-     * @param integer $indexSize   Determines how many words are considered for the generation of the next word.
-     *                             The minimum is 1, and it produces a higher level of randomness, although the
-     *                             generated text usually doesn't make sense. Higher index sizes (up to 5)
-     *                             produce more correct text, at the price of less randomness.
+     * @param int $maxNbChars Maximum number of characters the text should contain (minimum: 10)
+     * @param int $indexSize  Determines how many words are considered for the generation of the next word.
+     *                        The minimum is 1, and it produces a higher level of randomness, although the
+     *                        generated text usually doesn't make sense. Higher index sizes (up to 5)
+     *                        produce more correct text, at the price of less randomness.
+     *
      * @return string
+     *
      * @example 'Alice, swallowing down her flamingo, and began by taking the little golden key'
      */
     public function realText(int $maxNbChars = 200, int $indexSize = 2)
@@ -63,7 +65,7 @@ abstract class Text extends Base
             $next = static::implode($currentWords);
 
             // ensure text starts with an uppercase letter
-            if ($resultLength == 0 && !static::validStart($word)) {
+            if (0 == $resultLength && !static::validStart($word)) {
                 continue;
             }
 
@@ -87,11 +89,11 @@ abstract class Text extends Base
             $parts = $this->getExplodedText();
             $words = [];
             $index = [];
-            for ($i = 0; $i < $indexSize; $i++) {
+            for ($i = 0; $i < $indexSize; ++$i) {
                 $index[] = array_shift($parts);
             }
 
-            for ($i = 0, $count = count($parts); $i < $count; $i++) {
+            for ($i = 0, $count = count($parts); $i < $count; ++$i) {
                 $stringIndex = static::implode($index);
                 if (!isset($words[$stringIndex])) {
                     $words[$stringIndex] = [];
@@ -110,7 +112,7 @@ abstract class Text extends Base
 
     protected function getExplodedText()
     {
-        if ($this->explodedText === null) {
+        if (null === $this->explodedText) {
             $this->explodedText = static::explode(preg_replace('/\s+/u', ' ', static::$baseText));
         }
 
@@ -138,6 +140,7 @@ abstract class Text extends Base
         if (static::$textStartsWithUppercase) {
             $isValid = preg_match('/^\p{Lu}/u', $word);
         }
+
         return $isValid;
     }
 

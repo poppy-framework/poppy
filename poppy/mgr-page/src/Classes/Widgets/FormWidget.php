@@ -74,7 +74,6 @@ class FormWidget implements Renderable
 {
     use PoppyTrait;
 
-
     /**
      * @var bool
      */
@@ -94,6 +93,7 @@ class FormWidget implements Renderable
 
     /**
      * 是否包含 JS 加载界面
+     *
      * @var bool
      */
     protected $withContent = true;
@@ -122,7 +122,6 @@ class FormWidget implements Renderable
 
     /**
      * 可用操作
-     * @var Closure|null
      */
     protected ?Closure $boxTools = null;
 
@@ -138,8 +137,6 @@ class FormWidget implements Renderable
 
     /**
      * Form constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data = [])
     {
@@ -148,9 +145,6 @@ class FormWidget implements Renderable
         $this->initFormAttributes();
     }
 
-    /**
-     * @return array
-     */
     public function data(): array
     {
         return $this->data;
@@ -214,8 +208,6 @@ class FormWidget implements Renderable
      * Format form attributes form array to html.
      *
      * @param array $attributes
-     *
-     * @return string
      */
     public function formatAttribute($attributes = []): string
     {
@@ -247,12 +239,10 @@ class FormWidget implements Renderable
 
     /**
      * Method of the form.
-     * @param string $method
-     * @return FormWidget
      */
     public function method(string $method = 'POST'): self
     {
-        if (strtolower($method) === 'put') {
+        if ('put' === strtolower($method)) {
             $this->hidden('_method')->default($method);
 
             return $this;
@@ -324,13 +314,12 @@ class FormWidget implements Renderable
     /**
      * Add a form field to form.
      *
-     * @param Field $field
-     *
      * @return $this
      */
     public function pushField(Field $field): self
     {
         $this->fields[] = $field;
+
         return $this;
     }
 
@@ -346,8 +335,6 @@ class FormWidget implements Renderable
 
     /**
      * Determine if form fields has files.
-     *
-     * @return bool
      */
     public function hasFile(): bool
     {
@@ -362,8 +349,6 @@ class FormWidget implements Renderable
 
     /**
      * Validate this form fields.
-     *
-     * @param Request $request
      *
      * @return bool|MessageBag
      */
@@ -382,9 +367,9 @@ class FormWidget implements Renderable
         }
 
         $message = $this->mergeValidationMessages($failedValidators);
+
         return $message->any() ? $message : false;
     }
-
 
     public function unbox()
     {
@@ -393,15 +378,15 @@ class FormWidget implements Renderable
         return $this;
     }
 
-
     /**
      * 设定工具栏
-     * @param Closure $closure
+     *
      * @return $this
      */
     public function boxTools(Closure $closure): self
     {
         $this->boxTools = $closure;
+
         return $this;
     }
 
@@ -428,6 +413,7 @@ class FormWidget implements Renderable
 
                 return back()->withInput()->withErrors($errors);
             }
+
             return $this->sanitize()->handle($request);
         }
 
@@ -437,17 +423,18 @@ class FormWidget implements Renderable
             if ($this->withContent) {
                 return (new Content())->body($form);
             }
+
             return $form;
         }
 
         // init box and render
         $box = (new BoxWidget($title, $form));
 
-
         $box->tools($this->boxTools);
         if ($this->withContent) {
             return (new Content())->body($box->render());
         }
+
         return $box->render();
     }
 
@@ -470,6 +457,7 @@ class FormWidget implements Renderable
         $name   = Arr::get($arguments, 0);
         $params = array_slice($arguments, 1);
         $field  = new $class($name, $params);
+
         return tap($field, function ($field) {
             $this->pushField($field);
         });
@@ -477,8 +465,6 @@ class FormWidget implements Renderable
 
     /**
      * Get form title.
-     *
-     * @return string
      */
     public function title(): string
     {
@@ -502,8 +488,6 @@ class FormWidget implements Renderable
 
     /**
      * Get variables for render form.
-     *
-     * @return array
      */
     protected function getVariables(): array
     {
@@ -542,7 +526,9 @@ class FormWidget implements Renderable
 
     /**
      * 获取 Jquery Validation
+     *
      * @return false|string
+     *
      * @throws JsonException
      */
     private function getJqValidation()
@@ -610,7 +596,6 @@ class FormWidget implements Renderable
                 }
             }
 
-
             return $jqRules;
         };
         collect($this->fields())->each(function (Field $field) use (&$rules, &$messages, $funJqRules) {
@@ -634,6 +619,7 @@ class FormWidget implements Renderable
             'rules'    => $rules,
             'messages' => $messages,
         ];
+
         return json_encode($jqValidation, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 }

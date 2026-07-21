@@ -17,23 +17,22 @@ class PoppySeedCommand extends Command
 {
     /**
      * The console command name.
+     *
      * @var string
      */
     protected $name = 'poppy:seed';
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Seed the database with records for a specific or all modules';
 
-    /**
-     * @var Poppy
-     */
     protected Poppy $poppy;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct(Poppy $poppy)
     {
@@ -52,6 +51,7 @@ class PoppySeedCommand extends Command
         if (isset($slug)) {
             if (!$this->poppy->exists($slug)) {
                 $this->error('Module does not exist.');
+
                 return;
             }
 
@@ -79,6 +79,7 @@ class PoppySeedCommand extends Command
 
     /**
      * Seed the specific module.
+     *
      * @param string $slug slug
      */
     protected function seed(string $slug)
@@ -111,7 +112,7 @@ class PoppySeedCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function getArguments(): array
     {
@@ -121,7 +122,7 @@ class PoppySeedCommand extends Command
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function getOptions(): array
     {

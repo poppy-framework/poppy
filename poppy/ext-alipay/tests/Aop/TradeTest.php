@@ -48,7 +48,7 @@ class TradeTest extends AlipayBaseTest
             $result = $aop->execute($request);
             $node   = str_replace('.', '_', $request->getApiMethodName()) . '_response';
 
-            /**
+            /*
              * {
              *     "alipay_trade_query_response":{
              *         "code":"10000",
@@ -71,10 +71,9 @@ class TradeTest extends AlipayBaseTest
              * }
              */
             $this->assertEquals('10000', data_get($result, "{$node}.code"));
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
-
-
     }
 }

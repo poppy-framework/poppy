@@ -12,6 +12,7 @@ use Poppy\Framework\Validation\Rule;
  * @OA\Schema(
  *     schema="PoppyContentContentListsRequest",
  *     description="内容列表请求",
+ *
  *     @OA\Property(property="cat_slug", type="string", nullable=true, description="分类标识 (与 cat_id 二选一)"),
  *     @OA\Property(property="cat_id", type="integer", nullable=true, description="分类 ID (优先于 cat_slug)"),
  *     @OA\Property(property="page", type="integer", nullable=true, description="页码, 默认 1", default=1, minimum=1),

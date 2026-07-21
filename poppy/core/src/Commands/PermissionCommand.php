@@ -26,11 +26,7 @@ class PermissionCommand extends Command
 
     protected $description = 'Permission manage list.';
 
-    /**
-     * @var PermissionManager
-     */
     private PermissionManager $permission;
-
 
     public function __construct()
     {
@@ -40,7 +36,9 @@ class PermissionCommand extends Command
 
     /**
      * Command Handler.
+     *
      * @return bool
+     *
      * @throws Exception
      */
     public function handle()
@@ -65,7 +63,6 @@ class PermissionCommand extends Command
 
         return true;
     }
-
 
     private function lists(): void
     {
@@ -95,6 +92,7 @@ class PermissionCommand extends Command
         $permissions = $this->permission->permissions();
         if (!$permissions->count()) {
             $this->info(sys_gen_mk(self::class, 'No permission need import.'));
+
             return;
         }
 
@@ -104,7 +102,6 @@ class PermissionCommand extends Command
 
         $this->info(sys_gen_mk(self::class, "Init {$num} permission Success!"));
     }
-
 
     /**
      * 检查菜单
@@ -126,13 +123,10 @@ class PermissionCommand extends Command
 
         $faults = collect();
         $navigations->each(function ($item, $slug) use ($faults, $format) {
-
             collect($item['groups'])->each(function ($group) use ($faults, $format, $slug) {
-
                 // 分组
                 $children = collect((array) $group['children']);
                 $children->map(function ($item) use ($faults, $format, $slug) {
-
                     $permission = $item['permission'] ?? '';
                     if ($permission && !$this->corePermission()->has($permission)) {
                         $faults->push($format($item, $slug));
@@ -148,7 +142,6 @@ class PermissionCommand extends Command
                     });
                 });
             });
-
         });
 
         if (!$faults->count()) {

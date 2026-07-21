@@ -12,18 +12,12 @@ use Poppy\Framework\Exceptions\ApplicationException;
 
 class SysCategoryTest extends TestCase
 {
-
     /**
      * 分类的类型
-     * @var string
      */
     private static string $type = 'testing';
 
-    /**
-     * @var Category
-     */
     private Category $act;
-
 
     public function setUp(): void
     {
@@ -39,7 +33,8 @@ class SysCategoryTest extends TestCase
     {
         try {
             SysCategory::where('type', self::$type)->delete();
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             $this->fail($e->getMessage());
         }
 
@@ -48,7 +43,7 @@ class SysCategoryTest extends TestCase
         if (!$this->act->establish([
             'title' => $title,
             'type'  => self::$type,
-            'name'  => $name
+            'name'  => $name,
         ])) {
             $this->fail($this->act->getError()->getMessage());
         }
@@ -72,7 +67,8 @@ class SysCategoryTest extends TestCase
     {
         try {
             SysCategory::where('type', self::$type)->delete();
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             $this->fail($e->getMessage());
         }
 
@@ -93,7 +89,7 @@ class SysCategoryTest extends TestCase
         $titleNew = 'testing-new-' . py_faker()->words(4, true);
         if (!$this->act->establish([
             'title' => $titleNew,
-            'type'  => self::$type
+            'type'  => self::$type,
         ], $id)) {
             $this->fail($this->act->getError()->getMessage());
         }
@@ -106,5 +102,4 @@ class SysCategoryTest extends TestCase
 
         $this->assertEquals('', SysCategory::kvTitle($id));
     }
-
 }

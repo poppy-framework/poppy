@@ -14,9 +14,9 @@ use Poppy\MgrPage\Classes\Grid\ListBase;
 
 class ListGridEditable extends ListBase
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns()
@@ -40,13 +40,10 @@ class ListGridEditable extends ListBase
             $item = $actions->row;
             $actions->edit(route('py-mgr-page:backend.pam.establish', [$item->id]));
         },])->fixed();
-
     }
 
-
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {
@@ -67,7 +64,7 @@ class ListGridEditable extends ListBase
                 $filter->month('month');
             });
             $filter->column(1, function (Filter $filter) {
-                $filter->group('group', 'Group', function (\Poppy\MgrPage\Classes\Grid\Filter\Group $group) {
+                $filter->group('group', 'Group', function (Filter\Group $group) {
                     // 等于
                     $group->equal('=');
 

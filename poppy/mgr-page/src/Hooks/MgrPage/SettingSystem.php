@@ -10,7 +10,6 @@ use Poppy\MgrPage\Http\MgrPage\FormSettingSite;
 
 class SettingSystem implements ServiceArray
 {
-
     public function key(): string
     {
         return 'poppy.mgr-page';

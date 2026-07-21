@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Poppy\Sms\Classes;
@@ -18,13 +19,12 @@ class SmsProvider extends BaseSms implements SmsContract
     public function setDriver($driver): self
     {
         $this->driver = $driver;
+
         return $this;
     }
 
     /**
      * 通过短信类型获取 Driver
-     * @param string $type
-     * @return SmsContract
      */
     public function getDriver(string $type): SmsContract
     {
@@ -37,17 +37,13 @@ class SmsProvider extends BaseSms implements SmsContract
         $sender      = $hooks[$driver];
         $senderClass = $sender['provider'] ?? LocalSmsProvider::class;
 
-        /** @var SmsContract $Sms */
+        /* @var SmsContract $Sms */
         return new $senderClass();
     }
 
     /**
      * 发送短信
-     * @param string $type
-     * @param        $mobile
-     * @param array  $params
-     * @param string $sign
-     * @return bool
+     *
      * @throws ContainerExceptionInterface
      * @throws JsonException
      * @throws NotFoundExceptionInterface

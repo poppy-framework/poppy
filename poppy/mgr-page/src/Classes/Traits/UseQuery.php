@@ -8,12 +8,11 @@ use Illuminate\Support\Str;
 
 trait UseQuery
 {
-
     /**
      * 检测查询类型是否存在
+     *
      * @param string $query 查询内容
-     * @param string $type 查询类型
-     * @return bool
+     * @param string $type  查询类型
      */
     protected function queryHas(string $query, string $type): bool
     {
@@ -21,14 +20,15 @@ trait UseQuery
         $arrTypes = collect($allTypes)->map(function ($item) {
             return Str::before($item, ':');
         });
+
         return in_array($type, $arrTypes->toArray(), true);
     }
 
     /**
      * 检测查询类型是否存在
+     *
      * @param string $query 查询内容
-     * @param string $type 查询类型
-     * @return string
+     * @param string $type  查询类型
      */
     protected function queryAfter(string $query, string $type): string
     {
@@ -43,6 +43,7 @@ trait UseQuery
             }
             $queries[$type] = $query;
         });
+
         return $queries[$type] ?? '';
     }
 }

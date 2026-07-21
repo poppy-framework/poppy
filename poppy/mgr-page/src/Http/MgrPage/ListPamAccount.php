@@ -20,11 +20,11 @@ use Poppy\System\Models\PamRoleAccount;
 
 class ListPamAccount extends ListBase
 {
-
     public $title = '账号管理';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns(): void
@@ -76,8 +76,7 @@ class ListPamAccount extends ListBase
     }
 
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {
@@ -88,8 +87,8 @@ class ListPamAccount extends ListBase
                 $ft->where(function ($query) {
                     $passport = input('passport');
                     $type     = PamAccount::passportType($passport);
-                    if ($type === PamAccount::REG_TYPE_MOBILE && !Str::contains($passport, '-')) {
-                        $prefix   = $type === PamAccount::TYPE_USER ? '86-' : PamAccount::BACKEND_MOBILE_PREFIX;
+                    if (PamAccount::REG_TYPE_MOBILE === $type && !Str::contains($passport, '-')) {
+                        $prefix   = PamAccount::TYPE_USER === $type ? '86-' : PamAccount::BACKEND_MOBILE_PREFIX;
                         $passport = $prefix . $passport;
                     }
                     $query->where($type, $passport);
@@ -112,6 +111,7 @@ class ListPamAccount extends ListBase
     public function quickButtons(): Closure
     {
         $scope = input(Scope::QUERY_NAME);
+
         return function (Operations $operations) use ($scope) {
             $operations->page('封禁管理', route_url('py-mgr-page:backend.ban.index', null, [Scope::QUERY_NAME => $scope]))
                 ->icon('slash-circle')->sm();

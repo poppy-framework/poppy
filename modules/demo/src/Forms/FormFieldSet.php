@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormFieldSet extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '表单项组合';
-
 
     /**
      * Build a form here.

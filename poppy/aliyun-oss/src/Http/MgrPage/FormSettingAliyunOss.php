@@ -9,7 +9,6 @@ use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
 class FormSettingAliyunOss extends FormSettingBase
 {
-
     protected $title = '上传配置';
 
     protected $withContent = true;

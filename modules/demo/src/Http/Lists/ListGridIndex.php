@@ -11,9 +11,9 @@ use Poppy\MgrPage\Classes\Grid\ListBase;
 
 class ListGridIndex extends ListBase
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns()
@@ -35,10 +35,8 @@ class ListGridIndex extends ListBase
         $this->column('suffix', 'Suffix(默认后缀-Py)')->suffix('Py');
     }
 
-
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {
@@ -56,7 +54,7 @@ class ListGridIndex extends ListBase
                 $filter->month('month');
             });
             $filter->column(2, function (Filter $filter) {
-                $filter->group('group', 'Group', function (\Poppy\MgrPage\Classes\Grid\Filter\Group $group) {
+                $filter->group('group', 'Group', function (Filter\Group $group) {
                     // 等于
                     $group->equal('=');
 

@@ -15,13 +15,11 @@ class Ad
 {
     use AppTrait;
 
-    /**
-     * @var SysAdContent $item
-     */
     private SysAdContent $item;
 
     /**
      * 编辑/创建 广告
+     *
      * @param array $data 传入数据 <br>
      *                    string  place_id   位置 ID          <br>
      *                    int     title      位置名称          <br>
@@ -32,7 +30,6 @@ class Ad
      *                    string  url        链接地址          <br>
      *                    int     is_enable  广告状态
      * @param null  $id   ID
-     * @return bool
      */
     public function establish(array $data, $id = null): bool
     {
@@ -69,8 +66,8 @@ class Ad
 
     /**
      * 删除数据
+     *
      * @param int $id 活动ID
-     * @return bool
      */
     public function delete(int $id): bool
     {
@@ -78,7 +75,8 @@ class Ad
 
         try {
             $this->item->delete();
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return $this->setError($e->getMessage());
         }
 
@@ -87,19 +85,21 @@ class Ad
 
     /**
      * 开启/关闭 广告
+     *
      * @param int $id 广告ID
-     * @return bool
      */
     public function toggle(int $id): bool
     {
         $this->init($id);
         $this->item->is_enable = (int) !$this->item->is_enable;
         $this->item->save();
+
         return true;
     }
 
     /**
      * 初始化
+     *
      * @param int $id 活动 ID
      */
     public function init(int $id): void

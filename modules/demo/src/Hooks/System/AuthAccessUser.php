@@ -6,7 +6,6 @@ use Poppy\Core\Services\Contracts\ServiceArray;
 
 class AuthAccessUser implements ServiceArray
 {
-
     public function key(): string
     {
         return 'user';

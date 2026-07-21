@@ -297,7 +297,6 @@ class UtilHelperTest extends TestCase
         $this->assertTrue($str);
     }
 
-
     public function testKvToIdTitle(): void
     {
         $kv       = [

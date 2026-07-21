@@ -8,7 +8,6 @@ use Illuminate\Console\Command;
 
 class MixCommand extends Command
 {
-
     /**
      * The name and signature of the console command.
      *

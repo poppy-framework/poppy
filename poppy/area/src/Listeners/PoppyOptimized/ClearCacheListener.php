@@ -11,7 +11,6 @@ use Poppy\Framework\Events\PoppyOptimized;
  */
 class ClearCacheListener
 {
-
     /**
      * @param PoppyOptimized $event 框架优化
      */
@@ -20,4 +19,3 @@ class ClearCacheListener
         sys_tag('py-area')->clear();
     }
 }
-

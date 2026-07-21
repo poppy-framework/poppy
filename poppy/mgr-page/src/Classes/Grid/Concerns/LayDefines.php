@@ -22,10 +22,10 @@ trait LayDefines
 
     /**
      * 全局定义常规单元格的最小宽度，layui 2.2.1 新增
+     *
      * @var int
      */
     protected $layCellMinWidth = 80;
-
 
     protected $layPage = true;
 
@@ -37,7 +37,6 @@ trait LayDefines
         array_unshift($this->layCols[0], ['type' => 'checkbox']);
     }
 
-
     /**
      * Layui 格式化
      */
@@ -46,9 +45,9 @@ trait LayDefines
         $this->layElem = $this->tableId;
     }
 
-
     /**
      * 列样式
+     *
      * @url https://www.layui.com/doc/modules/table.html#skin
      */
     protected function layColumns()
@@ -62,7 +61,6 @@ trait LayDefines
 
     /**
      * 定义 Layui 的数据定义
-     * @return string
      */
     protected function layDefine(): string
     {
@@ -80,7 +78,8 @@ trait LayDefines
                 'limits'       => $this->perPages,
                 'cellMinWidth' => $this->layCellMinWidth,
             ], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        } catch (JsonException $e) {
+        }
+        catch (JsonException $e) {
             return '';
         }
     }

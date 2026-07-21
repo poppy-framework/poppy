@@ -17,8 +17,11 @@ use Throwable;
 class LianLuTest extends BaseSms
 {
     private string $previousSign = '';
+
     private string $previousMchId = '';
+
     private string $previousAppId = '';
+
     private string $previousAppKey = '';
 
     /**
@@ -43,14 +46,13 @@ class LianLuTest extends BaseSms
 
     /**
      * 发送普通短信
-     * @return void
+     *
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
      * @throws JsonException
      */
     public function testSendSms(): void
     {
-
         $Sms = new Sms();
         $Sms->establish('lianlu:cash_over', data_get($this->conf, 'lianlu_cash_over_code'));
 
@@ -65,7 +67,7 @@ class LianLuTest extends BaseSms
 
     /**
      * 发送带有参数的模板短信
-     * @return void
+     *
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
      * @throws JsonException

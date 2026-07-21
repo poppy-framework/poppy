@@ -7,14 +7,12 @@ use Poppy\MgrPage\Classes\Widgets\FormWidget;
 
 class FormTreeHelper extends FormWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '树状结构';
-
 
     /**
      * Build a form here.

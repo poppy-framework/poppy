@@ -12,9 +12,9 @@ use Illuminate\Support\ServiceProvider;
  */
 class ParseServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-
     /**
      * Register the service provider.
+     *
      * @return void
      */
     public function register()
@@ -33,7 +33,7 @@ class ParseServiceProvider extends ServiceProvider implements DeferrableProvider
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function provides()
     {

@@ -18,14 +18,8 @@ use Poppy\Framework\Poppy\Contracts\Repository as RepositoryContract;
  */
 abstract class Repository implements RepositoryContract
 {
-    /**
-     * @var Config
-     */
     protected Config $config;
 
-    /**
-     * @var Filesystem
-     */
     protected Filesystem $files;
 
     /**
@@ -35,6 +29,7 @@ abstract class Repository implements RepositoryContract
 
     /**
      * Constructor method.
+     *
      * @param Config     $config config
      * @param Filesystem $files  files
      */
@@ -47,8 +42,9 @@ abstract class Repository implements RepositoryContract
 
     /**
      * Get a module's manifest contents.
+     *
      * @param string $slug slug
-     * @return Collection
+     *
      * @throws Exception
      */
     public function getManifest(string $slug): Collection
@@ -56,18 +52,14 @@ abstract class Repository implements RepositoryContract
         $path     = $this->getManifestPath($slug);
         $contents = $this->files->get($path);
         @json_decode($contents, true);
-        if (json_last_error() === JSON_ERROR_NONE) {
+        if (JSON_ERROR_NONE === json_last_error()) {
             return collect(json_decode($contents, true));
         }
-        throw new ApplicationException(
-            '[' . $slug . '] Your JSON manifest file was not properly formatted. ' .
-            'Check for formatting issues and try again.'
-        );
+        throw new ApplicationException('[' . $slug . '] Your JSON manifest file was not properly formatted. Check for formatting issues and try again.');
     }
 
     /**
      * Get modules path.
-     * @return string
      */
     public function getPath(): string
     {
@@ -76,8 +68,6 @@ abstract class Repository implements RepositoryContract
 
     /**
      * Get path of module manifest file.
-     * @param $slug
-     * @return string
      */
     protected function getManifestPath($slug): string
     {
@@ -88,7 +78,6 @@ abstract class Repository implements RepositoryContract
      * 获取所有模块的基本名称
      * Get all module base names.
      * module.{mod}, poppy.{mod}
-     * @return Collection
      */
     protected function getAllBaseNames(): Collection
     {
@@ -106,25 +95,26 @@ abstract class Repository implements RepositoryContract
                     $baseNames->push('poppy.' . basename($item));
                 }
             });
+
             return $baseNames;
-        } catch (InvalidArgumentException $e) {
+        }
+        catch (InvalidArgumentException $e) {
             return collect([]);
         }
     }
 
     /**
      * Get path for the specified module.
-     * @param string $slug
-     * @return string
      */
     private function getModulePath(string $slug): string
     {
         $type   = Str::before($slug, '.');
         $module = Str::after($slug, '.');
-        if ($type === 'poppy') {
+        if ('poppy' === $type) {
             return home_path($module);
         }
         $modulePath = app('path.module');
+
         return $modulePath . "/{$module}";
     }
 }

@@ -19,7 +19,7 @@ class SsoListener
      */
     public function handle(PamPasswordModifiedEvent $event): void
     {
-        if ($event->pam->type === PamAccount::TYPE_BACKEND) {
+        if (PamAccount::TYPE_BACKEND === $event->pam->type) {
             return;
         }
         (new Sso())->banUser($event->pam->id);

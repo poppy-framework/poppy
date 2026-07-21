@@ -6,30 +6,30 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSysFailedJobsTable extends Migration
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::create('sys_failed_jobs', function (Blueprint $table) {
-			$table->bigIncrements('id');
-			$table->text('connection');
-			$table->text('queue');
-			$table->longText('payload');
-			$table->longText('exception');
-			$table->timestamp('failed_at')->useCurrent();
-		});
-	}
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('sys_failed_jobs', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->text('connection');
+            $table->text('queue');
+            $table->longText('payload');
+            $table->longText('exception');
+            $table->timestamp('failed_at')->useCurrent();
+        });
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::dropIfExists('sys_failed_jobs');
-	}
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('sys_failed_jobs');
+    }
 }

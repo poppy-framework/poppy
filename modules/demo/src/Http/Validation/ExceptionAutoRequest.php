@@ -4,15 +4,13 @@ declare(strict_types = 1);
 
 namespace Demo\Http\Validation;
 
-use \Poppy\Framework\Application\Request;
+use Poppy\Framework\Application\Request;
 use Poppy\Framework\Validation\Rule;
 
 class ExceptionAutoRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -21,8 +19,6 @@ class ExceptionAutoRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

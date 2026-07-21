@@ -12,9 +12,8 @@ use Poppy\Sms\Classes\Contracts\SmsContract;
  */
 class LocalSmsProvider extends BaseSms implements SmsContract
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function send(string $type, $mobile, array $params = [], $sign = ''): bool
     {

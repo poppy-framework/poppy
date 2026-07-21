@@ -10,9 +10,7 @@ use Poppy\SensitiveWord\Action\Word;
 
 class FormSensWordEstablish extends FormWidget
 {
-
     public $ajax = true;
-
 
     public function handle()
     {
@@ -20,6 +18,7 @@ class FormSensWordEstablish extends FormWidget
         if (!$Word->establish(input())) {
             return Resp::error($Word->getError());
         }
+
         return Resp::success('操作成功', '_top_reload|1');
     }
 

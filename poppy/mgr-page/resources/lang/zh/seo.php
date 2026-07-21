@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /* Web
 * ---------------------------------------- */
     'web_js_popup'                 => '弹出窗',
@@ -77,12 +76,10 @@ return [
     'backend_pam_delete_token'     => '移除凭据',
     'backend_upload_store'         => '上传配置',
 
-
     /* 其他操作
     * ---------------------------------------- */
     'util_captcha_send'            => '发送验证码',
     'pam_auth_access'              => '授权',
     'pam_auth_token'               => '获取Token',
     'util_image_upload'            => '上传图片',
-
 ];

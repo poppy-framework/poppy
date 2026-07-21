@@ -13,7 +13,6 @@ use Poppy\System\Setting\Repository\SettingRepository;
 
 class SettingTest extends TestCase
 {
-
     /**
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException|ApplicationException
@@ -127,6 +126,7 @@ class SettingTest extends TestCase
     private function randKey($group = ''): string
     {
         $faker = $this->faker();
+
         return 'testing::' . ($group ?: $faker->regexify('[a-z]{3,5}')) . '.' . $faker->regexify('/[a-z]{5,8}/');
     }
 }

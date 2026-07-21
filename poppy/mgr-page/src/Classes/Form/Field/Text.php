@@ -18,7 +18,6 @@ class Text extends Field
      */
     protected string $type = 'text';
 
-
     /**
      * Render this filed.
      *

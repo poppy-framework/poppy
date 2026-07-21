@@ -9,14 +9,12 @@ use Illuminate\Support\Arr;
 class In extends FilterItem
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected string $query = 'whereIn';
 
     /**
      * Get condition of this filter.
-     *
-     * @param array $inputs
      *
      * @return array|void
      */

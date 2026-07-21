@@ -13,25 +13,20 @@ class Demo implements Renderable
 {
     /**
      * Content title.
-     *
-     * @var string
      */
     protected string $title = '';
 
     /**
      * Content description.
-     *
-     * @var string
      */
     protected string $description = '';
 
     /**
      * Content constructor.
      *
-     * @param Closure|null $callback
      * @throws PoppyException
      */
-    public function __construct(Closure $callback = null)
+    public function __construct(?Closure $callback = null)
     {
         if (!app('poppy')->exists('poppy.mgr-page')) {
             throw new PoppyException('模块 `poppy.mgr-page` 不存在');
@@ -42,29 +37,30 @@ class Demo implements Renderable
     }
 
     /**
-     * @param string $title
-     *
      * @return $this
      */
     public function title(string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
     /**
      * Set description of content.
-     * @param string $description
+     *
      * @return $this
      */
     public function description(string $description = ''): self
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
      * Render this content.
+     *
      * @throws Throwable
      */
     public function render()

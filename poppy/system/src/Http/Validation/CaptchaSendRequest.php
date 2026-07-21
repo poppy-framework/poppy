@@ -10,12 +10,13 @@ use Poppy\System\Action\Verification;
 
 /**
  * @deprecated 4.2
+ *
  * @removed    5.0
+ *
  * @see        \Poppy\System\Http\Request\ApiV1\Captcha\CaptchaSendRequest
  */
 class CaptchaSendRequest extends Request
 {
-
     public function getPassport()
     {
         return $this->input('passport', '');
@@ -36,8 +37,6 @@ class CaptchaSendRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

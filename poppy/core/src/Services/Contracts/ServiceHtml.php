@@ -11,7 +11,6 @@ interface ServiceHtml
 {
     /**
      * 输出
-     * @return mixed
      */
     public function output();
 }

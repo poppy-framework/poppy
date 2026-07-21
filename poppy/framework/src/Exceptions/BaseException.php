@@ -13,20 +13,19 @@ use Throwable;
  */
 abstract class BaseException extends Exception
 {
-
     /**
      * Exception Context
-     * @var array
      */
     protected array $context = [];
 
     /**
      * BaseException constructor.
-     * @param string         $message message
-     * @param int            $code code
+     *
+     * @param string         $message  message
+     * @param int            $code     code
      * @param Throwable|null $previous previous
      */
-    public function __construct($message = '', $code = 0, Throwable $previous = null)
+    public function __construct($message = '', $code = 0, ?Throwable $previous = null)
     {
         if ($message instanceof Resp) {
             parent::__construct($message->getMessage(), $message->getCode(), $previous);
@@ -36,10 +35,10 @@ abstract class BaseException extends Exception
         }
     }
 
-
     public function setContext(array $context = []): self
     {
         $this->context = $context;
+
         return $this;
     }
 

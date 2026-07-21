@@ -17,9 +17,9 @@ use Throwable;
  */
 class FileRepository extends Repository
 {
-
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function all(): Collection
@@ -29,6 +29,7 @@ class FileRepository extends Repository
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function slugs(): Collection
@@ -44,6 +45,7 @@ class FileRepository extends Repository
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function where(string $key, $value): Collection
@@ -53,6 +55,7 @@ class FileRepository extends Repository
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function sortBy(string $key): Collection
@@ -64,16 +67,19 @@ class FileRepository extends Repository
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function sortByDesc(string $key): Collection
     {
         $collection = $this->all();
+
         return $collection->sortByDesc($key);
     }
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function exists(string $slug): bool
@@ -83,6 +89,7 @@ class FileRepository extends Repository
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function count(): int
@@ -92,6 +99,7 @@ class FileRepository extends Repository
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function get(string $property, $default = null)
@@ -105,6 +113,7 @@ class FileRepository extends Repository
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function set(string $property, $value): bool
@@ -127,14 +136,17 @@ class FileRepository extends Repository
             $merged  = $cache->merge($module);
             $content = json_encode($merged->all(), JSON_PRETTY_PRINT);
             $this->files->put($cachePath, $content);
+
             return true;
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             throw new ApplicationException($e->getMessage());
         }
     }
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function enabled(): Collection
@@ -144,6 +156,7 @@ class FileRepository extends Repository
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function disabled(): Collection
@@ -153,28 +166,31 @@ class FileRepository extends Repository
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function isEnabled(string $slug): bool
     {
         $module = $this->where('slug', $slug);
 
-        return $module['enabled'] === true;
+        return true === $module['enabled'];
     }
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function isDisabled(string $slug): bool
     {
         $module = $this->where('slug', $slug);
 
-        return $module['enabled'] === false;
+        return false === $module['enabled'];
     }
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      */
     public function enable(string $slug): bool
@@ -183,14 +199,14 @@ class FileRepository extends Repository
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function disable(string $slug): bool
     {
         return $this->set($slug . '::enabled', false);
     }
-
 
     /**
      * @inerhitDoc
@@ -199,7 +215,6 @@ class FileRepository extends Repository
     {
         return Str::startsWith($slug, 'poppy');
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -210,6 +225,7 @@ class FileRepository extends Repository
 
     /**
      * @inerhitDoc
+     *
      * @throws ApplicationException
      * @throws Exception
      */
@@ -271,7 +287,7 @@ class FileRepository extends Repository
 
     /**
      * Get the contents of the cache file.
-     * @return Collection
+     *
      * @throws ApplicationException
      */
     private function getCache(): Collection
@@ -280,7 +296,6 @@ class FileRepository extends Repository
             $cachePath = $this->getCachePath();
 
             if (!$this->files->exists($cachePath)) {
-
                 // create empty cache
                 $cachePath = $this->getCachePath();
                 $content   = json_encode([], JSON_PRETTY_PRINT);
@@ -290,18 +305,17 @@ class FileRepository extends Repository
             }
 
             return collect(json_decode($this->files->get($cachePath), true));
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             throw new ApplicationException($e->getMessage());
         }
     }
 
     /**
      * Get the path to the cache file.
-     * @return string
      */
     private function getCachePath(): string
     {
         return storage_path('app/poppy.json');
     }
 }
-

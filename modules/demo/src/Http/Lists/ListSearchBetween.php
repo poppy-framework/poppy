@@ -10,9 +10,9 @@ use Poppy\MgrPage\Classes\Grid\Filter;
 
 class ListSearchBetween extends ListSearchWhere
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns(): void
@@ -23,8 +23,7 @@ class ListSearchBetween extends ListSearchWhere
     }
 
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {

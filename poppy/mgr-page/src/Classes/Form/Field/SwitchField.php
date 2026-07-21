@@ -9,7 +9,6 @@ use Poppy\System\Models\SysConfig;
 
 class SwitchField extends Field
 {
-
     protected $default = 0;
 
     public function render()
@@ -18,6 +17,7 @@ class SwitchField extends Field
             SysConfig::NO  => '关闭',
             SysConfig::YES => '开启',
         ];
+
         return parent::render();
     }
 }

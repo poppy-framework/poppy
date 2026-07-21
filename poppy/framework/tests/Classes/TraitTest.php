@@ -31,10 +31,9 @@ class TraitTest extends TestCase
         $this->assertNotEquals('', $class->getSuccess()->getMessage());
     }
 
-
     public function testKeyParser()
     {
-        $class = new TraitDemo();
+        $class       = new TraitDemo();
         [$n, $g, $k] = $class->parseKey('n::g.k');
 
         $this->assertEquals('g', $g);

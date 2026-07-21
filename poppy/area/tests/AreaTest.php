@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\Area\Tests;
 
-
 use Poppy\Area\Models\SysArea;
 use Poppy\Framework\Application\TestCase;
 
@@ -16,7 +15,6 @@ class AreaTest extends TestCase
         $this->assertEquals('中国', $countryKv['CN']);
     }
 
-
     public function testAreaKv(): void
     {
         $city = SysArea::kvCity('3701');
@@ -25,5 +23,4 @@ class AreaTest extends TestCase
         $city = SysArea::kvArea(1);
         $this->assertEquals('北京市', $city);
     }
-
 }

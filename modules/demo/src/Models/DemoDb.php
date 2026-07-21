@@ -16,5 +16,4 @@ class DemoDb extends Model
         'text',
         'decimal',
     ];
-
 }

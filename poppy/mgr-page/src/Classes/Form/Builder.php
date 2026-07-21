@@ -17,16 +17,13 @@ class Builder
     /**
      *  Previous url key.
      */
-    const PREVIOUS_URL_KEY = '_previous_';
+    public const PREVIOUS_URL_KEY = '_previous_';
     /**
      * Modes constants.
      */
-    const MODE_EDIT   = 'edit';
-    const MODE_CREATE = 'create';
+    public const MODE_EDIT   = 'edit';
+    public const MODE_CREATE = 'create';
 
-    /**
-     * @var mixed
-     */
     protected $id;
 
     /**
@@ -34,9 +31,6 @@ class Builder
      */
     protected $form;
 
-    /**
-     * @var
-     */
     protected $action;
 
     /**
@@ -97,8 +91,6 @@ class Builder
 
     /**
      * Builder constructor.
-     *
-     * @param Form $form
      */
     public function __construct(Form $form)
     {
@@ -161,8 +153,6 @@ class Builder
     /**
      * Returns builder is $mode.
      *
-     * @param $mode
-     *
      * @return bool
      */
     public function isMode($mode)
@@ -193,8 +183,6 @@ class Builder
     /**
      * Set resource Id.
      *
-     * @param $id
-     *
      * @return void
      */
     public function setResourceId($id)
@@ -204,8 +192,6 @@ class Builder
 
     /**
      * Get Resource id.
-     *
-     * @return mixed
      */
     public function getResourceId()
     {
@@ -217,10 +203,10 @@ class Builder
      */
     public function getResource($slice = null)
     {
-        if ($this->mode == self::MODE_CREATE) {
+        if (self::MODE_CREATE == $this->mode) {
             return $this->form->resource(-1);
         }
-        if ($slice !== null) {
+        if (null !== $slice) {
             return $this->form->resource($slice);
         }
 
@@ -327,8 +313,6 @@ class Builder
      * Get specify field.
      *
      * @param string $name
-     *
-     * @return mixed
      */
     public function field($name)
     {
@@ -366,8 +350,6 @@ class Builder
     }
 
     /**
-     * @param Field $field
-     *
      * @return void
      */
     public function addHiddenField(Field $field)
@@ -395,13 +377,12 @@ class Builder
      * Get or set option.
      *
      * @param string $option
-     * @param mixed $value
      *
      * @return $this
      */
     public function option($option, $value = null)
     {
-        if (func_num_args() == 1) {
+        if (1 == func_num_args()) {
             return Arr::get($this->options, $option);
         }
 

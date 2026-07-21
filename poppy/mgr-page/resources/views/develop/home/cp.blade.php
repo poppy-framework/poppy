@@ -14,8 +14,7 @@
                             @if (isset($nav_group['children']) && is_array($nav_group['children']))
                                 @foreach($nav_group['children'] as $sub)
                                     <a class="layui-btn layui-btn-primary"
-                                            href="{!! $sub['url'] ?? route_url($sub['route'], $sub['route_param']??[], $sub['param']??[]) !!}"
-                                    >
+                                        href="{!! $sub['url'] ?? route_url($sub['route'], $sub['route_param']??[], $sub['param']??[]) !!}">
                                         {{$sub['title']}}
                                     </a>
                                 @endforeach

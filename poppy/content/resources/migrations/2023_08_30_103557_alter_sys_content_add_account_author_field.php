@@ -10,8 +10,6 @@ class AlterSysContentAddAccountAuthorField extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -26,8 +24,6 @@ class AlterSysContentAddAccountAuthorField extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

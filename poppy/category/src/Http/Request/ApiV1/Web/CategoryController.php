@@ -17,24 +17,28 @@ use Poppy\System\Http\Request\ApiV1\JwtApiController;
  */
 class CategoryController extends JwtApiController
 {
-
     /**
      * @OA\Post(
      *     path="/api_v1/category/category/sort",
      *     tags={"Category"},
      *     summary="[Category]排序",
      *     description="调整分类位置. 目标结果: id {position} aim_id, 其中 position=gt 表示 id 大于 aim_id (排在后面), lt 表示 id 小于 aim_id (排在前).",
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         description="分类排序请求体, 见 PoppyCategoryCategorySortRequest schema",
+     *
      *         @OA\MediaType(
      *             mediaType="application/json",
+     *
      *             @OA\Schema(ref="#/components/schemas/PoppyCategoryCategorySortRequest")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="已排序",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/PoppySystemResponseBody")
      *     ),
      * )

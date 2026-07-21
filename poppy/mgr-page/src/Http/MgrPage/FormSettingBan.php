@@ -15,7 +15,6 @@ use Poppy\System\Models\SysConfig;
 
 class FormSettingBan extends FormSettingBase
 {
-
     protected $withContent = true;
 
     protected string $bw = PamBan::WB_TYPE_BLACK;
@@ -29,9 +28,8 @@ class FormSettingBan extends FormSettingBase
         $key         = 'py-system::ban.type-' . $type;
         $this->type  = $type;
         $this->bw    = sys_setting($key, PamBan::WB_TYPE_BLACK);
-        $this->title = $this->bw === PamBan::WB_TYPE_BLACK ? '黑名单模式' : '白名单模式';
+        $this->title = PamBan::WB_TYPE_BLACK === $this->bw ? '黑名单模式' : '白名单模式';
     }
-
 
     public function handle(Request $request)
     {
@@ -55,6 +53,7 @@ class FormSettingBan extends FormSettingBase
     public function data(): array
     {
         $data = parent::data();
+
         return array_merge($data, [
             'type' => $this->type,
         ]);
@@ -65,7 +64,7 @@ class FormSettingBan extends FormSettingBase
      */
     public function form()
     {
-        $description = $this->bw === PamBan::WB_TYPE_BLACK
+        $description = PamBan::WB_TYPE_BLACK === $this->bw
             ? '是否启用设备过滤, 黑名单模式, 启用会校验设备 ID'
             : '是否启用设备过滤, 白名单模式, 启用会校验设备 ID';
 

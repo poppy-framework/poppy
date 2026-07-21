@@ -2,105 +2,98 @@
 
 namespace Poppy\MgrPage\Classes\Form\Layout;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Poppy\MgrPage\Classes\Form;
-
 
 /**
  * 布局文件
  */
 class Layout
 {
-	/**
-	 * @var Collection
-	 */
-	protected $columns;
+    /**
+     * @var Collection
+     */
+    protected $columns;
 
-	/**
-	 * @var Column
-	 */
-	protected $current;
+    /**
+     * @var Column
+     */
+    protected $current;
 
-	/**
-	 * @var Form
-	 */
-	protected $parent;
+    /**
+     * @var Form
+     */
+    protected $parent;
 
-	/**
-	 * Layout constructor.
-	 *
-	 * @param Form $form
-	 */
-	public function __construct(Form $form)
-	{
-		$this->parent = $form;
+    /**
+     * Layout constructor.
+     */
+    public function __construct(Form $form)
+    {
+        $this->parent = $form;
 
-		$this->current = new Column();
+        $this->current = new Column();
 
-		$this->columns = new Collection();
-	}
+        $this->columns = new Collection();
+    }
 
-	/**
-	 * Add a filter to layout column.
-	 *
-	 * @param \Poppy\MgrPage\Classes\Form\Field $field
-	 */
-	public function addField(\Poppy\MgrPage\Classes\Form\Field $field)
-	{
-		$this->current->add($field);
-	}
+    /**
+     * Add a filter to layout column.
+     */
+    public function addField(Form\Field $field)
+    {
+        $this->current->add($field);
+    }
 
-	/**
-	 * Add a new column in layout.
-	 *
-	 * @param int      $width
-	 * @param \Closure $closure
-	 */
-	public function column($width, \Closure $closure)
-	{
-		if ($this->columns->isEmpty()) {
-			$column = $this->current;
+    /**
+     * Add a new column in layout.
+     *
+     * @param int $width
+     */
+    public function column($width, Closure $closure)
+    {
+        if ($this->columns->isEmpty()) {
+            $column = $this->current;
 
-			$column->setWidth($width);
-		}
-		else {
-			$column = new Column($width);
+            $column->setWidth($width);
+        }
+        else {
+            $column = new Column($width);
 
-			$this->current = $column;
-		}
+            $this->current = $column;
+        }
 
-		$this->columns->push($column);
+        $this->columns->push($column);
 
-		$closure($this->parent);
-	}
+        $closure($this->parent);
+    }
 
-	/**
-	 * Get all columns in filter layout.
-	 *
-	 * @return Collection
-	 */
-	public function columns()
-	{
-		if ($this->columns->isEmpty()) {
-			$this->columns->push($this->current);
-		}
+    /**
+     * Get all columns in filter layout.
+     *
+     * @return Collection
+     */
+    public function columns()
+    {
+        if ($this->columns->isEmpty()) {
+            $this->columns->push($this->current);
+        }
 
-		return $this->columns;
-	}
+        return $this->columns;
+    }
 
-	/**
-	 * Remove reserved fields from form layout.
-	 *
-	 * @param array $fields
-	 */
-	public function removeReservedFields(array $fields)
-	{
-		if (empty($fields)) {
-			return;
-		}
+    /**
+     * Remove reserved fields from form layout.
+     */
+    public function removeReservedFields(array $fields)
+    {
+        if (empty($fields)) {
+            return;
+        }
 
-		foreach ($this->columns() as &$column) {
-			$column->removeFields($fields);
-		}
-	}
+        foreach ($this->columns() as &$column) {
+            $column->removeFields($fields);
+        }
+    }
 }

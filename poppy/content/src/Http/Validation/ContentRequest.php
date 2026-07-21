@@ -11,7 +11,6 @@ use Route;
 
 class ContentRequest extends Request
 {
-
     protected bool $isValidate = false;
 
     public function attributes(): array
@@ -31,14 +30,13 @@ class ContentRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         $tbName = (new SysContent())->getTable();
         $id     = Route::input('id');
         $type   = input('type');
+
         return [
             'type'        => [
                 Rule::string(),

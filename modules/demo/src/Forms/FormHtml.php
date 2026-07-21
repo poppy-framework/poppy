@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormHtml extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'HTML';
-
 
     /**
      * Build a form here.

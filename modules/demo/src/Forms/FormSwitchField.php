@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormSwitchField extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'SwitchField';
-
 
     /**
      * Build a form here.

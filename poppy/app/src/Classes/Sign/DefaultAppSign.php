@@ -47,7 +47,8 @@ class DefaultAppSign
 
         try {
             $item = SysApp::item($appid);
-        } catch (AppNotExistsException $e) {
+        }
+        catch (AppNotExistsException $e) {
             return $this->setError('应用不存在');
         }
         if (!$item) {
@@ -58,24 +59,26 @@ class DefaultAppSign
             return $this->setError('此应用已禁用');
         }
 
-        if (strlen($item['secret']) !== 32) {
+        if (32 !== strlen($item['secret'])) {
             return $this->setError('错误的密钥');
         }
 
         // check sign
         if ($sign !== $this->calcSign($input, $item['secret'])) {
             sys_warning('poppy.app-sign_error', [], true);
+
             return $this->setError(new Resp(Resp::SIGN_ERROR, '签名错误'));
         }
+
         return true;
     }
 
     /**
      * 计算验签
+     *
      * @param array  $params 参数
      * @param int    $appid  应用 ID
      * @param string $secret 密钥
-     * @return array
      */
     public function sign(array $params, int $appid, string $secret): array
     {
@@ -91,22 +94,19 @@ class DefaultAppSign
 
     /**
      * 对数据进行签名, 并返回 md5 的数据
+     *
      * @param array  $params 参数
      * @param string $secret 密钥
-     * @return string
      */
     protected function calcSign(array $params, string $secret): string
     {
         $params = $this->except($params);
         ksort($params);
         $kvStr = ArrayHelper::toKvStr($params);
+
         return md5(md5($kvStr) . $secret);
     }
 
-    /**
-     * @param $params
-     * @return array
-     */
     protected function except($params): array
     {
         $excepts = [];
@@ -120,6 +120,7 @@ class DefaultAppSign
                 }
             }
         }
+
         return Arr::except($excepts, [
             'sign', 'image', 'file', 'appid',
         ]);

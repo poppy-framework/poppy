@@ -10,7 +10,6 @@ use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
 class FormSettingUpload extends FormSettingBase
 {
-
     public $inbox = true;
 
     protected $title = '上传配置';

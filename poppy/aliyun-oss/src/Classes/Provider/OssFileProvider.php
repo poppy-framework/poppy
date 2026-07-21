@@ -19,23 +19,25 @@ use Throwable;
  */
 class OssFileProvider extends DefaultFileProvider
 {
-
     /**
      * Oss 限制最长边不会超过 30000 像素
-     * @var int|null
      */
     protected ?int $resizeLongDistrict = 30000;
+
     /**
      * @var bool 是否在保存后删除本地文件
      */
     private bool $deleteLocal = true;
 
     private string $bucket;
-    private string $aliyunAccessKey;
-    private string $aliyunAccessSecret;
-    private string $endpoint;
-    private string $tempWatermark;
 
+    private string $aliyunAccessKey;
+
+    private string $aliyunAccessSecret;
+
+    private string $endpoint;
+
+    private string $tempWatermark;
 
     /**
      * OssDefaultUploadProvider constructor.
@@ -61,18 +63,19 @@ class OssFileProvider extends DefaultFileProvider
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function saveFile(UploadedFile $file): bool
     {
         if (!parent::saveFile($file)) {
             return false;
         }
+
         return $this->saveAli($this->deleteLocal);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function saveInput($content): bool
     {
@@ -84,9 +87,6 @@ class OssFileProvider extends DefaultFileProvider
     }
 
     /**
-     * @param string $dist
-     *
-     * @return bool
      * @throws OssException
      * @throws RequestCore_Exception
      */
@@ -99,6 +99,7 @@ class OssFileProvider extends DefaultFileProvider
         try {
             $this->destination = ltrim($this->destination, '/');
             $client->copyObject($this->bucket, $this->destination, $this->bucket, $dist);
+
             return true;
         }
         catch (Throwable $e) {
@@ -106,9 +107,7 @@ class OssFileProvider extends DefaultFileProvider
         }
     }
 
-
     /**
-     * @return bool
      * @throws OssException
      * @throws RequestCore_Exception
      */
@@ -118,6 +117,7 @@ class OssFileProvider extends DefaultFileProvider
         if ($client->doesObjectExist($this->bucket, $this->destination)) {
             $client->deleteObject($this->bucket, $this->destination);
         }
+
         return true;
     }
 
@@ -125,8 +125,6 @@ class OssFileProvider extends DefaultFileProvider
      * 保存到阿里云
      *
      * @param bool $delete_local 是否删除本地文件
-     *
-     * @return bool
      */
     private function saveAli(bool $delete_local = true): bool
     {
@@ -139,6 +137,7 @@ class OssFileProvider extends DefaultFileProvider
             if ($delete_local) {
                 return $this->storage()->delete($this->destination);
             }
+
             return true;
         }
         catch (Exception $e) {

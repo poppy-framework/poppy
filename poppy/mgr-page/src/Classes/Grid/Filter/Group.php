@@ -12,14 +12,14 @@ class Group extends FilterItem
 {
     /**
      * Input value from presenter.
-     *
-     * @var mixed
      */
     public $input;
+
     /**
      * @var Closure|null
      */
     protected $builder;
+
     /**
      * @var string
      */
@@ -28,11 +28,10 @@ class Group extends FilterItem
     /**
      * Group constructor.
      *
-     * @param string       $column
-     * @param string       $label
-     * @param Closure|null $builder
+     * @param string $column
+     * @param string $label
      */
-    public function __construct($column, $label = '', Closure $builder = null)
+    public function __construct($column, $label = '', ?Closure $builder = null)
     {
         $this->column = $column;
 
@@ -104,8 +103,7 @@ class Group extends FilterItem
     /**
      * Specify a where query.
      *
-     * @param string  $label
-     * @param Closure $builder
+     * @param string $label
      *
      * @return Group
      */
@@ -160,7 +158,7 @@ class Group extends FilterItem
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function condition(array $inputs)
     {
@@ -182,9 +180,9 @@ class Group extends FilterItem
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function variables():array
+    public function variables(): array
     {
         $select = request("{$this->id}_group");
 
@@ -197,7 +195,7 @@ class Group extends FilterItem
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function render()
     {
@@ -294,7 +292,6 @@ class Group extends FilterItem
      * Join a query to group.
      *
      * @param string $label
-     * @param array  $condition
      *
      * @return $this
      */

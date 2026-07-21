@@ -31,10 +31,8 @@ class Content implements Renderable
 
     /**
      * Content constructor.
-     *
-     * @param Closure|null $callback
      */
-    public function __construct(Closure $callback = null)
+    public function __construct(?Closure $callback = null)
     {
         if ($callback instanceof Closure) {
             $callback($this);
@@ -42,8 +40,6 @@ class Content implements Renderable
     }
 
     /**
-     * @param string $title
-     *
      * @return $this
      */
     public function title(string $title)
@@ -70,8 +66,6 @@ class Content implements Renderable
     /**
      * Alias of method row.
      *
-     * @param mixed $content
-     * @return mixed
      * @throws Throwable
      */
     public function body($content)
@@ -90,8 +84,6 @@ class Content implements Renderable
 
     /**
      * Add one row for content body.
-     *
-     * @param $content
      *
      * @return $this
      */
@@ -123,8 +115,6 @@ class Content implements Renderable
     }
 
     /**
-     * @param $var
-     *
      * @return Content
      */
     public function dump($var)
@@ -134,8 +124,6 @@ class Content implements Renderable
 
     /**
      * Build html of content.
-     *
-     * @return string
      */
     public function build(): string
     {
@@ -150,6 +138,7 @@ class Content implements Renderable
 
     /**
      * Render this content.
+     *
      * @throws Throwable
      */
     public function render()
@@ -167,8 +156,6 @@ class Content implements Renderable
 
     /**
      * Add Row.
-     *
-     * @param Row $row
      */
     protected function addRow(Row $row)
     {

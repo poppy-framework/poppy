@@ -6,10 +6,9 @@ use Poppy\Framework\Validation\Rule;
 
 class FormColor extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '颜色(仅仅支持一种格式)';

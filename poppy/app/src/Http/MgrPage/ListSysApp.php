@@ -17,11 +17,11 @@ use Poppy\System\Models\SysConfig;
 
 class ListSysApp extends ListBase
 {
-
     public $title = '应用管理';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns(): void
@@ -29,10 +29,11 @@ class ListSysApp extends ListBase
         $this->column('id', '应用ID')->sortable()->width(100);
         $this->column('title', '标题')->width(200);
         $this->column('account_type', '绑定用户')->display(function ($type) {
-            /** @var $this SysApp */
+            /* @var $this SysApp */
             if ($type) {
                 return PamAccount::kvType($type) . "(id: {$this->account_id})";
             }
+
             return '';
         })->width(150);
         $this->column('description', '描述');
@@ -50,8 +51,7 @@ class ListSysApp extends ListBase
     }
 
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {
@@ -70,7 +70,6 @@ class ListSysApp extends ListBase
             });
         };
     }
-
 
     public function quickButtons(): Closure
     {

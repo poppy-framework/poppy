@@ -35,6 +35,7 @@ class JwtAuthenticate extends BaseMiddleware
                 return response('Unauthorized Jwt.', 401);
             }
         }
+
         return $next($request);
     }
 }

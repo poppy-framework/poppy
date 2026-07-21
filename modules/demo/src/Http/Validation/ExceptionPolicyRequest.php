@@ -11,12 +11,11 @@ use Poppy\System\Models\PamAccount;
 
 class ExceptionPolicyRequest extends Request
 {
-
-
     public function authorize(): bool
     {
         $pam = PamAccount::inRandomOrder()->first();
         Auth::login($pam);
+
         return $this->can('create', DemoGridPolicy::class);
     }
 

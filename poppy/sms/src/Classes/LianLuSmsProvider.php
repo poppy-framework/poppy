@@ -12,13 +12,11 @@ use Poppy\Sms\Classes\LianLu\SmsApi;
 
 class LianLuSmsProvider extends BaseSms implements SmsContract
 {
-    /**
-     * @var SmsApi
-     */
     private SmsApi $llApi;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws JsonException
      */
     public function send(string $type, $mobile, array $params = [], $sign = ''): bool
@@ -41,7 +39,7 @@ class LianLuSmsProvider extends BaseSms implements SmsContract
         $result = $this->llApi->sendTemplateSMS($mobile, $templateId, $templateParams);
         if (!is_null($result)) {
             $output = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
-            if (isset($output['status']) && $output['status'] === '00') {
+            if (isset($output['status']) && '00' === $output['status']) {
                 return true;
             }
 
@@ -53,8 +51,6 @@ class LianLuSmsProvider extends BaseSms implements SmsContract
 
     /**
      * 初始化配置
-     *
-     * @param string $mobile
      */
     private function initConfig(string $mobile): void
     {

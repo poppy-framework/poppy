@@ -24,7 +24,7 @@ trait UploadField
      *
      * @var null
      */
-    protected $name = null;
+    protected $name;
 
     /**
      * Storage instance.
@@ -149,14 +149,15 @@ trait UploadField
      * @param string $disk Disks defined in `config/filesystems.php`.
      *
      * @return $this
-     * @throws Exception
      *
+     * @throws Exception
      */
     public function disk($disk)
     {
         try {
             $this->storage = Storage::disk($disk);
-        } catch (Exception $exception) {
+        }
+        catch (Exception $exception) {
             if (!array_key_exists($disk, config('filesystems.disks'))) {
                 return $this;
             }
@@ -171,7 +172,7 @@ trait UploadField
      * Specify the directory and name for upload file.
      *
      * @param string      $directory
-     * @param null|string $name
+     * @param string|null $name
      *
      * @return $this
      */
@@ -257,8 +258,6 @@ trait UploadField
     /**
      * If name already exists, rename it.
      *
-     * @param $file
-     *
      * @return void
      */
     public function renameIfExists(UploadedFile $file)
@@ -270,8 +269,6 @@ trait UploadField
 
     /**
      * Get file visit url.
-     *
-     * @param $path
      *
      * @return string
      */
@@ -291,7 +288,7 @@ trait UploadField
     /**
      * Destroy original files.
      *
-     * @return void.
+     * @return void
      */
     public function destroy()
     {
@@ -325,7 +322,7 @@ trait UploadField
     /**
      * Initialize the storage instance.
      *
-     * @return void.
+     * @return void
      */
     protected function initStorage()
     {
@@ -386,7 +383,7 @@ trait UploadField
         $ext      = strtok(strtolower(pathinfo($file, PATHINFO_EXTENSION)), '?');
 
         foreach ($this->fileTypes as $type => $pattern) {
-            if (preg_match($pattern, $ext) === 1) {
+            if (1 === preg_match($pattern, $ext)) {
                 $filetype = $type;
                 break;
             }
@@ -394,11 +391,11 @@ trait UploadField
 
         $extra = ['type' => $filetype];
 
-        if ($filetype == 'video') {
+        if ('video' == $filetype) {
             $extra['filetype'] = "video/{$ext}";
         }
 
-        if ($filetype == 'audio') {
+        if ('audio' == $filetype) {
             $extra['filetype'] = "audio/{$ext}";
         }
 
@@ -411,8 +408,6 @@ trait UploadField
 
     /**
      * Get store name of upload file.
-     *
-     * @param UploadedFile $file
      *
      * @return string
      */
@@ -439,10 +434,6 @@ trait UploadField
 
     /**
      * Upload file and delete original file.
-     *
-     * @param UploadedFile $file
-     *
-     * @return mixed
      */
     protected function upload(UploadedFile $file)
     {
@@ -458,8 +449,6 @@ trait UploadField
     /**
      * Generate a unique name for uploaded file.
      *
-     * @param UploadedFile $file
-     *
      * @return string
      */
     protected function generateUniqueName(UploadedFile $file)
@@ -469,8 +458,6 @@ trait UploadField
 
     /**
      * Generate a sequence name for uploaded file.
-     *
-     * @param UploadedFile $file
      *
      * @return string
      */
@@ -482,7 +469,7 @@ trait UploadField
         $new       = sprintf('%s_%s.%s', $original, $index, $extension);
 
         while ($this->storage->exists("{$this->getDirectory()}/$new")) {
-            $index++;
+            ++$index;
             $new = sprintf('%s_%s.%s', $original, $index, $extension);
         }
 

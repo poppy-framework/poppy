@@ -3,11 +3,14 @@
 declare(strict_types = 1);
 
 namespace Poppy\Extension\Alipay\Aop\Request;
+
 /**
  * ALIPAY API: alipay.trade.query request
  *
  * @author auto create
+ *
  * @since  1.0, 2020-08-20 16:53:53
+ *
  * @url https://opendocs.alipay.com/apis/api_1/alipay.trade.query
  */
 class AlipayTradeQueryRequest
@@ -26,7 +29,7 @@ class AlipayTradeQueryRequest
 
     private $prodCode;
 
-    private $apiVersion = "1.0";
+    private $apiVersion = '1.0';
 
     private $notifyUrl;
 
@@ -42,12 +45,12 @@ class AlipayTradeQueryRequest
     public function setBizContent($bizContent)
     {
         $this->bizContent              = $bizContent;
-        $this->apiParas["biz_content"] = $bizContent;
+        $this->apiParas['biz_content'] = $bizContent;
     }
 
     public function getApiMethodName()
     {
-        return "alipay.trade.query";
+        return 'alipay.trade.query';
     }
 
     public function getNotifyUrl()
@@ -122,9 +125,6 @@ class AlipayTradeQueryRequest
 
     public function setNeedEncrypt($needEncrypt)
     {
-
         $this->needEncrypt = $needEncrypt;
-
     }
-
 }

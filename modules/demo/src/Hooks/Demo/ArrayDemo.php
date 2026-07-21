@@ -11,12 +11,10 @@ use Poppy\Core\Services\Contracts\ServiceArray;
  */
 class ArrayDemo implements ServiceArray
 {
-
     public function key(): string
     {
         return 'poppy-core-array-service';
     }
-
 
     public function data(): array
     {
@@ -25,7 +23,7 @@ class ArrayDemo implements ServiceArray
             'forms' => [
                 FormDemoAli::class,
                 FormSettingAvatar::class,
-            ]
+            ],
         ];
     }
 }

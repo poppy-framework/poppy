@@ -14,9 +14,7 @@ use Poppy\System\Models\SysConfig;
  */
 class PamAccountPolicy
 {
-
     use PolicyTrait;
-
 
     protected static array $permissionMap = [
         'password' => 'backend:py-system.pam.password',
@@ -24,7 +22,9 @@ class PamAccountPolicy
 
     /**
      * 编辑
+     *
      * @param PamAccount $pam 账号
+     *
      * @return bool
      */
     public function create(PamAccount $pam)
@@ -34,8 +34,10 @@ class PamAccountPolicy
 
     /**
      * 编辑
+     *
      * @param PamAccount $pam  账号
      * @param PamAccount $item 账号
+     *
      * @return bool
      */
     public function edit(PamAccount $pam, PamAccount $item)
@@ -45,26 +47,28 @@ class PamAccountPolicy
 
     /**
      * 保存权限
+     *
      * @param PamAccount $pam  账号
      * @param PamAccount $item 账号
+     *
      * @return bool
      */
     public function enable(PamAccount $pam, PamAccount $item)
     {
-        return $item->is_enable === SysConfig::NO;
+        return SysConfig::NO === $item->is_enable;
     }
-
 
     public function password(PamAccount $pam, PamAccount $item): bool
     {
         return true;
     }
 
-
     /**
      * 删除
+     *
      * @param PamAccount $pam  账号
      * @param PamAccount $item 账号
+     *
      * @return bool
      */
     public function disable(PamAccount $pam, PamAccount $item)
@@ -77,27 +81,23 @@ class PamAccountPolicy
         return !$this->enable($pam, $item);
     }
 
-    //region 后台用户权限
+    // region 后台用户权限
 
     /**
      * 设置后台用户通行证
-     * @param PamAccount $pam
-     * @param PamAccount $item
-     * @return bool
      */
     public function beMobile(PamAccount $pam, PamAccount $item): bool
     {
-        return $pam->hasRole(PamRole::BE_ROOT) &&
-            $item->type === PamAccount::TYPE_BACKEND;
+        return $pam->hasRole(PamRole::BE_ROOT)
+            && PamAccount::TYPE_BACKEND === $item->type;
     }
-
 
     public function beClearMobile(PamAccount $pam, PamAccount $item): bool
     {
-        return $pam->hasRole(PamRole::BE_ROOT) &&
-            $item->type === PamAccount::TYPE_BACKEND &&
-            strlen($item->mobile) === 17;   // 33023-{11};
+        return $pam->hasRole(PamRole::BE_ROOT)
+            && PamAccount::TYPE_BACKEND === $item->type
+            && 17 === strlen($item->mobile);   // 33023-{11};
     }
 
-    //endregion
+    // endregion
 }

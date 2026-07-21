@@ -6,9 +6,9 @@ use Poppy\Framework\Validation\Rule;
 
 class FormRadio extends FormBaseWidget
 {
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '单选框(Radio)';
@@ -92,6 +92,5 @@ CODE;
 ])->checked('Test3')->help('这里Values 以及 checked 不能为键, 只能为值');
 CODE;
         $this->code('values-code', 'Code@Radio Values')->default($code);
-
     }
 }

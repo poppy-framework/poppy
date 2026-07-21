@@ -8,5 +8,4 @@ use Poppy\MgrPage\Classes\Form\Field;
 
 class Keyword extends Field
 {
-
 }

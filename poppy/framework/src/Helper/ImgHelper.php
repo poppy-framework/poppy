@@ -12,13 +12,13 @@ class ImgHelper
     /**
      * 获取图像类型
      * x-ms-bmp, gif, png, jpeg, tiff
+     *
      * @param string $filename filename
-     * @return string
      */
     public static function typeFromMime(string $filename): string
     {
         $imageData = getimagesize($filename);
-        if (isset($imageData['mime']) && strpos($imageData['mime'], 'image') === 0) {
+        if (isset($imageData['mime']) && 0 === strpos($imageData['mime'], 'image')) {
             return substr($imageData['mime'], 6);
         }
 
@@ -27,15 +27,18 @@ class ImgHelper
 
     /**
      * 取得图像信息
+     *
      * @param string $img 图像文件名
+     *
      * @return array|bool
      */
     public static function getImageInfo(string $img)
     {
         $imageInfo = getimagesize($img);
-        if ($imageInfo !== false) {
+        if (false !== $imageInfo) {
             $imageType = strtolower(substr(image_type_to_extension($imageInfo[2]), 1));
             $imageSize = filesize($img);
+
             return [
                 'width'  => $imageInfo[0],
                 'height' => $imageInfo[1],
@@ -50,6 +53,7 @@ class ImgHelper
 
     /**
      * 创建字串
+     *
      * @param string $string      string
      * @param string $type        type
      * @param int    $singleWidth singleWidth
@@ -61,7 +65,7 @@ class ImgHelper
         header("Content-type:image/{$type}");
         $imageX = strlen($string) * $singleWidth;
         $imageY = $height;
-        $im = @imagecreate($imageX, $imageY) or exit();
+        $im     = @imagecreate($imageX, $imageY) or exit;
         imagecolorallocate($im, 255, 255, 255);
         $color = imagecolorallocate($im, 0, 0, 0);
 

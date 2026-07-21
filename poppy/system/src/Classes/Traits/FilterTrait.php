@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\System\Classes\Traits;
 
+use Closure;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Collection;
@@ -23,7 +24,6 @@ trait FilterTrait
     /**
      * @param Builder  $query    查询条件
      * @param PageInfo $pageInfo 分页
-     * @return mixed
      */
     public function scopePageFilter($query, PageInfo $pageInfo)
     {
@@ -34,8 +34,9 @@ trait FilterTrait
 
     /**
      * @param EloquentBuilder $Db       数据对象
-     * @param string|\Closure $resource 资源
+     * @param string|Closure  $resource 资源
      * @param array           $append   增加
+     *
      * @return JsonResponse
      */
     public static function paginationInfo($Db, $resource, $append = [])

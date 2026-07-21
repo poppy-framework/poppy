@@ -13,13 +13,13 @@ use Poppy\System\Http\Request\ApiV1\JwtApiController;
  */
 class TokenController extends JwtApiController
 {
-
     /**
      * @return JsonResponse|RedirectResponse|Response
      */
     public function index()
     {
         $this->pam();
+
         return Resp::success('ok');
     }
 }

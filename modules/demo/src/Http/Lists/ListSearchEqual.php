@@ -12,9 +12,9 @@ use Poppy\System\Models\SysConfig;
 
 class ListSearchEqual extends ListSearchWhere
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns(): void
@@ -27,8 +27,7 @@ class ListSearchEqual extends ListSearchWhere
     }
 
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {

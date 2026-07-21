@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormDivider extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Divider';
-
 
     /**
      * Build a form here.

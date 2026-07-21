@@ -11,7 +11,7 @@ use Poppy\MgrPage\Classes\Grid\Column;
 class CsvExporter extends AbstractExporter
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function export()
     {
@@ -51,13 +51,12 @@ class CsvExporter extends AbstractExporter
 
     /**
      * 获取 Header, 从记录中获取 Header
-     * @return array
      */
     private function getHeaderRow(): array
     {
         $titles = collect();
         collect($this->grid->visibleColumns())->each(function (Column $column) use ($titles) {
-            if ($column->name === Column::NAME_ACTION) {
+            if (Column::NAME_ACTION === $column->name) {
                 return;
             }
             $name = $column->name;
@@ -68,18 +67,15 @@ class CsvExporter extends AbstractExporter
 
             if ($column) {
                 $titles->push($column->label);
-            } else {
+            }
+            else {
                 $titles->push(Str::ucfirst($name));
             }
         });
+
         return $titles->toArray();
     }
 
-    /**
-     * @param Collection $records
-     *
-     * @return array
-     */
     public function getHeaderRowFromRecords(Collection $records): array
     {
         $titles = collect(Arr::dot($records->first()->toArray()))->keys()->map(
@@ -93,27 +89,22 @@ class CsvExporter extends AbstractExporter
         return $titles->toArray();
     }
 
-    /**
-     * @param Collection $data
-     * @return array
-     */
     private function getFormattedRecords(Collection $data): array
     {
         return $data->map(function ($row) {
             $newRow = collect();
             $this->grid->visibleColumns()->each(function (Column $column) use ($row, $newRow) {
-                if ($column->name === Column::NAME_ACTION) {
+                if (Column::NAME_ACTION === $column->name) {
                     return;
                 }
                 $newRow->push(data_get($row->toArray(), $column->name));
             });
+
             return $newRow->toArray();
         })->toArray();
     }
 
     /**
-     * @param Model $record
-     *
      * @return array
      */
     public function getFormattedRecord(Model $record)

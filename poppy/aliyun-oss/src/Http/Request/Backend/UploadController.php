@@ -19,7 +19,6 @@ use Throwable;
  */
 class UploadController extends BackendController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -31,7 +30,9 @@ class UploadController extends BackendController
 
     /**
      * 保存邮件配置
+     *
      * @return array|JsonResponse|RedirectResponse|Response|Redirector|Resp|Content|\Response
+     *
      * @throws Throwable
      */
     public function store()

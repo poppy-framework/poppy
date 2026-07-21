@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types = 1);
 
 namespace Poppy\Ad\Http\MgrPage;
@@ -15,15 +14,14 @@ use Poppy\MgrPage\Classes\Operations;
 
 class ListSysAdContent extends ListBase
 {
-
     public $title = '内容管理';
 
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
-    public function columns():void
+    public function columns(): void
     {
         $this->column('id', 'ID')->sortable()->width(80);
         $this->column('title', '标题');

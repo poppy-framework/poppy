@@ -10,14 +10,12 @@ use Poppy\MgrPage\Classes\Grid\Tools\ExportButton;
 
 trait HasExport
 {
-
     /**
      * Export driver.
      *
      * @var string
      */
     protected $exporter;
-
 
     /**
      * 是否显示导出按钮
@@ -30,7 +28,6 @@ trait HasExport
     /**
      * Disable export.
      *
-     * @param bool $disable
      * @return $this
      */
     public function disableExporter(bool $disable = true): self
@@ -40,19 +37,14 @@ trait HasExport
 
     /**
      * Render export button.
-     *
-     * @return string
      */
     public function renderExportButton(): string
     {
         return (new ExportButton($this))->render();
     }
 
-
     /**
      * Set exporter driver for Grid to export.
-     *
-     * @param $exporter
      *
      * @return $this
      */
@@ -68,8 +60,6 @@ trait HasExport
      *
      * @param int  $scope
      * @param null $args
-     *
-     * @return string
      */
     public function getExportUrl($scope = 1, $args = null): string
     {

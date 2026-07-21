@@ -12,7 +12,6 @@ use Poppy\System\Action\Ban;
  */
 class SystemInitListener
 {
-
     /**
      * @param PoppyOptimized $event 框架优化
      */
@@ -22,4 +21,3 @@ class SystemInitListener
         (new Ban())->initCache();
     }
 }
-

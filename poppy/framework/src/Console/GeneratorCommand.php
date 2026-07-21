@@ -15,8 +15,8 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
 {
     /**
      * Parse the name and format according to the root namespace.
+     *
      * @param string $name name
-     * @return string
      */
     protected function parseName(string $name): string
     {
@@ -34,8 +34,8 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
 
     /**
      * Parse the class name and format according to the root namespace.
+     *
      * @param string $name classname
-     * @return string
      */
     protected function qualifyClass($name): string
     {
@@ -47,7 +47,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function getPath($name): string
     {
@@ -59,8 +59,8 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
 
         // take everything after the module name in the given path (ignoring case)
         if ($this->laravel['poppy']->isPoppy($slug)) {
-            $trimSlug = Str::after($slug, 'poppy.');
-            [, $mid] = explode('\\', $name);
+            $trimSlug  = Str::after($slug, 'poppy.');
+            [, $mid]   = explode('\\', $name);
             $midAfter  = str_replace('_', '-', Str::snake($mid));
             $lowerName = strtolower(str_replace($mid, $midAfter, $name));
         }
@@ -70,7 +70,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
         }
 
         $key = array_search(strtolower($trimSlug), explode('\\', $lowerName));
-        if ($key === false) {
+        if (false === $key) {
             $newPath = str_replace('\\', '/', $name);
         }
         else {
@@ -81,7 +81,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
 
         $pathInfo = pathinfo($newPath);
 
-        if (strpos($pathInfo['dirname'], 'Tests') !== false) {
+        if (false !== strpos($pathInfo['dirname'], 'Tests')) {
             $addSrc = '';
         }
         else {
@@ -89,10 +89,11 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
         }
 
         $dirs      = explode('/', $pathInfo['dirname']);
-        $lowerDirs = array_map(function ($item) use ($slug) {
+        $lowerDirs = array_map(function ($item) {
             return Str::studly($item);
         }, $dirs);
         $dirname   = implode('/', $lowerDirs);
+
         return poppy_path(
             $slug,
             $addSrc .
@@ -103,8 +104,10 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
 
     /**
      * Replace the namespace for the given stub.
+     *
      * @param string $stub stub file
      * @param string $name name
+     *
      * @return $this
      */
     protected function replaceNamespace(&$stub, $name): self

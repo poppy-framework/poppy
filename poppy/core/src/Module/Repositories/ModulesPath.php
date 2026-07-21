@@ -18,9 +18,9 @@ use Poppy\Framework\Support\Abstracts\Repository;
  */
 class ModulesPath extends Repository
 {
-
     /**
      * Initialize.
+     *
      * @param Collection $collection 集合
      */
     public function initialize(Collection $collection)
@@ -57,7 +57,6 @@ class ModulesPath extends Repository
                 $reCollection = collect($collect->toArray());
 
                 $collect->each(function ($definition, $key) use ($reCollection) {
-
                     $injection = $definition['injection'] ?? '';
 
                     if (!$injection) {
@@ -70,6 +69,7 @@ class ModulesPath extends Repository
                         $reCollection->offsetUnset($key);
                     }
                 });
+
                 return $reCollection->all();
             }
         );
@@ -77,10 +77,11 @@ class ModulesPath extends Repository
 
     /**
      * 根据用户返回合适的菜单
+     *
      * @param string                              $type               指定用户的类型
      * @param bool                                $is_full_permission 是否是全部权限
-     * @param null|RbacUserTrait|RbacUserContract $pam                用户
-     * @return Collection
+     * @param RbacUserTrait|RbacUserContract|null $pam                用户
+     *
      * @throws PermissionException
      */
     public function withPermission(string $type, bool $is_full_permission = false, $pam = null): Collection
@@ -95,7 +96,6 @@ class ModulesPath extends Repository
         $navs->each(function ($nav, $key) use ($pam, $collect, $is_full_permission) {
             $newMenu = collect();
             collect($nav['children'])->each(function ($menu) use ($newMenu, $pam, $is_full_permission) {
-
                 /* 三级菜单的权限
                  * ---------------------------------------- */
                 if ($menu['children'] ?? []) {
@@ -132,7 +132,6 @@ class ModulesPath extends Repository
                         $newMenu->push($menu);
                     }
                 }
-
             });
             $nav['children'] = $newMenu;
             $collect->put($key, $nav);
@@ -144,7 +143,6 @@ class ModulesPath extends Repository
     /**
      * @param string $type  类型
      * @param array  $perms perms
-     * @return Collection
      */
     public function withType(string $type, array $perms): Collection
     {
@@ -192,8 +190,9 @@ class ModulesPath extends Repository
 
     /**
      * 解析链接
+     *
      * @param array $submenus 数据数组
-     * @return array
+     *
      * @throws ModuleException
      */
     private function parseLink(array $submenus, string $slug): ?array
@@ -204,7 +203,6 @@ class ModulesPath extends Repository
                 $submenu['children'] = $this->parseLink($submenu['children'], $slug);
             }
             else {
-
                 if (!isset($submenu['title'])) {
                     throw new ModuleException("Error define at module path {$slug}");
                 }

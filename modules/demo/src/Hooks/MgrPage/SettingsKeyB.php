@@ -8,7 +8,6 @@ use Poppy\Core\Services\Contracts\ServiceArray;
 
 class SettingsKeyB implements ServiceArray
 {
-
     public function key(): string
     {
         return 'demo.key-b';

@@ -4,28 +4,17 @@ declare(strict_types = 1);
 
 namespace Poppy\Extension\Webhook\DingTalk\MsgType;
 
-
 /**
  * 跳转ActionCard类型
- *
  */
 class ActionCard extends Message
 {
-    /**
-     * @var string
-     */
     private string $title;
-    /**
-     * @var string
-     */
+
     private string $text;
-    /**
-     * @var array
-     */
+
     private array $buttons;
-    /**
-     * @var bool
-     */
+
     private bool $isVertical;
 
     /**
@@ -47,24 +36,24 @@ class ActionCard extends Message
 
     /**
      * 最终输出的结构体JSON
-     *
-     * @return string
      */
-    public function toJson():string
+    public function toJson(): string
     {
         $this->message['actionCard']['title'] = $this->title;
         $this->message['actionCard']['text']  = $this->text;
-        //按钮样式
+        // 按钮样式
         if ($this->isVertical) {
             $this->message['actionCard']['btnOrientation'] = '1';
-        } else {
+        }
+        else {
             $this->message['actionCard']['btnOrientation'] = '0';
         }
-        //按钮列表
-        if (count($this->buttons) === 1) {
+        // 按钮列表
+        if (1 === count($this->buttons)) {
             $this->message['actionCard']['singleTitle'] = array_keys($this->buttons)[0];
             $this->message['actionCard']['singleURL']   = array_values($this->buttons)[0];
-        } else {
+        }
+        else {
             foreach ($this->buttons as $title => $url) {
                 $this->message['actionCard']['btns'][] = [
                     'title'     => $title,
@@ -72,6 +61,7 @@ class ActionCard extends Message
                 ];
             }
         }
+
         return parent::toJson();
     }
 }

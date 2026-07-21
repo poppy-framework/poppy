@@ -19,13 +19,12 @@ class Tags extends Field
     /**
      * @var string
      */
-    protected $visibleColumn = null;
+    protected $visibleColumn;
 
     /**
      * @var string
      */
-    protected $key = null;
-
+    protected $key;
 
     private int $max = 5;
 
@@ -36,17 +35,18 @@ class Tags extends Field
 
     /**
      * 设置最大值
-     * @param int $num
+     *
      * @return $this
      */
     public function max(int $num = 5): self
     {
         $this->max = $num;
+
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function fill($data): void
     {
@@ -76,11 +76,12 @@ class Tags extends Field
             $options = $options->toArray();
         }
         $this->options = $options + $this->options;
+
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function prepare($value)
     {
@@ -96,8 +97,6 @@ class Tags extends Field
     /**
      * Get or set value for this field.
      *
-     * @param mixed $value
-     *
      * @return $this|array|mixed
      */
     public function value($value = null)
@@ -112,7 +111,7 @@ class Tags extends Field
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function render()
     {
@@ -125,22 +124,20 @@ class Tags extends Field
         return parent::render();
     }
 
-
     /**
      * 是否允许创建
+     *
      * @return $this
      */
     public function create(): self
     {
         $this->create = true;
+
         return $this;
     }
 
     /**
      * Set visible column and key of data.
-     *
-     * @param $visibleColumn
-     * @param $key
      *
      * @return $this
      */

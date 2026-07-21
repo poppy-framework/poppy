@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Poppy\Content\Http\MgrPage;
@@ -16,11 +17,11 @@ use Poppy\MgrPage\Classes\Operations;
 
 class ListSysContent extends ListBase
 {
-
     public $title = '内容管理';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns(): void
@@ -34,6 +35,7 @@ class ListSysContent extends ListBase
                 if (!$value) {
                     return '-';
                 }
+
                 return SysCategory::kvTitle($value);
             })->width(140);
         }
@@ -55,8 +57,7 @@ class ListSysContent extends ListBase
     }
 
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {
@@ -75,6 +76,7 @@ class ListSysContent extends ListBase
     public function quickButtons(): Closure
     {
         $scope = input(Scope::QUERY_NAME);
+
         return function (Operations $operations) use ($scope) {
             $operations->loadView('新建文章', route_url('py-content:backend.content.establish', null, ['type' => $scope]))
                 ->icon('plus-circle')->sm();

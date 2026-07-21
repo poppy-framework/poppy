@@ -13,12 +13,6 @@ abstract class BatchAction extends GridAction
      */
     public $selectorPrefix = '.grid-batch-action-';
 
-
-    /**
-     * @param Request $request
-     *
-     * @return mixed
-     */
     public function retrieveModel(Request $request)
     {
         if (!$key = $request->get('_key')) {

@@ -10,7 +10,6 @@ use Poppy\Core\Services\Contracts\ServiceArray;
 
 class UploadTypeAliyun implements ServiceArray
 {
-
     public function key(): string
     {
         return 'aliyun';

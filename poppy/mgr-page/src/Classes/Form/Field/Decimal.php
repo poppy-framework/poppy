@@ -6,7 +6,6 @@ namespace Poppy\MgrPage\Classes\Form\Field;
 
 class Decimal extends Text
 {
-
     public function render()
     {
         $this->defaultAttribute('style', 'width: 130px');

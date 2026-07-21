@@ -10,13 +10,12 @@ use Poppy\Sms\Http\MgrPage\FormSettingAliyun;
 
 class SendTypeAliyun implements ServiceArray
 {
-
     public function key(): string
     {
         return 'aliyun';
     }
 
-    public function data():array
+    public function data(): array
     {
         return [
             'title'    => '阿里云',

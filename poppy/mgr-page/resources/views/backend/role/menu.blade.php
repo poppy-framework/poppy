@@ -6,7 +6,7 @@
         <ul class="layui-tab-title">
             <?php $display = 0; ?>
             @foreach($permission as $pk => $pv)
-                <li class="<?php echo $display++ === 0 ? 'layui-this' : ''; ?>">{!! $pk === 'poppy' ? '系统' : '模块' !!}</li>
+                <li class="<?php echo 0 === $display++ ? 'layui-this' : ''; ?>">{!! $pk === 'poppy' ? '系统' : '模块' !!}</li>
             @endforeach
         </ul>
         <div class="layui-tab-content">

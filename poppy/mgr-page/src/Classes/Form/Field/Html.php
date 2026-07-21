@@ -17,15 +17,11 @@ class Html extends Field
      */
     protected $html = '';
 
-    /**
-     * @var bool
-     */
     protected bool $plain = false;
 
     /**
      * Create a new Html instance.
      *
-     * @param mixed $html
      * @param array $arguments
      */
     public function __construct($html, $arguments = [])
@@ -41,6 +37,7 @@ class Html extends Field
     public function plain(): self
     {
         $this->plain = true;
+
         return $this;
     }
 

@@ -20,14 +20,14 @@ use Tymon\JWTAuth\JWTGuard;
  */
 class AuthenticateSession extends BaseAuthenticateSession
 {
-
     /**
      * @var Factory|SessionGuard
      */
     protected $auth;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws AuthenticationException
      */
     public function handle($request, Closure $next)
@@ -70,19 +70,20 @@ class AuthenticateSession extends BaseAuthenticateSession
 
     /**
      * Password hash key
+     *
      * @param string $login_key login key
-     * @return string
      */
     public static function hashKey(string $login_key): string
     {
         $guard = self::guardName($login_key);
+
         return 'password_hash' . ($guard ? '_' . $guard : '');
     }
 
     /**
      * Guard 名称
+     *
      * @param string $guard GuardName
-     * @return string
      */
     public static function hashGuard(string $guard): string
     {
@@ -90,7 +91,7 @@ class AuthenticateSession extends BaseAuthenticateSession
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function storePasswordHashInSession($request)
     {
@@ -106,7 +107,7 @@ class AuthenticateSession extends BaseAuthenticateSession
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function logout($request)
     {
@@ -125,6 +126,7 @@ class AuthenticateSession extends BaseAuthenticateSession
         if (preg_match('/login_(?<guard>.*?)_/', $login_key, $match)) {
             $guard = $match['guard'];
         }
+
         return $guard;
     }
 }

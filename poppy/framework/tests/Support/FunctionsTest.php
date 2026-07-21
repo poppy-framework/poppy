@@ -8,7 +8,6 @@ use Poppy\Framework\Application\TestCase;
 
 class FunctionsTest extends TestCase
 {
-
     public function testPoppyPath(): void
     {
         // module - system
@@ -44,7 +43,6 @@ class FunctionsTest extends TestCase
         $this->assertEquals('demo::util.classes.models.not_exist_model', $name);
     }
 
-
     public function testParseSeo()
     {
         $seo = parse_seo();
@@ -65,7 +63,6 @@ class FunctionsTest extends TestCase
         ]);
         $this->assertEquals(['title-t', 'description-d'], $seo);
     }
-
 
     public function testJwtToken()
     {

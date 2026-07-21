@@ -14,6 +14,7 @@ use Poppy\System\Action\Verification;
  *     schema="PoppySystemCaptchaSendRequest",
  *     description="发送验证码请求",
  *     required={"passport"},
+ *
  *     @OA\Property(property="passport", type="string", description="通行证 (手机号 / 邮箱)"),
  *     @OA\Property(
  *         property="type",
@@ -27,7 +28,6 @@ use Poppy\System\Action\Verification;
  */
 class CaptchaSendRequest extends Request
 {
-
     public function getPassport()
     {
         return $this->input('passport', '');
@@ -48,8 +48,6 @@ class CaptchaSendRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

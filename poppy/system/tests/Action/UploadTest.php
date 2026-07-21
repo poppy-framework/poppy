@@ -13,7 +13,6 @@ use Throwable;
  */
 class UploadTest extends TestCase
 {
-
     /**
      * 进行上传
      */
@@ -86,7 +85,6 @@ class UploadTest extends TestCase
 
     /**
      * heic转jpg上传
-     * @return void
      */
     public function testHeic2Jpg(): void
     {

@@ -13,7 +13,6 @@ use Poppy\MgrPage\Classes\Grid\Tools\FilterButton;
 
 class Tools extends FilterItem
 {
-
     /**
      * Collection of tools.
      *
@@ -23,8 +22,6 @@ class Tools extends FilterItem
 
     /**
      * Create a new Tools instance.
-     *
-     * @param Grid $grid
      */
     public function __construct(Grid $grid)
     {
@@ -70,7 +67,6 @@ class Tools extends FilterItem
     /**
      * Disable filter button.
      *
-     * @param bool $disable
      * @return void
      */
     public function disableFilterButton(bool $disable = true)
@@ -87,12 +83,11 @@ class Tools extends FilterItem
     /**
      * Disable batch actions.
      *
-     * @param bool $disable
      * @return void
      */
     public function disableBatchActions(bool $disable = true)
     {
-        $this->tools = $this->tools->map(function ($tool) use ($disable) {
+        $this->tools = $this->tools->map(function ($tool) {
             return $tool;
         });
     }

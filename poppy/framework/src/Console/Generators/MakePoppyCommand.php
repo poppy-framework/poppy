@@ -19,6 +19,7 @@ class MakePoppyCommand extends Command
 {
     /**
      * The name and signature of the console command.
+     *
      * @var string
      */
     protected $signature = 'poppy:make
@@ -28,32 +29,28 @@ class MakePoppyCommand extends Command
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Create a new Poppy module and bootstrap it';
 
     /**
      * The poppy instance.
-     * @var Poppy
      */
     protected Poppy $poppy;
 
     /**
      * The filesystem instance.
-     * @var Filesystem
      */
     protected Filesystem $files;
 
     /**
      * Array to store the configuration details.
-     * @var array
      */
     protected array $conf;
 
     /**
      * Create a new command instance.
-     * @param Filesystem $files
-     * @param Poppy      $poppy
      */
     public function __construct(Filesystem $files, Poppy $poppy)
     {
@@ -65,7 +62,9 @@ class MakePoppyCommand extends Command
 
     /**
      * Execute the console command.
+     *
      * @return mixed|void
+     *
      * @throws FileNotFoundException
      */
     public function handle()
@@ -73,9 +72,9 @@ class MakePoppyCommand extends Command
         $slug = Str::slug($this->argument('slug'));
         if (app('poppy')->exists($slug)) {
             $this->error('Slug `' . $slug . '` exists');
+
             return;
         }
-
 
         $this->conf['slug']        = Str::slug($this->argument('slug'));
         $this->conf['name']        = Str::snake($this->conf['slug']);
@@ -86,6 +85,7 @@ class MakePoppyCommand extends Command
             $this->conf['basename']  = Str::snake($this->conf['slug']);
             $this->conf['namespace'] = Str::studly($this->conf['basename']);
             $this->generate();
+
             return;
         }
 
@@ -96,7 +96,7 @@ class MakePoppyCommand extends Command
 
     /**
      * Step 1: Configure module manifest.
-     * @return mixed
+     *
      * @throws FileNotFoundException
      */
     protected function stepOne()
@@ -201,21 +201,23 @@ class MakePoppyCommand extends Command
 
     /**
      * Pull the given stub file contents and display them on screen.
+     *
      * @param string $file  file
      * @param string $level info type
-     * @return mixed
+     *
      * @throws FileNotFoundException
      */
     protected function displayHeader(string $file = '', string $level = 'info')
     {
         $stub = $this->files->get(__DIR__ . '/../../../resources/stubs/console/' . $file . '.stub');
+
         return $this->$level($stub);
     }
 
     /**
      * Replace Placeholder
+     *
      * @param string $contents Replace Content
-     * @return string
      */
     protected function replacePlaceholders(string $contents): string
     {

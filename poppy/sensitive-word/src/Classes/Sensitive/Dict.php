@@ -13,9 +13,7 @@ use Poppy\SensitiveWord\Models\SysSensitiveWord;
  */
 class Dict
 {
-
     /**
-     * @return Words|null
      * @throws DirectoryNotFoundException
      */
     public function getDirectory(): ?Words
@@ -31,7 +29,7 @@ class Dict
 
     /**
      * 构建敏感词字典
-     * @return Words|null
+     *
      * @throws DirectoryNotFoundException
      */
     public function build(): ?Words

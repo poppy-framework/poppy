@@ -9,14 +9,12 @@ use Illuminate\Support\Arr;
 class Gte extends FilterItem
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected string $view = 'py-mgr-page::tpl.filter.gte';
 
     /**
      * Get condition of this filter.
-     *
-     * @param array $inputs
      *
      * @return array|mixed|void
      */

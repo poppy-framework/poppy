@@ -16,11 +16,11 @@ use Poppy\System\Tests\Testing\TestingPam;
 
 class RoleTest extends TestCase
 {
-
     use CoreTrait;
 
     /**
      * 角色添加和权限处理
+     *
      * @throws ApplicationException
      * @throws Exception
      */

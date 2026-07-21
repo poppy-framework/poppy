@@ -8,6 +8,7 @@ namespace Poppy\Extension\Alipay\Aop\Request;
  * ALIPAY API: alipay.system.oauth.token request
  *
  * @author auto create
+ *
  * @since  1.0, 2022-03-02 14:46:36
  */
 class AlipaySystemOauthTokenRequest
@@ -37,7 +38,7 @@ class AlipaySystemOauthTokenRequest
 
     private $prodCode;
 
-    private $apiVersion = "1.0";
+    private $apiVersion = '1.0';
 
     private $notifyUrl;
 
@@ -53,7 +54,7 @@ class AlipaySystemOauthTokenRequest
     public function setCode($code)
     {
         $this->code             = $code;
-        $this->apiParas["code"] = $code;
+        $this->apiParas['code'] = $code;
     }
 
     public function getGrantType()
@@ -64,7 +65,7 @@ class AlipaySystemOauthTokenRequest
     public function setGrantType($grantType)
     {
         $this->grantType              = $grantType;
-        $this->apiParas["grant_type"] = $grantType;
+        $this->apiParas['grant_type'] = $grantType;
     }
 
     public function getRefreshToken()
@@ -75,12 +76,12 @@ class AlipaySystemOauthTokenRequest
     public function setRefreshToken($refreshToken)
     {
         $this->refreshToken              = $refreshToken;
-        $this->apiParas["refresh_token"] = $refreshToken;
+        $this->apiParas['refresh_token'] = $refreshToken;
     }
 
     public function getApiMethodName()
     {
-        return "alipay.system.oauth.token";
+        return 'alipay.system.oauth.token';
     }
 
     public function getNotifyUrl()
@@ -155,9 +156,6 @@ class AlipaySystemOauthTokenRequest
 
     public function setNeedEncrypt($needEncrypt)
     {
-
         $this->needEncrypt = $needEncrypt;
-
     }
-
 }

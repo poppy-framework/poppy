@@ -6,9 +6,9 @@ use Poppy\Framework\Validation\Rule;
 
 class FormDateRange extends FormBaseWidget
 {
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '日期输入框';

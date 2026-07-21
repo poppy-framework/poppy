@@ -6,9 +6,8 @@ namespace Poppy\MgrPage\Classes\Form\Field;
 
 class Currency extends Text
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function prepare($value)
     {
@@ -16,7 +15,7 @@ class Currency extends Text
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function render()
     {
@@ -24,6 +23,7 @@ class Currency extends Text
         $this->addVariables([
             'type' => 'number',
         ]);
+
         return parent::render();
     }
 }

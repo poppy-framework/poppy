@@ -6,10 +6,8 @@ namespace Poppy\System\Classes;
 
 class PySystemDef
 {
-
     /**
      * [user-setting-key]:账号
-     * @return string
      */
     public static function uskAccount(): string
     {
@@ -18,8 +16,6 @@ class PySystemDef
 
     /**
      * 数据库优化的存储 KEY
-     * @param $table
-     * @return string
      */
     public static function ckDbOptimize($table): string
     {
@@ -28,7 +24,6 @@ class PySystemDef
 
     /**
      * 设置
-     * @return string
      */
     public static function ckSetting(): string
     {
@@ -37,7 +32,6 @@ class PySystemDef
 
     /**
      * 设置
-     * @return string
      */
     public static function ckPamRelParent(): string
     {
@@ -46,7 +40,6 @@ class PySystemDef
 
     /**
      * 一次验证码(永久保存)
-     * @return string
      */
     public static function ckPersistVerificationOnce(): string
     {
@@ -55,7 +48,6 @@ class PySystemDef
 
     /**
      * 自定义验证(永久保存)
-     * @return string
      */
     public static function ckPersistVerificationWord(): string
     {
@@ -64,8 +56,6 @@ class PySystemDef
 
     /**
      * 验证码 KEY(持久保存)
-     * @param string $key
-     * @return string
      */
     public static function ckPersistVerificationCaptcha(string $key): string
     {
@@ -74,7 +64,6 @@ class PySystemDef
 
     /**
      * 允许访问的单点登录的 Hash(永久保存)
-     * @return string
      */
     public static function ckPersistSsoValid(): string
     {
@@ -83,8 +72,8 @@ class PySystemDef
 
     /**
      * 用户单一设备禁用
+     *
      * @param string $type 账号类型
-     * @return string
      */
     public static function ckBanOne(string $type): string
     {
@@ -93,8 +82,6 @@ class PySystemDef
 
     /**
      * Ip 范围
-     * @param string $type
-     * @return string
      */
     public static function ckBanIpRange(string $type): string
     {
@@ -103,7 +90,6 @@ class PySystemDef
 
     /**
      * 填充邮箱配置
-     * @return void
      */
     public static function fillMailConfig(): void
     {

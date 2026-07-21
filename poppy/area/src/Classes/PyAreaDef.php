@@ -8,18 +8,14 @@ class PyAreaDef
 {
     /**
      * ID -> PID 映射
-     * @return string
      */
     public static function ckMatchIdPid(): string
     {
         return 'match_id_pid';
     }
 
-
     /**
      * 地区缓存
-     * @param string $suffix
-     * @return string
      */
     public static function ckArea(string $suffix = ''): string
     {
@@ -28,8 +24,6 @@ class PyAreaDef
 
     /**
      * 国家缓存
-     * @param string $suffix
-     * @return string
      */
     public static function ckCountry(string $suffix = ''): string
     {

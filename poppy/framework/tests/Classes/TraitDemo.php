@@ -20,12 +20,12 @@ class TraitDemo
 
     public function exception(): bool
     {
-        return $this->setError((new Exception('This is an Exception String')));
+        return $this->setError(new Exception('This is an Exception String'));
     }
 
     public function exceptionWithCode($code): bool
     {
-        return $this->setError((new ApplicationException('This is an Exception With Code', $code)));
+        return $this->setError(new ApplicationException('This is an Exception With Code', $code));
     }
 
     public function success(): bool

@@ -6,14 +6,12 @@ use Poppy\Framework\Validation\Rule;
 
 class FormKeyValue extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'keyValue';
-
 
     /**
      * Build a form here.
@@ -30,6 +28,5 @@ class FormKeyValue extends FormBaseWidget
 ])->help('KeyValue输入框');
 CODE;
         $this->code('ip-code', 'Code@Ip')->default($code);
-
     }
 }

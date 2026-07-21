@@ -25,7 +25,8 @@ class SysConfigConvertCommand extends Command
 
                         $config->content = $value;
                         $config->save();
-                    } catch (Throwable $e) {
+                    }
+                    catch (Throwable $e) {
                         $this->error(sprintf('failed: %s - %s', $config->id, $e->getMessage()));
                     }
                 });

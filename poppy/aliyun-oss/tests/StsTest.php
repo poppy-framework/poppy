@@ -12,12 +12,16 @@ use Throwable;
 
 class StsTest extends BaseAliyun
 {
-
     private string $previousTempAppKey = '';
+
     private string $previousTempAppSecret = '';
+
     private string $previousBucket = '';
+
     private string $previousEndpoint = '';
+
     private string $previousRoleArn = '';
+
     private string $previousUrl = '';
 
     public function setUp(): void
@@ -43,6 +47,7 @@ class StsTest extends BaseAliyun
 
     /**
      * 测试授权KEY以及是否可以上传URL
+     *
      * @throws ApplicationException
      */
     public function testTempKey(): void
@@ -74,7 +79,7 @@ class StsTest extends BaseAliyun
                 $this->assertGreaterThan(0, strlen($content));
             }
             catch (OssException $e) {
-                print $e->getMessage();
+                echo $e->getMessage();
             }
         }
         else {

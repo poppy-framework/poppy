@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | PDO Fetch Style
@@ -45,7 +44,6 @@ return [
     */
 
     'connections' => [
-
         'sqlite' => [
             'driver'   => 'sqlite',
             'database' => storage_path() . '/database.sqlite',
@@ -112,7 +110,6 @@ return [
             'database' => '/Users/duoli/Documents/mweb/mainlib.db',
             'prefix'   => '',
         ],
-
     ],
 
     /*
@@ -140,7 +137,6 @@ return [
     */
 
     'redis' => [
-
         'cluster' => false,
 
         'client' => env('REDIS_CLIENT', 'predis'),

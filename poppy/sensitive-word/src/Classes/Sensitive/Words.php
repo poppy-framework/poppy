@@ -15,38 +15,31 @@ class Words
     public const TYPE_WORDS   = 'words';
     public const TYPE_REPLACE = 'replace';
 
-    /**
-     * @var self|null $instance
-     */
     private static ?self $instance = null;
 
     /**
      * 敏感词树
-     * @var null|HashMap
      */
     private ?HashMap $wordTree = null;
 
     /**
      * 敏感词
-     * @var array
      */
     private array $illegalWords = [];
 
     /**
      * 检测所有敏感词
-     * @var bool $searchAllIllegal
      */
     private bool $searchAllIllegal = false;
 
     /**
      * 内容
-     * @var string $content
      */
     private string $content = '';
 
     /**
-     * @param array $data
      * @return $this
+     *
      * @throws DirectoryNotFoundException
      */
     public function setTree(array $data): self
@@ -55,7 +48,7 @@ class Words
             throw new DirectoryNotFoundException('词库不存在');
         }
 
-        if (!($this->wordTree instanceof HashMap)) {
+        if (!$this->wordTree instanceof HashMap) {
             $this->wordTree = new HashMap();
         }
 
@@ -68,14 +61,14 @@ class Words
 
     /**
      * 是否非法
+     *
      * @param string $content 内容
-     * @return bool
      */
     public function illegal(string $content): bool
     {
         $this->content  = $content;
         $content_length = $this->getLength($this->content);
-        for ($length = 0; $length < $content_length; $length++) {
+        for ($length = 0; $length < $content_length; ++$length) {
             $flag = 0;
 
             $isIllegal = $this->searchIllegalWords($length, $content_length, $flag);
@@ -94,7 +87,6 @@ class Words
 
     /**
      * 获取敏感词
-     * @return array
      */
     public function getIllegalWords(): array
     {
@@ -103,8 +95,8 @@ class Words
 
     /**
      * 检测所有敏感词
+     *
      * @param bool $searchAllIllegal 寻找所有敏感词
-     * @return Words
      */
     public function setSearchAllIllegal(bool $searchAllIllegal): self
     {
@@ -115,6 +107,7 @@ class Words
 
     /**
      * 替换敏感词
+     *
      * @return string|string[]
      */
     public function replaceIllegalWords()
@@ -126,13 +119,10 @@ class Words
         return str_replace($this->illegalWords, $replaces, $this->content);
     }
 
-    /**
-     * @return self
-     */
     public static function instance(): self
     {
         if (!self::$instance instanceof self) {
-            self::$instance = new self;
+            self::$instance = new self();
         }
 
         return self::$instance;
@@ -140,6 +130,7 @@ class Words
 
     /**
      * 构建字典树
+     *
      * @param string $words 词汇
      */
     protected function buildTree(string $words): void
@@ -147,7 +138,7 @@ class Words
         $length = $this->getLength($words);
 
         $tree = $this->wordTree;
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $char = mb_substr($words, $i, 1, 'utf-8');
 
             // 获取子节点
@@ -163,10 +154,10 @@ class Words
 
     /**
      * 搜索敏感词汇
+     *
      * @param int $currentIndex 当前位置
      * @param int $totalLength  总长度
      * @param int $flag         标识
-     * @return bool
      */
     private function searchIllegalWords(int $currentIndex, int $totalLength, int &$flag): bool
     {
@@ -174,7 +165,7 @@ class Words
 
         $illegalWords = '';
         $isIllegal    = false;
-        for ($i = $currentIndex; $i < $totalLength; $i++) {
+        for ($i = $currentIndex; $i < $totalLength; ++$i) {
             $char    = $this->getContentWords($this->content, $i);
             $subTree = $root->get($char);
 
@@ -183,7 +174,7 @@ class Words
             }
 
             $root = $subTree;
-            $flag++;
+            ++$flag;
 
             $illegalWords .= $char;
             if (!$subTree->get('ending')) {
@@ -208,9 +199,9 @@ class Words
 
     /**
      * 获取字符
+     *
      * @param string $content 内容
      * @param int    $start   起始位置
-     * @return string
      */
     private function getContentWords(string $content, int $start): string
     {
@@ -219,9 +210,9 @@ class Words
 
     /**
      * 添加子树
+     *
      * @param string  $char 字符
      * @param HashMap $tree 字典树
-     * @return HashMap
      */
     private function addSubTree(string $char, HashMap $tree): HashMap
     {
@@ -235,8 +226,8 @@ class Words
 
     /**
      * 获取文本长度
+     *
      * @param string $content 文本
-     * @return int
      */
     private function getLength(string $content): int
     {

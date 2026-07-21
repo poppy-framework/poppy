@@ -17,7 +17,6 @@ use Throwable;
 
 class FormPamEstablish extends FormWidget
 {
-
     public $ajax = true;
 
     private string $type;
@@ -56,7 +55,6 @@ class FormPamEstablish extends FormWidget
             return Resp::error('请选择角色');
         }
 
-
         $Pam = new Pam();
         if ($this->item) {
             if ($password) {
@@ -67,6 +65,7 @@ class FormPamEstablish extends FormWidget
                 }
             }
             $Pam->setRoles($this->item, $role_id);
+
             return Resp::success('用户修改成功', [
                 '_top_reload' => 1,
             ]);
@@ -78,6 +77,7 @@ class FormPamEstablish extends FormWidget
                 'id'          => $Pam->getPam()->id,
             ]);
         }
+
         return Resp::error($Pam->getError());
     }
 
@@ -90,6 +90,7 @@ class FormPamEstablish extends FormWidget
                 'role_id'  => $this->item->roles->pluck('id')->toArray(),
             ];
         }
+
         return [];
     }
 
@@ -99,7 +100,6 @@ class FormPamEstablish extends FormWidget
             $this->hidden('id', 'ID');
             $this->text('username', '用户名')->readonly()->disable();
             $this->tags('role_id', '用户角色')->options(PamRole::getLinear($this->type))->readonly();
-
         }
         else {
             $this->text('username', '用户名')->rules([

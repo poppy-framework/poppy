@@ -27,16 +27,13 @@ class Sms
     public const SCOPE_LIANLU    = 'lianlu';
     public const SCOPE_VOLC      = 'volc';
 
-
     /**
      * 所有的模版
-     * @var Collection
      */
     private Collection $templates;
 
     /**
      * 项目条目
-     * @var array
      */
     private array $item;
 
@@ -47,35 +44,42 @@ class Sms
 
     /**
      * 短信类型
-     * @param string|null $key key
+     *
+     * @param string|null $key       key
      * @param bool        $check_key 检测key是否存在
+     *
      * @return array|string
      */
-    public static function kvType(string $key = null, bool $check_key = false)
+    public static function kvType(?string $key = null, bool $check_key = false)
     {
         $desc = collect(config('poppy.sms.types') ?: [])->pluck('title', 'type')->toArray();
+
         return kv($desc, $key, $check_key);
     }
 
     /**
      * 平台类型
-     * @param null|string $key
-     * @param false       $check_key
+     *
+     * @param false $check_key
+     *
      * @return array|bool|string
      */
-    public static function kvPlatform(string $key = null, bool $check_key = false)
+    public static function kvPlatform(?string $key = null, bool $check_key = false)
     {
         $sendTypes     = sys_hook('poppy.sms.send_type');
         $desc['local'] = '本地';
         foreach ($sendTypes as $k => $d) {
             $desc[$k] = $d['title'];
         }
+
         return kv($desc, $key, $check_key);
     }
 
     /**
      * 获取指定平台对应类型的模板
+     *
      * @param string $type 类型
+     *
      * @return array [type|code|content]
      */
     public static function smsTpl(string $type, string $scope): array
@@ -85,12 +89,12 @@ class Sms
         if ($templates->offsetExists($key)) {
             return $templates->offsetGet($key);
         }
+
         return [];
     }
 
     /**
      * 获取现在配置分流的短信
-     * @return string
      */
     public static function rateSmsType(): string
     {
@@ -102,6 +106,7 @@ class Sms
                 $rates[$sendType] = $rate;
             }
         }
+
         return self::getRandType($rates);
     }
 
@@ -110,10 +115,7 @@ class Sms
      * 1. 获取所有的平台
      * 2. 过滤存在该模板的平台
      * 3. 再次进行过滤
-     * @param string $type
-     * @return string
      */
-
     public static function rateSmsDriverByType(string $type): string
     {
         // 获取所有的模板
@@ -129,13 +131,12 @@ class Sms
                 $types[] = $hook;
             }
         }
+
         return self::rateSmsDriver($types);
     }
 
     /**
      * 抽取公共方法
-     * @param array $sendTypes
-     * @return string
      */
     private static function rateSmsDriver(array $sendTypes): string
     {
@@ -150,10 +151,6 @@ class Sms
         return self::getRandType($rates);
     }
 
-    /**
-     * @param array $rates
-     * @return string
-     */
     private static function getRandType(array $rates): string
     {
         try {
@@ -161,12 +158,12 @@ class Sms
             if (!$rates) {
                 return $result;
             }
-            if (count($rates) === 1) {
+            if (1 === count($rates)) {
                 return (string) array_key_first($rates);
             }
-            //概率数组的总概率精度
+            // 概率数组的总概率精度
             $sumRates = array_sum($rates);
-            //概率数组循环
+            // 概率数组循环
             foreach ($rates as $key => $rate) {
                 $randNum = random_int(1, $sumRates);
                 if ($randNum <= $rate) {
@@ -177,23 +174,20 @@ class Sms
             }
 
             return (string) $result;
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return $result;
         }
     }
 
     /**
      * 获取所有的模版
-     * @return Collection
      */
     public function getTemplates(): Collection
     {
         return $this->templates;
     }
 
-    /**
-     * @return array
-     */
     public function getItem(): array
     {
         return $this->item;
@@ -201,9 +195,7 @@ class Sms
 
     /**
      * 新增和编辑
-     * @param string $id
-     * @param string $code
-     * @return bool
+     *
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
      */
@@ -215,13 +207,15 @@ class Sms
             'type'  => $type,
             'code'  => $code,
         ]);
+
         return $this->save();
     }
 
     /**
      * 初始化
+     *
      * @param string $id ID
-     * @return bool
+     *
      * @throws HintException
      */
     public function init(string $id): bool
@@ -232,6 +226,7 @@ class Sms
         $items = collect($this->templates);
         if ($items->offsetExists($id)) {
             $this->item = $items->offsetGet($id);
+
             return true;
         }
         throw new HintException('短信ID不存在');
@@ -239,8 +234,9 @@ class Sms
 
     /**
      * 刪除
+     *
      * @param string $id id
-     * @return bool
+     *
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
      */
@@ -255,13 +251,14 @@ class Sms
 
     /**
      * 保存模板
-     * @return bool
+     *
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
      */
     private function save(): bool
     {
         $this->sysSetting()->set(PySmsDef::ckTemplate(), $this->templates->toArray());
+
         return true;
     }
 }

@@ -30,21 +30,12 @@ use Poppy\Framework\Poppy\Contracts\Repository;
  */
 class Poppy
 {
-
-    /**
-     * @var Application
-     */
     protected Application $app;
 
-    /**
-     * @var Repository
-     */
     protected Repository $repository;
 
     /**
      * Create a new Poppy Modules instance.
-     * @param Application $app
-     * @param Repository  $repository
      */
     public function __construct(Application $app, Repository $repository)
     {
@@ -54,7 +45,6 @@ class Poppy
 
     /**
      * Register the module service provider file from all modules.
-     * @return void
      */
     public function register(): void
     {
@@ -65,9 +55,6 @@ class Poppy
         });
     }
 
-    /**
-     * @return Repository
-     */
     public function repository(): Repository
     {
         return $this->repository;
@@ -75,9 +62,6 @@ class Poppy
 
     /**
      * magical method.
-     * @param string $method
-     * @param mixed  $arguments
-     * @return mixed
      */
     public function __call(string $method, $arguments)
     {
@@ -86,8 +70,8 @@ class Poppy
 
     /**
      * Register the module service provider.
+     *
      * @param array $module module
-     * @return void
      */
     private function registerServiceProvider(array $module): void
     {

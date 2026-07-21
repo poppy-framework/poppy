@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormDateTime extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '日期时间输入框';
-
 
     /**
      * Build a form here.
@@ -41,6 +39,5 @@ CODE;
 CODE;
         $this->code('icon-code', 'Code@无icon')->default($code);
         $this->divider();
-
     }
 }

@@ -6,10 +6,9 @@ namespace Demo\Forms;
 
 class FormHook extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Hook';
@@ -28,7 +27,7 @@ class FormHook extends FormBaseWidget
     {
         $this->hook('place_id', '选择占位')->service('poppy.ad.form_place_select');
         $this->hook('category_id', '选择类别')->service('poppy.category.form_category_select', [
-            'type' => 'default'
+            'type' => 'default',
         ]);
     }
 }

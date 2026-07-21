@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types = 1);
 
 namespace Poppy\Ad\Http\MgrPage;
@@ -16,11 +15,11 @@ use Poppy\MgrPage\Classes\Operations;
 
 class ListSysAdPlace extends ListBase
 {
-
     public $title = '位置管理';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns(): void
@@ -28,7 +27,7 @@ class ListSysAdPlace extends ListBase
         $this->column('id', 'ID')->sortable()->width(80);
         $this->column('title', '标题')->width(130);
         $this->column('size', '尺寸')->width(100)->display(function () {
-            /** @var SysAdPlace $this */
+            /* @var SysAdPlace $this */
             return "{$this->width}x{$this->height}";
         });
         $this->column('thumb', '示意图')->width(100)->image();
@@ -47,8 +46,7 @@ class ListSysAdPlace extends ListBase
     }
 
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {

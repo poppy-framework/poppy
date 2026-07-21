@@ -6,44 +6,29 @@ namespace Poppy\AliyunPush\Classes\Config;
 
 class Config
 {
-
-    /**
-     * @var string
-     */
     protected string $iosAppKey;
 
-    /**
-     * @var string
-     */
     protected string $androidChannel;
 
-    /**
-     * @var string
-     */
     protected string $androidAppKey;
 
     /**
      * Aliyun Access Key
-     * @var string
      */
     protected string $accessKey;
 
-
     /**
      * Aliyun Access Secret
-     * @var string
      */
     protected string $accessSecret;
 
     /**
      * 需要打开的页面
-     * @var string
      */
     protected string $androidActivity;
 
     /**
      * 客户端name
-     * @var string
      */
     protected string $clientName;
 
@@ -58,57 +43,36 @@ class Config
         $this->clientName      = trim((string) $clientName);
     }
 
-    /**
-     * @return string
-     */
     public function getIosAppKey(): string
     {
         return $this->iosAppKey;
     }
 
-    /**
-     * @return string
-     */
     public function getAndroidChannel(): string
     {
         return $this->androidChannel;
     }
 
-    /**
-     * @return string
-     */
     public function getAndroidActivity(): string
     {
         return $this->androidActivity;
     }
 
-    /**
-     * @return string
-     */
     public function getAndroidAppKey(): string
     {
         return $this->androidAppKey;
     }
 
-    /**
-     * @return string
-     */
     public function getAccessKey(): string
     {
         return $this->accessKey;
     }
 
-    /**
-     * @return string
-     */
     public function getAccessSecret(): string
     {
         return $this->accessSecret;
     }
 
-    /**
-     * @return string
-     */
     public function getClientName(): string
     {
         return $this->clientName;
@@ -116,6 +80,7 @@ class Config
 
     /**
      * 默认配置
+     *
      * @return static
      */
     public static function default(): self
@@ -126,6 +91,7 @@ class Config
         $accessKey       = config('poppy.aliyun-push.access_key');
         $accessSecret    = config('poppy.aliyun-push.access_secret');
         $androidActivity = config('poppy.aliyun-push.android_activity');
+
         return new Config($accessKey, $accessSecret, $androidAppKey, $androidChannel, $androidActivity, $iosAppKey);
     }
 }

@@ -14,7 +14,6 @@ use Predis\Client;
  */
 class RdsFieldExpiredTest extends RdsBaseTest
 {
-
     /**
      * 设置有效期
      */
@@ -32,7 +31,7 @@ class RdsFieldExpiredTest extends RdsBaseTest
         $count  = 100;
 
         $keyPrefix = uniqid('test', true);
-        for ($i = 1; $i <= $count; $i++) {
+        for ($i = 1; $i <= $count; ++$i) {
             $type   = $this->faker()->randomElement($types);
             $key    = $keyPrefix . '_' . $type;
             $expire = $this->faker()->randomElement($expired);
@@ -64,7 +63,6 @@ class RdsFieldExpiredTest extends RdsBaseTest
         }
 
         $this->assertEquals($count, $this->cacheCount($caches));
-
     }
 
     /**
@@ -76,7 +74,7 @@ class RdsFieldExpiredTest extends RdsBaseTest
         $cache->multi();
         $beforeCount = $cache->zcard(PyCoreDef::ckRdsKeyFieldExpired());
 
-        (new RdsFieldExpired)->clearExpiredField();
+        (new RdsFieldExpired())->clearExpiredField();
 
         $afterCount = $cache->zcard(PyCoreDef::ckRdsKeyFieldExpired());
 
@@ -84,10 +82,6 @@ class RdsFieldExpiredTest extends RdsBaseTest
         $this->assertGreaterThanOrEqual($beforeCount, $afterCount);
     }
 
-    /**
-     * @param $caches
-     * @return int
-     */
     private function cacheCount($caches): int
     {
         $count = 0;

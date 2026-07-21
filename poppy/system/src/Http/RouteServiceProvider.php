@@ -11,18 +11,15 @@ class RouteServiceProvider extends ServiceProvider
 {
     /**
      * Define the routes for the module.
-     * @return void
      */
     public function map(): void
     {
         $this->mapApiRoutes();
     }
 
-
     /**
      * Define the "api" routes for the module.
      * These routes are typically stateless.
-     * @return void
      */
     protected function mapApiRoutes(): void
     {

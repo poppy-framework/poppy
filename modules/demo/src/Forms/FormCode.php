@@ -6,9 +6,9 @@ use Poppy\Framework\Validation\Rule;
 
 class FormCode extends FormBaseWidget
 {
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'code';

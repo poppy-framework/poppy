@@ -10,15 +10,8 @@ use Poppy\Framework\Classes\RsaCrypt;
 
 class RsaCryptTest extends TestCase
 {
-
-    /**
-     * @var string
-     */
     private string $privateKey;
 
-    /**
-     * @var string
-     */
     private string $pubKey;
 
     public function setUp(): void

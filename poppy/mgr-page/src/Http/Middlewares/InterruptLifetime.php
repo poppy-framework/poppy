@@ -19,9 +19,9 @@ class InterruptLifetime
 
     /**
      * Middleware handler.
+     *
      * @param Request $request request
      * @param Closure $next    next
-     * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
@@ -33,6 +33,7 @@ class InterruptLifetime
             $lifetime = ($setting['expired_hour'] ?? $defaultLoginHours) * 60;
             config(['session.lifetime' => $lifetime]);
         }
+
         return $next($request);
     }
 }

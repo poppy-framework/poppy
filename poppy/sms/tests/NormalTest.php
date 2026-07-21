@@ -12,7 +12,6 @@ use Poppy\Sms\Classes\Contracts\SmsContract;
  */
 class NormalTest extends BaseSms
 {
-
     /**
      * 测试短信发送
      */
@@ -33,7 +32,7 @@ class NormalTest extends BaseSms
     {
         $Sms = app(SmsContract::class);
         if ($Sms->send('captcha', $this->mobile, [
-            'code' => 'Test_' . Str::random(4)
+            'code' => 'Test_' . Str::random(4),
         ])) {
             $this->assertTrue(true);
         }

@@ -10,17 +10,17 @@ use Poppy\MgrPage\Classes\Form\Field;
 
 class TableInput extends Field
 {
-
     private array $table = [];
 
     /**
      * 设置表格数据
-     * @param $table
+     *
      * @return $this
      */
     public function table($table): self
     {
         $this->table = $table;
+
         return $this;
     }
 

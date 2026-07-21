@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
 {
     /**
      * 定义计划命令
+     *
      * @param Schedule $schedule schedule
      */
     protected function schedule(Schedule $schedule)

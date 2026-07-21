@@ -2,17 +2,14 @@
 
 namespace Demo\Forms;
 
-
 class FormArea extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Area';
-
 
     /**
      * Build a form here.

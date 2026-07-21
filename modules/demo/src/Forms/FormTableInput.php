@@ -2,19 +2,16 @@
 
 namespace Demo\Forms;
 
-
 use Poppy\MgrPage\Classes\Form\Field\Number;
 
 class FormTableInput extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Table';
-
 
     /**
      * Build a form here.

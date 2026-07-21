@@ -9,7 +9,6 @@ use Poppy\Framework\Application\TestCase;
 
 class RbacTest extends TestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();

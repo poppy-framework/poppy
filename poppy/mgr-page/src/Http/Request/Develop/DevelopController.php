@@ -14,11 +14,11 @@ use View;
  */
 class DevelopController extends BackendController
 {
+    use ViewTrait, CoreTrait;
+
     public static array $permission = [
         'global' => 'backend:py-system.develop.manage',
     ];
-
-    use ViewTrait, CoreTrait;
 
     public function __construct()
     {

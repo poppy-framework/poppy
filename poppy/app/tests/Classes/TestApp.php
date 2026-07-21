@@ -14,11 +14,11 @@ use Poppy\Framework\Exceptions\ApplicationException;
 
 class TestApp extends TestCase
 {
-
     protected SysApp $item;
 
     /**
      * 测试 clockwork 文件上传
+     *
      * @throws Exception
      * @throws GuzzleException
      */

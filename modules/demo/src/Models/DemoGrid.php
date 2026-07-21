@@ -14,6 +14,7 @@ use Poppy\System\Models\PamAccount;
  * \Demo\Models\DemoGrid
  *
  * @mixin Eloquent
+ *
  * @property int         $id
  * @property string|null $birth_date
  * @property string|null $post_at
@@ -37,6 +38,7 @@ use Poppy\System\Models\PamAccount;
  * @property string|null $images
  * @property string|null $link
  * @property int|null    $account_id
+ *
  * @method static Builder|DemoGrid newModelQuery()
  * @method static Builder|DemoGrid newQuery()
  * @method static Builder|DemoGrid query()
@@ -55,7 +57,6 @@ class DemoGrid extends Model
         'setting',
     ];
 
-
     public function pam(): HasOne
     {
         return $this->hasOne(PamAccount::class, 'id', 'account_id');
@@ -70,6 +71,7 @@ class DemoGrid extends Model
             3 => '已发布',
             4 => '已删除',
         ];
+
         return kv($defs, $key);
     }
 

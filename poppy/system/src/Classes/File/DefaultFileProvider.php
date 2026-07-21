@@ -38,35 +38,39 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 是否启用水印
-     * @var bool
      */
     protected bool $watermark = false;
+
     /**
      * 长边限制
-     * @var int|null
      */
     protected ?int $resizeLongDistrict = null;
+
     /**
      * @var string 文件夹
      */
     protected string $folder;
+
     /**
      * @var string 返回地址
      */
     protected string $returnUrl;
+
     /**
      * @var array 允许上传的扩展
      */
     protected array $allowedExtensions = ['zip'];
+
     /**
      * @var int 默认图片质量
      */
     protected int $quality = 70;
+
     /**
      * 短边限制
-     * @var int
      */
     protected int $resizeDistrict = 1920;
+
     /**
      * @var string 图片mime类型
      */
@@ -75,10 +79,8 @@ class DefaultFileProvider implements FileContract
     /**
      * 是否强制设置目录-这样目录是不变的
      * 不能适用于连续上传图片场景，只适用于明确地址的图片
-     * @var bool
      */
     private bool $isForceSetDestination = false;
-
 
     public function __construct()
     {
@@ -86,16 +88,15 @@ class DefaultFileProvider implements FileContract
         $this->returnUrl = config('app.url') . '/';
     }
 
-
     public function setFolder($folder = 'uploads'): self
     {
         $this->folder = (is_production() ? '' : 'dev/') . $folder;
+
         return $this;
     }
 
     /**
      * 设置类型
-     * @param string $type
      */
     public function setType(string $type): void
     {
@@ -115,53 +116,57 @@ class DefaultFileProvider implements FileContract
         if (!$disk) {
             $disk = app('filesystem')->disk($this->disk);
         }
+
         return $disk;
     }
 
     /**
      * Set Extension
+     *
      * @param array $extension 支持的扩展
      */
     public function setExtension(array $extension = []): self
     {
         $this->allowedExtensions = $extension;
+
         return $this;
     }
 
     /**
      * District Size.
+     *
      * @param int $resize 设置resize 的区域
      */
     public function setResizeDistrict(int $resize): self
     {
         $this->resizeDistrict = $resize;
+
         return $this;
     }
 
     /**
      * 设置图片压缩质量
-     * @param int $quality
-     * @return self
      */
     public function setQuality(int $quality): self
     {
         $this->quality = $quality;
+
         return $this;
     }
 
     /**
      * 设置图片mime类型
-     * @param $mime_type
-     * @return DefaultFileProvider
      */
     public function setMimeType($mime_type): self
     {
         $this->mimeType = $mime_type;
+
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function saveFile(UploadedFile $file): bool
@@ -189,7 +194,7 @@ class DefaultFileProvider implements FileContract
                 $extension = 'png';
             }
             // bmp 处理
-            if ($file->getMimeType() === 'image/x-ms-bmp') {
+            if ('image/x-ms-bmp' === $file->getMimeType()) {
                 $img = imagecreatefrombmp($file->getRealPath());
                 if ($img) {
                     ob_start();
@@ -200,7 +205,8 @@ class DefaultFileProvider implements FileContract
             }
             try {
                 $zipContent = $this->resizeContent($extension, $zipContent);
-            } catch (NotReadableException $e) {
+            }
+            catch (NotReadableException $e) {
                 return $this->setError('图片源格式有误无法读取, 请转换图片格式再行上传');
             }
         }
@@ -213,7 +219,7 @@ class DefaultFileProvider implements FileContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function resize($content, $width = 1920, $height = 1440, $crop = false): StreamInterface
     {
@@ -253,7 +259,8 @@ class DefaultFileProvider implements FileContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function saveInput($content): bool
@@ -280,7 +287,7 @@ class DefaultFileProvider implements FileContract
         }
 
         // 缩放图片
-        if ($extension !== 'gif') {
+        if ('gif' !== $extension) {
             $zipContent = $this->resizeContent($extension, $content);
         }
         else {
@@ -295,7 +302,6 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 获取目标路径
-     * @return string
      */
     public function getDestination(): string
     {
@@ -308,11 +314,12 @@ class DefaultFileProvider implements FileContract
     public function setDestination(string $destination): self
     {
         $this->destination = $destination;
+
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUrl(): string
     {
@@ -321,7 +328,7 @@ class DefaultFileProvider implements FileContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getReturnUrl(): string
     {
@@ -330,6 +337,7 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 设置返回地址
+     *
      * @param string $url 地址
      */
     public function setReturnUrl(string $url): self
@@ -338,21 +346,22 @@ class DefaultFileProvider implements FileContract
             $url .= '/';
         }
         $this->returnUrl = $url;
+
         return $this;
     }
 
     /**
-     * @param bool $isForceSetDestination
      * @return $this
      */
     public function setIsForceSetDestination(bool $isForceSetDestination): DefaultFileProvider
     {
         $this->isForceSetDestination = $isForceSetDestination;
+
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function copyTo(string $dist): bool
     {
@@ -360,17 +369,19 @@ class DefaultFileProvider implements FileContract
         if ($this->storage()->exists($dist)) {
             $this->storage()->delete($dist);
         }
+
         return $this->storage()->copy($this->destination, $dist);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function delete(): bool
     {
         if ($this->storage()->exists($this->destination)) {
             $this->storage()->delete($this->destination);
         }
+
         return true;
     }
 
@@ -384,21 +395,21 @@ class DefaultFileProvider implements FileContract
 
     /**
      * @param string $extension 扩展名
-     * @return string
+     *
      * @throws ApplicationException
      */
     public function genRelativePath(string $extension = 'png'): string
     {
         if ($this->isForceSetDestination && $this->destination) {
             $ext = FileHelper::ext($this->destination);
-            /**
+            /*
              * 兼容 ext 是 jpg 的情况
              * 另外我查询了关于 jpg 和 jpeg 的区别，这里的介绍两者的区别是：
              * JPG and JPEG are interchangeable file extensions representing the same image format established by the Joint Photographic Experts Group. The distinction lies solely in their naming; JPG was used when file systems limited extensions to three characters. Their functionality and compatibility are identical.
              * 非官方翻译版：JPG 和 JPEG 是可互换的文件扩展名，代表联合图像专家组建立的相同图像格式。区别仅在于它们的命名；当文件系统将扩展名限制为三个字符时，使用 JPG。它们的功能和兼容性是相同的。
              * @link https://kinsta.com/blog/jpg-vs-jpeg/
              */
-            if (($extension === 'jpeg' && $ext === 'jpg') || $ext === $extension) {
+            if (('jpeg' === $extension && 'jpg' === $ext) || $ext === $extension) {
                 return $this->destination;
             }
 
@@ -421,14 +432,16 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 重设内容
-     * @param string $extension 扩展
+     *
+     * @param string $extension  扩展
      * @param mixed  $img_stream 压缩内容
+     *
      * @return bool|StreamInterface
      */
     public function resizeContent(string $extension, $img_stream)
     {
         // 缩放图片
-        if ($extension !== 'gif' && in_array($extension, FileManager::kvExt(FileManager::TYPE_IMAGES), true)) {
+        if ('gif' !== $extension && in_array($extension, FileManager::kvExt(FileManager::TYPE_IMAGES), true)) {
             $Image  = $this->imageManager()->make($img_stream);
             $width  = $Image->width();
             $height = $Image->height();
@@ -441,12 +454,10 @@ class DefaultFileProvider implements FileContract
         else {
             return $img_stream;
         }
+
         return $img_stream;
     }
 
-    /**
-     * @return ImageManager
-     */
     private function imageManager(): ImageManager
     {
         return app('image');

@@ -8,7 +8,7 @@
     </div>
 
     <div class="{{$viewClass['field']}}">
-        <?php $value = !is_null($value) ? (array) $value : [''] ?>
+        <?php $value = !is_null($value) ? (array) $value : ['']; ?>
         {!! Form::question($name, $value) !!}
         @include('py-mgr-page::tpl.form.help-block')
         @include('py-mgr-page::tpl.form.error')

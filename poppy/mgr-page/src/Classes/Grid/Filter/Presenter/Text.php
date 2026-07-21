@@ -6,25 +6,14 @@ namespace Poppy\MgrPage\Classes\Grid\Filter\Presenter;
 
 class Text extends Presenter
 {
-    /**
-     * @var string
-     */
     protected string $placeholder = '';
 
-    /**
-     * @var string
-     */
     protected string $icon = 'pencil';
 
-    /**
-     * @var string
-     */
     protected string $type = 'text';
 
     /**
      * Text constructor.
-     *
-     * @param string $placeholder
      */
     public function __construct(string $placeholder = '')
     {
@@ -33,8 +22,6 @@ class Text extends Presenter
 
     /**
      * Get variables for field template.
-     *
-     * @return array
      */
     public function variables(): array
     {
@@ -49,8 +36,6 @@ class Text extends Presenter
     /**
      * Set input placeholder.
      *
-     * @param string $placeholder
-     *
      * @return $this
      */
     public function placeholder(string $placeholder = ''): self
@@ -60,25 +45,16 @@ class Text extends Presenter
         return $this;
     }
 
-    /**
-     * @return Text
-     */
     public function url(): self
     {
         return $this->inputmask(['alias' => 'url'], 'internet-explorer');
     }
 
-    /**
-     * @return Text
-     */
     public function email(): self
     {
         return $this->inputmask(['alias' => 'email'], 'envelope');
     }
 
-    /**
-     * @return Text
-     */
     public function integer(): self
     {
         return $this->inputmask(['alias' => 'integer']);
@@ -87,9 +63,7 @@ class Text extends Presenter
     /**
      * @param array $options
      *
-     * @return Text
      * @see https://github.com/RobinHerbots/Inputmask/blob/4.x/README_numeric.md
-     *
      */
     public function decimal($options = []): self
     {
@@ -99,9 +73,7 @@ class Text extends Presenter
     /**
      * @param array $options
      *
-     * @return Text
      * @see https://github.com/RobinHerbots/Inputmask/blob/4.x/README_numeric.md
-     *
      */
     public function currency($options = []): self
     {
@@ -116,8 +88,8 @@ class Text extends Presenter
      * @param array $options
      *
      * @return Text
-     * @see https://github.com/RobinHerbots/Inputmask/blob/4.x/README_numeric.md
      *
+     * @see https://github.com/RobinHerbots/Inputmask/blob/4.x/README_numeric.md
      */
     public function percentage($options = [])
     {
@@ -126,27 +98,16 @@ class Text extends Presenter
         return $this->inputmask($options);
     }
 
-    /**
-     * @return Text
-     */
     public function ip(): self
     {
         return $this->inputmask(['alias' => 'ip'], 'laptop');
     }
 
-    /**
-     * @return Text
-     */
     public function mac(): self
     {
         return $this->inputmask(['alias' => 'mac'], 'laptop');
     }
 
-    /**
-     * @param string $mask
-     *
-     * @return Text
-     */
     public function mobile(string $mask = '19999999999'): self
     {
         return $this->inputmask(compact('mask'), 'phone');
@@ -160,8 +121,6 @@ class Text extends Presenter
      */
     public function inputmask($options = [], $icon = 'pencil'): self
     {
-
-
         $this->icon = $icon;
 
         return $this;

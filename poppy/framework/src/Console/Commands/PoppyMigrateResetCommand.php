@@ -24,36 +24,26 @@ class PoppyMigrateResetCommand extends Command
 
     /**
      * The console command name.
+     *
      * @var string
      */
     protected $name = 'poppy:migrate:reset';
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Rollback all database migrations for a specific or all modules';
 
-    /**
-     * @var Poppy
-     */
     protected Poppy $poppy;
 
-    /**
-     * @var Migrator
-     */
     protected Migrator $migrator;
 
-    /**
-     * @var Filesystem
-     */
     protected Filesystem $files;
 
     /**
      * Create a new command instance.
-     * @param Poppy      $poppy
-     * @param Filesystem $files
-     * @param Migrator   $migrator
      */
     public function __construct(Poppy $poppy, Filesystem $files, Migrator $migrator)
     {
@@ -90,7 +80,7 @@ class PoppyMigrateResetCommand extends Command
 
         $migrations = array_reverse($this->migrator->getRepository()->getRan());
 
-        if (count($migrations) == 0) {
+        if (0 == count($migrations)) {
             $this->output->writeln('Nothing to rollback.');
         }
         else {
@@ -99,7 +89,7 @@ class PoppyMigrateResetCommand extends Command
             $count = 0;
             foreach ($migrations as $migration) {
                 if (!array_key_exists($migration, $files)) {
-                    $count++;
+                    ++$count;
 
                     continue;
                 }
@@ -115,6 +105,7 @@ class PoppyMigrateResetCommand extends Command
 
     /**
      * Run "down" a migration instance.
+     *
      * @param string        $file      migrate file
      * @param string|object $migration migration file
      */
@@ -132,7 +123,6 @@ class PoppyMigrateResetCommand extends Command
 
     /**
      * Generate a list of all migration paths, given the arguments/operations supplied.
-     * @return array
      */
     protected function getMigrationPaths(): array
     {
@@ -149,6 +139,7 @@ class PoppyMigrateResetCommand extends Command
 
     /**
      * Using the arguments, generate a list of slugs to reset the migrations for.
+     *
      * @return Collection|array
      */
     protected function getSlugsToReset()
@@ -167,7 +158,6 @@ class PoppyMigrateResetCommand extends Command
     /**
      * Determine if a valid slug has been provided as an argument.
      * We will accept a slug as long as it is not empty and is enabled (or force is passed).
-     * @return bool
      */
     protected function validSlugProvided(): bool
     {
@@ -188,8 +178,8 @@ class PoppyMigrateResetCommand extends Command
 
     /**
      * Get the console command parameters.
+     *
      * @param string $slug slug
-     * @return array
      */
     protected function getParameters(string $slug): array
     {
@@ -214,7 +204,6 @@ class PoppyMigrateResetCommand extends Command
 
     /**
      * Get the console command arguments.
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -225,7 +214,6 @@ class PoppyMigrateResetCommand extends Command
 
     /**
      * Get the console command options.
-     * @return array
      */
     protected function getOptions(): array
     {

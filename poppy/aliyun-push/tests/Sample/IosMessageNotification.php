@@ -6,15 +6,12 @@ use Illuminate\Notifications\Notification;
 use Poppy\AliyunPush\Channels\AliPushChannel;
 use Poppy\AliyunPush\Contracts\AliPushChannel as AliPushChannelContract;
 use Poppy\Framework\Exceptions\ApplicationException;
-use Poppy\Framework\Exceptions\FakerException;
-
 
 class IosMessageNotification extends Notification implements AliPushChannelContract
 {
-
     /**
      * Get the notification's delivery channels.
-     * @param mixed $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
@@ -23,7 +20,8 @@ class IosMessageNotification extends Notification implements AliPushChannelContr
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function toAliPush(): array
@@ -34,7 +32,7 @@ class IosMessageNotification extends Notification implements AliPushChannelContr
             'title'            => 'Message.' . py_faker()->sentence,
             'content'          => 'Content.' . py_faker()->sentences(3, true),
             'registration_ids' => config('poppy.aliyun-push.registration_ids'),
-            'extra'           => [
+            'extra'            => [
                 'key1' => '',
                 'key2' => '',
             ],

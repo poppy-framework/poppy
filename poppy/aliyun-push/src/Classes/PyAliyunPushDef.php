@@ -6,7 +6,6 @@ class PyAliyunPushDef
 {
     /**
      * 完善配置
-     * @return void
      */
     public static function fillConfig(): void
     {

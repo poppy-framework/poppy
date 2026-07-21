@@ -6,14 +6,12 @@ use Poppy\Framework\Validation\Rule;
 
 class FormRate extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Rate(比例)';
-
 
     /**
      * Build a form here.

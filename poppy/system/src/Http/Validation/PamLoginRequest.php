@@ -10,7 +10,6 @@ use Poppy\System\Models\PamAccount;
 
 class PamLoginRequest extends Request
 {
-
     protected bool $isValidate = false;
 
     public function attributes(): array
@@ -40,8 +39,6 @@ class PamLoginRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

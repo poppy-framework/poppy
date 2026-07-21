@@ -12,13 +12,11 @@ use Poppy\Sms\Classes\Contracts\SmsContract;
 
 class ChuanglanSmsProvider extends BaseSms implements SmsContract
 {
-    /**
-     * @var SmsApi
-     */
     private SmsApi $clApi;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws JsonException
      */
     public function send(string $type, $mobile, array $params = [], $sign = ''): bool
@@ -38,7 +36,7 @@ class ChuanglanSmsProvider extends BaseSms implements SmsContract
             : $this->clApi->sendCtySMS($mobile, $msg);
         if (!is_null($result)) {
             $output = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
-            if (isset($output['code']) && $output['code'] === '0') {
+            if (isset($output['code']) && '0' === $output['code']) {
                 return true;
             }
 

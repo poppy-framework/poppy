@@ -11,7 +11,6 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
 {
     /**
      * Define the routes for the module.
-     * @return void
      */
     public function map(): void
     {
@@ -23,7 +22,6 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
     /**
      * Define the "web" routes for the module.
      * These routes all receive session state, CSRF protection, etc.
-     * @return void
      */
     protected function mapBackendRoutes(): void
     {
@@ -53,7 +51,6 @@ class RouteServiceProvider extends \Poppy\Framework\Application\RouteServiceProv
     /**
      * Define the "web" routes for the module.
      * These routes all receive session state, CSRF protection, etc.
-     * @return void
      */
     protected function mapDevRoutes(): void
     {

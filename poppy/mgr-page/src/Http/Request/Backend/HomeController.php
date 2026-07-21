@@ -39,7 +39,7 @@ class HomeController extends BackendController
 
     /**
      * 主页
-     * @return View
+     *
      * @throws PermissionException
      */
     public function index(): View
@@ -52,6 +52,7 @@ class HomeController extends BackendController
         $name = sys_setting('py-system::site.name');
         $logo = sys_setting('py-system::site.logo');
         $main = route('py-mgr-page:backend.home.cp', [], false);
+
         return view('py-mgr-page::backend.home.index', [
             'host' => $host,
             'logo' => $logo,
@@ -62,6 +63,7 @@ class HomeController extends BackendController
 
     /**
      * 登录
+     *
      * @throws ApplicationException
      * @throws ValidationException
      * @throws AuthorizationException
@@ -97,8 +99,10 @@ class HomeController extends BackendController
             if ($loginSuccess) {
                 $Pam->setSessionLifetime($Pam->getPam());
                 $Pam->setRememberTokenExpired();
+
                 return Resp::success('登录成功', '_location|' . route('py-mgr-page:backend.home.index'));
             }
+
             return Resp::error($Pam->getError());
         }
 
@@ -116,17 +120,20 @@ class HomeController extends BackendController
     {
         $form = new FormPassword();
         $form->setPam($this->pam);
+
         return $form->render();
     }
 
     public function clearCache()
     {
         $this->pyConsole()->call('poppy:optimize');
+
         return Resp::success('已清空缓存');
     }
 
     /**
      * 登出
+     *
      * @return JsonResponse|Response|RedirectResponse
      */
     public function logout()
@@ -147,6 +154,7 @@ class HomeController extends BackendController
 
     /**
      * 控制面板
+     *
      * @return View
      */
     public function cp()
@@ -156,7 +164,8 @@ class HomeController extends BackendController
 
     /**
      * Setting
-     * @param string     $path 地址
+     *
+     * @param string     $path  地址
      * @param int|string $index
      */
     public function setting(string $path = 'poppy.mgr-page', $index = 0)
@@ -166,12 +175,15 @@ class HomeController extends BackendController
 
     /**
      * tools
+     *
      * @param string $type 类型
+     *
      * @return Factory|View
      */
     public function easyWeb(string $type)
     {
         $host = StrHelper::formatId(EnvHelper::host());
+
         return view('py-mgr-page::backend.home.easyweb.' . $type, [
             'host' => $host,
         ]);

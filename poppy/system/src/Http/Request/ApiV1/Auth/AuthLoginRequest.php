@@ -13,6 +13,7 @@ use Poppy\System\Models\PamAccount;
  * @OA\Schema(
  *     schema="PoppySystemAuthLoginRequest",
  *     required={"passport"},
+ *
  *     @OA\Property(property="passport",description="通行证",type="string"),
  *     @OA\Property(property="password",description="密码",type="string",example="123456",),
  *     @OA\Property(property="captcha",description="验证码",type="string",example="1234",),

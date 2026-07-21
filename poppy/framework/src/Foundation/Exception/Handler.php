@@ -27,22 +27,24 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
  */
 class Handler extends ExceptionHandler
 {
-
     use PjaxTrait;
 
     /**
      * A list of the exception types that should not be reported.
+     *
      * @var array
      */
     protected $dontReport = [
         HintException::class,
-        Warningable::class
+        Warningable::class,
     ];
 
     /**
      * Render an exception into an HTTP response.
+     *
      * @param Request   $request request
-     * @param Exception $e exception
+     * @param Exception $e       exception
+     *
      * @throws Exception
      */
     public function render($request, Exception $e)
@@ -63,15 +65,18 @@ class Handler extends ExceptionHandler
                 foreach ($e->validator->errors()->messages() as $message) {
                     $arrMsg[] = implode(' ', $message);
                 }
+
                 return $this->pjaxError(implode(', ', $arrMsg));
             }
+
             return Resp::error($e->validator->errors());
         }
 
         if ($e instanceof AuthorizationException) {
-            if ($e->getMessage() !== 'This action is unauthorized.') {
+            if ('This action is unauthorized.' !== $e->getMessage()) {
                 return Resp::error($e->getMessage());
             }
+
             return Resp::error(trans('poppy::resp.authorization_default_exception'));
         }
 
@@ -96,6 +101,7 @@ class Handler extends ExceptionHandler
                 'message' => $e->getMessage(),
                 'code'    => $e->getCode(),
             ]);
+
             return Resp::error(trans('poppy::resp.query_exception'));
         }
 
@@ -103,6 +109,7 @@ class Handler extends ExceptionHandler
             $message = trans('poppy::resp.model_not_found_exception', [
                 'name' => poppy_friendly($e->getModel()) . ' id: [ ' . implode(', ', $e->getIds()) . ' ]',
             ]);
+
             return Resp::error($message);
         }
 
@@ -118,12 +125,11 @@ class Handler extends ExceptionHandler
         return parent::render($request, $e);
     }
 
-
     /**
      * Checks if the exception implements the HttpExceptionInterface, or returns
      * as generic 500 error code for a server side error.
+     *
      * @param Exception $exception exception
-     * @return int
      */
     protected function getStatusCode(Exception $exception): int
     {
@@ -142,7 +148,6 @@ class Handler extends ExceptionHandler
 
     /**
      * Get the default context variables for logging.
-     * @return array
      */
     protected function context(): array
     {
@@ -157,6 +162,7 @@ class Handler extends ExceptionHandler
                 'message' => trans('poppy::resp.authentication_exception'),
             ], 401);
         }
+
         return Resp::web(401, trans('poppy::resp.authentication_exception'));
     }
 }

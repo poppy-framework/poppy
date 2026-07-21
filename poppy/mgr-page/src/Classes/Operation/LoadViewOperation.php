@@ -9,10 +9,10 @@ namespace Poppy\MgrPage\Classes\Operation;
  */
 final class LoadViewOperation extends Operation
 {
-
     public function render(): string
     {
         $this->classes[] = 'J_load_view';
+
         return parent::render();
     }
 }

@@ -8,7 +8,6 @@ use Poppy\Framework\Validation\Rule;
 
 class Mobile extends Text
 {
-
     public function __construct($column = '', $arguments = [])
     {
         parent::__construct($column, $arguments);
@@ -16,7 +15,6 @@ class Mobile extends Text
             'mobile' => '输入类型必须是手机号',
         ]);
     }
-
 
     public function render()
     {

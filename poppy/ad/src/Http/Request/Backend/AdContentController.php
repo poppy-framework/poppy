@@ -18,13 +18,13 @@ use Poppy\Framework\Classes\Resp;
 use Poppy\Framework\Exceptions\ApplicationException;
 use Poppy\MgrPage\Classes\Grid;
 use Poppy\MgrPage\Http\Request\Backend\BackendController;
+use Throwable;
 
 /**
  * 广告管理
  */
 class AdContentController extends BackendController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -35,9 +35,11 @@ class AdContentController extends BackendController
 
     /**
      * 广告列表
+     *
      * @return JsonResponse|RedirectResponse|Response|string
+     *
      * @throws ApplicationException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function index()
     {
@@ -46,6 +48,7 @@ class AdContentController extends BackendController
 
     /**
      * 创建/编辑广告
+     *
      * @return Factory|JsonResponse|RedirectResponse|Response|Redirector|View
      */
     public function establish()
@@ -55,7 +58,9 @@ class AdContentController extends BackendController
 
     /**
      * 删除广告
+     *
      * @param int $id 广告ID
+     *
      * @return JsonResponse|RedirectResponse|Response
      */
     public function delete(int $id)
@@ -70,7 +75,9 @@ class AdContentController extends BackendController
 
     /**
      * 开启/关闭 广告
+     *
      * @param int $id 活动ID
+     *
      * @return JsonResponse|RedirectResponse|Response
      */
     public function toggle(int $id)
@@ -85,6 +92,7 @@ class AdContentController extends BackendController
 
     /**
      * 广告Action
+     *
      * @return Ad()
      */
     private function action(): Ad

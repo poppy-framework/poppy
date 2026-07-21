@@ -4,16 +4,14 @@ declare(strict_types = 1);
 
 namespace Poppy\Extension\Webhook\Tests\MsgType;
 
-use Poppy\Framework\Application\TestCase;
 use Poppy\Extension\Webhook\DingTalk\MsgType\ActionCard;
+use Poppy\Framework\Application\TestCase;
 
 /**
  * Class ActionCardTest
- * @package Iamzz\Dingtalk\Tests\MsgType
  */
 class ActionCardTest extends TestCase
 {
-
     public function testToJson(): void
     {
         $title            = '乔布斯 20 年前想打造一间苹果咖啡厅，而它正是 Apple Store 的前身';
@@ -30,7 +28,7 @@ class ActionCardTest extends TestCase
                 'btnOrientation' => '0',
                 'singleTitle'    => '阅读全文',
                 'singleURL'      => 'https://www.dingtalk.com/',
-            ]
+            ],
         ];
         static::assertJsonStringEqualsJsonString(json_encode($expected), $actionCardObject->toJson());
 
@@ -43,7 +41,7 @@ class ActionCardTest extends TestCase
                 'btnOrientation' => '1',
                 'singleTitle'    => '阅读全文',
                 'singleURL'      => 'https://www.dingtalk.com/',
-            ]
+            ],
         ];
         static::assertJsonStringEqualsJsonString(json_encode($expected), $actionCardObject->toJson());
 
@@ -62,7 +60,7 @@ class ActionCardTest extends TestCase
                     ['title' => '阅读全文1', 'actionURL' => 'https://www.dingtalk.com/'],
                     ['title' => '阅读全文2', 'actionURL' => 'https://www.dingtalk.com/'],
                 ],
-            ]
+            ],
         ];
         static::assertJsonStringEqualsJsonString(json_encode($expected), $actionCardObject->toJson());
 
@@ -77,7 +75,7 @@ class ActionCardTest extends TestCase
                     ['title' => '阅读全文1', 'actionURL' => 'https://www.dingtalk.com/'],
                     ['title' => '阅读全文2', 'actionURL' => 'https://www.dingtalk.com/'],
                 ],
-            ]
+            ],
         ];
         static::assertJsonStringEqualsJsonString(json_encode($expected), $actionCardObject->toJson());
     }

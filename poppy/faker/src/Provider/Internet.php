@@ -103,7 +103,7 @@ class Internet extends Base
         $username = strtolower(static::transliterate($username));
 
         // check if transliterate() didn't support the language and removed all letters
-        if (trim($username, '._') === '') {
+        if ('' === trim($username, '._')) {
             throw new Exception('userName failed with the selected locale. Try a different locale or activate the "intl" PHP extension.');
         }
 
@@ -142,7 +142,7 @@ class Internet extends Base
         $lastName = strtolower(static::transliterate($lastName));
 
         // check if transliterate() didn't support the language and removed all letters
-        if (trim($lastName, '._') === '') {
+        if ('' === trim($lastName, '._')) {
             throw new Exception('domainWord failed with the selected locale. Try a different locale or activate the "intl" PHP extension.');
         }
 
@@ -166,6 +166,7 @@ class Internet extends Base
     public function url(): string
     {
         $format = static::randomElement(static::$urlFormats);
+
         return $this->generator->parse($format);
     }
 
@@ -190,7 +191,7 @@ class Internet extends Base
      */
     public function ipv4()
     {
-        return long2ip(mt_rand(0, 1) == 0 ? mt_rand(-2147483648, -2) : mt_rand(16777216, 2147483647));
+        return long2ip(0 == mt_rand(0, 1) ? mt_rand(-2147483648, -2) : mt_rand(16777216, 2147483647));
     }
 
     /**
@@ -199,8 +200,8 @@ class Internet extends Base
     public function ipv6()
     {
         $res = [];
-        for ($i = 0; $i < 8; $i++) {
-            $res [] = dechex(mt_rand(0, "65535"));
+        for ($i = 0; $i < 8; ++$i) {
+            $res[] = dechex(mt_rand(0, '65535'));
         }
 
         return join(':', $res);
@@ -211,13 +212,13 @@ class Internet extends Base
      */
     public static function localIpv4()
     {
-        if (static::numberBetween(0, 1) === 0) {
+        if (0 === static::numberBetween(0, 1)) {
             // 10.x.x.x range
-            return long2ip(static::numberBetween(ip2long("10.0.0.0"), ip2long("10.255.255.255")));
+            return long2ip(static::numberBetween(ip2long('10.0.0.0'), ip2long('10.255.255.255')));
         }
 
         // 192.168.x.x range
-        return long2ip(static::numberBetween(ip2long("192.168.0.0"), ip2long("192.168.255.255")));
+        return long2ip(static::numberBetween(ip2long('192.168.0.0'), ip2long('192.168.255.255')));
     }
 
     /**
@@ -225,9 +226,10 @@ class Internet extends Base
      */
     public static function macAddress()
     {
-        for ($i = 0; $i < 6; $i++) {
-            $mac[] = sprintf('%02X', static::numberBetween(0, 0xff));
+        for ($i = 0; $i < 6; ++$i) {
+            $mac[] = sprintf('%02X', static::numberBetween(0, 0xFF));
         }
+
         return implode(':', $mac);
     }
 

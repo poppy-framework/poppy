@@ -33,13 +33,11 @@ abstract class RowAction extends GridAction
     /**
      * Set row model.
      *
-     * @param mixed $key
-     *
      * @return Model|mixed
      */
     public function row($key = null)
     {
-        if (func_num_args() == 0) {
+        if (0 == func_num_args()) {
             return $this->row;
         }
 
@@ -66,8 +64,6 @@ abstract class RowAction extends GridAction
     }
 
     /**
-     * @param Column $column
-     *
      * @return $this
      */
     public function setColumn(Column $column)
@@ -89,11 +85,6 @@ abstract class RowAction extends GridAction
         return $this;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed
-     */
     public function retrieveModel(Request $request)
     {
         if (!$key = $request->get('_key')) {
@@ -128,8 +119,6 @@ abstract class RowAction extends GridAction
 
     /**
      * Get primary key value of current row.
-     *
-     * @return mixed
      */
     protected function getKey()
     {

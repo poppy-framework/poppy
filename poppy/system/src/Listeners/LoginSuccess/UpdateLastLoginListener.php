@@ -20,10 +20,8 @@ class UpdateLastLoginListener
     {
         $pam              = $event->pam;
         $pam->logined_at  = Carbon::now();
-        $pam->login_times += 1;
+        ++$pam->login_times;
         $pam->login_ip    = EnvHelper::ip();
         $pam->save();
-
     }
 }
-

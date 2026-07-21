@@ -6,13 +6,12 @@ use Poppy\Framework\Validation\Rule;
 
 class FormCurrency extends FormBaseWidget
 {
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '货币输入';
-
 
     /**
      * Build a form here.

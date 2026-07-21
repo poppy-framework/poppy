@@ -18,19 +18,10 @@ class Category
 {
     use AppTrait;
 
-    /**
-     * @var SysCategory $item
-     */
     private SysCategory $item;
 
-    /**
-     * @var int $id
-     */
     private int $id;
 
-    /**
-     * @return SysCategory
-     */
     public function getItem(): SysCategory
     {
         return $this->item;
@@ -38,14 +29,14 @@ class Category
 
     /**
      * 编辑/创建分类
+     *
      * @param array    $data 传入数据  <br>
      *                       {string}  title       名称 <br>
      *                       {int}     parent_id   父级 ID <br>
      *                       {string}  type        类型
-     * @param null|int $id ID
-     * @return bool
+     * @param int|null $id   ID
      */
-    public function establish(array $data, int $id = null): bool
+    public function establish(array $data, ?int $id = null): bool
     {
         $type   = (string) sys_get($data, 'type');
         $initDb = [
@@ -74,18 +65,11 @@ class Category
         return true;
     }
 
-
     /**
      * 设置排序, 此处排序支持的是 升序排列的状态下的 Position 位置是可用的
-     * @param string $type
-     * @param int    $id
-     * @param int    $aim_id
-     * @param string $compare
-     * @return bool
      */
     public function sort(string $type, int $id, string $compare, int $aim_id): bool
     {
-
         $Db = SysCategory::where('type', $type);
         if (!$aim_id) {
             return $this->setError('请传入目标位置');
@@ -106,7 +90,7 @@ class Category
         // 获取目标的排序值
         $aimListOrder = (int) SysCategory::whereKey($aim_id)->value('list_order');
         // id 排序值 > aim 排序值
-        if ($compare === SysCategory::SORT_GT) {
+        if (SysCategory::SORT_GT === $compare) {
             // 小于等于目标排序值的 -1
             SysCategory::where('type', $type)->where('list_order', '<=', $aimListOrder)->decrement('list_order');
 
@@ -127,12 +111,15 @@ class Category
             // current id to aim order
             SysCategory::whereKey($id)->update(['list_order' => $aimListOrder]);
         }
+
         return true;
     }
 
     /**
      * 删除数据
+     *
      * @param int $id 活动ID
+     *
      * @throws Exception
      */
     public function delete(int $id): void
@@ -148,8 +135,8 @@ class Category
 
     /**
      * 删除数据
+     *
      * @param int $id 活动ID
-     * @param int $status
      */
     public function status(int $id, int $status): void
     {
@@ -158,9 +145,9 @@ class Category
         $this->item->save();
     }
 
-
     /**
      * 初始化
+     *
      * @param int $id 活动 ID
      */
     public function init(int $id): void
@@ -169,10 +156,8 @@ class Category
         $this->id   = $this->item->id;
     }
 
-
     /**
      * 移除 Clear Ref Cache
-     * @return void
      */
     private function clearRefCache(): void
     {

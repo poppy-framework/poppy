@@ -12,7 +12,6 @@ use Poppy\Framework\Poppy\Poppy;
  */
 class PoppyMigrateReset extends Event
 {
-
     /**
      * @var Poppy 模块
      */
@@ -24,7 +23,6 @@ class PoppyMigrateReset extends Event
     private $option;
 
     /**
-     * @param Poppy $poppy
      * @param array $option
      */
     public function __construct(Poppy $poppy, $option = [])

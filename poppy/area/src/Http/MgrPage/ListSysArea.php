@@ -15,7 +15,6 @@ use Poppy\MgrPage\Classes\Operations;
 
 class ListSysArea extends ListBase
 {
-
     public $title = '地区管理';
 
     /**
@@ -23,8 +22,8 @@ class ListSysArea extends ListBase
      */
     public function columns()
     {
-        $this->column('id', "ID")->sortable()->width(80);
-        $this->column('title', "名称");
+        $this->column('id', 'ID')->sortable()->width(80);
+        $this->column('title', '名称');
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var SysArea $item */
             $item = $actions->row;
@@ -32,7 +31,6 @@ class ListSysArea extends ListBase
             $actions->delete(route('py-area:backend.content.delete', [$item->id]), $item->title);
         },])->width(140)->fixed();
     }
-
 
     public function filter(): Closure
     {

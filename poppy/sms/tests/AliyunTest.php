@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\Sms\Tests;
 
-use Illuminate\Support\Str;
 use JsonException;
 use Poppy\Framework\Helper\StrHelper;
 use Poppy\Sms\Action\Sms;
@@ -19,9 +18,10 @@ use Throwable;
  */
 class AliyunTest extends BaseSms
 {
-
     private string $previousAliyunAccessKey = '';
+
     private string $previousAliyunAccessSecret = '';
+
     private string $previousSignName = '';
 
     /**
@@ -42,7 +42,6 @@ class AliyunTest extends BaseSms
             'py-sms::sms.sign'                 => data_get($this->conf, 'aliyun_sign'),
         ]);
     }
-
 
     public function testTransMobile(): void
     {
@@ -65,7 +64,7 @@ class AliyunTest extends BaseSms
 
     /**
      * 测试短信发送
-     * @return void
+     *
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
      * @throws JsonException
@@ -74,7 +73,6 @@ class AliyunTest extends BaseSms
     {
         $Sms = new Sms();
         $Sms->establish('aliyun:captcha', data_get($this->conf, 'aliyun_captcha_code'));
-
 
         $Provider = new AliyunSmsProvider();
         if ($Provider->send('captcha', $this->mobile, [

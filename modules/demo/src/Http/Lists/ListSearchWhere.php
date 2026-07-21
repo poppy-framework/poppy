@@ -16,9 +16,9 @@ use Poppy\MgrPage\Classes\Grid\ListBase;
 
 class ListSearchWhere extends ListBase
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns(): void
@@ -33,13 +33,10 @@ class ListSearchWhere extends ListBase
             $item = $actions->row;
             $actions->edit(route('py-mgr-page:backend.pam.establish', [$item->id]));
         },])->fixed();
-
     }
 
-
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {

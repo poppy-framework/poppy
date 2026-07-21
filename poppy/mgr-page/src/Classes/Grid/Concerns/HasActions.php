@@ -25,10 +25,6 @@ trait HasActions
      */
     protected $actionsClass;
 
-
-    /**
-     * @var array
-     */
     protected array $batchActions = [];
 
     protected ?Operations $batchOperations = null;
@@ -60,17 +56,15 @@ trait HasActions
             return $this->actionsClass;
         }
 
-        return \Poppy\MgrPage\Classes\Grid\Displayer\Actions::class;
+        return Grid\Displayer\Actions::class;
     }
 
     /**
-     * @param string $actionClass
-     *
      * @return $this
      */
     public function setActionClass(string $actionClass)
     {
-        if (is_subclass_of($actionClass, \Poppy\MgrPage\Classes\Grid\Displayer\Actions::class)) {
+        if (is_subclass_of($actionClass, Grid\Displayer\Actions::class)) {
             $this->actionsClass = $actionClass;
         }
 
@@ -80,14 +74,13 @@ trait HasActions
     /**
      * Set grid batch-action callback.
      *
-     *
      * @return $this
      */
     public function batchActions($buttons): self
     {
         if (is_array($buttons) && count($buttons)) {
             foreach ($buttons as $button) {
-                if (!($button instanceof Renderable)) {
+                if (!$button instanceof Renderable) {
                     continue;
                 }
                 $this->batchActions[] = $button;
@@ -99,12 +92,11 @@ trait HasActions
             $buttons($operations);
             $this->batchOperations = $operations;
         }
+
         return $this;
     }
 
     /**
-     * @param bool $disable
-     *
      * @return Grid|mixed
      */
     public function disableBatchActions(bool $disable = true)
@@ -114,11 +106,8 @@ trait HasActions
         return $this->option('show_row_selector', !$disable);
     }
 
-
     /**
      * Render create button for grid.
-     *
-     * @return string
      */
     public function renderBatchActions(): string
     {
@@ -131,13 +120,12 @@ trait HasActions
         if ($this->batchOperations) {
             $append .= $this->batchOperations->render();
         }
+
         return $append;
     }
 
     /**
      * Render create button for grid.
-     *
-     * @return string
      */
     public function skeletonBatchActions(): string
     {
@@ -145,6 +133,7 @@ trait HasActions
         foreach ($this->batchActions as $button) {
             $append .= $button->render();
         }
+
         return $append;
     }
 }

@@ -9,7 +9,6 @@ use Throwable;
 
 class ServicesTest extends TestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();
@@ -22,7 +21,8 @@ class ServicesTest extends TestCase
         try {
             $html = (new ServiceFactory())->parse('poppy.demo.html_demo');
             $this->assertEquals('<div></div>', $html);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -33,7 +33,8 @@ class ServicesTest extends TestCase
         try {
             $arrDemo = sys_hook('poppy.demo.array_demo');
             $this->assertArrayHasKey('poppy-core-array-service', $arrDemo);
-        } catch (ApplicationException $e) {
+        }
+        catch (ApplicationException $e) {
             $this->fail($e->getMessage());
         }
     }

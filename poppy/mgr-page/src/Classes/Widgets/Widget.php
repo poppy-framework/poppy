@@ -8,7 +8,6 @@ use Illuminate\Support\Fluent;
 
 abstract class Widget extends Fluent
 {
-
     public const TYPE_STATIC_TABLE = 'static-table';
 
     /**
@@ -16,15 +15,10 @@ abstract class Widget extends Fluent
      */
     protected $view;
 
-    /**
-     * @return mixed
-     */
     abstract public function render();
 
     /**
      * Set view of widget.
-     *
-     * @param string $view
      */
     public function view(string $view)
     {
@@ -33,8 +27,6 @@ abstract class Widget extends Fluent
 
     /**
      * Build an HTML attribute string from an array.
-     *
-     * @return string
      */
     public function formatAttributes(): string
     {
@@ -51,16 +43,12 @@ abstract class Widget extends Fluent
 
     /**
      * 是否是前端接口请求(请求架构)
-     * @return bool
      */
     public function isSkeleton(): bool
     {
         return (bool) input('_skeleton');
     }
 
-    /**
-     * @return mixed
-     */
     public function __toString()
     {
         return $this->render();
@@ -68,17 +56,13 @@ abstract class Widget extends Fluent
 
     /**
      * Build a single attribute element.
-     *
-     * @param string      $key
-     * @param string|null $value
-     *
-     * @return string
      */
-    protected function attributeElement(string $key, string $value = null): string
+    protected function attributeElement(string $key, ?string $value = null): string
     {
         if (!is_null($value)) {
             return $key . '="' . htmlentities($value, ENT_QUOTES, 'UTF-8') . '"';
         }
+
         return '';
     }
 }

@@ -18,9 +18,9 @@ use Poppy\Extension\IpStore\Classes\Contracts\IpContract;
 
 class ExtensionServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-
     /**
      * Register the service provider.
+     *
      * @return void
      */
     public function register()
@@ -30,6 +30,7 @@ class ExtensionServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Get the services provided by the provider.
+     *
      * @return array
      */
     public function provides()

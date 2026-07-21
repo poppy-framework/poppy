@@ -23,6 +23,7 @@ class InitCommand extends Command
             $first = Arr::first($words);
             if (SysSensitiveWord::where('word', $first)->exists()) {
                 $this->error('你已经导入了默认数据, 无需重新导入');
+
                 return;
             }
             $this->info('Init Sensitive Word Data ....');
@@ -35,7 +36,8 @@ class InitCommand extends Command
             }
             SysSensitiveWord::insert($import);
             $this->info('Init Sensitive Word Data Success');
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->error($e->getMessage());
         }
     }

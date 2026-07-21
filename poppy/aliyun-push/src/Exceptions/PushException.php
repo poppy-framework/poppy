@@ -8,5 +8,4 @@ use Poppy\Framework\Exceptions\BaseException;
 
 class PushException extends BaseException
 {
-
 }

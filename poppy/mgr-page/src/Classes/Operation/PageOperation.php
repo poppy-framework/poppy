@@ -12,6 +12,7 @@ class PageOperation extends Operation
     public function render(): string
     {
         $this->classes[] = 'J_ignore';
+
         return parent::render();
     }
 }

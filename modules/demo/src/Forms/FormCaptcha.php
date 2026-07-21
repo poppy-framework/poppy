@@ -11,19 +11,17 @@ use Poppy\Framework\Validation\Rule;
  */
 class FormCaptcha extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '验证码框';
 
-
     /**
      * Build a form here.
      */
-    public function form():void
+    public function form(): void
     {
         $this->captcha('test', 'xxx')->rules([
             Rule::required(),

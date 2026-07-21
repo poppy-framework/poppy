@@ -44,13 +44,12 @@
         "poppy/faker": "*@dev",
         "poppy/version": "*@dev",
         "poppy/sensitive-word": "*@dev",
-        "poppy/sms": "*@dev"
+        "poppy/sms": "*@dev",
+        "modules/demo": "*@dev"
     },
     "require-dev": {
         "mockery/mockery": "^1.5.1",
         "itsgoingd/clockwork": "^5.1",
-        "barryvdh/laravel-ide-helper": "2.8.*",
-        "doctrine/dbal": "^2.6",
         "phpunit/phpunit": "^9.6",
         "zircote/swagger-php": "^4.11",
         "doctrine/annotations": "^1.14",
@@ -59,14 +58,9 @@
         "overtrue/phplint": "*",
         "php-cs-fixer/shim": "^3.95"
     },
-    "autoload": {
-        "psr-4": {
-            "Demo\\": "modules/demo/src/",
-            "Demo\\Tests\\": "modules/demo/tests/"
-        }
-    },
     "autoload-dev": {
         "psr-4": {
+            "Demo\\Tests\\": "modules/demo/tests/",
             "Poppy\\Sms\\Tests\\": "poppy/sms/tests/",
             "Poppy\\System\\Tests\\": "poppy/system/tests/",
             "Poppy\\Core\\Tests\\": "poppy/core/tests/",
@@ -91,6 +85,13 @@
             "options": {
                 "symlink": true
             }
+        },
+        {
+            "type": "path",
+            "url": "modules/*",
+            "options": {
+                "symlink": false
+            }
         }
     ],
     "extra": {
@@ -108,15 +109,12 @@
             "bash .github/scripts/release.sh 4.2.1-rc1 '' '' --dry-run"
         ],
         "post-install-cmd": [
-            "php artisan clear-compiled",
-            "php artisan ide-helper:generate"
+            "php artisan clear-compiled"
         ],
         "pre-update-cmd": [
         ],
         "post-update-cmd": [
-            "php artisan clear-compiled",
-            "php artisan ide-helper:generate",
-            "php artisan ide-helper:meta"
+            "php artisan clear-compiled"
         ],
         "post-root-package-install": [
             "php -r \"copy('.env.example', '.env');\""

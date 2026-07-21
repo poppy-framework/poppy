@@ -9,19 +9,13 @@ use Poppy\MgrPage\Classes\Grid\Filter\Scope;
 
 trait UseScopes
 {
-
     /**
      * 全局范围
-     * @var Collection
      */
     protected Collection $scopes;
 
     /**
      * 添加全局范围, 在添加全局范围之后, 如果不传入 Scope, 则默认为第一个 Scope
-     * @param string $key
-     * @param string $label
-     *
-     * @return mixed
      */
     public function scope(string $key, string $label)
     {
@@ -32,8 +26,6 @@ trait UseScopes
 
     /**
      * Get all filter scopes.
-     *
-     * @return Collection
      */
     public function getScopes(): Collection
     {
@@ -42,7 +34,6 @@ trait UseScopes
 
     /**
      * 获取当前的Scope, 未设定返回首个
-     * @return Scope|null
      */
     public function getCurrentScope(): ?Scope
     {

@@ -11,11 +11,10 @@ use Poppy\MgrPage\Classes\Traits\UseItems;
 
 class Operations implements Renderable
 {
-
     use UseItems, UseInteraction;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function render(): string
     {
@@ -29,24 +28,16 @@ class Operations implements Renderable
         return implode('', $actions);
     }
 
-
     /**
      * 新建
-     * @param string $url
-     * @param string $title
-     * @return void
      */
     public function create(string $url, string $title = '新建'): void
     {
         $this->iframe($title, $url)->icon('plus-circle')->sm();
     }
 
-
     /**
      * 编辑
-     * @param string $url
-     * @param string $title
-     * @return void
      */
     public function edit(string $url, string $title = '编辑'): void
     {
@@ -55,10 +46,6 @@ class Operations implements Renderable
 
     /**
      * 删除
-     * @param string $url
-     * @param string $confirm
-     * @param string $title
-     * @return void
      */
     public function delete(string $url, string $confirm = '', string $title = '删除'): void
     {
@@ -67,22 +54,14 @@ class Operations implements Renderable
 
     /**
      * 设置
-     * @param string $url
-     * @param string $title
-     * @return void
      */
     public function setting(string $url, string $title = '设置'): void
     {
         $this->iframe($title, $url)->icon('sliders')->sm();
     }
 
-
     /**
      * 下载
-     * @param string $url
-     * @param string $title
-     * @param string $tooltip
-     * @return void
      */
     public function download(string $url, string $title = '下载', string $tooltip = ''): void
     {
@@ -91,8 +70,7 @@ class Operations implements Renderable
 
     /**
      * 工具栏删除
-     * @param $url
-     * @return void
+     *
      * @deprecated 4.2 使用单独的函数
      */
     public function toolbarDelete($url): void
@@ -103,8 +81,6 @@ class Operations implements Renderable
 
     /**
      * 批量删除
-     * @param string $url
-     * @return void
      */
     public function batchDelete(string $url): void
     {
@@ -114,8 +90,6 @@ class Operations implements Renderable
 
     /**
      * 批次更新
-     * @param string $url
-     * @return void
      */
     public function progress(string $url): void
     {
@@ -124,9 +98,6 @@ class Operations implements Renderable
 
     /**
      * 禁用
-     * @param string $url
-     * @param string $title
-     * @return void
      */
     public function disable(string $url, string $title): void
     {
@@ -136,9 +107,6 @@ class Operations implements Renderable
 
     /**
      * 启用
-     * @param string $url
-     * @param string $title
-     * @return void
      */
     public function enable(string $url, string $title): void
     {

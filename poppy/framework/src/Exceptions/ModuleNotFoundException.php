@@ -13,6 +13,7 @@ class ModuleNotFoundException extends BaseException
 {
     /**
      * ModuleNotFoundException constructor.
+     *
      * @param string $slug slug
      */
     public function __construct(string $slug)

@@ -19,12 +19,14 @@ class PoppyMigrateRefreshCommand extends Command
 
     /**
      * The console command name.
+     *
      * @var string
      */
     protected $name = 'poppy:migrate:refresh';
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Reset and re-run all migrations for a specific or all modules';
@@ -70,7 +72,6 @@ class PoppyMigrateRefreshCommand extends Command
 
     /**
      * Determine if the developer has requested database seeding.
-     * @return bool
      */
     protected function needsSeeding(): bool
     {
@@ -79,10 +80,11 @@ class PoppyMigrateRefreshCommand extends Command
 
     /**
      * Run the module seeder command.
+     *
      * @param string|null $slug     slug
      * @param string|null $database database
      */
-    protected function runSeeder(string $slug = null, string $database = null)
+    protected function runSeeder(?string $slug = null, ?string $database = null)
     {
         $this->call('poppy:seed', [
             'slug'       => $slug,
@@ -92,7 +94,6 @@ class PoppyMigrateRefreshCommand extends Command
 
     /**
      * Get the console command arguments.
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -103,7 +104,6 @@ class PoppyMigrateRefreshCommand extends Command
 
     /**
      * Get the console command options.
-     * @return array
      */
     protected function getOptions(): array
     {

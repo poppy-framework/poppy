@@ -12,9 +12,9 @@ use Illuminate\View\Compilers\BladeCompiler;
  */
 class BladeServiceProvider extends ServiceProvider
 {
-
     /**
      * Register the application services.
+     *
      * @return void
      */
     public function register()

@@ -72,7 +72,6 @@ class TimeHelperTest extends TestCase
         $this->assertEquals('2020-11-20 16:00', TimeHelper::format('1605859200'));
     }
 
-
     public function testIsDateRange(): void
     {
         $this->assertTrue(TimeHelper::isDateRange('2020-11-20 - 2020-11-20'));
@@ -168,9 +167,8 @@ class TimeHelperTest extends TestCase
 
     public function testWeek(): void
     {
-
         $start = Carbon::createFromFormat('Y-m-d', '2019-12-28');
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $start->addDay();
             $this->outputVariables($start->format('Y-m-d,Y,W') . '-' . implode('-', TimeHelper::week($start->toDateString())));
         }

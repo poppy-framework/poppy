@@ -11,7 +11,6 @@ use Poppy\Framework\Validation\Rule;
 
 class AdPlaceRequest extends Request
 {
-
     protected bool $isValidate = false;
 
     public function attributes(): array
@@ -27,13 +26,12 @@ class AdPlaceRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         $tbName = (new SysAdPlace())->getTable();
         $id     = Route::input('id');
+
         return [
             'title'     => [
                 Rule::required(),

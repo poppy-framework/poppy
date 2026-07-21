@@ -25,8 +25,8 @@ class Field implements Renderable
 {
     use Macroable;
 
-    const FILE_DELETE_FLAG = '_file_del_';
-    const FILE_SORT_FLAG   = '_file_sort_';
+    public const FILE_DELETE_FLAG = '_file_del_';
+    public const FILE_SORT_FLAG   = '_file_sort_';
 
     /**
      * The validation rules for creation.
@@ -56,36 +56,26 @@ class Field implements Renderable
 
     /**
      * Element value.
-     *
-     * @var mixed
      */
     protected $value;
 
     /**
      * Data of all original columns of value.
-     *
-     * @var mixed
      */
     protected $data;
 
     /**
      * Field original value.
-     *
-     * @var mixed
      */
     protected $original;
 
     /**
      * Field default value.
-     *
-     * @var mixed
      */
     protected $default;
 
     /**
      * Element label.
-     *
-     * @var string
      */
     protected string $label = '';
 
@@ -162,12 +152,10 @@ class Field implements Renderable
      *
      * @var Form
      */
-    protected $form = null;
+    protected $form;
 
     /**
      * View for field to render.
-     *
-     * @var string
      */
     protected string $view = '';
 
@@ -180,8 +168,6 @@ class Field implements Renderable
 
     /**
      * Key for errors.
-     *
-     * @var mixed
      */
     protected $errorKey;
 
@@ -192,7 +178,6 @@ class Field implements Renderable
      */
     protected $placeholder;
 
-
     /**
      * @var bool 显示帮助内容, 关闭则在提示框中显示内容
      */
@@ -200,8 +185,6 @@ class Field implements Renderable
 
     /**
      * Width for label and field.
-     *
-     * @var array
      */
     protected array $width = [
         'label' => 2,
@@ -220,7 +203,7 @@ class Field implements Renderable
      *
      * @var Closure
      */
-    protected $customFormat = null;
+    protected $customFormat;
 
     /**
      * @var bool
@@ -245,7 +228,6 @@ class Field implements Renderable
     /**
      * Field constructor.
      *
-     * @param       $column
      * @param array $arguments
      */
     public function __construct($column = '', $arguments = [])
@@ -275,8 +257,6 @@ class Field implements Renderable
      * Fill data to the field.
      *
      * @param array $data
-     *
-     * @return void
      */
     public function fill($data): void
     {
@@ -297,8 +277,6 @@ class Field implements Renderable
 
     /**
      * custom format form column data when edit.
-     *
-     * @param Closure $call
      *
      * @return $this
      */
@@ -330,11 +308,9 @@ class Field implements Renderable
     }
 
     /**
-     * @param Form $form
-     *
      * @return $this
      */
-    public function setForm(Form $form = null)
+    public function setForm(?Form $form = null)
     {
         $this->form = $form;
 
@@ -361,8 +337,6 @@ class Field implements Renderable
 
     /**
      * Set the field options.
-     *
-     * @param array $options
      *
      * @return $this
      */
@@ -470,7 +444,6 @@ class Field implements Renderable
      * Set validation messages for column.
      *
      * @param string $key
-     * @param array  $messages
      *
      * @return $this
      */
@@ -483,8 +456,6 @@ class Field implements Renderable
 
     /**
      * Set field validator.
-     *
-     * @param callable $validator
      *
      * @return $this
      */
@@ -523,8 +494,6 @@ class Field implements Renderable
      * Set or get value of the field.
      *
      * @param null $value
-     *
-     * @return mixed
      */
     public function value($value = null)
     {
@@ -532,17 +501,16 @@ class Field implements Renderable
             return is_null($this->value) ? $this->getDefault() : $this->value;
         }
         $this->value = $value;
+
         return $this;
     }
 
     /**
      * Set or get data.
      *
-     * @param array|null $data
-     *
      * @return $this
      */
-    public function data(array $data = null)
+    public function data(?array $data = null)
     {
         if (is_null($data)) {
             return $this->data;
@@ -556,8 +524,6 @@ class Field implements Renderable
     /**
      * Set default value for field.
      *
-     * @param $default
-     *
      * @return $this
      */
     public function default($default)
@@ -569,8 +535,6 @@ class Field implements Renderable
 
     /**
      * Get default value.
-     *
-     * @return mixed
      */
     public function getDefault()
     {
@@ -584,15 +548,13 @@ class Field implements Renderable
     /**
      * Set help block for current field.
      *
-     * @param string $text
-     * @param string $icon
-     * @param bool   $show_help
      * @return $this
      */
     public function help(string $text = '', bool $show_help = true, string $icon = 'bi-info-circle'): self
     {
         $this->help     = compact('text', 'icon');
         $this->showHelp = $show_help;
+
         return $this;
     }
 
@@ -618,8 +580,6 @@ class Field implements Renderable
 
     /**
      * Get original value of the field.
-     *
-     * @return mixed
      */
     public function original()
     {
@@ -628,8 +588,6 @@ class Field implements Renderable
 
     /**
      * Get validator for this field.
-     *
-     * @param array $input
      *
      * @return bool|Validator|mixed
      */
@@ -670,7 +628,6 @@ class Field implements Renderable
      * Add html attributes to elements.
      *
      * @param array|string $attribute
-     * @param mixed        $value
      *
      * @return $this
      */
@@ -724,6 +681,7 @@ class Field implements Renderable
     /**
      * Set the field as readonly mode.
      * 此属性不适用于 select
+     *
      * @return $this
      */
     public function readonly()
@@ -735,8 +693,11 @@ class Field implements Renderable
      * Set field as disabled.
      *
      * @return $this
+     *
      * @deprecated 4.2
+     *
      * @removed    5.0
+     *
      * @see disabled()
      */
     public function disable(): self
@@ -782,10 +743,6 @@ class Field implements Renderable
 
     /**
      * Prepare for a field value before update or insert.
-     *
-     * @param $value
-     *
-     * @return mixed
      */
     public function prepare($value)
     {
@@ -849,8 +806,6 @@ class Field implements Renderable
     /**
      * Add the element class.
      *
-     * @param $class
-     *
      * @return $this
      */
     public function addElementClass($class)
@@ -864,8 +819,6 @@ class Field implements Renderable
 
     /**
      * Remove element class.
-     *
-     * @param $class
      *
      * @return $this
      */
@@ -889,9 +842,6 @@ class Field implements Renderable
     /**
      * reset field className.
      *
-     * @param string $className
-     * @param string $resetClassName
-     *
      * @return $this
      */
     public function resetElementClassName(string $className, string $resetClassName)
@@ -903,19 +853,11 @@ class Field implements Renderable
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLabelClass(): string
     {
         return implode(' ', $this->labelClass);
     }
 
-    /**
-     * @param array $labelClass
-     *
-     * @return self
-     */
     public function setLabelClass(array $labelClass): self
     {
         $this->labelClass = $labelClass;
@@ -925,8 +867,6 @@ class Field implements Renderable
 
     /**
      * Get the view variables of this field.
-     *
-     * @return array
      */
     public function variables(): array
     {
@@ -950,8 +890,6 @@ class Field implements Renderable
 
     /**
      * Get view of this field.
-     *
-     * @return string
      */
     public function getView(): string
     {
@@ -981,13 +919,12 @@ class Field implements Renderable
     public function getType(): string
     {
         $class = explode('\\', get_called_class());
+
         return strtolower(end($class));
     }
 
     /**
      * To set this field should render or not.
-     *
-     * @param bool $display
      *
      * @return $this
      */
@@ -999,8 +936,6 @@ class Field implements Renderable
     }
 
     /**
-     * @param Closure $callback
-     *
      * @return Field
      */
     public function with(Closure $callback)
@@ -1030,6 +965,7 @@ class Field implements Renderable
 
     /**
      * @return string
+     *
      * @throws Throwable
      */
     public function __toString()
@@ -1098,7 +1034,7 @@ class Field implements Renderable
                 $name = explode('.', $column);
             }
 
-            if (count($name) === 1) {
+            if (1 === count($name)) {
                 return $name[0];
             }
 
@@ -1126,8 +1062,6 @@ class Field implements Renderable
      * Format the field column name.
      *
      * @param string $column
-     *
-     * @return mixed
      */
     protected function formatColumn($column = '')
     {
@@ -1154,10 +1088,6 @@ class Field implements Renderable
 
     /**
      * Format the label value.
-     *
-     * @param array $arguments
-     *
-     * @return string
      */
     protected function formatLabel(array $arguments = []): string
     {
@@ -1249,14 +1179,13 @@ class Field implements Renderable
     /**
      * Remove a specific rule by keyword.
      *
-     * @param string $rule
-     *
      * @return void
      */
     protected function removeRule(string $rule)
     {
         if (is_array($this->rules)) {
             $this->rules = ArrayHelper::delete($this->rules, $rule);
+
             return;
         }
 
@@ -1278,7 +1207,7 @@ class Field implements Renderable
      */
     protected function sanitizeInput($input, $column)
     {
-        if ($this instanceof \Poppy\MgrPage\Classes\Form\Field\MultipleSelect) {
+        if ($this instanceof Field\MultipleSelect) {
             $value = Arr::get($input, $column);
             Arr::set($input, $column, array_filter((array) $value));
         }
@@ -1304,8 +1233,6 @@ class Field implements Renderable
 
     /**
      * Get element class string.
-     *
-     * @return mixed
      */
     protected function getElementClassString()
     {
@@ -1320,7 +1247,6 @@ class Field implements Renderable
 
             return $classes;
         }
-
 
         return implode(' ', $elementClass);
     }
@@ -1351,8 +1277,6 @@ class Field implements Renderable
      * Get element class.
      *
      * @param bool $default
-     *
-     * @return string
      */
     protected function getGroupClass($default = false): string
     {
@@ -1381,8 +1305,6 @@ class Field implements Renderable
     /**
      * Add variables to field view.
      *
-     * @param array $variables
-     *
      * @return $this
      */
     protected function addVariables(array $variables = []): self
@@ -1392,6 +1314,7 @@ class Field implements Renderable
                 $this->variables[$key] = $value;
             }
         }
+
         return $this;
     }
 

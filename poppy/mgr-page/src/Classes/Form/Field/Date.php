@@ -23,10 +23,10 @@ class Date extends Field
 
     public function render()
     {
-
         $this->addVariables([
             'options' => $this->options,
         ]);
+
         return parent::render();
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 class Between extends FilterItem
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected string $view = 'py-mgr-page::tpl.filter.between';
 
@@ -19,13 +19,12 @@ class Between extends FilterItem
     public function formatId(string $column): array
     {
         $id = str_replace('.', '_', $column);
+
         return ['start' => "{$id}_start", 'end' => "{$id}_end"];
     }
 
     /**
      * Get condition of this filter.
-     *
-     * @param array $inputs
      *
      * @return void|array
      */
@@ -38,7 +37,7 @@ class Between extends FilterItem
         $this->value = Arr::get($inputs, $this->column);
 
         $value = array_filter($this->value, function ($val) {
-            return $val !== '';
+            return '' !== $val;
         });
 
         if (empty($value)) {
@@ -62,13 +61,11 @@ class Between extends FilterItem
      * Format two field names of this filter.
      *
      * @param string $column
-     *
-     * @return array
      */
     protected function formatName($column): array
     {
         $columns = (array) explode('.', $column);
-        if (count($columns) === 1) {
+        if (1 === count($columns)) {
             $name = $columns[0];
         }
         else {

@@ -12,7 +12,6 @@ use Storage;
  */
 class ClearCacheListener
 {
-
     /**
      * @param PoppyOptimized $event 框架优化
      */
@@ -46,4 +45,3 @@ class ClearCacheListener
         }
     }
 }
-

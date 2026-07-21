@@ -21,6 +21,7 @@ class LogController extends DevelopController
 {
     /**
      * 入口
+     *
      * @return Factory|RedirectResponse|View|BinaryFileResponse
      */
     public function index()

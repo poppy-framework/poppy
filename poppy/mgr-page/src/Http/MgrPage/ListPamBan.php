@@ -18,21 +18,21 @@ use Poppy\System\Models\SysConfig;
 
 class ListPamBan extends ListBase
 {
-
     public $title = '风险拦截';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns()
     {
-        $this->column('id', "ID")->sortable()->width(80);
-        $this->column('type', "类型")->display(function ($type) {
+        $this->column('id', 'ID')->sortable()->width(80);
+        $this->column('type', '类型')->display(function ($type) {
             return PamBan::kvType($type);
         });
-        $this->column('value', "限制值");
-        $this->column('note', "备注");
+        $this->column('value', '限制值');
+        $this->column('note', '备注');
         $this->addColumn(Column::NAME_ACTION, '操作')->displayUsing(Actions::class, [function (Actions $actions) {
             /** @var PamBan $item */
             $item = $actions->row;
@@ -40,10 +40,8 @@ class ListPamBan extends ListBase
         },])->fixed()->width(70);
     }
 
-
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {
@@ -55,22 +53,22 @@ class ListPamBan extends ListBase
         };
     }
 
-
     public function quickButtons(): Closure
     {
         $type = input(Scope::QUERY_NAME, PamAccount::TYPE_USER);
+
         return function (Operations $operations) use ($type) {
             $status = sys_setting('py-system::ban.status-' . $type, SysConfig::STR_NO);
-            $url    = route_url('py-mgr-page:backend.ban.status', null, ['type' => $type,]);
-            if ($status === 'Y') {
+            $url    = route_url('py-mgr-page:backend.ban.status', null, ['type' => $type]);
+            if ('Y' === $status) {
                 $operations->disable($url, '风险拦截');
             }
             else {
                 $operations->enable($url, '风险拦截');
             }
 
-            $isBlack = sys_setting('py-system::ban.type-' . $type, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
-            $url     = route_url('py-mgr-page:backend.ban.type', null, ['type' => $type,]);
+            $isBlack = PamBan::WB_TYPE_BLACK === sys_setting('py-system::ban.type-' . $type, PamBan::WB_TYPE_BLACK);
+            $url     = route_url('py-mgr-page:backend.ban.type', null, ['type' => $type]);
             if ($isBlack) {
                 $operations->request('黑名单模式', $url)->icon('pause-circle')->tooltip('当前黑名单, 点击切换到白名单')->sm()
                     ->confirm('当前黑名单, 是否切换到白名单?')->danger();
@@ -79,8 +77,8 @@ class ListPamBan extends ListBase
                 $operations->request('白名单模式', $url)->icon('play-circle')->tooltip('当前白名单, 点击切换到黑名单')->sm()
                     ->confirm('当前白名单, 是否切换到黑名单?');
             }
-            $operations->create(route_url('py-mgr-page:backend.ban.establish', null, ['type' => $type,]), '新增');
-            $operations->setting(route_url('py-mgr-page:backend.ban.setting', null, ['type' => $type,]));
+            $operations->create(route_url('py-mgr-page:backend.ban.establish', null, ['type' => $type]), '新增');
+            $operations->setting(route_url('py-mgr-page:backend.ban.setting', null, ['type' => $type]));
         };
     }
 }

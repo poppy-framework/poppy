@@ -9,15 +9,16 @@ namespace Poppy\System\Events;
  */
 class CaptchaSendEvent
 {
-
     /**
      * 通行证
+     *
      * @var string
      */
     public $passport;
 
     /**
      * 验证码
+     *
      * @var string
      */
     public $captcha;

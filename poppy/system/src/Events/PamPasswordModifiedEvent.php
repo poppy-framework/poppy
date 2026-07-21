@@ -11,14 +11,8 @@ use Poppy\System\Models\PamAccount;
  */
 class PamPasswordModifiedEvent
 {
-    /**
-     * @var PamAccount
-     */
     public PamAccount $pam;
 
-    /**
-     * @param PamAccount $pam
-     */
     public function __construct(PamAccount $pam)
     {
         $this->pam = $pam;

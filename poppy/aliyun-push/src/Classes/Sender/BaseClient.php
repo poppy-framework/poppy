@@ -13,58 +13,35 @@ use Poppy\Framework\Classes\Traits\AppTrait;
  */
 abstract class BaseClient
 {
-
     use AppTrait;
 
-    /**
-     * @var string
-     */
     protected string $iosAppKey;
 
-    /**
-     * @var string
-     */
     protected string $androidChannel;
 
-    /**
-     * @var string
-     */
     protected string $androidAppKey;
-
 
     /**
      * Aliyun Access Key
-     * @var string
      */
     protected string $accessKey;
 
-
     /**
      * Aliyun Access Secret
-     * @var string
      */
     protected string $accessSecret;
 
-    /**
-     * @var string
-     */
     protected string $androidActivity;
 
-    /**
-     * @var string
-     */
     protected string $clientName = '';
 
     /**
      * 执行结果
-     * @var mixed
      */
     protected $result;
 
-
     /**
      * SendBase constructor.
-     * @param Config $config
      */
     public function __construct(Config $config)
     {
@@ -75,7 +52,6 @@ abstract class BaseClient
         $this->accessKey       = $config->getAccessKey();
         $this->accessSecret    = $config->getAccessSecret();
         $this->clientName      = $config->getClientName();
-
     }
 
     public function setAppConfig($ak, $sk, $android_app_id, $android_channel = '', $ios_key = ''): self
@@ -85,6 +61,7 @@ abstract class BaseClient
         $this->androidAppKey  = $android_app_id;
         $this->androidChannel = $android_channel;
         $this->iosAppKey      = $ios_key;
+
         return $this;
     }
 
@@ -102,9 +79,10 @@ abstract class BaseClient
             // 必填，您的 AccessKey ID
             'accessKeyId'     => $this->accessKey,
             // 必填，您的 AccessKey Secret
-            'accessKeySecret' => $this->accessSecret
+            'accessKeySecret' => $this->accessSecret,
         ]);
         $config->endpoint = 'cloudpush.aliyuncs.com';
+
         return new Push($config);
     }
 }

@@ -28,8 +28,6 @@ class RangeFilter extends Filter
     /**
      * Add a binding to the query.
      *
-     * @param mixed $value
-     * @param Model $model
      * @return void
      */
     public function addBinding($value, Model $model)
@@ -46,9 +44,8 @@ class RangeFilter extends Filter
         elseif (!isset($value['end'])) {
             return $model->where($this->getColumnName(), '>', $value['start']);
         }
-        else {
-            return $model->whereBetween($this->getColumnName(), array_values($value));
-        }
+
+        return $model->whereBetween($this->getColumnName(), array_values($value));
     }
 
     /**
@@ -85,6 +82,4 @@ class RangeFilter extends Filter
 </span>
 EOT;
     }
-
-
 }

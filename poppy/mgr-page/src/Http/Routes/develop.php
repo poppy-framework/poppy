@@ -5,7 +5,6 @@ use Poppy\MgrPage\Http\Request\Develop\EnvController;
 use Poppy\MgrPage\Http\Request\Develop\HomeController;
 use Poppy\MgrPage\Http\Request\Develop\LogController;
 
-
 Route::group([], function (Router $router) {
     /* Pam
      * ---------------------------------------- */

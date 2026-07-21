@@ -11,16 +11,15 @@ use Poppy\Framework\Application\TestCase;
  */
 abstract class BaseSms extends TestCase
 {
-
     /**
      * 手机
+     *
      * @var array|mixed
      */
     protected $mobile;
 
     /**
      * 配置文件
-     * @var array
      */
     protected array $conf;
 

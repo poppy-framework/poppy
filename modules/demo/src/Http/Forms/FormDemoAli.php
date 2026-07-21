@@ -1,5 +1,6 @@
-<?php namespace Demo\Http\Forms;
+<?php
 
+namespace Demo\Http\Forms;
 
 use Poppy\Framework\Validation\Rule;
 use Poppy\MgrPage\Classes\Form\FormSettingBase;

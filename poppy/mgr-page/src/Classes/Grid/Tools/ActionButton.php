@@ -6,14 +6,14 @@ use Illuminate\Support\Str;
 
 /**
  * 创建按钮
+ *
  * @deprecated 4.2
+ *
  * @removed    5.0
  */
 class ActionButton
 {
-
     protected $title;
-
 
     protected $url;
 
@@ -21,7 +21,6 @@ class ActionButton
      * @var array|mixed
      */
     private $attribute;
-
 
     public function __construct($btn_text, $url, $attribute = [])
     {
@@ -44,8 +43,6 @@ class ActionButton
 
     /**
      * Render CreateButton.
-     *
-     * @return string
      */
     public function render(): string
     {

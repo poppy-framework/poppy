@@ -13,8 +13,8 @@ class AdPlaceFilter extends ModelFilter
 {
     /**
      * 根据ID搜索
+     *
      * @param int $id 广告位ID
-     * @return AdPlaceFilter
      */
     public function id($id): self
     {
@@ -23,8 +23,8 @@ class AdPlaceFilter extends ModelFilter
 
     /**
      * 根据标题搜索
+     *
      * @param string $title 广告位标题
-     * @return AdPlaceFilter
      */
     public function title($title): self
     {

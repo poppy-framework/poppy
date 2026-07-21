@@ -6,14 +6,12 @@ use Poppy\Framework\Validation\Rule;
 
 class FormTimeRange extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '时间范围选择';
-
 
     /**
      * Build a form here.

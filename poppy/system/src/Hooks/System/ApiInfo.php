@@ -8,7 +8,6 @@ use Poppy\Core\Services\Contracts\ServiceArray;
 
 class ApiInfo implements ServiceArray
 {
-
     public function key(): string
     {
         return 'py-system';

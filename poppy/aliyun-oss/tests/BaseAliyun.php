@@ -13,17 +13,25 @@ abstract class BaseAliyun extends TestCase
 {
     /**
      * 配置文件
-     * @var array
      */
     protected array $conf;
+
     protected string $confAccessKey;
+
     protected string $confAccessSecret;
+
     protected string $confEndpoint;
+
     protected string $confBucket;
+
     protected string $confUrlPrefix;
+
     protected string $confRoleArn;
+
     protected string $confTempAccessKey;
+
     protected string $confTempAccessSecret;
+
     protected string $confWatermark;
 
     public function setUp(): void

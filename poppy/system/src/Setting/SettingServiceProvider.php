@@ -11,9 +11,6 @@ use Poppy\System\Setting\Repository\SettingRepository;
 
 class SettingServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * @return array
-     */
     public function provides(): array
     {
         return ['poppy.system.setting', SettingContract::class];

@@ -11,9 +11,9 @@ use Poppy\MgrPage\Classes\Grid\Filter;
 
 class ListSearchYear extends ListSearchWhere
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function columns(): void
@@ -27,8 +27,7 @@ class ListSearchYear extends ListSearchWhere
     }
 
     /**
-     * @inheritDoc
-     * @return Closure
+     * {@inheritDoc}
      */
     public function filter(): Closure
     {

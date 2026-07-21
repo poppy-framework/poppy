@@ -17,12 +17,9 @@ use Poppy\System\Models\PamAccount;
  */
 trait RbacUserTrait
 {
-    //Big block of caching functionality.
+    // Big block of caching functionality.
     protected ?Collection $roles = null;
 
-    /**
-     * @return Collection
-     */
     public function cachedRoles(): Collection
     {
         if (!$this->roles) {
@@ -36,7 +33,7 @@ trait RbacUserTrait
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function boot()
     {
@@ -49,6 +46,7 @@ trait RbacUserTrait
             if (!isset($traits[SoftDeletes::class])) {
                 $user->roles()->sync([]);
             }
+
             return true;
         });
         static::deleted(function ($model) {
@@ -65,16 +63,15 @@ trait RbacUserTrait
         }
     }
 
-
     /**
      * Many-to-Many relations with Role.
-     * @return BelongsToMany
      */
     public function roles(): BelongsToMany
     {
         $roleModel = config('poppy.core.rbac.role');
         $accountFk = config('poppy.core.rbac.account_fk');
         $roleFk    = config('poppy.core.rbac.role_fk');
+
         return $this->belongsToMany(
             $roleModel,
             $this->getRoleUserTable(),
@@ -84,7 +81,7 @@ trait RbacUserTrait
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function hasRole($name, bool $require_all = false): bool
     {
@@ -117,7 +114,7 @@ trait RbacUserTrait
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function capable($permission, bool $require_all = false): bool
     {
@@ -151,7 +148,7 @@ trait RbacUserTrait
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function ability($roles, $permissions, array $options = [])
     {
@@ -168,7 +165,7 @@ trait RbacUserTrait
             $options['validate_all'] = false;
         }
         else {
-            if ($options['validate_all'] !== true && $options['validate_all'] !== false) {
+            if (true !== $options['validate_all'] && false !== $options['validate_all']) {
                 throw new InvalidArgumentException();
             }
         }
@@ -176,9 +173,9 @@ trait RbacUserTrait
             $options['return_type'] = 'boolean';
         }
         else {
-            if ($options['return_type'] != 'boolean' &&
-                $options['return_type'] != 'array' &&
-                $options['return_type'] != 'both'
+            if ('boolean' != $options['return_type']
+                && 'array' != $options['return_type']
+                && 'both' != $options['return_type']
             ) {
                 throw new InvalidArgumentException();
             }
@@ -197,8 +194,8 @@ trait RbacUserTrait
         // If validate all and there is a false in either
         // Check that if validate all, then there should not be any false.
         // Check that if not validate all, there must be at least one true.
-        if (($options['validate_all'] && !(in_array(false, $checkedRoles) || in_array(false, $checkedPermissions))) ||
-            (!$options['validate_all'] && (in_array(true, $checkedRoles) || in_array(true, $checkedPermissions)))
+        if (($options['validate_all'] && !(in_array(false, $checkedRoles) || in_array(false, $checkedPermissions)))
+            || (!$options['validate_all'] && (in_array(true, $checkedRoles) || in_array(true, $checkedPermissions)))
         ) {
             $validateAll = true;
         }
@@ -207,10 +204,10 @@ trait RbacUserTrait
         }
 
         // Return based on option
-        if ($options['return_type'] == 'boolean') {
+        if ('boolean' == $options['return_type']) {
             return $validateAll;
         }
-        elseif ($options['return_type'] == 'array') {
+        elseif ('array' == $options['return_type']) {
             return ['roles' => $checkedRoles, 'permissions' => $checkedPermissions];
         }
 
@@ -218,7 +215,7 @@ trait RbacUserTrait
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function attachRole($id)
     {
@@ -227,7 +224,7 @@ trait RbacUserTrait
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function detachRole($id)
     {
@@ -237,24 +234,23 @@ trait RbacUserTrait
 
     /**
      * 清理RBAC缓存
+     *
      * @param PamAccount|null
      */
     protected static function clearCachedRoles($pam = null): void
     {
         // 优化逻辑，在 PamAccount 表更新时，如果是前台用户更新，则没必要进行清理缓存操作
-        if ($pam instanceof PamAccount && $pam->type !== PamAccount::TYPE_BACKEND) {
+        if ($pam instanceof PamAccount && PamAccount::TYPE_BACKEND !== $pam->type) {
             return;
         }
 
         sys_tag('py-core-rbac')->clear(PyCoreDef::rbacCkUserRoles('*'));
     }
 
-    /**
-     * @return string
-     */
     private function getRoleUserTable(): string
     {
         $roleAccountModel = config('poppy.core.rbac.role_account');
-        return (new $roleAccountModel)->getTable();
+
+        return (new $roleAccountModel())->getTable();
     }
 }

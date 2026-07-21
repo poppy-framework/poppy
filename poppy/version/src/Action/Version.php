@@ -20,9 +20,6 @@ class Version
 {
     use AppTrait;
 
-    /**
-     * @var SysAppVersion
-     */
     protected SysAppVersion $item;
 
     /**
@@ -30,14 +27,10 @@ class Version
      */
     protected string $table;
 
-    /**
-     * @var int $id
-     */
     protected int $id;
 
     /**
      * 是否允许覆盖
-     * @var bool
      */
     private bool $allowCopy = false;
 
@@ -49,6 +42,7 @@ class Version
     public function allowCopy(): self
     {
         $this->allowCopy = true;
+
         return $this;
     }
 
@@ -96,7 +90,7 @@ class Version
             return $this->setError('版本号格式不正确');
         }
 
-        if ($initDb['platform'] === SysAppVersion::PLATFORM_ANDROID && !$initDb['download_url']) {
+        if (SysAppVersion::PLATFORM_ANDROID === $initDb['platform'] && !$initDb['download_url']) {
             return $this->setError('请输入下载地址');
         }
 
@@ -119,12 +113,15 @@ class Version
         }
 
         $this->clearCache($this->item->platform);
+
         return true;
     }
 
     /**
      * 删除数据
+     *
      * @param int $id 版本ID
+     *
      * @return bool|null
      */
     public function delete(int $id): bool
@@ -136,21 +133,24 @@ class Version
         try {
             $this->clearCache($this->item->platform);
             dispatch(new DeleteUploadFileJob($this->item->download_url));
+
             return $this->item->delete();
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             return $this->setError($e->getMessage());
         }
     }
 
     /**
      * 初始化
+     *
      * @param int $id 版本ID
-     * @return bool
      */
     public function init(int $id): bool
     {
         $this->item = SysAppVersion::findOrFail($id);
         $this->id   = $this->item->id;
+
         return true;
     }
 
@@ -171,6 +171,7 @@ class Version
         if (!$Upload->copyTo($latestFilename)) {
             return $this->setError($Upload->getError());
         }
+
         return true;
     }
 

@@ -23,6 +23,7 @@ class PageInfo
 
     /**
      * 分页构造器
+     *
      * @param array $page_info 分页信息
      */
     public function __construct(array $page_info)
@@ -36,7 +37,6 @@ class PageInfo
 
     /**
      * 返回分页的大小
-     * @return int
      */
     public static function pagesize(): int
     {
@@ -50,12 +50,12 @@ class PageInfo
                 $size = $pagesize;
             }
         }
+
         return (int) $size;
     }
 
     /**
      * 分页大小
-     * @return int
      */
     public function size(): int
     {
@@ -64,7 +64,6 @@ class PageInfo
 
     /**
      * 页码
-     * @return int
      */
     public function page(): int
     {

@@ -33,6 +33,7 @@ class FormSettingSms extends FormSettingBase
                 $Setting->set($this->group . '.' . $key, $value);
             }
         }
+
         return parent::handle($request);
     }
 

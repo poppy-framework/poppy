@@ -12,28 +12,25 @@ use Poppy\MgrPage\Classes\Operations;
  */
 final class DropdownOperation extends Operation
 {
-
     protected Closure $callable;
 
-    /**
-     * @var string
-     */
     private string $color = 'secondary';
 
     /**
      * 预览
-     * @param Closure $callable
+     *
      * @return void
      */
     public function operations(Closure $callable): self
     {
         $this->callable = $callable;
+
         return $this;
     }
 
     /**
      * 设定显示颜色
-     * @param string $type
+     *
      * @return $this
      */
     public function color(string $type = 'secondary'): self
@@ -41,9 +38,9 @@ final class DropdownOperation extends Operation
         if (in_array($type, [
             'primary', 'secondary', 'success', 'info', 'warning', 'danger',
         ])) {
-
             $this->color = $type;
         }
+
         return $this;
     }
 
@@ -56,7 +53,7 @@ final class DropdownOperation extends Operation
         if (count($items)) {
             foreach ($items as $item) {
                 $item->classes[] = 'dropdown-item';
-                $content         .= "<li>" . $item->render() . '</li>';
+                $content .= '<li>' . $item->render() . '</li>';
             }
         }
 

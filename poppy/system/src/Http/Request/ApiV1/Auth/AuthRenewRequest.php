@@ -11,6 +11,7 @@ use Poppy\Framework\Validation\Rule;
 /**
  * @OA\Schema(
  *     schema="PoppySystemAuthRenewRequest",
+ *
  *     @OA\Property(property="device_id", type="string", description="设备ID"),
  *     @OA\Property(property="device_type", type="string", description="设备类型")
  * )

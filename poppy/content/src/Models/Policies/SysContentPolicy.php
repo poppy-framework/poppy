@@ -8,8 +8,6 @@ use Poppy\Content\Models\SysContent;
 use Poppy\System\Classes\Traits\PolicyTrait;
 use Poppy\System\Models\PamAccount;
 
-/**
- */
 class SysContentPolicy
 {
     use PolicyTrait;
@@ -20,6 +18,5 @@ class SysContentPolicy
 
     public function edit(PamAccount $pam, SysContent $content): bool
     {
-
     }
 }

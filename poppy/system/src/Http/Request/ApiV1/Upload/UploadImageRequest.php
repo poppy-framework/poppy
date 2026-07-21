@@ -13,6 +13,7 @@ use Poppy\Framework\Validation\Rule;
  *     schema="PoppySystemUploadImageRequest",
  *     description="图片上传请求 (multipart/form-data)",
  *     required={"image"},
+ *
  *     @OA\Property(property="image", type="string", format="binary", description="图片内容 (支持多张/单张上传, type=form 时为文件, type=base64 时为 base64 字符串, type=url 时为远程 URL)"),
  *     @OA\Property(property="type", type="string", nullable=true, description="上传图片类型", enum={"form", "base64", "url"}, default="form", example="form"),
  *     @OA\Property(property="image_type", type="string", nullable=true, description="存储类型, 不同类型存到不同文件夹", default="default", example="default"),
@@ -22,7 +23,6 @@ use Poppy\Framework\Validation\Rule;
  */
 class UploadImageRequest extends Request
 {
-
     public function getType(): string
     {
         return (string) $this->input('type', 'form');
@@ -31,7 +31,8 @@ class UploadImageRequest extends Request
     public function getImageType(): string
     {
         $value = (string) $this->input('image_type', 'default');
-        return $value !== '' ? $value : 'default';
+
+        return '' !== $value ? $value : 'default';
     }
 
     public function getFrom(): string

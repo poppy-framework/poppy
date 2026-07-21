@@ -14,13 +14,12 @@ use Poppy\Framework\Helper\ArrayHelper;
  */
 class DefaultAppSign
 {
-
     /**
      * 计算验签
+     *
      * @param array      $params 参数
      * @param int|string $appid  应用 ID
      * @param string     $secret 密钥
-     * @return array
      */
     public static function sign(array $params, $appid, string $secret): array
     {
@@ -36,22 +35,19 @@ class DefaultAppSign
 
     /**
      * 对数据进行签名, 并返回 md5 的数据
+     *
      * @param array  $params 参数
      * @param string $secret 密钥
-     * @return string
      */
     protected static function calcSign(array $params, string $secret): string
     {
         $params = self::except($params);
         ksort($params);
         $kvStr = ArrayHelper::toKvStr($params);
+
         return md5(md5($kvStr) . $secret);
     }
 
-    /**
-     * @param $params
-     * @return array
-     */
     protected static function except($params): array
     {
         $excepts = [];
@@ -65,6 +61,7 @@ class DefaultAppSign
                 }
             }
         }
+
         return Arr::except($excepts, [
             'sign', 'image', 'file', 'appid',
         ]);

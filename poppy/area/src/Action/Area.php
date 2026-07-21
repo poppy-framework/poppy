@@ -21,9 +21,6 @@ class Area
 {
     use AppTrait, PamTrait, FixTrait;
 
-    /**
-     * @var SysArea
-     */
     protected SysArea $area;
 
     /**
@@ -31,9 +28,6 @@ class Area
      */
     protected int $areaId;
 
-    /**
-     * @var string
-     */
     protected string $areaTable;
 
     public function __construct()
@@ -43,12 +37,12 @@ class Area
 
     /**
      * 创建需求
+     *
      * @param array    $data 创建数据
      *                       string  title       标题
      *                       int     parent_id   父id
      *                       int     top_id      顶级id
-     * @param null|int $id   地区id
-     * @return bool
+     * @param int|null $id   地区id
      */
     public function establish(array $data, $id = null): bool
     {
@@ -107,7 +101,6 @@ class Area
             [$this->area->id]
         );
 
-
         $this->batchFix(array_unique($needUpdate));
         $this->level($this->area->id);
 
@@ -121,8 +114,11 @@ class Area
 
     /**
      * 删除数据
+     *
      * @param int $id 地区id
+     *
      * @return bool|null
+     *
      * @throws Exception
      */
     public function delete(int $id): bool
@@ -142,8 +138,10 @@ class Area
 
     /**
      * 获取父元素IDs
+     *
      * @param int    $id   地区id
      * @param string $type 类型
+     *
      * @return string|array
      */
     public function parentIds(int $id, string $type = 'string')
@@ -156,13 +154,13 @@ class Area
         }
         $ids = array_reverse($ids);
 
-        return ($type == 'string') ? implode(',', $ids) : $ids;
+        return ('string' == $type) ? implode(',', $ids) : $ids;
     }
 
     /**
      * 获取所有的子id
+     *
      * @param int|array $id 地区id
-     * @return array
      */
     public function getChildren($id): array
     {
@@ -188,6 +186,7 @@ class Area
 
     /**
      * 修复分类代码
+     *
      * @param int $id 地区id
      */
     public function fix(int $id)
@@ -248,8 +247,8 @@ class Area
 
     /**
      * 判断是否有子集
+     *
      * @param int $id 地区id
-     * @return bool
      */
     public function hasChild(int $id): bool
     {
@@ -270,12 +269,12 @@ class Area
 
     /**
      * 等级
+     *
      * @param int $id 地区id
-     * @return bool
      */
     public function level(int $id): bool
     {
-        //省级
+        // 省级
         SysArea::where('id', $id)->where('parent_id', 0)->update([
             'level' => 1,
         ]);
@@ -292,13 +291,14 @@ class Area
 
     /**
      * 初始化id
+     *
      * @param int $id 地区Id
-     * @return bool
      */
     public function initArea(int $id): bool
     {
         $this->area   = SysArea::findOrFail($id);
         $this->areaId = $this->area->id;
+
         return true;
     }
 
@@ -315,7 +315,6 @@ class Area
 
     /**
      * @param bool $clear 是否清除
-     * @return mixed
      */
     private function matchKv($clear = false)
     {
@@ -343,12 +342,11 @@ class Area
 
     /**
      * @param int $id 顶级id
-     * @return mixed
      */
     private function topParentId(int $id)
     {
         $parentIds = $this->parentIds($id, 'array');
-        if (count($parentIds) == 1) {
+        if (1 == count($parentIds)) {
             return $id;
         }
 

@@ -14,30 +14,27 @@ class PoppyListCommand extends Command
 {
     /**
      * The console command name.
+     *
      * @var string
      */
     protected $name = 'poppy:list';
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'List all application modules';
 
-    /**
-     * @var Poppy
-     */
     protected Poppy $poppy;
 
     /**
      * The table headers for the command.
-     * @var array
      */
     protected array $headers = ['#', 'Name', 'Slug', 'Description', 'Status'];
 
     /**
      * Create a new command instance.
-     * @param Poppy $poppy
      */
     public function __construct(Poppy $poppy)
     {
@@ -53,7 +50,7 @@ class PoppyListCommand extends Command
     {
         $modules = $this->poppy->all();
 
-        if (count($modules) === 0) {
+        if (0 === count($modules)) {
             $this->error("Your application doesn't have any modules.");
 
             return null;
@@ -64,7 +61,6 @@ class PoppyListCommand extends Command
 
     /**
      * Get all modules.
-     * @return array
      */
     protected function getModules(): array
     {
@@ -80,8 +76,8 @@ class PoppyListCommand extends Command
 
     /**
      * Returns module manifest information.
+     *
      * @param array $module module
-     * @return array
      */
     protected function getModuleInformation(array $module): array
     {
@@ -96,6 +92,7 @@ class PoppyListCommand extends Command
 
     /**
      * Display the module information on the console.
+     *
      * @param array $modules modules
      */
     protected function displayModules(array $modules)

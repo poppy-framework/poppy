@@ -22,7 +22,6 @@ use Throwable;
  */
 class ContentController extends BackendController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -33,7 +32,9 @@ class ContentController extends BackendController
 
     /**
      * 地区列表
+     *
      * @return \Illuminate\Http\Response|JsonResponse|RedirectResponse|string
+     *
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -41,24 +42,29 @@ class ContentController extends BackendController
     {
         $grid = new Grid(new SysArea());
         $grid->setLists(ListSysArea::class);
+
         return $grid->render();
     }
 
     /**
      * 地区添加/编辑
-     * @param null|int $id 地区id
+     *
+     * @param int|null $id 地区id
      */
     public function establish($id = null)
     {
         $form = new FormAreaEstablish();
         $form->setPam($this->pam);
         $form->setId($id);
+
         return $form->render();
     }
 
     /**
      * 删除地区
+     *
      * @param int $id 地区id
+     *
      * @throws Exception
      */
     public function delete($id)
@@ -81,7 +87,6 @@ class ContentController extends BackendController
 
     /**
      * 版本Action
-     * @return Area
      */
     private function action(): Area
     {

@@ -18,8 +18,6 @@ trait HasHooks
     /**
      * Set after getting editing model callback.
      *
-     * @param Closure $callback
-     *
      * @return $this
      */
     public function editing(Closure $callback)
@@ -29,8 +27,6 @@ trait HasHooks
 
     /**
      * Set submitted callback.
-     *
-     * @param Closure $callback
      *
      * @return $this
      */
@@ -42,8 +38,6 @@ trait HasHooks
     /**
      * Set saving callback.
      *
-     * @param Closure $callback
-     *
      * @return $this
      */
     public function saving(Closure $callback)
@@ -54,8 +48,6 @@ trait HasHooks
     /**
      * Set saved callback.
      *
-     * @param Closure $callback
-     *
      * @return $this
      */
     public function saved(Closure $callback)
@@ -64,8 +56,6 @@ trait HasHooks
     }
 
     /**
-     * @param Closure $callback
-     *
      * @return $this
      */
     public function deleting(Closure $callback)
@@ -74,8 +64,6 @@ trait HasHooks
     }
 
     /**
-     * @param Closure $callback
-     *
      * @return $this
      */
     public function deleted(Closure $callback)
@@ -87,7 +75,6 @@ trait HasHooks
      * Register a hook.
      *
      * @param string $name
-     * @param Closure $callback
      *
      * @return $this
      */
@@ -102,7 +89,7 @@ trait HasHooks
      * Call hooks by giving name.
      *
      * @param string $name
-     * @param array $parameters
+     * @param array  $parameters
      */
     protected function callHooks($name, $parameters = [])
     {
@@ -123,8 +110,6 @@ trait HasHooks
 
     /**
      * Call editing callbacks.
-     *
-     * @return mixed
      */
     protected function callEditing()
     {
@@ -133,8 +118,6 @@ trait HasHooks
 
     /**
      * Call submitted callback.
-     *
-     * @return mixed
      */
     protected function callSubmitted()
     {
@@ -143,8 +126,6 @@ trait HasHooks
 
     /**
      * Call saving callback.
-     *
-     * @return mixed
      */
     protected function callSaving()
     {
@@ -163,19 +144,12 @@ trait HasHooks
 
     /**
      * Call hooks when deleting.
-     *
-     * @param mixed $id
-     *
-     * @return mixed
      */
     protected function callDeleting($id)
     {
         return $this->callHooks('deleting', $id);
     }
 
-    /**
-     * @return mixed
-     */
     protected function callDeleted()
     {
         return $this->callHooks('deleted');

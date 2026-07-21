@@ -18,7 +18,6 @@ use Poppy\Framework\Helper\ArrayHelper;
  */
 class RdsPersist
 {
-
     use AppTrait;
 
     /**
@@ -33,9 +32,6 @@ class RdsPersist
 
     /**
      * 获取当前缓存的 where 条件的数据
-     * @param       $table
-     * @param array $where
-     * @return array
      */
     public static function where($table, array $where = []): array
     {
@@ -56,6 +52,7 @@ class RdsPersist
     /**
      * 将redis中的所有数据持久化到数据库
      * 执行将所有表的数据都写入数据库中可使用该方法
+     *
      * @throws TransactionException
      */
     public static function exec()
@@ -87,7 +84,7 @@ class RdsPersist
     /**
      * 将redis中的指定表的数据持久化到数据库
      * 单独持久化某个表的时候可以使用该方法
-     * @param string $table
+     *
      * @throws TransactionException
      */
     public static function execTable(string $table = '')
@@ -100,9 +97,6 @@ class RdsPersist
 
     /**
      * 进行库的更新计算
-     * @param array $former
-     * @param array $update
-     * @return array
      */
     public static function calcUpdate(array $former = [], array $update = []): array
     {
@@ -135,11 +129,11 @@ class RdsPersist
                             $value = (new Number($ori, 2))->subtract($v)->getValue();
                         }
                         break;
-                    // preserve former
+                        // preserve former
                     case '>':
                         $value = $ori;
                         break;
-                    // preserve current
+                        // preserve current
                     case '<':
                     default:
                         $value = $v;
@@ -151,15 +145,18 @@ class RdsPersist
                 $former[$column] = $v;
             }
         }
+
         return $former;
     }
 
     /**
      * 修改队列中的数据，根据条件没有找到的话就创建一条
-     * @param string $table   数据表名称
-     * @param array  $where   查询条件(一维数组)
-     * @param array  $update  修改条件(一维数组) <br>
-     *                        此 update 条件支持 [+] 数据 + , [.] 数据组合, [>] 数据保留之前, [<] 将之前的数据覆盖
+     *
+     * @param string $table  数据表名称
+     * @param array  $where  查询条件(一维数组)
+     * @param array  $update 修改条件(一维数组) <br>
+     *                       此 update 条件支持 [+] 数据 + , [.] 数据组合, [>] 数据保留之前, [<] 将之前的数据覆盖
+     *
      * @throws ApplicationException
      */
     public static function update(string $table = '', array $where = [], array $update = [])
@@ -212,9 +209,9 @@ class RdsPersist
 
     /**
      * 往队列中插入一条数据
+     *
      * @param string $table  数据表名称
      * @param array  $values 需要插入的数据
-     * @return bool
      */
     public static function insert(string $table = '', array $values = []): bool
     {
@@ -239,12 +236,13 @@ class RdsPersist
             $arrValues[] = $value;
         }
         sys_tag('py-core-persist')->rPush($rdsKey, $arrValues);
+
         return true;
     }
 
     /**
      * 返回 Where 条件
-     * @param $where
+     *
      * @return false|string|null
      */
     private static function whereCondition($where)
@@ -263,14 +261,15 @@ class RdsPersist
 
     /**
      * 将类型为新增的数据持久化到数据库
+     *
      * @param array $insert_keys 类型为新增的数据的keys,二维数组
+     *
      * @throws TransactionException
      */
     private static function execInsert(array $insert_keys = [])
     {
         $rdsDb = sys_tag('py-core-persist');
         foreach ($insert_keys as $_key) {
-
             $rdsKey = PyCoreDef::ckPersistPersist($_key);
             // 当前key的所有list数据
             $_keyData = $rdsDb->lrange($rdsKey, 0, -1);
@@ -291,12 +290,13 @@ class RdsPersist
             // 从缓冲中删除key
             $rdsDb->del([$rdsKey]);
         }
-
     }
 
     /**
      * 将类型为修改的数据持久化到数据库
+     *
      * @param array $update_keys 类型为修改的数据的keys,二维数组
+     *
      * @throws TransactionException
      */
     private static function execUpdate(array $update_keys = [])
@@ -327,8 +327,6 @@ class RdsPersist
 
     /**
      * 返回Column
-     * @param $keys
-     * @return array
      */
     private static function pureKeys($keys): array
     {
@@ -337,6 +335,7 @@ class RdsPersist
             preg_match('/(?<column>[a-zA-Z0-9_]+)(\[(?<operator>\+|-|>|<|\.)])?/i', $key, $match);
             $columns[] = $match['column'];
         }
+
         return $columns;
     }
 }

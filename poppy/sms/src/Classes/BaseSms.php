@@ -18,13 +18,9 @@ abstract class BaseSms
 
     /**
      * 短信签名
-     * @var string
      */
     protected string $sign;
 
-    /**
-     * @var string
-     */
     protected string $scope = Sms::SCOPE_LOCAL;
 
     public function __construct()
@@ -34,9 +30,6 @@ abstract class BaseSms
         ]);
     }
 
-    /**
-     * @param string $scope
-     */
     public function setScope(string $scope): void
     {
         $this->scope = $scope;
@@ -44,10 +37,10 @@ abstract class BaseSms
 
     /**
      * 检查短信是否为空
+     *
      * @param string|array $mobile 手机号
-     * @param string       $type 类型
-     * @param string       $sign 签名
-     * @return bool
+     * @param string       $type   类型
+     * @param string       $sign   签名
      */
     public function checkSms($mobile, string $type, string $sign): bool
     {

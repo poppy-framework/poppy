@@ -14,18 +14,20 @@ use Poppy\Core\Rbac\Traits\RbacPermissionTrait;
 /**
  * 用户权限
  *
- * @property int                       $id
- * @property string                    $name
- * @property string                    $title
- * @property string                    $description
- * @property string                    $group
- * @property string                    $root
- * @property string                    $module
- * @property string                    $type
- * @property-read Collection|PamRole[] $roles
+ * @property int                  $id
+ * @property string               $name
+ * @property string               $title
+ * @property string               $description
+ * @property string               $group
+ * @property string               $root
+ * @property string               $module
+ * @property string               $type
+ * @property Collection|PamRole[] $roles
+ *
  * @method static Builder|PamPermission newModelQuery()
  * @method static Builder|PamPermission newQuery()
  * @method static Builder|PamPermission query()
+ *
  * @mixin Eloquent
  */
 class PamPermission extends Model implements RbacPermissionContract

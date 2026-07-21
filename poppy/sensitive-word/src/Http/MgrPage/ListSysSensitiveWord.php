@@ -15,7 +15,6 @@ use Poppy\SensitiveWord\Models\SysSensitiveWord;
 
 class ListSysSensitiveWord extends ListBase
 {
-
     public $title = '敏感词';
 
     protected bool $showRowSelector = true;
@@ -35,7 +34,6 @@ class ListSysSensitiveWord extends ListBase
         ])->width(70)->fixed();
     }
 
-
     public function filter(): Closure
     {
         return function (Filter $filter) {
@@ -44,7 +42,6 @@ class ListSysSensitiveWord extends ListBase
             });
         };
     }
-
 
     public function batchAction(): Closure
     {

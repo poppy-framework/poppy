@@ -24,7 +24,8 @@ class Sso extends BaseMiddleware
                 return response('Unauthorized Jwt.', 401);
             }
             // 这里会抛出异常, IDE 提示不正确
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             return response('Unauthorized Jwt. Sso check token invalid', 401);
         }
 
@@ -34,7 +35,7 @@ class Sso extends BaseMiddleware
         }
 
         // 组无限, 对于指定的组 KEY 进行不设限标识
-        if ((new \Poppy\System\Action\Sso())->groupType(x_header('os')) === \Poppy\System\Action\Sso::GROUP_UNLIMITED) {
+        if (\Poppy\System\Action\Sso::GROUP_UNLIMITED === (new \Poppy\System\Action\Sso())->groupType(x_header('os'))) {
             return $next($request);
         }
 
@@ -49,6 +50,7 @@ class Sso extends BaseMiddleware
         if (array_key_exists($md5Token, $devices)) {
             return $next($request);
         }
+
         return response('Unauthorized Jwt, Token unValid.', 401);
     }
 }

@@ -14,6 +14,7 @@ class MakeCommandCommand extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.
+     *
      * @var string
      */
     protected $signature = 'poppy:command 
@@ -23,19 +24,20 @@ class MakeCommandCommand extends GeneratorCommand
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Create a new command class';
 
     /**
      * String to store the command type.
+     *
      * @var string
      */
     protected $type = 'Module Command';
 
     /**
      * Get the stub file for the generator.
-     * @return string
      */
     protected function getStub(): string
     {
@@ -44,7 +46,7 @@ class MakeCommandCommand extends GeneratorCommand
 
     /**
      * 替换命令为自动生成
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function buildClass($name): string
     {
@@ -56,13 +58,14 @@ class MakeCommandCommand extends GeneratorCommand
         }
         $command      = Str::slug(Str::snake($baseClassName));
         $dummyCmdName = $slugName . ':' . $command;
+
         return str_replace('dummy:command', $dummyCmdName, $stub);
     }
 
     /**
      * Get the default namespace for the class.
+     *
      * @param string $rootNamespace namespace
-     * @return string
      */
     protected function getDefaultNamespace($rootNamespace): string
     {

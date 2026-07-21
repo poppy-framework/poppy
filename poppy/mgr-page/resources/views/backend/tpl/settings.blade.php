@@ -23,7 +23,7 @@
                 <div class="layui-tab-item layui-show">
                     <div class="layui-tab layui-tab-brief">
                         <ul class="layui-tab-title">
-                            <?php $i = 0 ?>
+                            <?php $i = 0; ?>
                             @foreach($forms as $group_key => $form)
                                 <li class="{!! active_class($group_key === $index, 'layui-this') !!}">
                                     <a class="J_ignore"

@@ -8,7 +8,6 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Poppy\App\Action\App;
 use Poppy\Category\Action\Category;
 use Poppy\Category\Http\MgrPage\FormCategoryEstablish;
 use Poppy\Category\Http\MgrPage\ListSysCategory;
@@ -34,7 +33,9 @@ class CategoryController extends BackendController
 
     /**
      * 分类列表
+     *
      * @return JsonResponse|RedirectResponse|Response|string
+     *
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -42,11 +43,13 @@ class CategoryController extends BackendController
     {
         $grid = new Grid(new SysCategory());
         $grid->setLists(ListSysCategory::class);
+
         return $grid->render();
     }
 
     /**
      * Show the form for creating a new resource.
+     *
      * @throws Throwable
      */
     public function establish()
@@ -56,27 +59,33 @@ class CategoryController extends BackendController
 
     /**
      * 删除分类
+     *
      * @param int $id 分类ID
+     *
      * @return JsonResponse|RedirectResponse|Response
+     *
      * @throws Exception
      */
     public function delete(int $id)
     {
         $Category = new Category();
         $Category->delete($id);
+
         return Resp::success('删除分类成功', '_parent_reload|1');
     }
 
-
     /**
      * 更新状态
+     *
      * @param int $id 分类ID
+     *
      * @return JsonResponse|RedirectResponse|Response
      */
     public function status(int $id, int $status)
     {
         $App = new Category();
         $App->status($id, $status);
+
         return Resp::success('状态已修改', '_parent_reload|1');
     }
 }

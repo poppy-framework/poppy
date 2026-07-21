@@ -45,7 +45,7 @@ class StrHelperTest extends TestCase
 
     public function testHtmlSpecialChars(): void
     {
-        $this->assertEquals('&lt;a&gt;&lt;/a&gt;', StrHelper::htmlSpecialChars("<a></a>"));
+        $this->assertEquals('&lt;a&gt;&lt;/a&gt;', StrHelper::htmlSpecialChars('<a></a>'));
     }
 
     public function testSafe(): void
@@ -55,12 +55,12 @@ class StrHelperTest extends TestCase
 
     public function testTrimEOL(): void
     {
-        $this->assertEquals('a  b', StrHelper::trimEOL('a' . '  ' . PHP_EOL . 'b'));
+        $this->assertEquals('a  b', StrHelper::trimEOL('a  ' . PHP_EOL . 'b'));
     }
 
     public function testTrimSpace(): void
     {
-        $this->assertEquals('ab', StrHelper::trimSpace('a' . PHP_EOL . '  ' . 'b'));
+        $this->assertEquals('ab', StrHelper::trimSpace('a' . PHP_EOL . '  b'));
     }
 
     public function testCut(): void

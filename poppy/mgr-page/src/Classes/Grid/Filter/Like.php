@@ -8,15 +8,10 @@ use Illuminate\Support\Arr;
 
 class Like extends FilterItem
 {
-    /**
-     * @var string
-     */
     protected string $exprFormat = '%{value}%';
 
     /**
      * Get condition of this filter.
-     *
-     * @param array $inputs
      *
      * @return array|void
      */

@@ -10,10 +10,11 @@ use Poppy\Framework\Support\PoppyServiceProvider;
 
 class ServiceProvider extends PoppyServiceProvider
 {
-
     /**
      * Bootstrap the application events.
+     *
      * @return void
+     *
      * @throws ModuleNotFoundException
      */
     public function boot()
@@ -21,10 +22,8 @@ class ServiceProvider extends PoppyServiceProvider
         parent::boot('poppy.aliyun-oss');
     }
 
-
     public function register()
     {
-
         $this->mergeConfigFrom(dirname(__DIR__) . '/resources/config/aliyun-oss.php', 'poppy.aliyun-oss');
 
         $this->app->register(RouteServiceProvider::class);

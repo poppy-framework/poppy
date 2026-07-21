@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Demo\Http\Forms;
 
 use Poppy\Framework\Validation\Rule;
@@ -9,7 +8,6 @@ use Poppy\MgrPage\Classes\Form\FormSettingBase;
 /**
  * 默认头像配置
  * Class FormSettingAvatar
- * @package Misc\Http\Forms\Settings
  */
 class FormSettingAvatar extends FormSettingBase
 {

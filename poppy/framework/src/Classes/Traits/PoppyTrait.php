@@ -31,14 +31,13 @@ use Psr\Log\LoggerInterface;
 
 /**
  * PoppyTrait
+ *
  * @see app
  */
 trait PoppyTrait
 {
-
     /**
      * get auth
-     * @return AuthManager
      */
     protected function pyAuth(): AuthManager
     {
@@ -47,16 +46,15 @@ trait PoppyTrait
 
     /**
      * get translator
-     * @return Translator
      */
     protected function pyTranslator(): Translator
     {
         return py_container()->make('translator');
     }
 
-
     /**
      * Get configuration instance.
+     *
      * @return Repository
      */
     protected function pyConfig()
@@ -64,10 +62,8 @@ trait PoppyTrait
         return py_container()->make('config');
     }
 
-
     /**
      * get db
-     * @return DatabaseManager
      */
     protected function pyDb(): DatabaseManager
     {
@@ -76,6 +72,7 @@ trait PoppyTrait
 
     /**
      * Get console instance.
+     *
      * @return Kernel
      */
     protected function pyConsole()
@@ -85,7 +82,8 @@ trait PoppyTrait
 
     /**
      * Get IoC Container.
-     * @return Container | Application
+     *
+     * @return Container|Application
      */
     protected function pyContainer(): Container
     {
@@ -94,7 +92,6 @@ trait PoppyTrait
 
     /**
      * Get mailer instance.
-     * @return Mailer
      */
     protected function pyMailer(): Mailer
     {
@@ -103,6 +100,7 @@ trait PoppyTrait
 
     /**
      * Get session instance.
+     *
      * @return SessionManager|Store
      */
     protected function pySession()
@@ -112,17 +110,14 @@ trait PoppyTrait
 
     /**
      * get request
-     * @return Request
      */
     protected function pyRequest(): Request
     {
         return py_container()->make('request');
     }
 
-
     /**
      * get redirector
-     * @return Redirector
      */
     protected function pyRedirector(): Redirector
     {
@@ -131,36 +126,31 @@ trait PoppyTrait
 
     /**
      * get validation
-     * @return \Illuminate\Validation\Factory
      */
     protected function pyValidation(): \Illuminate\Validation\Factory
     {
         return py_container()->make('validator');
     }
 
-
     /**
      * get event
-     * @return Dispatcher
      */
     protected function pyEvent(): Dispatcher
     {
         return py_container()->make('events');
     }
 
-
     /**
      * get logger
-     * @return LoggerInterface
      */
     protected function pyLogger(): LoggerInterface
     {
         return py_container()->make('log');
     }
 
-
     /**
      * get response
+     *
      * @return ResponseFactory
      */
     protected function pyResponse()
@@ -168,9 +158,9 @@ trait PoppyTrait
         return py_container()->make(ResponseFactory::class);
     }
 
-
     /**
      * get file
+     *
      * @return Filesystem
      */
     protected function pyFile()
@@ -178,9 +168,9 @@ trait PoppyTrait
         return py_container()->make('files');
     }
 
-
     /**
      * get url
+     *
      * @return UrlGenerator
      */
     protected function pyUrl()
@@ -188,11 +178,10 @@ trait PoppyTrait
         return py_container()->make('url');
     }
 
-
     /**
      * get cache
+     *
      * @param string $tag tag
-     * @return mixed
      */
     protected function pyCache($tag = '')
     {
@@ -206,7 +195,6 @@ trait PoppyTrait
 
     /**
      * get redis
-     * @return RedisManager
      */
     protected function pyRedis(): RedisManager
     {
@@ -215,7 +203,6 @@ trait PoppyTrait
 
     /**
      * get view
-     * @return Factory
      */
     protected function pyView(): Factory
     {
@@ -224,7 +211,6 @@ trait PoppyTrait
 
     /**
      * get poppy
-     * @return Poppy
      */
     protected function pyPoppy(): Poppy
     {
@@ -233,7 +219,6 @@ trait PoppyTrait
 
     /**
      * Ini Parser
-     * @return Ini
      */
     protected function pyIni(): Ini
     {
@@ -242,7 +227,6 @@ trait PoppyTrait
 
     /**
      * Ini Parser
-     * @return Xml
      */
     protected function pyXml(): Xml
     {
@@ -251,11 +235,9 @@ trait PoppyTrait
 
     /**
      * Yaml Parser
-     * @return Yaml
      */
     protected function pyYaml(): Yaml
     {
         return py_container()->make('poppy.yaml');
     }
 }
-

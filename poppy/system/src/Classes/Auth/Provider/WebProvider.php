@@ -11,26 +11,27 @@ use Poppy\System\Models\PamAccount;
  */
 class WebProvider extends PamProvider
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function retrieveById($identifier)
     {
         /** @var PamAccount $user */
         $user = $this->createModel()->newQuery()->find($identifier);
-        if ($user && $user->type !== PamAccount::TYPE_USER) {
+        if ($user && PamAccount::TYPE_USER !== $user->type) {
             return null;
         }
+
         return $user;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function retrieveByCredentials(array $credentials)
     {
         $credentials['type'] = PamAccount::TYPE_USER;
+
         return parent::retrieveByCredentials($credentials);
     }
 }

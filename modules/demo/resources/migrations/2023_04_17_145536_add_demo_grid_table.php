@@ -43,7 +43,6 @@ class AddDemoGridTable extends Migration
             $table->integer('status')->nullable();
             $table->integer('progress')->nullable();
 
-
             $table->tinyInteger('is_enable')->nullable()->default(1);
 
             /* File | Image | Link | Images
@@ -66,10 +65,8 @@ class AddDemoGridTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down():void
+    public function down(): void
     {
         Schema::dropIfExists('demo_grid');
     }

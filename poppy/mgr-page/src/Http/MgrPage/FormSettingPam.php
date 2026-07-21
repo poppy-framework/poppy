@@ -12,7 +12,6 @@ use Poppy\System\Models\SysConfig;
 
 class FormSettingPam extends FormSettingBase
 {
-
     protected $title = '账号安全';
 
     protected $group = 'py-system::pam';
@@ -20,6 +19,7 @@ class FormSettingPam extends FormSettingBase
     public function data(): array
     {
         $data = parent::data();
+
         return array_merge($data, [
             'lifetime' => sys_setting('py-system::pam.lifetime') ?: 12,
         ]);

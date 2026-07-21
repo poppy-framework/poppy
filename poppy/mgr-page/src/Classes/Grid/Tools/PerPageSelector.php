@@ -18,8 +18,6 @@ class PerPageSelector extends AbstractTool
 
     /**
      * Create a new PerPageSelector instance.
-     *
-     * @param Grid $grid
      */
     public function __construct(Grid $grid)
     {
@@ -47,7 +45,6 @@ class PerPageSelector extends AbstractTool
      */
     public function render()
     {
-
         $options = $this->getOptions()->map(function ($option) {
             $selected = ($option == $this->perPage) ? 'selected' : '';
             $url      = \request()->fullUrlWithQuery([$this->perPageName => $option]);

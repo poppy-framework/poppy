@@ -2,7 +2,6 @@
 
 namespace Demo\Tests\Rbac;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Poppy\Core\Rbac\Contracts\RbacPermissionContract;
@@ -12,8 +11,8 @@ use Poppy\System\Action\Role;
 
 class RoleTest extends TestCase
 {
-
     private $roleModel;
+
     private $permissionModel;
 
     public function setUp(): void
@@ -26,7 +25,7 @@ class RoleTest extends TestCase
     public function testCreate()
     {
         /** @var Model|RbacRoleContract $role */
-        $roleDb = (new $this->roleModel);
+        $roleDb = (new $this->roleModel());
         $role   = $roleDb->create([
             'title' => 'role-' . Str::random(8),
             'name'  => 'role-' . Str::random(8),
@@ -34,8 +33,7 @@ class RoleTest extends TestCase
         ]);
 
         /** @var Model|RbacPermissionContract $permission */
-        $permissionDb = (new $this->permissionModel);
-
+        $permissionDb = (new $this->permissionModel());
 
         $permission = $permissionDb->where('name', 'backend:py-core.global.manage')->first();
 
@@ -43,7 +41,6 @@ class RoleTest extends TestCase
         $role->detachPermission($permission);
         $role->delete();
     }
-
 
     public function testPermission()
     {

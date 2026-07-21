@@ -16,7 +16,6 @@ use Illuminate\Support\Collection;
  */
 class Migrator extends BaseMigrator
 {
-
     /**
      * @var string Table name
      */
@@ -25,18 +24,14 @@ class Migrator extends BaseMigrator
     /**
      * Create a new migrator instance.
      *
-     * @param string                       $table
-     * @param MigrationRepositoryInterface $repository
-     * @param Resolver                     $resolver
-     * @param Filesystem                   $files
+     * @param string $table
      */
     public function __construct(
         $table,
         MigrationRepositoryInterface $repository,
         Resolver $resolver,
         Filesystem $files
-    )
-    {
+    ) {
         $this->table = $table;
 
         parent::__construct($repository, $resolver, $files);
@@ -58,14 +53,14 @@ class Migrator extends BaseMigrator
         $files      = $this->getMigrationFiles($paths);
         $count      = count($migrations);
 
-        if ($count === 0) {
+        if (0 === $count) {
             $this->note('<info>Nothing to rollback.</info>');
         }
         else {
             $this->requireFiles($files);
 
             $steps = Arr::get($options, 'step', 0);
-            if ($steps == 0) {
+            if (0 == $steps) {
                 $steps = 1;
             }
 
@@ -76,7 +71,7 @@ class Migrator extends BaseMigrator
                 $migration = (object) $migration;
 
                 if ($lastBatch > $migration->batch && $stepDown) {
-                    $steps--;
+                    --$steps;
                     $stepDown  = false;
                     $lastBatch = $migration->batch;
                 }

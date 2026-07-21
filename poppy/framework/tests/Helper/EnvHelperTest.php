@@ -9,7 +9,6 @@ use Poppy\Framework\Helper\EnvHelper;
 
 class EnvHelperTest extends TestCase
 {
-
     public function testIsInternalIp(): void
     {
         $this->assertTrue(EnvHelper::isInternalIp('127.0.0.1'));

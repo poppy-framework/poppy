@@ -22,9 +22,11 @@ use Poppy\Version\Classes\PyVersionDef;
  * @property string      $platform     操作平台[android ios]
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|SysAppVersion newModelQuery()
  * @method static Builder|SysAppVersion newQuery()
  * @method static Builder|SysAppVersion query()
+ *
  * @mixin Eloquent
  */
 class SysAppVersion extends Model
@@ -45,11 +47,9 @@ class SysAppVersion extends Model
     ];
 
     /**
-     * @param null|string $key
-     * @param bool        $check_key
      * @return array|string
      */
-    public static function kvType(string $key = null, bool $check_key = false)
+    public static function kvType(?string $key = null, bool $check_key = false)
     {
         $desc = [
             self::PLATFORM_ANDROID => '安卓',
@@ -61,7 +61,9 @@ class SysAppVersion extends Model
 
     /**
      * 返回版本
+     *
      * @param string $platform 操作平台
+     *
      * @return string|array
      */
     public static function latestVersion(string $platform = self::PLATFORM_ANDROID)
@@ -80,14 +82,14 @@ class SysAppVersion extends Model
             }
             sys_tag('py-version')->hSet(PyVersionDef::ckMaxVersion(), $platform, $version);
         }
+
         return $version;
     }
 
     /**
      * 是否进行强制更新
+     *
      * @param string $platform 操作平台
-     * @param string $version
-     * @return bool
      */
     public static function isUpgrade(string $platform, string $version): bool
     {
@@ -107,43 +109,46 @@ class SysAppVersion extends Model
                 }
             }
         }
+
         return $isUpgrade;
     }
 
     /**
      * 存储的路径
+     *
      * @param string $type 类型
-     * @return string
      */
     public static function path(string $type = self::PLATFORM_ANDROID): string
     {
-        if ($type === self::PLATFORM_ANDROID) {
+        if (self::PLATFORM_ANDROID === $type) {
             $extension = 'apk';
         }
         else {
             $extension = 'ipa';
         }
+
         return trim(sys_setting('py-version::setting.path', 'static/app/'), '/') . '/' .
             trim(sys_setting('py-version::setting.latest_name', 'latest')) . '.' . $extension;
     }
 
     /**
      * 平台 Url
+     *
      * @param string $type 类型
+     *
      * @return mixed|string
      */
     public static function platformUrl(string $type = self::PLATFORM_ANDROID)
     {
-        if ($type === self::PLATFORM_ANDROID) {
+        if (self::PLATFORM_ANDROID === $type) {
             return FileManager::prefix() . self::path($type);
         }
+
         return sys_setting('py-version::setting.ios_store_url');
     }
 
     /**
      * 获取数据库的版本
-     * @param string $platform
-     * @return array
      */
     protected static function versions(string $platform = self::PLATFORM_ANDROID): array
     {
@@ -151,8 +156,10 @@ class SysAppVersion extends Model
         if ($versions->count()) {
             $arrVersions = $versions->toArray();
             usort($arrVersions, fn($v1, $v2) => version_compare($v1['title'], $v2['title']));
+
             return $arrVersions;
         }
+
         return [];
     }
 }

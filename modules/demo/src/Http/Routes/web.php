@@ -2,12 +2,10 @@
 
 use Illuminate\Routing\Router;
 
-
 Route::group([
     //    'middleware' => 'sys-auth:jwt_web',
     'namespace' => 'Demo\Http\Request\Web',
 ], function (Router $router) {
-
     $router->any('token', 'TokenController@index')
         ->name('demo:web.token.index');
 });
@@ -37,7 +35,6 @@ Route::group([
         ->name('demo:web.grid.no_file');
     $router->any('grid/iframe', 'GridController@iframe')
         ->name('demo:web.grid.iframe');
-
 
     /* Search(搜索)
      * ---------------------------------------- */

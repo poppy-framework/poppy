@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Poppy\SensitiveWord\Http\Request\Backend;
 
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
@@ -25,7 +26,9 @@ class WordController extends BackendController
 {
     /**
      * 列表
+     *
      * @return \Illuminate\Http\Response|JsonResponse|RedirectResponse|string
+     *
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -38,6 +41,7 @@ class WordController extends BackendController
 
     /**
      * 创建
+     *
      * @return array|JsonResponse|RedirectResponse|\Illuminate\Http\Response|Redirector|mixed|Resp|Response|string
      */
     public function establish()
@@ -47,9 +51,10 @@ class WordController extends BackendController
 
     /**
      * 删除
-     * @param $id
+     *
      * @return \Illuminate\Http\Response|JsonResponse|RedirectResponse
-     * @throws \Exception
+     *
+     * @throws Exception
      */
     public function delete($id = null)
     {
@@ -58,13 +63,10 @@ class WordController extends BackendController
         if (!$Word->delete($id)) {
             return Resp::error($Word->getError());
         }
+
         return Resp::success('删除成功', '_reload|1');
     }
 
-    /**
-     *
-     * @return Word
-     */
     private function action(): Word
     {
         return (new Word())->setPam($this->pam);

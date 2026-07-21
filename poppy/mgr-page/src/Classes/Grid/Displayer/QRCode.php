@@ -18,9 +18,10 @@ class QRCode extends AbstractDisplayer
         }
 
         $img = sprintf(
-            "https://cli.im/api/qrcode/code?text=%s",
+            'https://cli.im/api/qrcode/code?text=%s',
             rawurlencode($content)
         );
+
         return <<<HTML
 <a href="{$img}" class="J_iframe" data-width="600" data-height="600">
     <i class="bi bi-qr-code"></i>

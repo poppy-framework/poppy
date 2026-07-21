@@ -15,6 +15,7 @@ use Poppy\System\Classes\Traits\FilterTrait;
  * 广告内容
  *
  * @mixin Eloquent
+ *
  * @property int         $id         id
  * @property string      $title      广告标题
  * @property string      $src        地址
@@ -29,6 +30,7 @@ use Poppy\System\Classes\Traits\FilterTrait;
  * @property int         $is_enable  是否启用[0: 不显示, 1:显示]
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|SysAdContent filter(array $input = [], $filter = null)
  * @method static Builder|SysAdContent newModelQuery()
  * @method static Builder|SysAdContent newQuery()
@@ -65,7 +67,9 @@ class SysAdContent extends Model
 
     /**
      * 动作
+     *
      * @param null $key key
+     *
      * @return array|string
      */
     public static function kvAction($key = null)

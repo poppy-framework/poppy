@@ -12,12 +12,12 @@ use Poppy\Framework\Validation\Rule;
  * @OA\Schema(
  *     schema="PoppyAliyunOssStsTempOssRequest",
  *     description="STS 临时授权请求",
+ *
  *     @OA\Property(property="is_temp", type="string", nullable=true, description="是否使用临时子目录 (Y=His{rand(8)} 格式; N=按当前日期生成目录)", enum={"Y", "N"}, default="N", example="N"),
  * )
  */
 class StsTempOssRequest extends Request
 {
-
     public function getIsTemp(): string
     {
         return (string) $this->get('is_temp', 'N');
@@ -32,8 +32,6 @@ class StsTempOssRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

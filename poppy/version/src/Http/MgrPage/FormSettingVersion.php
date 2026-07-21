@@ -9,7 +9,6 @@ use Poppy\MgrPage\Classes\Form\FormSettingBase;
 
 class FormSettingVersion extends FormSettingBase
 {
-
     protected $withContent = true;
 
     protected $group = 'py-version::setting';
@@ -20,6 +19,7 @@ class FormSettingVersion extends FormSettingBase
 
         $data['path']        = $data['path'] ?: '/static/app';
         $data['latest_name'] = $data['latest_name'] ?: 'latest';
+
         return $data;
     }
 

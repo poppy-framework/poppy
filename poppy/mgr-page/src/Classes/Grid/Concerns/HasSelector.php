@@ -15,8 +15,6 @@ trait HasSelector
     protected $selector;
 
     /**
-     * @param Closure $closure
-     *
      * @return $this
      */
     public function selector(Closure $closure)
@@ -24,7 +22,6 @@ trait HasSelector
         $this->selector = new Selector();
 
         call_user_func($closure, $this->selector);
-
 
         return $this;
     }
@@ -59,7 +56,7 @@ trait HasSelector
 
             $values = $active[$column];
 
-            if ($selector['type'] == 'one') {
+            if ('one' == $selector['type']) {
                 $values = current($values);
             }
 

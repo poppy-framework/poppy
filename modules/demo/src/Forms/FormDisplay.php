@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormDisplay extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '显示框';
-
 
     public function data(): array
     {

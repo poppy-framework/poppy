@@ -24,30 +24,24 @@ class PoppyMigrateCommand extends Command
 
     /**
      * The console command name.
+     *
      * @var string
      */
     protected $name = 'poppy:migrate';
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Run the database migrations for a specific or all modules';
 
-    /**
-     * @var Poppy
-     */
     protected Poppy $poppy;
 
-    /**
-     * @var Migrator
-     */
     protected Migrator $migrator;
 
     /**
      * Create a new command instance.
-     * @param Migrator $migrator
-     * @param Poppy    $poppy
      */
     public function __construct(Migrator $migrator, Poppy $poppy)
     {
@@ -59,7 +53,8 @@ class PoppyMigrateCommand extends Command
 
     /**
      * Execute the console command.
-     * @return null|void
+     *
+     * @return void|null
      */
     public function handle()
     {
@@ -71,6 +66,7 @@ class PoppyMigrateCommand extends Command
 
             if (!$module->count()) {
                 $this->error('Module `' . $this->argument('slug') . '` not found, module need add `module.` prefix');
+
                 return null;
             }
 
@@ -105,7 +101,9 @@ class PoppyMigrateCommand extends Command
 
     /**
      * Run migrations for the specified module.
+     *
      * @param string $slug slug
+     *
      * @return null
      */
     protected function migrate(string $slug)
@@ -118,9 +116,9 @@ class PoppyMigrateCommand extends Command
 
             $this->migrator->setOutput($this->output)->run(
                 $path, [
-                'pretend' => $pretend,
-                'step'    => $step,
-            ]);
+                    'pretend' => $pretend,
+                    'step'    => $step,
+                ]);
 
             event(new PoppyMigrated($module, $this->option()));
 
@@ -165,7 +163,6 @@ class PoppyMigrateCommand extends Command
 
     /**
      * Get the console command arguments.
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -176,7 +173,6 @@ class PoppyMigrateCommand extends Command
 
     /**
      * Get the console command options.
-     * @return array
      */
     protected function getOptions(): array
     {

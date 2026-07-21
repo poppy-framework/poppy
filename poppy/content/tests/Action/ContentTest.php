@@ -17,18 +17,13 @@ class ContentTest extends TestCase
 
     /**
      * 分类的类型
-     * @var string
      */
     private static string $type = 'testing';
 
-    /**
-     * @var Content
-     */
     private Content $act;
 
     /**
      * 需要删除的 ID
-     * @var array
      */
     private array $ids;
 
@@ -43,11 +38,11 @@ class ContentTest extends TestCase
      */
     public function testSort(): void
     {
-
         $pam = TestingPam::randUser();
         try {
             SysContent::where('type', self::$type)->delete();
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             $this->fail($e->getMessage());
         }
 

@@ -6,14 +6,12 @@ use Poppy\Framework\Validation\Rule;
 
 class FormMonth extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Month';
-
 
     /**
      * Build a form here.

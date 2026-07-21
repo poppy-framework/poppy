@@ -18,11 +18,9 @@ use Throwable;
 
 class FormContentEstablish extends FormWidget
 {
-
     public $ajax = true;
 
     private int $id = 0;
-
 
     private SysAdPlace $place;
 
@@ -59,6 +57,7 @@ class FormContentEstablish extends FormWidget
                 '_top_reload' => 1,
             ]);
         }
+
         return Resp::error($Ad->getError());
     }
 
@@ -71,6 +70,7 @@ class FormContentEstablish extends FormWidget
             ]);
             $default['at'] = implode(' - ', [$this->item->start_at, $this->item->end_at]);
         }
+
         return array_merge($default, [
             'place_id' => $this->place->id,
         ]);

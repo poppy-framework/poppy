@@ -11,7 +11,6 @@ class PySmsDef
 {
     /**
      * 模板缓存
-     * @return string
      */
     public static function ckTemplate(): string
     {

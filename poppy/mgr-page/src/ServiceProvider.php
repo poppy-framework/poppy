@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Poppy\MgrPage;
 
-
 use Illuminate\Console\Scheduling\Schedule;
 use Poppy\Framework\Exceptions\ModuleNotFoundException;
 use Poppy\Framework\Support\PoppyServiceProvider;
@@ -16,10 +15,11 @@ use Poppy\MgrPage\Commands\MixCommand;
  */
 class ServiceProvider extends PoppyServiceProvider
 {
-
     /**
      * Bootstrap the module services.
+     *
      * @return void
+     *
      * @throws ModuleNotFoundException
      */
     public function boot()
@@ -50,6 +50,7 @@ class ServiceProvider extends PoppyServiceProvider
 
     /**
      * Register the module services.
+     *
      * @return void
      */
     public function register()
@@ -74,7 +75,6 @@ class ServiceProvider extends PoppyServiceProvider
     private function registerSchedule()
     {
         app('events')->listen('console.schedule', function (Schedule $schedule) {
-
         });
     }
 
@@ -88,7 +88,6 @@ class ServiceProvider extends PoppyServiceProvider
 
     private function registerForm()
     {
-
         $this->app->singleton('poppy.mgr-page.form', function ($app) {
             $form = new FormBuilder($app['html'], $app['url'], $app['view'], $app['session.store']->token());
 

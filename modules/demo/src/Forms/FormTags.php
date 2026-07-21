@@ -7,14 +7,12 @@ use Poppy\System\Models\PamRole;
 
 class FormTags extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = 'Tags (标签)';
-
 
     public function data(): array
     {

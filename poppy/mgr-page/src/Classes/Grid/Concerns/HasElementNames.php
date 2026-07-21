@@ -13,8 +13,6 @@ trait HasElementNames
 
     /**
      * HTML element names.
-     *
-     * @var array
      */
     protected array $elementNames = [
         'grid_row'        => 'grid-row',

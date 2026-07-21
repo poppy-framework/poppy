@@ -8,7 +8,6 @@ use Poppy\Framework\Application\TestCase;
 
 class InspectTest extends TestCase
 {
-
     public function testDbSeo()
     {
         $result = py_console()->call('py-core:inspect', [

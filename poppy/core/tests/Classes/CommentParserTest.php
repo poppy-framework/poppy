@@ -11,7 +11,7 @@ class CommentParserTest extends TestCase
 {
     public function testParser()
     {
-        $data = /** @lang text */
+        $data = /* @lang text */
             '<?php
 	class FooBar
 	{

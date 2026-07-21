@@ -32,8 +32,9 @@ class FormVersionEstablish extends FormWidget
 
     /**
      * 设置id
-     * @param $id
+     *
      * @return $this
+     *
      * @throws ApplicationException
      */
     public function setId($id)
@@ -43,15 +44,13 @@ class FormVersionEstablish extends FormWidget
             $this->item = SysAppVersion::find($id);
 
             if (!$this->item) {
-                throw  new ApplicationException('无版本信息');
+                throw new ApplicationException('无版本信息');
             }
         }
+
         return $this;
     }
 
-    /**
-     * @param mixed $platform
-     */
     public function setPlatform($platform): FormVersionEstablish
     {
         $this->platform = $platform;
@@ -69,6 +68,7 @@ class FormVersionEstablish extends FormWidget
             if (!$Version->establish(input(), (int) input('id'))) {
                 return Resp::error($Version->getError());
             }
+
             return Resp::success('操作成功', '_top_reload|1');
         }
 
@@ -90,6 +90,7 @@ class FormVersionEstablish extends FormWidget
                 'download_url' => $this->item->download_url,
             ]);
         }
+
         return $default;
     }
 

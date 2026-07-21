@@ -33,13 +33,12 @@ trait HasHeader
         }
 
         $this->headers[] = $header;
+
         return $this;
     }
 
     /**
      * Add a binding based on filter to the model query.
-     *
-     * @param Model $model
      */
     public function bindFilterQuery(Model $model)
     {
@@ -92,7 +91,7 @@ trait HasHeader
             return $this->addHeader(new InputFilter($type));
         }
 
-        if ($type === 'range') {
+        if ('range' === $type) {
             if (is_null($formal)) {
                 $formal = 'equal';
             }

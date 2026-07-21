@@ -15,25 +15,26 @@ trait KeyParserTrait
      * 解析的缓存存储
      * 这里的命名方式, 因为是在 trait 中使用
      * 所以这里的缓存的命名前面加上了 trait 的前缀 keyParser
-     * @var array $keyParserCache
      */
     protected array $keyParserCache = [];
 
     /**
      * 根据 key 设置值
+     *
      * @param string $key    key
      * @param array  $parsed parsed
      */
     public function setParsedKey(string $key, array $parsed): self
     {
         $this->keyParserCache[$key] = $parsed;
+
         return $this;
     }
 
     /**
      * Check Key valid
+     *
      * @param string $key key
-     * @return bool
      */
     public function keyParserMatch(string $key): bool
     {
@@ -46,8 +47,8 @@ trait KeyParserTrait
 
     /**
      * 解析 key 至 namespace, group, and item.
+     *
      * @param string $key key
-     * @return array
      */
     public function parseKey(string $key): array
     {
@@ -61,7 +62,7 @@ trait KeyParserTrait
 
         // 如果密钥不包含双冒号，则意味着键不在名称空间中，而且只是一个常规配置项
         // 名称空间是为诸如模块之类的东西组织的配置项
-        if (strpos($key, '::') === false) {
+        if (false === strpos($key, '::')) {
             $parsed = $this->keyParserParseBasicSegments($segments);
         }
         else {
@@ -75,8 +76,8 @@ trait KeyParserTrait
 
     /**
      * 解析数值中的基本片段并且返回可用的数组
+     *
      * @param array $segments segments
-     * @return array
      */
     protected function keyParserParseBasicSegments(array $segments): array
     {
@@ -84,7 +85,7 @@ trait KeyParserTrait
         // 如果只有一个完整的片段，我们只是把整个组从数组中拉出来，而不是一个单独的项。
         $group = $segments[0];
 
-        if (count($segments) === 1) {
+        if (1 === count($segments)) {
             return [null, $group, null];
         }
         // 如果这个组中有不止一个段，这意味着我们将从组中提取一个特定的项
@@ -97,8 +98,8 @@ trait KeyParserTrait
 
     /**
      * 解析一系列命名空间的片段
+     *
      * @param string $key key
-     * @return array
      */
     protected function keyParserParseSegments(string $key): array
     {

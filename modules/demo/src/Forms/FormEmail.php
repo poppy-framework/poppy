@@ -4,14 +4,12 @@ namespace Demo\Forms;
 
 class FormEmail extends FormBaseWidget
 {
-
-
     /**
      * 表单标题
+     *
      * @var string
      */
     protected $title = '邮件配置';
-
 
     /**
      * Build a form here.

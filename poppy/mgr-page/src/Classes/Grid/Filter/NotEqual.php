@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 class NotEqual extends FilterItem
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function condition(array $inputs)
     {

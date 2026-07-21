@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Poppy\Extension\Webhook\DingTalk\MsgType;
@@ -12,64 +13,53 @@ abstract class Message implements DingTalkMessageContract
 {
     /**
      * 消息类型
-     * @var string
      */
     protected string $type;
 
     /**
      * 被@人的手机号（在content里添加@人的手机号）
-     *
-     * @var array
      */
     protected array $atMobiles = [];
 
     /**
      * 是否@所有人
-     *
-     * @var bool
      */
     protected bool $isAll = false;
 
     /**
      * 最终消息结构体
-     *
-     * @var array
      */
     protected array $message = [];
 
     /**
      * 设置需要at的人，默认只有Text和Markdown支持
-     * @param array $at
-     * @return Message
      */
     public function setAtMobiles(array $at): self
     {
         $this->atMobiles = $at;
+
         return $this;
     }
 
     /**
      * 是否at全体成员
-     *
-     * @param bool $is_all
-     * @return Message
      */
     public function setIsAll(bool $is_all): self
     {
         $this->isAll = $is_all;
+
         return $this;
     }
 
     /**
      * 最终输出的结构体JSON
-     * @return string
      */
     public function toJson(): string
     {
         $this->message['msgtype'] = $this->type;
-        //仅有text和markdown类型的消息会用到@信息
-        if ($this->type === 'text' or $this->type === 'markdown') {
-            if ($this->isAll === true) {
+        // 仅有text和markdown类型的消息会用到@信息
+        if ('text' === $this->type or 'markdown' === $this->type) {
+            if (true === $this->isAll) {
                 $this->message['at']['isAtAll'] = $this->isAll;
             }
             if (!empty($this->atMobiles)) {
@@ -77,15 +67,12 @@ abstract class Message implements DingTalkMessageContract
             }
         }
         $this->message = array_filter($this->message);
+
         return json_encode($this->message, JSON_THROW_ON_ERROR);
     }
 
     /**
      * 格式化消息体
-     *
-     * @param string $content
-     *
-     * @return string
      */
     protected function formatContent(string $content): string
     {
@@ -96,7 +83,7 @@ abstract class Message implements DingTalkMessageContract
         $isEscape      = false;
         $isParam       = false;
         $paramKey      = '';
-        for ($i = 0; $i < strlen($content); $i++) {
+        for ($i = 0; $i < strlen($content); ++$i) {
             switch ($content[$i]) {
                 case '\\':
                     $isEscape = true;
@@ -105,7 +92,8 @@ abstract class Message implements DingTalkMessageContract
                     if ($isEscape) {
                         $formatContent .= $content[$i];
                         $isEscape      = false;
-                    } else {
+                    }
+                    else {
                         $isParam = true;
                     }
                     break;
@@ -114,18 +102,21 @@ abstract class Message implements DingTalkMessageContract
                         $formatContent .= '@' . $this->atMobiles[$paramKey];
                         $isParam       = false;
                         $paramKey      = '';
-                    } else {
+                    }
+                    else {
                         $formatContent .= $content[$i];
                     }
                     break;
                 default:
                     if ($isParam) {
                         $paramKey .= $content[$i];
-                    } else {
+                    }
+                    else {
                         $formatContent .= $content[$i];
                     }
             }
         }
+
         return $formatContent;
     }
 }

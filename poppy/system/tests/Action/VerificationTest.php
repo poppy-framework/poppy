@@ -10,7 +10,6 @@ use Poppy\System\Action\Verification;
 
 class VerificationTest extends TestCase
 {
-
     /**
      * @throws ApplicationException
      */
@@ -30,7 +29,6 @@ class VerificationTest extends TestCase
         $Verification->genCaptcha($mobile, 5, 4);
         $captcha = $Verification->getCaptcha();
         $this->assertEquals(4, strlen($captcha));
-
 
         $mobile = $this->faker()->phoneNumber;
         $Verification->genCaptcha($mobile, 5, 4);

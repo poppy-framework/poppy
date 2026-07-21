@@ -14,8 +14,9 @@ class PassportVerifyListener
 {
     /**
      * Handle the event.
-     * @param PassportVerifyEvent $event
+     *
      * @return void
+     *
      * @throws ApplicationException
      */
     public function handle(PassportVerifyEvent $event)
@@ -27,7 +28,7 @@ class PassportVerifyListener
         }
 
         if ($type) {
-            if ($type !== 'exist') {
+            if ('exist' !== $type) {
                 throw new ApplicationException('类型错误');
             }
 
@@ -38,6 +39,5 @@ class PassportVerifyListener
                 throw new ApplicationException('系统不存在此手机号!');
             }
         }
-
     }
 }

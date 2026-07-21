@@ -12,6 +12,7 @@ use Poppy\Framework\Validation\Rule;
  * @OA\Schema(
  *     schema="DemoApiDocHowRequest",
  *     description="ApiDoc 编写示例请求 (演示 @OA\Property 类型与范围)",
+ *
  *     @OA\Property(property="number", type="integer", nullable=true, description="数值", example=1),
  *     @OA\Property(property="number_range", type="integer", nullable=true, description="数值范围", minimum=100, maximum=999, example=200),
  *     @OA\Property(property="string", type="string", nullable=true, description="字串", example="hello"),

@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 class Factory
 {
-    const DEFAULT_LOCALE = 'en_US';
+    public const DEFAULT_LOCALE = 'en_US';
 
     protected static array $defaultProviders = [
         'Address', 'Barcode', 'Biased', 'Color', 'Company',
@@ -18,6 +18,7 @@ class Factory
      * Create a new generator
      *
      * @param string $locale
+     *
      * @return Generator
      */
     public static function create($locale = self::DEFAULT_LOCALE)
@@ -34,6 +35,7 @@ class Factory
     /**
      * @param string $provider
      * @param string $locale
+     *
      * @return string
      */
     protected static function getProviderClassname($provider, $locale = '')
@@ -55,6 +57,7 @@ class Factory
     /**
      * @param string $provider
      * @param string $locale
+     *
      * @return string
      */
     protected static function findProviderClassname($provider, $locale = '')

@@ -14,9 +14,9 @@ use Route;
 
 class FormPamSetting extends FormWidget
 {
-    public $ajax = true;
-
     use UserSettingTrait;
+
+    public $ajax = true;
 
     private PamAccount $pam;
 
@@ -27,7 +27,6 @@ class FormPamSetting extends FormWidget
         $this->pam = PamAccount::findOrFail($id);
     }
 
-
     public function handle()
     {
         $hour = round((float) input('expired_hour'), 1);
@@ -36,13 +35,14 @@ class FormPamSetting extends FormWidget
         ], [
             'expired_hour',
         ]);
-        return Resp::success('已设置');
 
+        return Resp::success('已设置');
     }
 
     public function data(): array
     {
         $settings = $this->userSettingGet($this->pam->id, PySystemDef::uskAccount());
+
         return [
             'expired_hour' => $settings['expired_hour'] ?? '12',
         ];
