@@ -10,7 +10,13 @@
     ],
     "require": {
         "php": ">=7.4",
-        "ext-bcmath": "*"
+        "ext-bcmath": "*",
+        "predis/predis": "~1.1",
+        "guzzlehttp/guzzle": "^6.3|^7.3"
+    },
+    "require-dev": {
+        "zircote/swagger-php": "^4.11",
+        "doctrine/annotations": "^1.14"
     },
     "autoload": {
         "psr-4": {

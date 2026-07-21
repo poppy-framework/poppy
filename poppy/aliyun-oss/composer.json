@@ -13,7 +13,8 @@
         "php" : ">=7.4",
         "aliyuncs/oss-sdk-php" : "2.*",
         "alibabacloud/sts-20150401" : "^1.1",
-        "alibabacloud/darabonba": "^1.0"
+        "alibabacloud/darabonba": "^1.0",
+        "poppy/mgr-page": "4.2.*"
     },
     "require-dev" : {
         "guzzlehttp/guzzle": "^6.3|^7.3"
