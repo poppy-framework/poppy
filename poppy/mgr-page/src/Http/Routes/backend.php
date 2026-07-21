@@ -69,13 +69,6 @@ Route::group([
     $router->any('ban/delete/{id}', 'BanController@delete')
         ->name('py-mgr-page:backend.ban.delete');
 
-    /* 发送测试邮件
-     * ---------------------------------------- */
-    $router->any('mail/store', 'MailController@store')
-        ->name('py-mgr-page:backend.mail.store');
-    $router->any('mail/test', 'MailController@test')
-        ->name('py-mgr-page:backend.mail.test');
-
     $router->any('upload/store', 'UploadController@store')
         ->name('py-mgr-page:backend.upload.store');
 });

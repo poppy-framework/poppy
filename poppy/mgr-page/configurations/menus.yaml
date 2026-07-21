@@ -19,10 +19,6 @@ backend :
               route : py-mgr-page:backend.home.setting
               permission : backend:py-system.global.manage
             -
-              title : 邮件设置
-              route : py-mgr-page:backend.mail.store
-              permission : backend:py-system.global.manage
-            -
               title : 上传设置
               route : py-mgr-page:backend.upload.store
               permission : backend:py-system.global.manage
