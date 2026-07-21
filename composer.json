@@ -24,7 +24,6 @@
         "ext-curl": "*",
         "laravel/framework": "6.*",
         "sentry/sentry-laravel": "3.*",
-        "twbs/bootstrap-icons": "^1.10",
         "php-curl-class/php-curl-class": "^9.17",
         "alibabacloud/dysmsapi-20170525": "^4.6",
         "poppy/framework": "*@dev",

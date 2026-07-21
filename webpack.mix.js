@@ -6,16 +6,7 @@ let mixCopy = require('laravel-mix');
  | Web Url : https://laravel-mix.com
  |--------------------------------------------------------------------------
  */
-// mixCopy
-//     .copy('vendor/twbs/bootstrap-icons/font/bootstrap-icons.scss', 'poppy/mgr-page/resources/style/bootstrap-icons/bootstrap-icons.scss')
-//     .copyDirectory('vendor/twbs/bootstrap-icons/font/fonts', 'poppy/mgr-page/resources/font/bootstrap-icons');
-
 mix
-    .webpackConfig({
-        watchOptions: {
-            poll: 2000, // 每500ms轮询文件变化，解决mac文件锁定删除报错
-        }
-    })
     .browserSync({
         // 这里替换地址
         proxy: 'http://poppy-v4.duoli.com/',
