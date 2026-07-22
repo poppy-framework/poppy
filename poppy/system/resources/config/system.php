@@ -1,5 +1,11 @@
 <?php
 
+use Poppy\System\Models\PamAccount;
+use Poppy\System\Models\PamPermission;
+use Poppy\System\Models\PamPermissionRole;
+use Poppy\System\Models\PamRole;
+use Poppy\System\Models\PamRoleAccount;
+
 return [
     /*
     |--------------------------------------------------------------------------

@@ -34,6 +34,10 @@ class ServiceProvider extends PoppyServiceProvider
         $this->publishes([
             __DIR__ . '/../resources/swagger-ui/' => public_path('docs/swagger-ui/'),
         ], 'poppy-mix');
+
+        $this->publishes([
+            __DIR__ . '/../resources/openapi/OpenApi.php' => resource_path('docs/OpenApi.php'),
+        ], 'poppy-openapi');
     }
 
     /**

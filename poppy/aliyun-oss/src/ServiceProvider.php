@@ -22,10 +22,8 @@ class ServiceProvider extends PoppyServiceProvider
         parent::boot('poppy.aliyun-oss');
     }
 
-    public function register()
+    public function register(): void
     {
-        $this->mergeConfigFrom(dirname(__DIR__) . '/resources/config/aliyun-oss.php', 'poppy.aliyun-oss');
-
         $this->app->register(RouteServiceProvider::class);
     }
 }

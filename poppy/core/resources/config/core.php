@@ -11,13 +11,9 @@ use Poppy\System\Models\PamRole;
 use Poppy\System\Models\PamRoleAccount;
 
 return [
-    /* 维护邮箱地址
-     * ---------------------------------------- */
-    'op_mail' => env('CORE_OP_MAIL', ''),
-
     /* Rbac 模型和外键设定
      * ---------------------------------------- */
-    'rbac'    => [
+    'rbac' => [
         'role'            => PamRole::class,
         'account'         => PamAccount::class,
         'role_account'    => PamRoleAccount::class,
