@@ -39,7 +39,6 @@ class ServiceProvider extends PoppyServiceProvider
             // 编辑器
             __DIR__ . '/../resources/libs/jquery/backstretch'     => public_path('assets/libs/jquery/backstretch'),
             __DIR__ . '/../resources/libs/vue'                    => public_path('assets/libs/vue'),
-            __DIR__ . '/../resources/libs/jshash'                 => public_path('assets/libs/jshash'),
             __DIR__ . '/../resources/libs/easy-web/'              => public_path('assets/libs/easy-web/'),
             __DIR__ . '/../resources/libs/jquery/data-tables/'    => public_path('assets/libs/jquery/data-tables/'),
             __DIR__ . '/../resources/libs/layui/'                 => public_path('assets/libs/layui/'),
