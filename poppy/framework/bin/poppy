@@ -9,7 +9,7 @@ if (false === strpos($dir, 'vendor/poppy')) {
     $basePath = dirname(__DIR__, 3);
 }
 else {
-    $basePath = dirname(__DIR__, 2);
+    $basePath = dirname(__DIR__, 4);
 }
 
 if (!file_exists($basePath . '/vendor/autoload.php')) {
