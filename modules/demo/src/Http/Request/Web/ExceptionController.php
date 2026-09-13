@@ -30,16 +30,6 @@ use Poppy\System\Models\PamAccount;
 class ExceptionController extends WebController
 {
     /**
-     * @api               {get} demo/exception/{type} [Demo]FirstOrFail 异常
-     *
-     * @apiVersion        1.0.0
-     *
-     * @apiName           DemoWebExceptionFirstOrFail
-     *
-     * @apiGroup          Demo
-     */
-
-    /**
      * @return JsonResponse|RedirectResponse|Response
      */
     public function index(string $type)
