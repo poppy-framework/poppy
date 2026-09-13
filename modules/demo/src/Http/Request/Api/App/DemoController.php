@@ -13,21 +13,7 @@ use Poppy\Framework\Classes\Resp;
  */
 class DemoController extends ApiController
 {
-    /**
-     * @OA\Get(
-     *     path="/api/app/demo/demo/index",
-     *     tags={"Demo"},
-     *     summary="[Demo]App 主页",
-     *     description="App 端 Demo 主页接口, 返回 OK. 用于联调健康检查.",
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK",
-     *
-     *         @OA\JsonContent(ref="#/components/schemas/DemoAppDemoIndexResponseBody")
-     *     ),
-     * )
-     */
+
     public function index()
     {
         return Resp::success('OK');
