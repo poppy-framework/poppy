@@ -65,7 +65,7 @@ class UploadController extends JwtApiController
         $all['type']       = $type;
 
         if (!isset($all['image']) || !$all['image']) {
-            return Resp::error('图片内容必须');
+            return Resp::web(Resp::PARAM_ERROR, '图片内容必须');
         }
 
         $validator = Validator::make($all, [

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# 项目统一 PHP 入口示例。composer.json 要求 php >=7.4，且本项目实际以 7.4 为基线。
+# 系统默认 `php` 可能是更高版本（如 8.x），会导致语法检查/测试/artisan 命令行为与生产不一致。
+#
+# 使用方法（每台机器本地各自初始化一次，bin/php 本身不提交进版本库）：
+#   cp bin/php.example bin/php
+#   chmod +x bin/php
+#   按自己机器的实际安装路径修改下面的 PHP74 变量
+#
+# 团队约定：本仓库内所有需要匹配项目运行时语义的 PHP 调用（artisan、php -l、phpunit 等）
+# 一律通过 ./bin/php 执行，不要直接敲裸 `php`。
+set -euo pipefail
+
+# 按你本机的实际安装路径修改。常见路径参考：
+#   macOS Apple Silicon (brew): /opt/homebrew/opt/php@7.4/bin/php
+#   macOS Intel (brew):         /usr/local/opt/php@7.4/bin/php
+#   Linux (apt/phpenv 等):      按各自发行版路径填写
+PHP74="/opt/homebrew/opt/php@7.4/bin/php"
+
+if [ ! -x "$PHP74" ]; then
+    echo "错误: 未找到 PHP 7.4 (期望路径: $PHP74)" >&2
+    echo "请修改 bin/php 中的 PHP74 变量指向本机实际路径，或安装: brew install php@7.4" >&2
+    exit 1
+fi
+
+exec "$PHP74" "$@"

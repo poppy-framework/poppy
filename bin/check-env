@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# Enforced 环境检测：校验本地 PHP 运行时是否满足项目要求。
+# 不由框架启动流程（artisan / public/index.php）自动触发，是独立的检测入口，
+# 由 resources/.husky/pre-commit 调用，也可在初始化项目或排查环境问题时手动执行：
+#   ./bin/check-env
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+FAIL=0
+
+# 1. bin/php 是否已初始化（本地专属文件，不提交进版本库，见 bin/php.example）
+if [ ! -x "bin/php" ]; then
+    echo "✗ 未找到 bin/php" >&2
+    echo "  请执行: cp bin/php.example bin/php && chmod +x bin/php" >&2
+    echo "  然后按本机实际路径修改 bin/php 中的 PHP74 变量" >&2
+    FAIL=1
+fi
+
+# 2. bin/php 指向的版本是否满足 composer.json 声明
+if [ "$FAIL" -eq 0 ]; then
+    REQUIRED=$(bin/php -r '
+        $c = json_decode(file_get_contents("composer.json"), true);
+        echo $c["require"]["php"] ?? "";
+    ')
+    ACTUAL=$(bin/php -r 'echo PHP_VERSION;')
+
+    if [ -z "$REQUIRED" ]; then
+        echo "✗ composer.json 未声明 require.php，无法校验版本" >&2
+        FAIL=1
+    else
+        SATISFIES=0
+        bin/php -r '
+            $required = ltrim($argv[1], ">=~^");
+            $actual = $argv[2];
+            exit(version_compare($actual, $required, ">=") ? 0 : 1);
+        ' "$REQUIRED" "$ACTUAL" || SATISFIES=1
+
+        if [ "$SATISFIES" -ne 0 ]; then
+            echo "✗ bin/php 版本 ($ACTUAL) 不满足 composer.json 要求 ($REQUIRED)" >&2
+            FAIL=1
+        else
+            echo "✓ bin/php 版本 $ACTUAL 满足要求 ($REQUIRED)"
+        fi
+    fi
+fi
+
+if [ "$FAIL" -ne 0 ]; then
+    echo "" >&2
+    echo "环境检测未通过，请先解决上述问题。" >&2
+    exit 1
+fi
+
+exit 0

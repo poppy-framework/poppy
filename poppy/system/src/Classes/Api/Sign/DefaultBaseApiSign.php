@@ -33,21 +33,22 @@ abstract class DefaultBaseApiSign implements ApiSignContract
     public function check(Request $request): bool
     {
         // 加密 debug, 不验证签名
-        $secret = (string) config('poppy.system.secret');
-        if ($secret && (string) $request->input('_py_secret') === $secret) {
+        $secret         = (string) config('poppy.system.secret');
+        $requestSecret  = $request->input('_py_secret');
+        if ($secret && is_scalar($requestSecret) && (string) $requestSecret === $secret) {
             return true;
+        }
+
+        // check token
+        $sign = $request->input('sign');
+        if (!$sign) {
+            return $this->setError(new Resp(Resp::SIGN_ERROR, '未进行签名'));
         }
 
         // check token
         $timestamp = $request->input('timestamp');
         if (!$timestamp) {
             return $this->setError(new Resp(Resp::PARAM_ERROR, '未传递时间戳'));
-        }
-
-        // check token
-        $sign = $request->input('sign');
-        if (!$sign) {
-            return $this->setError(new Resp(Resp::PARAM_ERROR, '未进行签名'));
         }
 
         $type = $request->header('x-type') ?: PamAccount::TYPE_USER;

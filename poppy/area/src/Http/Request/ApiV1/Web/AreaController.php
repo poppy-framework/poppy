@@ -45,7 +45,7 @@ class AreaController extends WebApiController
      *     path="/api_v1/area/area/country",
      *     tags={"Area"},
      *     summary="[Area]国别",
-     *     description="获取国家代码 (键值对, code => 国家名称).",
+     *     description="获取国家列表 (含英文名/中文名/国家代码/国际区号).",
      *
      *     @OA\Response(
      *         response=200,

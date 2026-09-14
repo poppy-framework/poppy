@@ -68,5 +68,6 @@ modules/op/tests/files/account.json
 /storage/clockwork/
 /storage/phpunit/
 /resources/http/http-client.private.env.json
+/bin/php
 
 

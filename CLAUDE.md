@@ -56,6 +56,41 @@ Laravel 6 + Poppy 框架伪多模块业务系统，覆盖账号/认证、内容�
 | `cross-module.md`      | 跨模块改动清单、引用约束、完成汇报格式        |
 
 
+### PHP 运行时版本约定（AI 协作专用，非 CI/Git 强制门禁）
+
+项目要求 PHP 7.4（见 `composer.json` `require.php`），但系统默认 `php` 命令可能是 brew 安装的更高版本（如 8.x），与生产运行时语义不一致。
+
+`bin/php` 和 `bin/check-env` 是 **AI 协作会话调用 PHP 命令时的约定**，用来避免 AI 每次都要重新判断"这台机器该用哪个 PHP 路径"。它们**不是** CI 门禁，也不通过 git hook 强制拦截人的提交——是否使用、何时自检，由使用者自行判断。
+
+**AI 协作时，所有需要匹配项目运行时语义的 PHP 命令**（`artisan`、`php -l` 语法检查、`phpunit`/`php artisan test`、任何直接跑框架代码的脚本）应通过项目根目录的封装入口调用，不要直接敲裸 `php`：
+
+```
+./bin/php
+```
+
+例如：
+
+```
+./bin/php artisan route:list
+./bin/php -l poppy/system/src/Http/Routes/api_v1_web.php
+```
+
+`bin/php` 是**每台机器本地初始化的产物**，不提交进版本库（已加入 `.gitignore`），因为不同机器/系统的 PHP 7.4 实际安装路径不同（Apple Silicon、Intel、Linux 各不相同）。版本库里只提交 `bin/php.example` 作为模板，初始化方式：
+
+```
+cp bin/php.example bin/php
+chmod +x bin/php
+# 按本机实际路径修改 bin/php 中的 PHP74 变量
+```
+
+`bin/check-env` 校验 `bin/php` 是否存在、版本是否满足 `composer.json` 声明，供手动自查使用：
+
+```
+./bin/check-env
+```
+
+`php-cs-fixer` 格式化命令对运行时版本不敏感（仅有版本警告），继续沿用下方约定的 `/opt/homebrew/bin/php` 调用方式即可，无需改用 `bin/php`。
+
 ### 质量校验「新增」
 
 - 代码风格 : 使用 PHP CS Fixer 校式化代码保障风格一致性

@@ -92,30 +92,9 @@ class AuthController extends JwtApiController
      *             @OA\Schema(ref="#/components/schemas/PoppySystemAuthLoginRequest")
      *         )
      *     ),
-     *
-     *     @OA\Parameter(
-     *         name="x-os",
-     *         in="header",
-     *         description="OS 平台类型 (例如 ios, android, pc)",
-     *
-     *         @OA\Schema(type="string", example="pc")
-     *     ),
-     *
-     *     @OA\Parameter(
-     *         name="x-type",
-     *         in="header",
-     *         description="账号类型 (例如 backend, web)",
-     *
-     *         @OA\Schema(type="string", example="backend")
-     *     ),
-     *
-     *     @OA\Parameter(
-     *         name="x-id",
-     *         in="header",
-     *         description="设备 ID",
-     *
-     *         @OA\Schema(type="string", example="123456")
-     *     ),
+     *     @OA\Parameter(ref="#/components/parameters/PoppySystemXOsHeader"),
+     *     @OA\Parameter(ref="#/components/parameters/PoppySystemXTypeHeader"),
+     *     @OA\Parameter(ref="#/components/parameters/PoppySystemXIdHeader"),
      *
      *     @OA\Response(
      *         response=200,
