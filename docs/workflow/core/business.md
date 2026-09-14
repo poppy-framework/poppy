@@ -69,7 +69,7 @@
 - **预置标签**：
   - `py-core` — 框架核心缓存（模块清单、权限清单、cacher）
   - `py-core-rbac` — RBAC 用户/角色权限缓存
-  - `py-core-persist` — Redis 持久化缓冲（`RdsPersist` 用）
+  - `py-core-persist` — `RdsStore::inLock()` 原子锁使用的 Redis 标签
 - **RdsDb 单例**：相同 `(db, tag)` 只生成一份 `RdsNative`，避免重复建立 predis 连接。析构时调用 `disconnect()`，但全局缓存持有的引用使连接保持活跃。
 
 ### 路由/分发规则
@@ -86,10 +86,6 @@
 
 ### 关键算法/计算
 
-- **持久化缓冲（`RdsPersist`）**：把高频写入批量落到 Redis 哈希/list，再用 `py-core:persist {table|all}` 命令异步刷库。
-  - `update(table, where, update)` → 写入 `persist:{table}_update`（hash），update 中字段支持 `+/-/.//>/<` 运算符。
-  - `insert(table, values)` → RPUSH 到 `persist:{table}_insert`（list）。
-  - `exec()` / `execTable()` 把 Redis 中的数据批量 `DB::table($table)->insert/update`，完成后 `del` 缓冲 key。
 - **Field 过期（`RdsFieldExpired`）**：对 hash/set/zset 的单个 field 设置过期时间——把 `(database, key, field, type, expiredAt)` 写入 ZSET `rds-key-field-expired`；扫描时 `zRangeByScore(0, now())` 取出到期 field，分组后调用 `hdel/srem/zrem`。
 - **原子锁（`RdsStore::inLock`）**：根据 `cache.default` 自动选择 Redis `SET NX EX` 或文件锁（`Cache::forever`）。
 
@@ -129,7 +125,6 @@
 | 命令 | 调度频率 | 业务动作 |
 |---|---|---|
 | `py-core:permission {do=list|init|menus}` | 手动 | `init` 时清空 `module-module`、清空 `py-core-rbac` 全部、清缓存、触发 `PermissionInitEvent`；`menus` 子命令校验 menu yaml 中引用的 permission 是否都已注册 |
-| `py-core:persist {table=all|<table>}` | 手动 / schedule（待确认） | 调用 `RdsPersist::exec()`/`execTable()` 把 Redis 缓冲刷到 DB |
 | `py-core:inspect {type} {--module=} {--export=}` | 手动 | 代码规范检查（class/file/controller/action/util/perms/validation/method/env） |
 | `py-core:doc {type=openapi|api|cs|cs-pf|log}` | 手动 | openapi 扫描或 apidoc 进程调度 |
 
@@ -141,7 +136,6 @@
 
 ## 待确认
 
-- `py-core:persist` 是否在 framework Kernel 中注册了 schedule？目前 `ServiceProvider::registerSchedule()` 是空闭包，未发现显式 cron。
 - `py-core:permission init` 触发 `PermissionInitEvent` 后，是否依赖 `poppy/system` 的 `InitToDbListener` 必须可用？若 system 模块未启用，权限清单只会存在于内存中（`cachedPermissionNames`），不会持久化到 `pam_permission` 表。
 - `Rbac::routeNeedsRole/NeedsPermission/NeedsRoleOrPermission` 方法使用 Laravel 6 已废弃的 `$router->filter()` API，在 Laravel 6+ 上是否仍生效需验证。
 - `RbacRole` / `RbacAbility` 中间件依赖 `$request->user()->hasRole()` 等方法，当前默认 guard 是否一定注入？

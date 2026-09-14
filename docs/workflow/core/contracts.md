@@ -145,18 +145,8 @@ sys_info/sys_debug/sys_warning/sys_error/sys_emergency(string $tag, $info, bool 
 `RdsStore::at/set/unset/clear(string $key, ...)`：以 `.` 前的字符串为 tag 的 KV 存储。
 `RdsStore::inLock(string $key, int $seconds): bool`：原子锁（Redis SETNX / 文件锁）。
 
-`RdsPersist`：
-
-```php
-RdsPersist::where($table, array $where): array             // 从 Redis 取缓冲的 where 行
-RdsPersist::exec(): void                                   // 刷库全部缓冲
-RdsPersist::execTable(string $table): void                 // 刷库指定表
-RdsPersist::update(string $table, array $where, array $update): void  // 写缓冲（更新）
-RdsPersist::insert(string $table, array $values): bool     // 写缓冲（插入）
-```
-
 `RdsFieldExpired::setFieldExpireTime(string $key, $field, string $type, string $database='default', $expireTime=86400): bool` 给单个 field 设置过期（hash/set/zset 任一）。
-`RdsFieldExpired::clearExpiredField(): bool` 由 `py-core:persist` 周期性触发。
+`RdsFieldExpired::clearExpiredField(): bool` 扫描并清理已到期的 field；经核实当前代码库中除单测外没有任何调用方触发它，未找到定时/命令入口（原文档关于其被某个已下线命令周期性触发的描述不准确，已更正）。
 
 `RdsList::__construct($database='default', $cacheKey, $max_length=0)`：固定长度队列，push 超长自动 `shift`。
 
@@ -183,7 +173,6 @@ RdsPersist::insert(string $table, array $values): bool     // 写缓冲（插入
 | 命令签名 | 说明 | 调度方式 |
 |---|---|---|
 | `py-core:permission {do : list\|init\|menus}` | 权限管理：`list` 打印权限表；`init` 清空缓存后触发 `PermissionInitEvent`；`menus` 校验 menu yaml 中 permission 是否已注册 | 手动（CLI） |
-| `py-core:persist {table : all\|<table>}` | 将 Redis 持久化缓冲刷到数据库 | 手动（CLI） |
 | `py-core:inspect {type?} {--module=} {--export=} {--class_load_only} {--log}` | 静态代码规范检查（class / file / controller / action / util / perms / validation / method / env） | 手动（CLI） |
 | `py-core:doc {type : openapi\|api\|cs\|cs-pf\|log}` | 生成 API 文档（openapi 或 apidoc 进程调度） | 手动（CLI） |
 
@@ -217,4 +206,3 @@ RdsPersist::insert(string $table, array $values): bool     // 写缓冲（插入
 
 - `Poppy\Core\Rbac\Facades\RbacFacade` 与 `PermissionFacade` 是否在 framework 的默认 `config/app.php` aliases 中已注册（未在本模块代码中找到 `aliases` 注册代码）。
 - `py-core:permission init` 是否要求 `poppy/system` 必须启用，否则 `PermissionInitEvent` 没有监听者，权限不会被持久化（流程可工作，但 `pam_permission` 表为空）。
-- `py-core:persist` 是否在 framework 的 Kernel schedule 中注册了定时任务；当前 `ServiceProvider::registerSchedule()` 是空闭包。

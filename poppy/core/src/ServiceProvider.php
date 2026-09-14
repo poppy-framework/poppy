@@ -71,7 +71,6 @@ class ServiceProvider extends PoppyServiceProvider
             Commands\PermissionCommand::class,
             Commands\DocCommand::class,
             Commands\InspectCommand::class,
-            Commands\PersistCommand::class,
         ]);
     }
 }

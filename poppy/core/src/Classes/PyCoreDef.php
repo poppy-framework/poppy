@@ -16,16 +16,6 @@ class PyCoreDef
     public const MIN_ONE_MONTH = 43200;
 
     /**
-     * 持久化
-     *
-     * @param string $key 持久化KEY
-     */
-    public static function ckPersistPersist(string $key): string
-    {
-        return 'persist:' . $key;
-    }
-
-    /**
      * 模型注释
      */
     public static function ckLangModels(): string
