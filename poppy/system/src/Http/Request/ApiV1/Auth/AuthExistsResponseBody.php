@@ -19,7 +19,7 @@ class AuthExistsResponseBody extends BaseResponseBody
      * @OA\Property(
      *    description="是否存在用户",
      *    type="object",
-     *    @OA\Property(property="is_exists", description="是否存在用户", type="string"),
+     *    @OA\Property(property="is_exist", description="是否存在用户", type="string"),
      * )
      */
     public object $data;
